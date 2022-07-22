@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -40,6 +41,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role; // 사용자 역할 [USER, OWNER]
+
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "authorityName")
+
+    @OneToMany(mappedBy = "user")
+    private Set<Authority> authorities;
 
     @OneToMany(mappedBy = "user")
     private List<Store> stores = new ArrayList<>();

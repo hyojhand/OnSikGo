@@ -59,14 +59,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/api/naver/login").permitAll()
-                .antMatchers("/board/**").permitAll()
+                .antMatchers("/user/**").permitAll()
                 .antMatchers("/api/v1/**").hasRole(Role.USER.name())
 
                 // 인증없이 접근을 허용하는 path 추가
 //                .and()
 //                .authorizeRequests()
-                .antMatchers("/api/hello").permitAll()
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/signup").permitAll()
                 // 나머지 요청은 모두 인증을 받는다
