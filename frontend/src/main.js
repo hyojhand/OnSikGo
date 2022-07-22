@@ -30,9 +30,8 @@ new Vue({
   }),
 
   watch: {
-    group () {
-      this.drawer = false
+    group() {
+      this.drawer = false;
     },
   },
 }).$mount("#app");
-

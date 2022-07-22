@@ -1,12 +1,17 @@
 <template>
   <div>
-    <h1>알림페이지</h1>
+    <notice-card></notice-card>
   </div>
 </template>
 
 <script>
+import NoticeCard from "../components/NoticeCard.vue";
+
 export default {
   name: "NoticeView",
+  components: {
+    NoticeCard,
+  },
 };
 </script>
 
