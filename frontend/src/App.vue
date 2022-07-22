@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavBar msg="Welcome to Your Vue.js App" />
+    <NavBar />
     <router-view />
   </div>
 </template>
@@ -17,11 +17,15 @@ export default {
 
 <style lang="scss">
 #app {
+  align-items: center;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin: 2% auto;
+  width: 360px;
+  min-height: 100%;
 }
 
 nav {
