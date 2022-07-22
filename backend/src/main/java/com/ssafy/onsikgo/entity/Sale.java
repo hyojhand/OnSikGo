@@ -8,9 +8,6 @@ import java.util.Date;
 
 import static javax.persistence.FetchType.LAZY;
 
-/**
- * 하루판매량 - 등록된 상품
- */
 @Entity
 @Getter
 @RequiredArgsConstructor
