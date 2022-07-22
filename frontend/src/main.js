@@ -24,6 +24,7 @@ new Vue({
   router,
   store,
   render: (h) => h(App),
+<<<<<<< HEAD
   data: () => ({
     drawer: false,
     group: null,
@@ -35,3 +36,20 @@ new Vue({
     },
   },
 }).$mount("#app");
+=======
+}).$mount("#app");
+
+new Vue({
+  el: '#navBar',
+  vuetify: new Vuetify(),
+  data () {
+    return {
+      drawer: null,
+      items: [
+        { title: 'Home', icon: 'mdi-view-dashboard' },
+        { title: 'About', icon: 'mdi-forum' },
+      ],
+    }
+  },
+})
+>>>>>>> 8c34ba02ca2b04c33ef6ce20ae50d70e5a59be8b
