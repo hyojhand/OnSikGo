@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
-    <NavBar />
+  <v-app id="app">
+    <NavBar id="nav" />
     <router-view />
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -23,21 +23,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin: 2% auto;
+  margin: 0 auto;
   width: 360px;
   min-height: 100%;
+  box-shadow: 0px 0px 20px 2px rgb(200, 200, 200);
 }
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+#nav {
+  margin-bottom: 5%;
 }
 </style>

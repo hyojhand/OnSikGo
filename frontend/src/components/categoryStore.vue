@@ -58,7 +58,6 @@
     <!-- 검색 결과 -->
     <div>
       <store-item></store-item>
-      <store-item></store-item>
     </div>
   </div>
 </template>

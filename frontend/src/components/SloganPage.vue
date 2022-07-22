@@ -3,14 +3,14 @@
     <v-carousel
       cycle
       height="300"
-      interval="2000"
+      interval="3000"
       hide-delimiter-background
       show-arrows-on-hover
     >
       <v-carousel-item v-for="(slide, i) in slides" :key="i">
         <v-sheet :color="colors[i]" height="100%">
           <v-row class="fill-height" align="center" justify="center">
-            <div class="text-h2">{{ slide }} 바보</div>
+            <div class="text-h2">{{ slide }}</div>
           </v-row>
         </v-sheet>
       </v-carousel-item>
@@ -20,17 +20,17 @@
 
 <script>
 export default {
-  name: "RecoPage",
+  name: "SloganPage",
   data() {
     return {
       colors: [
-        "pink darken-2",
-        "warning",
-        "red lighten-1",
         "indigo",
+        "warning",
+        "pink darken-2",
+        "red lighten-1",
         "deep-purple accent-4",
       ],
-      slides: ["손효재", "최지은", "김가흔", "공지훈", "짱짱완"],
+      slides: ["장창완", "손효재", "공지훈", "김가흔", "최지은"],
     };
   },
 };
@@ -38,6 +38,6 @@ export default {
 
 <style scoped>
 .carousel-box {
-  margin: 3% 0;
+  margin: 5% 0;
 }
 </style>
