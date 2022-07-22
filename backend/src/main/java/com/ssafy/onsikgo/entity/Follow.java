@@ -7,10 +7,6 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
-/**
- * 사용자 식별자
- * 가게 식별자
- */
 @Entity
 @Getter
 @RequiredArgsConstructor

@@ -63,4 +63,15 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Follow> follows = new ArrayList<>();
 
+    public User update(String nickname, String imgUrl) {
+        this.nickname = nickname;
+        this.imgUrl = imgUrl;
+        return this;
+    }
+
+    public User changePw(String password) {
+        this.password = password;
+        return this;
+    }
+
 }
