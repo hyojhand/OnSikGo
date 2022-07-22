@@ -24,4 +24,15 @@ new Vue({
   router,
   store,
   render: (h) => h(App),
+  data: () => ({
+    drawer: false,
+    group: null,
+  }),
+
+  watch: {
+    group () {
+      this.drawer = false
+    },
+  },
 }).$mount("#app");
+
