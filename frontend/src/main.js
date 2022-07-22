@@ -24,15 +24,18 @@ new Vue({
   router,
   store,
   render: (h) => h(App),
-  data: () => ({
-    drawer: false,
-    group: null,
-  }),
-
-  watch: {
-    group () {
-      this.drawer = false
-    },
-  },
 }).$mount("#app");
 
+new Vue({
+  el: '#navBar',
+  vuetify: new Vuetify(),
+  data () {
+    return {
+      drawer: null,
+      items: [
+        { title: 'Home', icon: 'mdi-view-dashboard' },
+        { title: 'About', icon: 'mdi-forum' },
+      ],
+    }
+  },
+})
