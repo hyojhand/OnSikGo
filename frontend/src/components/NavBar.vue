@@ -1,10 +1,12 @@
 <template>
-  <div class="navbar">
-    <router-link :to="{ name: 'home' }">토글바</router-link>
-    <router-link :to="{ name: 'home' }"
-      ><img src="../assets/logo.jpg" alt="logo였던것.."
-    /></router-link>
-    <router-link :to="{ name: 'home' }">알림설정</router-link>
+  <div class="navbar container">
+    <div class="row nav-box">
+      <v-app-bar-nav-icon class="col-sm"></v-app-bar-nav-icon>
+      <img src="../assets/logo.jpg" alt="logo였던것.." />
+      <router-link :to="{ name: 'notice' }" class="col-sm"
+        ><i class="fa-solid fa-bell"></i
+      ></router-link>
+    </div>
   </div>
 </template>
 
@@ -16,11 +18,15 @@ export default {
 
 <style scoped>
 .navbar {
+  padding: 0;
+}
+.nav-box {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
 }
 img {
-  width: 150px;
-  height: 110px;
+  height: 20%;
+  width: 20%;
+  margin: 3% 0%;
 }
 </style>
