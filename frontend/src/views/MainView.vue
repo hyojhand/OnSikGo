@@ -1,24 +1,22 @@
 <template>
   <div class="home">
-    <RecoPage></RecoPage>
+    <slogan-page></slogan-page>
+    <h3>추천 매장</h3>
+    <reco-page></reco-page>
   </div>
 </template>
 
 <script>
 import RecoPage from "@/components/RecoPage.vue";
+import SloganPage from "@/components/SloganPage.vue";
 
 export default {
   name: "MainView",
   components: {
     RecoPage,
+    SloganPage,
   },
 };
 </script>
 
-<style scoped>
-img {
-  height: 20%;
-  width: 20%;
-  margin: 3% 0%;
-}
-</style>
+<style scoped></style>
