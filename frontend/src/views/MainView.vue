@@ -1,15 +1,17 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.jpg" />
-    <button class="btn btn-primary">부트스트랩 확인</button>
+    <RecoPage></RecoPage>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import RecoPage from "@/components/RecoPage.vue";
 
 export default {
   name: "MainView",
+  components: {
+    RecoPage,
+  },
 };
 </script>
 

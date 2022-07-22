@@ -9,6 +9,9 @@ import BootstrapVue from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
+// 폰트어썸
+import "@fortawesome/fontawesome-free/js/all.js";
+
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
