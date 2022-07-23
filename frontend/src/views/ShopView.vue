@@ -2,55 +2,111 @@
   <div class="main_container">
     <div class="mobile" >
       <!-- 현재 주소 -->
-      <div>
-        <span>아이콘 | </span>
-        <span>서구 임시수도기념로 37, 구덕로 119길</span>
+
+      <div class="location">
+        <i class="fa-regular fa-map"></i>
+        <span> 서구 임시수도기념로 37, 구덕로 119길</span>
       </div>
-      <!-- button -->
-      <div>
-        <button class="map_tag">지도로 보기</button>
-        <button class="store_tag"> 가게로 보기</button>
-      </div>
+      <!-- Tab 기능 -->
+
+      <ul class="tabs">
+        <li v-for="tab in tabs" 
+          v-bind:class="{active : tab === selectedTab}" 
+          :key="tab"
+          v-on:click="onClickTab(tab)">
+          <span>{{ tab }}</span>
+        </li>
+      </ul>
+
       <!-- 지도 or Category Store -->
-      <div class="category">
-        <kakao-map></kakao-map>
-        <category-store></category-store>
-      </div>
-      <!-- 검색란 -->
-      <div>
-        <span>총 6 개 검색 결과</span>
-        <input type="text" name="" id="">
-        <span>아이콘</span>
-      </div>
-      <!-- 상품 설명란 -->
-      <div class="product">
-        <product-item></product-item>
-        <product-item></product-item>
-        <product-item></product-item>
+      <div class="tab-content">
+        <kakao-map class="tab-link currnet" v-if="selectedTab === tabs[0]"></kakao-map>
+        <category-store class="tab-link" v-else></category-store>
       </div>
 
+      
+      
+      <!-- 검색란 -->
+      <div class="container" v-if="selectedTab === tabs[0]">
+        <div class="row">
+          <div class="col-4">
+            <span class="search-result">총 3개 검색 결과</span>
+          </div>
+        
+          <div class="col">
+            <input class="search-box" type="search" placeholder=" 상품을 입력해주세요">
+            <!-- 검색 아이콘 -->
+            <button class="product-search">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+              </svg>
+            </button>
+            <!-- 초기화 -->
+            <button class="search-reset">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- 상품 설명란 -->
+      <div class="product" v-if="selectedTab === tabs[0]">
+        <product-item></product-item>
+        <product-item></product-item>
+        <product-item></product-item>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import kakaoMap from '@/components/kakaoMap.vue';
-import categoryStore from '@/components/categoryStore.vue';
-import productItem from '@/components/productItem.vue';
+import KakaoMap from '@/components/KakaoMap';
+import CategoryStore from '@/components/CategoryStore';
+import ProductItem from '@/components/ProductItem';
 
 export default {
   name: "ShopView",
 
   components: {
-    kakaoMap,
-    categoryStore,
-    productItem,
-  }
+    KakaoMap,
+    CategoryStore,
+    ProductItem,
+  },
+  data: function() {
+      return{
+          tabs: ['지도보기', '가게보기'],
+          selectedTab: '',
+      };
+    },
+  // 디볼트는 지도보기
+  created() {
+      this.selectedTab = this.tabs[0]
+  },
+  methods:{
+    onClickTab(tab) {
+            this.selectedTab = tab
+
+    },
+  },
 };
 </script>
 
 <style scoped>
+/* 모든 폰트사이즈는 기본값이 15px */
+* {
+  font-size: 15px;
+}
+/* 각 블럭마다 빈공간 부여 */
+div {
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
 
+.tab-content{
+  padding-top: 25px;
+}
 .main_container{
       width:100%;
       height:100%;
@@ -63,8 +119,46 @@ export default {
     margin:0 auto;
 }
 
-.category{
-  height: 245px;
-  background-color: greenyellow;
+
+/* 점없애고 가로정렬 */
+
+ul.tabs{
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+ul.tabs li{
+  list-style-type: none;
+  float: left;
+  background: none;
+  color: #222;
+  padding: 10px 15px;
+  cursor: pointer;
+  border: 1px solid #B9B9B9;
+  border-radius: 16px;
+  width:78px;
+  height: 21px;
+  font-size: 12px;
+  padding: 0;
+  margin-left: 5px;
+}
+
+.location {
+  text-align: left;
+  padding-bottom: 10px;
+}
+
+.search-result{
+  padding-right: 5px; 
+  font-size: 12px;
+}
+.search-box{
+  border: solid 1px;
+  font-size: 12px
+}
+
+.product-search {
+  padding-right: 5px;
+  padding-left: 5px;
 }
 </style>
