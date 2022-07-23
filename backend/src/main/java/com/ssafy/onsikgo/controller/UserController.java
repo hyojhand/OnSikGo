@@ -33,11 +33,6 @@ public class UserController {
         return userService.signup(userDto);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
-//        return userService.login(loginDto);
-//    }
-
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
         return userService.login(loginDto);
@@ -53,15 +48,21 @@ public class UserController {
         return userService.delete(request);
     }
 
-    @PostMapping("/pw")
+    @PostMapping("/pw-check")
     public ResponseEntity<String> pwCheck(@RequestBody LoginDto loginDto, HttpServletRequest request) {
         return userService.pwCheck(loginDto,request);
     }
 
-    @PatchMapping("/pw-check")
+    @PatchMapping("/pw")
     public ResponseEntity<String> pwChange(@RequestBody LoginDto loginDto, HttpServletRequest request) {
         return userService.pwChange(loginDto, request);
     }
+
+    @GetMapping
+    public ResponseEntity<UserDto> getInfo(HttpServletRequest request) {
+        return userService.getInfo(request);
+    }
+
 
 
 }
