@@ -42,9 +42,6 @@ public class User {
     @Column(nullable = false)
     private Role role; // 사용자 역할 [USER, OWNER]
 
-//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "authorityName")
-
     @OneToMany(mappedBy = "user")
     private Set<Authority> authorities;
 

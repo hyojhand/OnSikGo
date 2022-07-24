@@ -1,5 +1,6 @@
 package com.ssafy.onsikgo.dto;
 
+import com.ssafy.onsikgo.entity.Role;
 import lombok.*;
 
 @Getter
@@ -14,4 +15,5 @@ public class UserDto {
     private String userName;
     private String nickname;
     private String imgUrl;
+    private Role role;
 }
