@@ -3,6 +3,7 @@ package com.ssafy.onsikgo.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -18,6 +19,7 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -106,5 +108,18 @@ public class TokenProvider implements InitializingBean {
             logger.info("JWT 토큰이 잘못되었습니다.");
         }
         return false;
+    }
+
+    // jwt토큰의 payload 리턴
+    public Map<String,Object> getPayload(String token) {
+        Jws<Claims> claims;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(key)
+                    .parseClaimsJws(token);
+        } catch (SignatureException e) {
+            return null;
+        }
+        return claims.getBody();
     }
 }
