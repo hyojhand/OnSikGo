@@ -1,6 +1,7 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.LoginDto;
+import com.ssafy.onsikgo.dto.TokenDto;
 import com.ssafy.onsikgo.dto.UserDto;
 import com.ssafy.onsikgo.entity.LoginType;
 import com.ssafy.onsikgo.entity.User;
@@ -62,8 +63,7 @@ public class UserService {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-//    public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
         //  LoginDto의 userName,Password를 받아서 UsernamePasswordAuthenticationToken 객체를 생성한다
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
@@ -79,11 +79,9 @@ public class UserService {
         HttpHeaders httpHeaders = new HttpHeaders();
         // 생성한 토큰을 Response 헤더에 넣어주고,
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-        return new ResponseEntity<>(jwt, HttpStatus.OK);
-
-        // TokenDto에도 넣어서 RequestBody로 리턴해준다
-//        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+        
+//         TokenDto에도 넣어서 RequestBody로 리턴해준다
+        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
     }
 
     @Transactional
