@@ -182,4 +182,23 @@ public class UserService {
 
         return new ResponseEntity<>("비밀번호 변경완료", HttpStatus.OK);
     }
+
+    public ResponseEntity<UserDto> getInfo(HttpServletRequest request) {
+        String token = request.getHeader("access-token");
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>(new UserDto(), HttpStatus.NO_CONTENT);
+        }
+
+        String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
+        User findUser = userRepository.findByEmail(userEmail).get();
+
+        UserDto userDto = new UserDto();
+        userDto.setUserName(findUser.getUserName());
+        userDto.setEmail(findUser.getEmail());
+        userDto.setImgUrl(findUser.getImgUrl());
+        userDto.setNickname(findUser.getNickname());
+        userDto.setRole(findUser.getRole());
+
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
 }

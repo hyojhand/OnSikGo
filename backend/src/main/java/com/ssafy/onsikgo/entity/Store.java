@@ -1,18 +1,22 @@
 package com.ssafy.onsikgo.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Store {
 
     @Id @GeneratedValue
@@ -31,7 +35,7 @@ public class Store {
     private String storeNum; // 사업자 등록번호
 
     @Column(nullable = false)
-    private LocalDateTime openDate; // 가게 개업일
+    private String openDate; // 가게 개업일
 
     @Column(nullable = false)
     private String ownerName; // 사업자 대표명
@@ -42,13 +46,13 @@ public class Store {
     @Column(nullable = false)
     private String lng; // 경도
 
-    private String storeImg; // 가게 사진
+    private String storeImgUrl; // 가게 사진
 
     @Column(nullable = false)
-    private LocalDateTime openingTime; // 가게 오픈시간
+    private LocalTime openingTime; // 가게 오픈시간
 
     @Column(nullable = false)
-    private LocalDateTime closingTime; // 가게 마감시간
+    private LocalTime closingTime; // 가게 마감시간
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
