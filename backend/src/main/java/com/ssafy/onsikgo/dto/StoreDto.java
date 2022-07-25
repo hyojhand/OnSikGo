@@ -22,6 +22,9 @@ public class StoreDto {
     private String closingTime;
     private String offDay;
     private Category category;
+    private String lat;
+    private String lng;
+
 
     public Store toEntity(HashMap<String,String> coordinate) {
 
