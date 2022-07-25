@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3>주문내역</h3>
     <orderList></orderList>
   </div>
 </template>
