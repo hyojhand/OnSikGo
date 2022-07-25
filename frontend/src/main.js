@@ -14,11 +14,13 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 
 // 폰트어썸
 import "@fortawesome/fontawesome-free/js/all.js";
-
 Vue.use(Vuetify);
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
+import VueApexCharts from "vue-apexcharts";
+Vue.use(VueApexCharts)
+Vue.component('apexchart',VueApexCharts)
 new Vue({
   vuetify: new Vuetify(),
   router,
