@@ -35,12 +35,6 @@ public class Store {
     private String storeNum; // 사업자 등록번호
 
     @Column(nullable = false)
-    private String openDate; // 가게 개업일
-
-    @Column(nullable = false)
-    private String ownerName; // 사업자 대표명
-
-    @Column(nullable = false)
     private String lat; // 위도
 
     @Column(nullable = false)
@@ -49,10 +43,10 @@ public class Store {
     private String storeImgUrl; // 가게 사진
 
     @Column(nullable = false)
-    private LocalTime openingTime; // 가게 오픈시간
+    private String closingTime; // 가게 마감시간
 
     @Column(nullable = false)
-    private LocalTime closingTime; // 가게 마감시간
+    private String offDay; // 휴무일
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -73,4 +67,9 @@ public class Store {
 
     @OneToMany(mappedBy = "store")
     private List<Follow> follows = new ArrayList<>();
+
+    public void addUser(User user) {
+        this.user = user;
+        return;
+    }
 }
