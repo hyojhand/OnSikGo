@@ -1,6 +1,8 @@
 <template>
   <div>
-    <notice-card></notice-card>
+    <notice-card class="notice-card"></notice-card>
+    <notice-card class="notice-card"></notice-card>
+    <notice-card class="notice-card"></notice-card>
   </div>
 </template>
 
@@ -15,4 +17,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.notice-card {
+  margin: 3% auto 6% auto;
+}
+</style>

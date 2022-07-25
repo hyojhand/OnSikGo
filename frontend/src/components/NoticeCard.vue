@@ -1,23 +1,28 @@
 <template>
-  <v-card class="mx-auto" max-width="344" outlined>
-    <v-list-item three-line>
-      <v-list-item-avatar tile size="80"
-        ><img
-          src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4gqX/image/wIXZfUhOPGGGZxaZ0Nsmigd1paU.jpeg"
-          alt="사진이었던것.."
-      /></v-list-item-avatar>
-      <v-list-item-content class="notice-box">
-        <v-list-item-title class="text mb-1"> 최지은 님의 </v-list-item-title>
-        <v-list-item-title class="text mb-1"
-          >주문이 도착했습니다.</v-list-item-title
-        >
-      </v-list-item-content>
-    </v-list-item>
-
-    <v-card-actions>
-      <v-list-item-subtitle> 10분전</v-list-item-subtitle>
-      <v-btn outlined rounded text> Button </v-btn>
-    </v-card-actions>
+  <v-card class="mx-auto card-box" max-width="344" outlined shaped>
+    <div class="row">
+      <img
+        class="img-box col-5"
+        src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4gqX/image/wIXZfUhOPGGGZxaZ0Nsmigd1paU.jpeg"
+        alt="사진이었던것.."
+      />
+      <div class="col-7 order-box">
+        <v-list-item-content>
+          <v-list-item-title class="text mb-3 msg-box">
+            최지은 님의
+          </v-list-item-title>
+          <v-list-item-title class="text mb-3 msg-box"
+            >주문이 도착했습니다.</v-list-item-title
+          >
+        </v-list-item-content>
+        <v-card-actions class="row btn-box">
+          <v-list-item-subtitle class="time-text col-5">
+            10분전</v-list-item-subtitle
+          >
+          <v-btn outlined rounded text class="col-6"> Button </v-btn>
+        </v-card-actions>
+      </div>
+    </div>
   </v-card>
 </template>
 
@@ -28,8 +33,29 @@ export default {
 </script>
 
 <style scoped>
-.notice-box {
+.img-box {
+  margin: 0 auto;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+.msg-box {
+  text-align: start;
+}
+.card-box {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: row;
+}
+.order-box {
+  display: flex;
+  flex-direction: column;
+}
+.btn-box {
+  max-height: 75px;
+  padding: 3px;
+}
+.time-text {
+  opacity: 40%;
+  text-align: start;
 }
 </style>
