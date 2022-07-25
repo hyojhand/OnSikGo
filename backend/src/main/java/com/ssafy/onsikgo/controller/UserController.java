@@ -1,6 +1,7 @@
 package com.ssafy.onsikgo.controller;
 
 import com.ssafy.onsikgo.dto.LoginDto;
+import com.ssafy.onsikgo.dto.TokenDto;
 import com.ssafy.onsikgo.dto.UserDto;
 import com.ssafy.onsikgo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
         return userService.login(loginDto);
     }
 
