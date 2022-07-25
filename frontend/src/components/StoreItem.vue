@@ -12,8 +12,8 @@
       </div>
       <!-- 물품수량 & 버튼 -->
       <div class="col">
-        <p>등록물품 : <span>2</span>31313 개</p>
-        <router-link :to="{ name: 'storeView' }">주문하기</router-link>
+        <p class="store-product">등록물품 : <span class="product-count">2</span> 개</p>
+        <router-link class="store-moving" :to="{ name: 'storeView' }">가게보기</router-link>
       </div>
       <hr style="border : 1px solid #222; margin: 3px">
     </div>
@@ -47,4 +47,22 @@ export default {
   font-size: 6px !important;
   color: #B9B9B9;
 }
+
+.store-container .row .store-product{
+  font-size: 12px;
+}
+.store-container .row .product-count{
+  color: red;
+  font-weight: bolder;
+}
+
+.store-container .row .store-moving {
+  border:  1px solid;
+  text-decoration-line: none;
+  border-radius: 15px;
+  font-size: 12px;
+  padding: 3px;
+  color: #222;
+}
+
 </style>

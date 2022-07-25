@@ -102,15 +102,11 @@ export default {
 }
 
 .product-order{
-  background: none;
-  width:130px;
-  height: 30px;
+  border:  1px solid;
+  text-decoration-line: none;
+  border-radius: 15px;
+  font-size: 12px;
+  padding: 3px;
   color: #222;
-  cursor: pointer;
-  border: 1px solid #B9B9B9;
-  border-radius: 16px;
-
-  font-size: 10px;
-  padding: 0;
 }
 </style>
