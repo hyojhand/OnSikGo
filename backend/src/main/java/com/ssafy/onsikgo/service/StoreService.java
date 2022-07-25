@@ -43,7 +43,6 @@ public class StoreService {
         String jsonString = null;
         String roadFullAddr = storeDto.getLocation();
 
-
         try {
             roadFullAddr = URLEncoder.encode(roadFullAddr, "UTF-8");
 
