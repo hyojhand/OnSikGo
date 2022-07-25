@@ -1,7 +1,6 @@
 <template>
-  <div class="navbar container">
-    <div class="row nav-box">
-      <div id="navBar">
+  <div>
+    <div id="navbar">
   <v-app id="inspire">
     <v-sheet
       height="400"
@@ -59,23 +58,24 @@
     </v-sheet>
   </v-app>
 </div>
-
-
       <router-link :to="{ name: 'main' }"><img src="../assets/logo.jpg" alt="logo였던것.." /></router-link>
       <router-link :to="{ name: 'notice' }" class="col-sm"
         ><i class="fa-solid fa-bell"></i
       ></router-link>
-    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "NavBar",
-  data() {
+  data () {
     return {
-      drawer: false,
-    };
+      drawer: null,
+      items: [
+        { title: 'Home', icon: 'mdi-view-dashboard' },
+        { title: 'About', icon: 'mdi-forum' },
+      ],
+    }
   },
 };
 

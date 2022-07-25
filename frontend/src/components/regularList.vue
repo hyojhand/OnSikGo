@@ -1,25 +1,25 @@
 <template>
   <div>
-    <h3>오늘 할인 판매 상품</h3>
+     <h5>✨사용자이름 님의 단골매장</h5>
 
           <b-card>
             <b-row>
             <b-col md="3">
               <div id="tobecenter">
-              <img fluid src="@/assets/images/solo.jpg">
+              <img fluid src="@/assets/images/이마트24.png" height="50" width="50">
               </div>
             </b-col>
             <b-col md="9">
               <div class="text-align-center" id = "cardInText">
                 <br>
-                  <span>제품명</span>
-                  <span>재고: 재고 개수</span>
+                  <span>매장명</span>
                   <br>
-                  <span>할인가: <class id = "firstPrice">원래 가격</class>  실제 가격</span>
+                  <span>오늘의 제품: 5개</span>
+                  <br>
               </div>
               <div class = "d-flex justify-content-end">
-            <b-button @click="allproductChange()" size="sm" pill variant="outline-success">할인수정</b-button>
-            </div>
+                <b-button @click="shopinfo()" size="sm" pill variant="outline-success">매장정보</b-button>
+              </div>
             </b-col>
             </b-row>
             </b-card>
@@ -31,21 +31,16 @@
 <script>
 
 export default {
-    name: "discountList",
+    name: "regularList",
     methods: {
-      allproductChange() {
-        this.$router.push('/allprod/change')
-      }
-    }
+    shopinfo() {
+      this.$router.push('/store')
+    },
+  }
 }
 </script>
 
 <style>
-/* #tobecenter {
-  align-content: center;
-  align-items: center;
-  margin-top: 4px;
-} */
 #firstPrice {
     text-decoration: line-through;
 }

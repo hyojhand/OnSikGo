@@ -1,12 +1,16 @@
 <template>
   <div>
-    <h1>주문내역보기</h1>
+    <orderList></orderList>
   </div>
 </template>
 
 <script>
+import orderList from "@/components/orderList.vue";
 export default {
   name: "OrderHistoryView",
+  components: {
+    orderList,
+  }
 };
 </script>
 

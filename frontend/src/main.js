@@ -24,6 +24,19 @@ new Vue({
   router,
   store,
   render: (h) => h(App),
+<<<<<<< HEAD
+  data: () => ({
+    drawer: false,
+    group: null,
+  }),
+
+  watch: {
+    group() {
+      this.drawer = false;
+    },
+  },
+}).$mount("#app");
+=======
 }).$mount("#app");
 
 new Vue({
@@ -39,3 +52,4 @@ new Vue({
     }
   },
 })
+>>>>>>> 8c34ba02ca2b04c33ef6ce20ae50d70e5a59be8b
