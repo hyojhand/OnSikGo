@@ -14,7 +14,7 @@
     <b-card>
             <b-row>
             <b-col md="3">
-              <img fluid src="@/assets/images/이마트24.png">
+              <img fluid src="@/assets/images/이마트24.png" height="50" width="50">
 
             </b-col>
             <b-col md="9">
@@ -32,7 +32,7 @@
             </b-card>
 
     <br>
-    <div class="d-flex justify-content-between">
+    <div id="space-even">
     <b-button size="sm" @click="dataAnalysis()" pill variant="outline-success">데이터 분석</b-button>
     <b-button size="sm" @click="storechange()" pill variant="outline-success">정보수정</b-button>
     </div>
@@ -67,5 +67,9 @@ export default {
   border-color : #63BF68;
   border-block-width: 4px;
   background-color: white;
+}
+#space-even {
+  display: flex;
+  justify-content: space-evenly; 
 }
 </style>
