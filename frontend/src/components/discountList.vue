@@ -18,7 +18,7 @@
                   <span>할인가: <class id = "firstPrice">원래 가격</class>  실제 가격</span>
               </div>
               <div class = "d-flex justify-content-end">
-            <b-button size="sm" pill variant="outline-success">할인수정</b-button>
+            <b-button @click="allproductChange()" size="sm" pill variant="outline-success">할인수정</b-button>
             </div>
             </b-col>
             </b-row>
@@ -32,6 +32,11 @@
 
 export default {
     name: "discountList",
+    methods: {
+      allproductChange() {
+        this.$router.push('/allprod/change')
+      }
+    }
 }
 </script>
 

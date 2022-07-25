@@ -1,7 +1,9 @@
 <template>
   <v-app id="app">
+    <div class="margin">
     <nav-bar id="nav" />
     <router-view />
+    </div>
   </v-app>
 </template>
 
@@ -30,5 +32,9 @@ export default {
 }
 #nav {
   margin-bottom: 5%;
+}
+.margin {
+  margin: 0 5% 5% 5%;
+
 }
 </style>
