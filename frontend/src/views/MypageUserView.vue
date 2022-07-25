@@ -4,7 +4,7 @@
     <img src="@/assets/logo.jpg" width="60" height="40">
     <br><br>
 
-    <span>사용자 이름님!, 이번 달에 <strong id="green">온식고</strong>를 통해 <br><strong id="green">주문금액원</strong>의 세상을 구하셨어요!</span>
+    <span>사용자 이름님!, <br>이번 달에 <strong id="green">온식고</strong>를 통해 <br><strong id="green">주문금액원</strong>의 세상을 구하셨어요!</span>
     <br><br>
     <div id="space-even">
     <b-button @click="orderlist()" pill variant="outline-success">주문내역</b-button>
