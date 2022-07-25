@@ -88,7 +88,6 @@ public class StoreService {
         String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json";
         String jsonString = null;
 
-
         try {
             fullAddress = URLEncoder.encode(fullAddress, "UTF-8");
 
