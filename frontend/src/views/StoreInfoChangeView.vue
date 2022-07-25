@@ -43,6 +43,20 @@
           required
         ></b-form-input>
       </b-form-group>
+      <!--매장 종료시간-->
+          <b-form-group class ="d-flex justify-content-between" id="input-group-5" label="매장 종료 시간" label-for="input-5">
+          <b-form-timepicker v-model="value" locale="ko"></b-form-timepicker>
+          </b-form-group>
+      
+      <!--매장 휴무일-->
+      <b-form-group class ="d-flex justify-content-between" id="input-group-6" label="매장휴무일" label-for="input-6">
+        <b-form-input
+          id="input-6"
+          v-model="form.holiday"
+          placeholder="원래 매장 휴무일"
+          required
+        ></b-form-input>
+        </b-form-group>
       <br>
       <div class="d-flex justify-content-between">
       <b-button type="reset" pill variant="outline-danger">초기화</b-button>
@@ -64,6 +78,8 @@ export default {
           phone: '',
           location: '',
           registernum: '',
+          value: '',
+          holiday:'',
         },
         show: true
       }
@@ -82,6 +98,8 @@ export default {
         this.form.registernum = ''
         // Trick to reset/clear native browser form validation state
         this.show = false
+        this.value = ''
+        this.holiday= ''
         this.$nextTick(() => {
           this.show = true
         })
