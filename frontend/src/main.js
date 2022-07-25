@@ -19,22 +19,25 @@ Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
 import VueApexCharts from "vue-apexcharts";
-Vue.use(VueApexCharts)
-Vue.component('apexchart',VueApexCharts)
+Vue.use(VueApexCharts);
 // vuetify 사용
 new Vue({
   vuetify: new Vuetify(),
   router,
   store,
   render: (h) => h(App),
-  data: () => ({
-    drawer: false,
-    group: null,
-  }),
-
-  watch: {
-    group() {
-      this.drawer = false;
-    },
-  },
 }).$mount("#app");
+
+new Vue({
+  el: "#navBar",
+  vuetify: new Vuetify(),
+  data() {
+    return {
+      drawer: null,
+      items: [
+        { title: "Home", icon: "mdi-view-dashboard" },
+        { title: "About", icon: "mdi-forum" },
+      ],
+    };
+  },
+});

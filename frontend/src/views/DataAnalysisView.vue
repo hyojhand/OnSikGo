@@ -1,22 +1,19 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <template>
   <div>
     <h3>데이터분석</h3>
-    <br>
+    <br />
     <p>지금 내 매장 이름</p>
-    <br>
+    <br />
     <h3>이번 주 매장 남은 재고량</h3>
     <h5>상위 5개의 제품</h5>
 
     <!--현재 내 날짜로부터 7일전날짜부터 ~ 현재 날짜 -->
-    <div id = "date">
+    <div id="date">
       <p>22.07.18-22.07.24</p>
     </div>
-    <!-- 도넛 모양 차트 -->
-    <pieChart></pieChart>
-   
-    <br>
-    <br>
+
+    <br />
+    <br />
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
     <h1>상위 5개의 제품</h1>
     <div class="d-flex justify-content-center">
@@ -28,29 +25,27 @@
         <li>다섯번째 많이 버려진 상품</li>
       </ul>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
+    <br />
+    <br />
+    <br />
+    <br />
     <!--판매한 금액의 총금액을 넣음-->
     <div>
-      <span>점주님은, 이번주 <strong id="green">온식고</strong>를 통해 
-      <br><strong id="green">얼마원</strong> 가치의 세상을 구하셨어요!</span>
+      <span
+        >점주님은, 이번주 <strong id="green">온식고</strong>를 통해
+        <br /><strong id="green">얼마원</strong> 가치의 세상을 구하셨어요!</span
+      >
     </div>
   </div>
 </template>
 
 <script>
-import pieChart from "@/components/pieChart.vue";
 export default {
-  name: "dataanalysisview",
-  components: {
-    pieChart
-  },
+  name: "dataAnalysisView",
   data() {
     return {
       chartOptions: {
-        hoverBorderWidth: 20
+        hoverBorderWidth: 20,
       },
       chartData: {
         hoverBackgroundColor: "red",
@@ -60,12 +55,12 @@ export default {
           {
             label: "Data One",
             backgroundColor: ["#41B883", "#E46651", "#00D8FF"],
-            data: [1, 10, 5]
-          }
-        ]
-      }
+            data: [1, 10, 5],
+          },
+        ],
+      },
     };
-  }
+  },
 };
 </script>
 
