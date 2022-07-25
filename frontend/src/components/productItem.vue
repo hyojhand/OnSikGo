@@ -31,7 +31,7 @@
     </div>
     
 
-    <hr style="border : 1px solid #222; margin: 3px">
+    <hr style="border : 1px solid #222; margin: 0.5rem;">
   </div>
 </template>
 
