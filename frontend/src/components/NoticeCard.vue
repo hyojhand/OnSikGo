@@ -15,11 +15,9 @@
             >주문이 도착했습니다.</v-list-item-title
           >
         </v-list-item-content>
-        <v-card-actions class="row btn-box">
-          <v-list-item-subtitle class="time-text col-5">
-            10분전</v-list-item-subtitle
-          >
-          <v-btn outlined rounded text class="col-6"> Button </v-btn>
+        <v-card-actions class="row btn-box mb-1">
+          <p class="time-text col-3">10분전</p>
+          <notice-modal class="col-1"></notice-modal>
         </v-card-actions>
       </div>
     </div>
@@ -27,8 +25,16 @@
 </template>
 
 <script>
+import NoticeModal from "@/components/NoticeModal.vue";
+
 export default {
   name: "NoticeCard",
+  components: { NoticeModal },
+  methods: {
+    goDetail() {
+      this.$router.push("/notice/detail");
+    },
+  },
 };
 </script>
 
@@ -52,10 +58,12 @@ export default {
 }
 .btn-box {
   max-height: 75px;
-  padding: 3px;
+  padding: 0;
 }
 .time-text {
   opacity: 40%;
   text-align: start;
+  padding: 0px;
+  margin: 0px;
 }
 </style>
