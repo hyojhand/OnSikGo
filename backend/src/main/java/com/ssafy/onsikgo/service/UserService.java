@@ -3,9 +3,7 @@ package com.ssafy.onsikgo.service;
 import com.ssafy.onsikgo.dto.LoginDto;
 import com.ssafy.onsikgo.dto.TokenDto;
 import com.ssafy.onsikgo.dto.UserDto;
-import com.ssafy.onsikgo.entity.Authority;
 import com.ssafy.onsikgo.entity.LoginType;
-import com.ssafy.onsikgo.entity.Role;
 import com.ssafy.onsikgo.entity.User;
 import com.ssafy.onsikgo.repository.UserRepository;
 import com.ssafy.onsikgo.security.JwtFilter;
@@ -26,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 
 @Service
 @Slf4j
@@ -57,31 +54,10 @@ public class UserService {
 
     @Transactional
     public ResponseEntity<UserDto> signup(UserDto userDto) {
-        if (userRepository.findByEmail(userDto.getEmail()).orElse(null) != null) {
-            log.info("이미존재하는 이메일");
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
 
-        if (userRepository.findByNickname(userDto.getNickname()).orElse(null) != null) {
-            log.info("이미존재하는 닉네임");
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        // 권한정보 생성 (ROLE_USER 권한으로 저장)
-        Authority authority = Authority.builder()
-                .authorityName("ROLE_USER")
-                .build();
-
-        User user = User.builder()
-                .userName(userDto.getUserName())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .email(userDto.getEmail())
-                .imgUrl(userDto.getImgUrl())
-                .nickname(userDto.getNickname())
-                .authorities(Collections.singleton(authority))
-                .role(Role.USER)
-                .loginType(LoginType.ONSIKGO)
-                .build();
+        User user = userDto.toEntity(LoginType.ONSIKGO);
 
         userRepository.save(user);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
@@ -171,12 +147,6 @@ public class UserService {
 
         findUser.changePw(passwordEncoder.encode(loginDto.getPassword()));
         userRepository.save(findUser);
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if(!encoder.matches(loginDto.getPassword(), findUser.getPassword())) {
-            log.info("비밀번호 변경실패");
-            return new ResponseEntity<>("비밀번호 변경실패", HttpStatus.NO_CONTENT);
-        }
 
         return new ResponseEntity<>("비밀번호 변경완료", HttpStatus.OK);
     }

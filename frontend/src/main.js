@@ -14,42 +14,30 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 
 // 폰트어썸
 import "@fortawesome/fontawesome-free/js/all.js";
-
 Vue.use(Vuetify);
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
+import VueApexCharts from "vue-apexcharts";
+Vue.use(VueApexCharts);
+// vuetify 사용
 new Vue({
   vuetify: new Vuetify(),
   router,
   store,
   render: (h) => h(App),
-<<<<<<< HEAD
-  data: () => ({
-    drawer: false,
-    group: null,
-  }),
-
-  watch: {
-    group() {
-      this.drawer = false;
-    },
-  },
-}).$mount("#app");
-=======
 }).$mount("#app");
 
 new Vue({
-  el: '#navBar',
+  el: "#navBar",
   vuetify: new Vuetify(),
-  data () {
+  data() {
     return {
       drawer: null,
       items: [
-        { title: 'Home', icon: 'mdi-view-dashboard' },
-        { title: 'About', icon: 'mdi-forum' },
+        { title: "Home", icon: "mdi-view-dashboard" },
+        { title: "About", icon: "mdi-forum" },
       ],
-    }
+    };
   },
-})
->>>>>>> 8c34ba02ca2b04c33ef6ce20ae50d70e5a59be8b
+});
