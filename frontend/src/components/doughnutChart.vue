@@ -64,11 +64,11 @@ export default {
   data() {
     return {
       chartData: {
-        labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+        labels: ['초코치킨', '바닐라치킨', '신호등치킨', '후라이드','민초치킨'],
         datasets: [
           {
-            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-            data: [40, 20, 80, 10]
+            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16', '#222'],
+            data: [40, 20, 80, 10,40]
           }
         ]
       },

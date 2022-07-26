@@ -1,6 +1,5 @@
 <template>
   <v-app id="app" class="margin">
-
     <v-app-bar absolute temporary dense color="#ffffff">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer">
 
@@ -10,15 +9,15 @@
       <v-btn icon color="white">
         <v-icon>mdi-battery-charging</v-icon>
       </v-btn>
-      <router-link 
-        :to="{ name: 'main' }">
-        <img 
+      
+        <img v-if="title === '온식고'"
           src="@/assets/logo.jpg" 
           alt="logo였던것.." 
-          style="height: 20%;
-                width: 20%;
+          style="height: 60%;
+                width: 15%;
                 margin: 3% 0%;"/>
-      </router-link>
+      
+      <p class="title" v-else>{{ title }}</p>
       <router-link 
         :to="{ name: 'notice' }" 
         class="col-sm"
@@ -37,6 +36,7 @@
                 width: 20%;
                 margin: 3% 0%;"/>
       </router-link>
+      
       <v-list v-if="userState === 1" nav>
         <v-list-item v-for="item in owners" :key="item.title" :to="item.router">
           <v-list-item-content>
@@ -77,9 +77,10 @@ export default {
       drawer: false,
       // 일반 유저 0, 업주 1
       userState : 0,
+      title : document.title,
       consumers: [
         { title: '홈', router: '/'},
-        { title: '마이페이지', router: '/mypage/owner'},
+        { title: '마이페이지', router: '/mypage/user'},
         { title: '온식고', router: '/shop'},
       ],
       owners: [
@@ -91,7 +92,11 @@ export default {
       ],
     }
   },
+  updated() {
+      this.title = document.title
+  },
 };
+
 </script>
 
 <style lang="scss">
@@ -117,7 +122,10 @@ export default {
   margin: 5% 5% 5% 5%;
 
 }
-
+.title {
+  margin-top: 15px;
+  margin-right: 60px;
+}
 .bi-box-arrow-in-right {
   position: fixed;
   bottom:5px;
