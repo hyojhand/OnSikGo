@@ -17,7 +17,7 @@ public class Sale {
     private Long saleId;
 
     @Column(nullable = false)
-    private int totalPricel; // 총 판매액
+    private Integer totalPricel; // 총 판매액
 
     @Column(nullable = false)
     private Date date; // 날짜
