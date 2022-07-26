@@ -1,5 +1,6 @@
 package com.ssafy.onsikgo.service;
 
+import com.ssafy.onsikgo.dto.ListDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Store;
 import com.ssafy.onsikgo.entity.User;
@@ -25,7 +26,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -70,11 +73,47 @@ public class StoreService {
         Store findStore = storeRepository.findById(store_id).get();
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
-        findStore = storeDto.toEntity(coordinate);
-        findStore.addUser(findUser);
+        findStore.update(storeDto, coordinate);
 
         storeRepository.save(findStore);
         return new ResponseEntity<>("가게 정보가 수정되었습니다.", HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<String> delete(Long store_id) {
+
+        Optional<Store> findStore = storeRepository.findById(store_id);
+        storeRepository.delete(findStore.get());
+        return new ResponseEntity<>("가게 정보가 삭제되었습니다.", HttpStatus.OK);
+    }
+
+    public ResponseEntity<StoreDto> getInfo(Long store_id) {
+        Store findStore = storeRepository.findById(store_id).get();
+
+        StoreDto findStoreDto = findStore.toDto();
+        return new ResponseEntity<>(findStoreDto, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<StoreDto>> getList(ListDto listDto) {
+        if(listDto.getKeyword() != null) {
+            List<Store> storeList = storeRepository.findByStoreNameContaining(listDto.getKeyword());
+            List<StoreDto> storeDtoList = new ArrayList<>();
+            for(int i = 0; i < storeList.size(); i++) {
+                storeDtoList.add(storeList.get(i).toDto());
+            }
+            return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+        }
+
+        if(listDto.getCategory() != null) {
+            List<Store> storeList = storeRepository.findByCategory(listDto.getCategory());
+            List<StoreDto> storeDtoList = new ArrayList<>();
+            for(int i = 0; i < storeList.size(); i++) {
+                storeDtoList.add(storeList.get(i).toDto());
+            }
+            return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
     // 좌표 가져오는 메서드
