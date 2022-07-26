@@ -19,6 +19,7 @@ import QuitCompleteView from "../views/QuitCompleteView.vue";
 import StoreInfoDiscardView from "../views/StoreInfoDiscardView.vue";
 // 알림+
 import NoticeView from "../views/NoticeView.vue";
+import NoticeUserView from "../views/NoticeUserView.vue";
 import OrderCancelView from "../views/OrderCancelView.vue";
 // 메인기능
 import ShopView from "../views/ShopView.vue";
@@ -122,6 +123,11 @@ const routes = [
     path: "/notice/cancel",
     name: "orderCancel",
     component: OrderCancelView,
+  },
+  {
+    path: "/notice/user",
+    name: "noticeUser",
+    component: NoticeUserView,
   },
   // 메인기능
   {
