@@ -26,17 +26,3 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
-
-new Vue({
-  el: "#navBar",
-  vuetify: new Vuetify(),
-  data() {
-    return {
-      drawer: null,
-      items: [
-        { title: "Home", icon: "mdi-view-dashboard" },
-        { title: "About", icon: "mdi-forum" },
-      ],
-    };
-  },
-});
