@@ -25,6 +25,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final StoreRepository storeRepository;
 
+    @Transactional
     public ResponseEntity<String> register(ItemDto itemDto, Long store_id) {
 
         Item item = itemDto.toEntity();
@@ -41,12 +42,14 @@ public class ItemService {
         return new ResponseEntity<>(itemDto, HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<String> delete(Long item_id) {
         Optional<Item> findItem = itemRepository.findById(item_id);
         itemRepository.delete(findItem.get());
         return new ResponseEntity<>("상품 삭제가 완료되었습니다." , HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<String> modify(ItemDto itemDto, Long item_id) {
         Item findItem = itemRepository.findById(item_id).get();
         findItem.update(itemDto);
