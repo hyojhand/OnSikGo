@@ -4,11 +4,11 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           rounded
-          color="error"
           dark
           v-bind="attrs"
           v-on="on"
           class="reason"
+          width="100%"
         >
           기타
         </v-btn>
@@ -25,7 +25,7 @@
           ></v-text-field>
         </div>
 
-        <v-btn rounded color="success" @click="checkIt()" class="mb-3">
+        <v-btn rounded color="success" @click="twoCheckIt()" class="mb-3">
           전송하기
         </v-btn>
 
@@ -41,9 +41,9 @@
 export default {
   name: "ReasonModal",
   methods: {
-    checkIt: function () {
+    twoCheckIt: function () {
       this.dialog = false;
-      this.$emit("check-it");
+      this.$emit("two-check-it");
     },
   },
   data() {
