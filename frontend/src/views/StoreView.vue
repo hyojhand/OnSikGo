@@ -16,7 +16,7 @@
       <div >
         <kakao-map></kakao-map>
       </div>
-      <div class="mt-3">
+      <div class="mt-2">
         <ul class="content">
           <li>상세위치: 부산시 서구 여기로 17</li>
           <li>전화번호: 051-518-0000</li>
