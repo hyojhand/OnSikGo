@@ -45,7 +45,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-content>
+    <v-content class="content">
       <router-view />
     </v-content>
 
@@ -62,10 +62,10 @@ export default {
       drawer: false,
       items: [
         { title: '홈', router: '/'},
-        { title: '마이페이지', router: 'mypage/owner'},
-        { title: '온식고', router: 'shop'},
-        { title: '전체상품', router: 'allprod'},
-        { title: '기부', router: 'donation'},
+        { title: '마이페이지', router: '/mypage/owner'},
+        { title: '온식고', router: '/shop'},
+        { title: '전체상품', router: '/allprod'},
+        { title: '기부', router: '/donation'},
       ],
     }
   },
@@ -87,6 +87,9 @@ export default {
 }
 #nav {
   margin-bottom: 5%;
+}
+.content {
+  margin-top: 15%;
 }
 .margin {
   margin: 5% 5% 5% 5%;
