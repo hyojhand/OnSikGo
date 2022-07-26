@@ -29,14 +29,10 @@ public class ItemService {
     public ResponseEntity<String> register(ItemDto itemDto, Long store_id) {
 
         Item item = itemDto.toEntity();
-        log.info("test1 : {}" , item);
         Store findStore = storeRepository.findById(store_id).get();
-        log.info("test2 : {}", findStore);
         item.addStore(findStore);
-        log.info("test3 : {}" , item);
 
         itemRepository.save(item);
-        log.info("test4");
         return new ResponseEntity<>("상품등록이 완료되었습니다.", HttpStatus.OK);
     }
 
