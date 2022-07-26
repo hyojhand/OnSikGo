@@ -18,8 +18,7 @@ Vue.use(Vuetify);
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
-import VueApexCharts from "vue-apexcharts";
-Vue.use(VueApexCharts);
+
 // vuetify 사용
 new Vue({
   vuetify: new Vuetify(),

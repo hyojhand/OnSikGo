@@ -11,7 +11,7 @@
     <div id="date">
       <p>22.07.18-22.07.24</p>
     </div>
-
+    <doughnut-chart></doughnut-chart>
     <br />
     <br />
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
@@ -40,8 +40,14 @@
 </template>
 
 <script>
+
+import doughnutChart from "@/components/doughnutChart.vue"
+
 export default {
   name: "dataAnalysisView",
+  components:{
+    doughnutChart,
+  },
   data() {
     return {
       chartOptions: {
