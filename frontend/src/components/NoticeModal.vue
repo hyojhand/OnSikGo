@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="parents" width="500">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="success" dark v-bind="attrs" v-on="on">
           주문확인하기
@@ -47,7 +47,7 @@
             </div>
             <div class="btn-box">
               <v-card-actions>
-                <refuse-modal></refuse-modal>
+                <refuse-modal @check-it="checkIt"></refuse-modal>
               </v-card-actions>
               <v-card-actions>
                 <v-btn rounded color="success" @click="accept"> 수락 </v-btn>
@@ -73,12 +73,15 @@ export default {
   components: { RefuseModal },
   methods: {
     accept() {
-      this.dialog = false;
+      this.parents = false;
+    },
+    checkIt: function () {
+      this.parents = false;
     },
   },
   data() {
     return {
-      dialog: false,
+      parents: false,
     };
   },
 };

@@ -12,22 +12,20 @@
 
         <div class="mx-auto my-auto option-box">
           <v-list-item-content class="btn-box">
-            <v-btn rounded color="error" class="reason mb-2" @click="accept">
+            <v-btn rounded class="reason mb-2" @click="reason1()">
               상품 품절</v-btn
             >
-            <v-btn rounded color="error" class="reason mb-2" @click="accept">
+            <v-btn rounded color="error" class="reason mb-2" @click="reason2()">
               마감</v-btn
             >
-            <v-btn rounded color="error" class="reason mb-2" @click="accept">
+            <v-btn rounded color="error" class="reason mb-2" @click="reason3()">
               고객 요청</v-btn
             >
-            <v-btn rounded color="error" class="reason mb-2" @click="accept">
-              기타
-            </v-btn>
+            <reason-modal></reason-modal>
           </v-list-item-content>
         </div>
 
-        <v-btn rounded color="success" @click="accept" class="mb-3">
+        <v-btn rounded color="success" @click="checkIt()" class="mb-3">
           사유전송하기
         </v-btn>
 
@@ -40,26 +38,43 @@
 </template>
 
 <script>
+import ReasonModal from "@/components/ReasonModal.vue";
 export default {
   name: "RefuseModal",
+  components: { ReasonModal },
   methods: {
-    accept() {
+    reason1() {
+      this.reason = "상품 품절";
+    },
+    reason2() {
+      this.reason = "마감";
+    },
+    reason3() {
+      this.reason = "고객 요청";
+    },
+    checkIt: function () {
       this.dialog = false;
+      this.$emit("check-it");
     },
   },
   data() {
     return {
       dialog: false,
+      reason: "",
     };
   },
 };
 </script>
 
 <style scoped>
+.option-box {
+  padding: 0 3%;
+}
 .btn-box {
   justify-content: center;
 }
-.reason {
+.etc-box {
+  width: 100%;
   max-width: 344px;
 }
 </style>
