@@ -216,7 +216,7 @@ export default {
     this.title = document.title;
     // 판단
     this.pageType = this.pages.includes(this.title);
-    console.log(this.pageType)
+
   },
 };
 </script>
