@@ -1,5 +1,6 @@
 package com.ssafy.onsikgo.entity;
 
+import com.ssafy.onsikgo.dto.StoreDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -68,8 +70,38 @@ public class Store {
     @OneToMany(mappedBy = "store")
     private List<Follow> follows = new ArrayList<>();
 
+    public Store update(StoreDto storeDto, HashMap<String, String> coordinate) {
+        this.storeName = storeDto.getStoreName();
+        this.location = storeDto.getLocation();
+        this.tel = storeDto.getTel();
+        this.storeNum = storeDto.getStoreNum();
+        this.storeImgUrl = storeDto.getStoreImgUrl();
+        this.closingTime = storeDto.getClosingTime();
+        this.offDay = storeDto.getOffDay();
+        this.category = storeDto.getCategory();
+        this.lat = coordinate.get("lat");
+        this.lng = coordinate.get("lng");
+        return this;
+    }
+
     public void addUser(User user) {
         this.user = user;
         return;
+    }
+
+    public StoreDto toDto() {
+
+        return StoreDto.builder()
+                .storeName(this.getStoreName())
+                .location(this.getLocation())
+                .tel(this.getTel())
+                .storeNum(this.getStoreNum())
+                .storeImgUrl(this.getStoreImgUrl())
+                .closingTime(this.getClosingTime())
+                .offDay(this.getOffDay())
+                .category(this.getCategory())
+                .lat(this.getLat())
+                .lng(this.getLng())
+                .build();
     }
 }

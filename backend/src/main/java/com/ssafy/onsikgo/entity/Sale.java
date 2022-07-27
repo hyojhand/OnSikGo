@@ -1,30 +1,50 @@
 package com.ssafy.onsikgo.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.ssafy.onsikgo.dto.SaleDto;
+import com.ssafy.onsikgo.dto.StoreDto;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Sale {
 
     @Id @GeneratedValue
     private Long saleId;
 
     @Column(nullable = false)
-    private int totalPricel; // 총 판매액
+    private Integer totalPrice; // 총 판매액
 
     @Column(nullable = false)
-    private Date date; // 날짜
+    private String date; // 날짜
+
+    @Column(nullable = false)
+    private Boolean closed; // 영업종료여부
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "storeId")
     private Store store;
 
+    @OneToMany(mappedBy = "sale")
+    private List<SaleItem> saleItems = new ArrayList<>();
+
+    public SaleDto toDto(StoreDto storeDto) {
+        return SaleDto.builder()
+                .totalPrice(this.totalPrice)
+                .date(this.date)
+                .closed(this.closed)
+                .storeDto(storeDto)
+                .saleId(this.saleId)
+                .build();
+    }
 
 }
