@@ -16,7 +16,14 @@
 <script>
 export default {
   name: "OwnerInfoChangeView",
-  methods: {},
+  methods: {
+    gochange() {
+      this.$router.push("infochange/pwchange");
+    },
+    gomypage() {
+      this.$router.push("userinfochange");
+    },
+  },
 };
 </script>
 
