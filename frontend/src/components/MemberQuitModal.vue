@@ -1,14 +1,14 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="parents" width="500">
+    <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="success" dark v-bind="attrs" v-on="on">
-          주문확인하기
+          회원탈퇴
         </v-btn>
       </template>
 
       <v-card>
-        <v-card-title class="text-h5 lighten-2"> 주문 상세보기 </v-card-title>
+        <v-card-title class="text-h5 lighten-2"> 회원 탈퇴하기 </v-card-title>
 
         <v-card class="mx-auto my-auto card-box" max-width="344" outlined>
           <div mt-5 class="row mt-3">
@@ -20,42 +20,23 @@
             <div class="col-7 mt-2 order-box">
               <v-list-item-content>
                 <v-list-item-title class="text msg-box">
-                  최지은 님의
+                  최지은님, 정말 탈퇴하시겠습니까?
                 </v-list-item-title>
                 <v-list-item-title class="text msg-box"
-                  >주문이 도착했습니다.</v-list-item-title
+                  >지구를 지키는 용사여,, </v-list-item-title
                 >
               </v-list-item-content>
             </div>
           </div>
-          <v-card class="mx-auto m-3" max-width="300" outlined>
-            <div>
-              <img
-                class="col-5"
-                src="@/assets/images/hambuger.jpg"
-                alt="사진이었던것.."
-              />
-              <v-list-item-content>
-                <v-list-item-subtitle
-                  >제품명 : 불고기 버거</v-list-item-subtitle
-                >
-                <v-list-item-subtitle>수량 : 2개</v-list-item-subtitle>
-                <v-list-item-subtitle
-                  >예상 도착 시간 : 15분</v-list-item-subtitle
-                >
-              </v-list-item-content>
-            </div>
-            <div class="btn-box">
-              <v-card-actions>
-                <refuse-modal @check-it="checkIt"></refuse-modal>
+          <br>
+          
+          <div class="btn-box">
+            <v-card-actions>
+                <noQuitModal></noQuitModal>
               </v-card-actions>
-              <v-card-actions>
-                <v-btn rounded color="success" @click="accept"> 수락 </v-btn>
-              </v-card-actions>
-            </div>
-          </v-card>
+          <b-button pill variant="outline-success" @click="backToMypage()"> 아니요! </b-button>
+          </div>
         </v-card>
-
         <v-divider></v-divider>
 
         <v-card-actions>
@@ -67,21 +48,20 @@
 </template>
 
 <script>
-import RefuseModal from "@/components/RefuseModal.vue";
+import noQuitModal from "@/components/noQuitModal.vue"
 export default {
   name: "NoticeModal",
-  components: { RefuseModal },
+  components: {
+    noQuitModal,
+  },
   methods: {
-    accept() {
-      this.parents = false;
-    },
-    checkIt: function () {
-      this.parents = false;
-    },
+    backToMypage() {
+        this.dialog = false;
+    }
   },
   data() {
     return {
-      parents: false,
+      dialog: false,
     };
   },
 };
@@ -96,6 +76,7 @@ export default {
 .msg-box {
   display: flex;
   text-align: start;
+  font-size: 0.7rem;
 }
 .img-box {
   margin: 0 auto;

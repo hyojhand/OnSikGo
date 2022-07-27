@@ -37,19 +37,25 @@
     <b-button size="sm" @click="storechange()" pill variant="outline-success">정보수정</b-button>
     </div>
     <hr>
-
+    
     <discountList></discountList>
-
+    
+    <!--모달 -->
+    <MemberQuitModal></MemberQuitModal>
+    <StoreInfoDiscardModal></StoreInfoDiscardModal>
   </div>
 </template>
 
 <script>
 import discountList from "@/components/discountList.vue";
-
+import StoreInfoDiscardModal from "@/components/StoreInfoDiscardModal.vue";
+import MemberQuitModal from "@/components/MemberQuitModal.vue";
 export default {
   name: "MypageOwnerView",
   components: {
     discountList,
+    StoreInfoDiscardModal,
+    MemberQuitModal,
   },
   methods: {
     dataAnalysis() {
