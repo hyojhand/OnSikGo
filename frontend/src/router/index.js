@@ -14,13 +14,9 @@ import CompleteView from "../views/CompleteView.vue";
 import OwnerInfoChangeView from "../views/OwnerInfoChangeView.vue";
 import UserInfoChangeView from "../views/UserInfoChangeView.vue";
 import PasswordChangeView from "../views/PasswordChangeView.vue";
-import MemberQuitView from "../views/MemberQuitView.vue";
-import QuitCompleteView from "../views/QuitCompleteView.vue";
-import StoreInfoDiscardView from "../views/StoreInfoDiscardView.vue";
 // 알림+
 import NoticeView from "../views/NoticeView.vue";
 import NoticeUserView from "../views/NoticeUserView.vue";
-import OrderCancelView from "../views/OrderCancelView.vue";
 // 메인기능
 import ShopView from "../views/ShopView.vue";
 import OrderView from "../views/OrderView.vue";
@@ -35,7 +31,6 @@ import ProdDeleteView from "../views/ProdDeleteView.vue";
 import MypageOwnerView from "../views/MypageOwnerView.vue";
 import DataAnalysisView from "../views/DataAnalysisView.vue";
 import StoreInfoChangeView from "../views/StoreInfoChangeView.vue";
-import ClosedView from "../views/ClosedView.vue";
 // 마이페이지(사용자)
 import MypageUserView from "../views/MypageUserView.vue";
 import OrderHistoryView from "../views/OrderHistoryView.vue";
@@ -127,31 +122,6 @@ const routes = [
       title: "비밀번호변경",
     },
   },
-  {
-    path: "/quit",
-    name: "memberQuit",
-    component: MemberQuitView,
-    meta: {
-      title: "회원탈퇴",
-    },
-  },
-  {
-    path: "/quit/complete",
-    name: "quitComplete",
-    component: QuitCompleteView,
-    meta: {
-      title: "탈퇴성공",
-    },
-  },
-  {
-    path: "/storeinfodiscard",
-    name: "storeInfoDiscard",
-    component: StoreInfoDiscardView,
-    meta: {
-      title: "가게탈퇴",
-    },
-  },
-
   // 알림
   {
     path: "/notice",
@@ -159,14 +129,6 @@ const routes = [
     component: NoticeView,
     meta: {
       title: "알림조회",
-    },
-  },
-  {
-    path: "/notice/cancel",
-    name: "orderCancel",
-    component: OrderCancelView,
-    meta: {
-      title: "주문취소",
     },
   },
   {
@@ -259,14 +221,6 @@ const routes = [
     component: StoreInfoChangeView,
     meta: {
       title: "가게정보변경",
-    },
-  },
-  {
-    path: "/mypage/owner/close",
-    name: "closedView",
-    component: ClosedView,
-    meta: {
-      title: "영업종료",
     },
   },
   // 마이페이지(사용자)
