@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>마이페이지</h1>
+
     <img src="@/assets/logo.jpg" width="60" height="40">
     <br><br>
 

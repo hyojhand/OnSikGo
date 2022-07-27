@@ -34,6 +34,9 @@ import StoreInfoChangeView from "../views/StoreInfoChangeView.vue";
 import MypageUserView from "../views/MypageUserView.vue";
 import OrderHistoryView from "../views/OrderHistoryView.vue";
 import MyreviewView from "../views/MyreviewView.vue";
+// 오류
+import NotFoundView from "../views/NotFoundView.vue"
+
 
 Vue.use(VueRouter);
 
@@ -239,6 +242,19 @@ const routes = [
       title: "내리뷰조회",
     },
   },
+  {
+    path: "/404",
+    name: "notfound",
+    component: NotFoundView,
+    meta: {
+      title: "404NotFound",
+    },
+  },
+  {
+    path: "*",
+    redirect: "/404",
+  },
+
 ];
 
 const router = new VueRouter({
@@ -248,7 +264,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(to)
   document.title = to.meta.title
   next()
 })

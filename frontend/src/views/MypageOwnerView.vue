@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>점주 마이페이지</h1>
-
     <div class = "d-flex justify-content-end">
     <b-dropdown id="dropdown1" text="1번째 매장 이름" class="m-md-2" style="border-color:#63BF68;">
       <b-dropdown-item>2번째 매장 이름</b-dropdown-item>
