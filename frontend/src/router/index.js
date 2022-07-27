@@ -26,7 +26,6 @@ import StoreView from "../views/StoreView.vue";
 import AllProdView from "../views/AllProdView.vue";
 import ProdChangeView from "../views/ProdChangeView.vue";
 import ProdRegisterView from "../views/ProdRegisterView.vue";
-import ProdDeleteView from "../views/ProdDeleteView.vue";
 // 마이페이지(점주)
 import MypageOwnerView from "../views/MypageOwnerView.vue";
 import DataAnalysisView from "../views/DataAnalysisView.vue";
@@ -188,14 +187,6 @@ const routes = [
     component: ProdRegisterView,
     meta: {
       title: "상품등록",
-    },
-  },
-  {
-    path: "/allprod/delete",
-    name: "prodDelete",
-    component: ProdDeleteView,
-    meta: {
-      title: "상품삭제",
     },
   },
   // 마이페이지(점주)
