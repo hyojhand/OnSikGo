@@ -36,6 +36,7 @@ public class UserService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+    private final AwsS3Service awsS3Service;
     public ResponseEntity<String> checkEmail(String email) {
         if (userRepository.findByEmail(email).orElse(null) != null) {
             log.info("이미존재하는 이메일");
@@ -94,7 +95,7 @@ public class UserService {
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
 
         User findUser = userRepository.findByEmail(userEmail).get();
-        findUser.update(userDto.getNickname(), userDto.getImgUrl());
+        findUser.update(userDto.getNickname(), awsS3Service.uploadImge(userDto.getFile()));
 
         userRepository.save(findUser);
         return new ResponseEntity<>("수정완료", HttpStatus.OK);
