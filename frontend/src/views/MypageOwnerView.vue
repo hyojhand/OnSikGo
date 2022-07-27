@@ -1,5 +1,13 @@
 <template>
   <div>
+
+    <div class = "d-flex justify-content-end">
+    <b-dropdown id="dropdown1" text="1번째 매장 이름" class="m-md-2" style="border-color:#63BF68;">
+      <b-dropdown-item>2번째 매장 이름</b-dropdown-item>
+      <b-dropdown-item>3번째 매장 이름</b-dropdown-item>
+      <b-dropdown-item>4번째 매장 이름</b-dropdown-item>
+    </b-dropdown>
+
     <div class="d-flex justify-content-end">
       <b-dropdown
         id="dropdown1"
@@ -11,6 +19,7 @@
         <b-dropdown-item>3번째 매장 이름</b-dropdown-item>
         <b-dropdown-item>4번째 매장 이름</b-dropdown-item>
       </b-dropdown>
+
     </div>
     <br />
     <!--이미지 가져오기-->
