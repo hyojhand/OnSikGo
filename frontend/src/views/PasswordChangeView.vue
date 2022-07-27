@@ -15,10 +15,7 @@
           id="password"
           :type="passwordType"
           label="새 비밀번호.">
-
-
       </v-text-field>
-
       <v-text-field 
         class="input-with-label"
         v-model="passwordConfirm"

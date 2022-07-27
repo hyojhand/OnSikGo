@@ -76,7 +76,7 @@ export default {
     return {
       drawer: false,
       // 일반 유저 0, 업주 1
-      userState : 1,
+      userState : 0,
       title : document.title,
       consumers: [
         { title: '홈', router: '/'},
@@ -116,7 +116,7 @@ export default {
   margin-bottom: 5%;
 }
 .content {
-  margin-top: 15%;
+  margin: 15% 5% 5% 5%;
 }
 .margin {
   margin: 5% 5% 5% 5%;
