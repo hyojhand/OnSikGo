@@ -48,6 +48,7 @@ public class Item {
 
     public ItemDto toDto() {
         return ItemDto.builder()
+                .itemId(this.itemId)
                 .itemName(this.itemName)
                 .price(this.price)
                 .itemImgUrl(this.itemImgUrl)
