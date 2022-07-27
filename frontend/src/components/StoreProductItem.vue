@@ -1,17 +1,13 @@
 <template>
   <div class="container">
-    <div class="row">
-      <!-- 마커 -->
-      <div class="col-2">
-        <h1>1</h1>
-      </div>
+    <div class="row ml-2">
       <!-- 상품이미지 -->
       <div class="col-3">
         <img src="@/assets/images/hambuger.jpg" style="widght:80px; height:80px" alt="">
       </div>
       <!-- 상품 설명 -->
       <!-- 상품 이름, 매장위치, 거리, 할인율, 정가, 할인가 -->
-      <div class="col-4">
+      <div class="col-4 ml-5">
         <div class="product-name">불고기버거</div>
         <div class="product-location">매장위치 : 이마트 37</div>
         <div class="product-prediction">300m, 도보로 3분</div>
@@ -31,7 +27,7 @@
     </div>
     
 
-    <hr style="border : 1px solid #222; margin: 3px">
+    <hr class="mt-4" style="border : 1px solid #222; margin: 3px">
   </div>
 </template>
 
