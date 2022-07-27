@@ -76,7 +76,7 @@ export default {
     return {
       drawer: false,
       // 일반 유저 0, 업주 1
-      userState : 0,
+      userState : 1,
       title : document.title,
       consumers: [
         { title: '홈', router: '/'},
