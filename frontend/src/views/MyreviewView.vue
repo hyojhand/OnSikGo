@@ -1,20 +1,21 @@
 <template>
   <div>
-    <img src="@/assets/images/solo.jpg" width="40" height="40">
-    <br>
+    <img src="@/assets/images/solo.jpg" width="40" height="40" />
+    <br />
+
     <span>지은님의 리뷰</span>
-    <hr>
+    <hr />
     <reviewList></reviewList>
   </div>
 </template>
 
 <script>
-import reviewList from '@/components/reviewList.vue'
+import reviewList from "@/components/reviewList.vue";
 export default {
   name: "MyReviewView",
   components: {
     reviewList,
-  }
+  },
 };
 </script>
 

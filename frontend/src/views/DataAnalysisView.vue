@@ -38,12 +38,11 @@
 </template>
 
 <script>
-
-import doughnutChart from "@/components/doughnutChart.vue"
+import doughnutChart from "@/components/doughnutChart.vue";
 
 export default {
   name: "dataAnalysisView",
-  components:{
+  components: {
     doughnutChart,
   },
   data() {

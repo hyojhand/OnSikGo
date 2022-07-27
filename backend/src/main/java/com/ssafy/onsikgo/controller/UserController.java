@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 
@@ -26,10 +27,16 @@ public class UserController {
     private final KakaoUserService kakaoUserService;
     private final NaverUserService naverUserService;
     @PostMapping("/email")
-    public ResponseEntity<String> checkEmail(@RequestBody UserDto userDto) {
-        return userService.checkEmail(userDto.getEmail());
+    public ResponseEntity<String> checkEmail(@RequestBody HashMap<String, Object> map) {
+        String email = (String)map.get("email");
+        return userService.checkEmail(email);
     }
-
+    @PostMapping("/emailAuthNumber")
+    public ResponseEntity<String> checkAuthNumber(@RequestBody HashMap<String, Object> map) {
+        String authNum = (String) map.get("authNum");
+        String email = (String)map.get("email");
+        return userService.checkAuthNumber(email,authNum);
+    }
     @PostMapping("/nickname")
     public ResponseEntity<String> checkNickname(@RequestBody UserDto userDto) {
         return userService.checkNickname(userDto.getNickname());
