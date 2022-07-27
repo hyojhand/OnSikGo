@@ -55,7 +55,7 @@ export default {
   methods: {
     changePw() {
       if (this.password == this.passwordConfirm) {
-        this.$router.push({ name: "main" })
+        this.$router.push({ name: "mypageUser" })
       } else {
         alert("비밀번호가 다릅니다.");
       }
