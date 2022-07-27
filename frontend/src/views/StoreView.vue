@@ -1,10 +1,10 @@
 <template>
   <div>
     <!--헤더-->
-    <div class="d-flex text-align-center">
-      <img src="@/assets/images/이마트24.png" alt="profile" class="col-4" width="30" height="90">
-      <h5 class="col-4">이마트 24 지은점</h5>
-      <div class="col-4">
+    <div class="d-flex text-align-center mt-2 ml-2 mr-2">
+      <img src="@/assets/images/이마트24.png" alt="profile" class="col-4" width="30" height="100">
+      <span class="col-4 mt-2 fw-bold">이마트24 지은점</span>
+      <div class="col-4 mt-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
           <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
         </svg>
@@ -14,14 +14,14 @@
     <div>
       <!--지도표시부분-->
       <div >
-        <kakao-map ></kakao-map>
+        <kakao-map></kakao-map>
       </div>
-      <div class="mt-3">
+      <div class="mt-2">
         <ul class="content">
-          <li>상세위치: </li>
-          <li>전화번호: </li>
-          <li>영업시간: </li>
-          <li>휴무일: </li>
+          <li>상세위치: 부산시 서구 여기로 17</li>
+          <li>전화번호: 051-518-0000</li>
+          <li>영업시간: 09:00 - 21:00</li>
+          <li>휴무일: 매주 수요일</li>
         </ul>
       </div>
     <hr>
@@ -39,13 +39,13 @@
     <br>
     <!-- 상품 설명란 -->
     <div class="product mt-3" v-if="selectedTab === tabs[0]">
-      <p class="head">해당 매장에서 오늘 등록된 상품</p>
+      <p class="head">📃해당 매장에서 오늘 등록된 상품</p>
       <store-product-item></store-product-item>
       <store-product-item></store-product-item>
       <store-product-item></store-product-item>
     </div>
     <div class="product mt-3" v-else>
-      <p class="head">온식고 식구들의 입소문</p>
+      <p class="head">🥨온식고 식구들의 입소문</p>
       <StoreReview></StoreReview>
       <StoreReview></StoreReview>
       <StoreReview></StoreReview>
@@ -126,14 +126,15 @@ export default {
 
   .head {
     margin-top: auto;
+    margin-left: 5%;
     text-align: start;
     font-weight: bold;
   }
 
   .content {
     text-align: start;
-    font-size: large;
-    font-weight: bold;
+    font-size: medium;
+    font-weight: 500;
     margin: auto;
   }
 

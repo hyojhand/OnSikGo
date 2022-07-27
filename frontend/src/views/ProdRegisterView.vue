@@ -39,13 +39,19 @@
         <input class="form-control form-control-sm mt-2" type="text" placeholder="특이사항을 입력해주세요" aria-label=".form-control-sm example"> 
       </div>
     </div>
-    <button class="btn btn-success mt-5">등록</button>
+    <b-button @click="prodlist" pill variant="outline-success" class="d-grid col-8 mx-auto mt-5">등록</b-button>
   </div>
 </template>
 
 <script>
 export default {
   name: "ProdRegisterView",
+
+  methods: {
+    prodlist () {
+      this.$router.push('/allprod')
+    },
+  }
 };
 </script>
 

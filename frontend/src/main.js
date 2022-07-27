@@ -18,8 +18,7 @@ Vue.use(Vuetify);
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
-import VueApexCharts from "vue-apexcharts";
-Vue.use(VueApexCharts);
+
 // vuetify 사용
 new Vue({
   vuetify: new Vuetify(),
@@ -27,17 +26,3 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
-
-new Vue({
-  el: "#navBar",
-  vuetify: new Vuetify(),
-  data() {
-    return {
-      drawer: null,
-      items: [
-        { title: "Home", icon: "mdi-view-dashboard" },
-        { title: "About", icon: "mdi-forum" },
-      ],
-    };
-  },
-});
