@@ -25,8 +25,8 @@ export default {
     font-size: 0.1rem;
     font-style: bold;
 }
-#reviews {
+/* #reviews {
     display: flex;
     justify-content: start;
-}
+} */
 </style>
