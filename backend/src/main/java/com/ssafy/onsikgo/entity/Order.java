@@ -1,12 +1,16 @@
 package com.ssafy.onsikgo.entity;
 
+import com.ssafy.onsikgo.dto.OrderDto;
+import com.ssafy.onsikgo.dto.SaleItemDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -39,8 +43,20 @@ public class Order {
     @JoinColumn(name = "saleItemId")
     private SaleItem saleItem;
 
+    @OneToMany(mappedBy = "order")
+    private List<Notice> notices = new ArrayList<>();
+
     public Order update(State state) {
         this.state = state;
         return this;
+    }
+
+    public OrderDto toDto(SaleItemDto saleItemDto) {
+        return OrderDto.builder()
+                .date(this.date)
+                .count(this.count)
+                .state(this.state)
+                .saleItemDto(saleItemDto)
+                .build();
     }
 }
