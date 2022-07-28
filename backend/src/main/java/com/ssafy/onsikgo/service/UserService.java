@@ -207,12 +207,7 @@ public class UserService {
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
         User findUser = userRepository.findByEmail(userEmail).get();
 
-        UserDto userDto = new UserDto();
-        userDto.setUserName(findUser.getUserName());
-        userDto.setEmail(findUser.getEmail());
-        userDto.setImgUrl(findUser.getImgUrl());
-        userDto.setNickname(findUser.getNickname());
-        userDto.setRole(findUser.getRole());
+        UserDto userDto = findUser.toDto();
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
