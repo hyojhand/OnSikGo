@@ -46,6 +46,11 @@ public class StoreController {
         return storeService.getList(listDto);
     }
 
+    @PutMapping("/close/{store_id}")
+    public ResponseEntity<String> closeStore(@PathVariable Long store_id) {
+        return storeService.closeStore(store_id);
+    }
+
 
 
 }
