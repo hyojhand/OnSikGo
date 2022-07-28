@@ -19,7 +19,9 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -75,6 +77,32 @@ public class OrderService {
         noticeRepository.save(notice);
 
         return new ResponseEntity<>("주문이 등록되었습니다.", HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<OrderDto>> getList(HttpServletRequest request) {
+        String token = request.getHeader("access-token");
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
+        String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
+        Optional<User> findUser = userRepository.findByEmail(userEmail);
+        if(!findUser.isPresent()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
+        List<Order> orders = orderRepository.findByUser(findUser.get());
+        List<OrderDto> orderDtos = new ArrayList<>();
+        for(Order order : orders) {
+            SaleItem saleItem = order.getSaleItem();
+            Sale sale = saleItem.getSale();
+            Item item = saleItem.getItem();
+            Store store = sale.getStore();
+            OrderDto orderDto = order.toDto(saleItem.toDto(item.toDto(),sale.toDto(store.toDto())));
+            orderDtos.add(orderDto);
+        }
+
+        return new ResponseEntity<>(orderDtos, HttpStatus.OK);
     }
 
     @Transactional
@@ -172,6 +200,5 @@ public class OrderService {
 
         return new ResponseEntity<>("사용자가 주문을 취소하였습니다.", HttpStatus.OK);
     }
-
 
 }
