@@ -65,6 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/order/**").permitAll()
                 .antMatchers("/api/hello").permitAll()
                 .antMatchers("/api/v1/**").hasRole(Role.USER.name())
+                .antMatchers("/review/**").permitAll()
+                .antMatchers("/follow/**").permitAll()
+                .antMatchers("/notice/**").permitAll()
 
                 // 인증없이 접근을 허용하는 path 추가
 //                .and()
