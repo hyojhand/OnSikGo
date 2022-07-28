@@ -118,7 +118,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #map {
-  width: 360px;
+  width: 330px;
   height: 280px;
 }
 
