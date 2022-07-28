@@ -20,7 +20,7 @@
           <span>{{ tab }}</span>
         </li>
       </ul>
-
+<!-- test용 -->
       <!-- 지도 or Category Store -->
       <div class="tab-content">
         <kakao-map class="tab-link currnet" v-if="selectedTab === tabs[0]"></kakao-map>
