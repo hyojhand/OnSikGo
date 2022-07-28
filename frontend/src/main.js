@@ -6,6 +6,8 @@ import store from "./store";
 //css reset
 import "@/assets/css/reset.css";
 
+import "@/assets/css/style.css";
+
 // 뷰티파이
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";

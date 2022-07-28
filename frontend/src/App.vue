@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" class="margin">
+  <v-app id="app">
     <!-- nav -->
     <v-app-bar
       v-if="pageType === true"
@@ -8,30 +8,25 @@
       flat
       dense
       color="#ffffff"
+      class="row"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
-
-      <v-spacer></v-spacer>
-      <v-btn icon color="white">
-        <v-icon>mdi-battery-charging</v-icon>
-      </v-btn>
 
       <img
         v-if="title === '온식고'"
         src="@/assets/logo.jpg"
         alt="logo였던것.."
-        style="height: 60%; width: 15%; margin: 3% 0%"
+        style="height: 100%; width: 20%"
       />
       <div v-else>
-        <p class="title">{{ title }}</p>
+        <p class="nav-title">{{ title }}</p>
       </div>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
       <div>
         <router-link :to="{ name: 'notice' }" class="col-sm">
-          <i class="fa-solid fa-bell"></i>
+          <i class="fa-solid fa-bell" width="16" height="16"></i>
         </router-link>
 
+        <!-- 마이페이지 일 경우에 톱니바퀴도 보이기 -->
         <button v-if="title === '마이페이지'" @click.stop="setting = !setting">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +46,8 @@
         </button>
       </div>
     </v-app-bar>
-    <!-- 툴바-->
+
+    <!-- 토글바-->
     <v-navigation-drawer app v-model="drawer" absolute clipped temporary>
       <router-link :to="{ name: 'main' }">
         <img
@@ -61,6 +57,7 @@
         />
       </router-link>
 
+      <!-- 토글바 업주 로그인의 경우 -->
       <v-list v-if="userState === 1" nav>
         <v-list-item v-for="item in owners" :key="item.title" :to="item.router">
           <v-list-item-content>
@@ -85,6 +82,7 @@
           />
         </svg>
       </v-list>
+      <!-- 토글바 일반 유저 로그인 경우 -->
       <v-list v-else nav>
         <v-list-item v-for="item in users" :key="item.title" :to="item.router">
           <v-list-item-content>
@@ -111,7 +109,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <!-- 설정 -->
+    <!-- 설정 토글바 -->
     <v-navigation-drawer app v-model="setting" absolute clipped temporary>
       <router-link :to="{ name: 'main' }">
         <img
@@ -121,6 +119,7 @@
         />
       </router-link>
 
+      <!-- 설정 토글바 업주 버전 -->
       <v-list v-if="userState === 1" nav>
         <v-list-item
           v-for="item in settingOwners"
@@ -149,6 +148,8 @@
           />
         </svg>
       </v-list>
+
+      <!-- 설정 토글바 일반 유저 버전 -->
       <v-list v-else nav>
         <v-list-item
           v-for="item in settingUsers"
@@ -179,8 +180,8 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="content">
-      <router-view />
+    <v-main>
+      <router-view class="view" />
     </v-main>
   </v-app>
 </template>
@@ -217,7 +218,7 @@ export default {
         "상품조회",
         "주문하기",
         "가게조회",
-        "전상품조회",
+        "전체상품조회",
         "상품변경",
         "상품등록",
         "마이페이지",
@@ -240,34 +241,28 @@ export default {
 </script>
 
 <style lang="scss">
+.view {
+  margin-top: 58px;
+}
 #app {
   align-items: center;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   margin: 0 auto;
-  width: 480px;
+  max-width: 420px;
+  width: 100%;
   min-height: 100%;
-}
-#nav {
-  margin-bottom: 5%;
-}
-.content {
-  margin: 15% 5% 5% 5%;
-}
-.margin {
-  margin: 5% 5% 5% 5%;
-}
-
-.title {
-  margin-top: 15px;
 }
 .bi-box-arrow-in-right {
   position: fixed;
-  bottom: 5px;
-  margin-left: 90px;
+  bottom: 30px;
+  right: 30px;
   color: red;
+}
+
+// mobile
+@media screen and (max-width: 414px) {
+  #app {
+    width: 100%;
+  }
 }
 </style>

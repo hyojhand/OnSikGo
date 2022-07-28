@@ -1,43 +1,52 @@
 <template>
-  <v-window class="carousel-box">
-    <v-carousel
-      cycle
-      height="300"
-      interval="3000"
-      hide-delimiter-background
-      show-arrows-on-hover
+  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img
+          class="d-block w-100"
+          src="@/assets/images/hambuger.jpg"
+          alt="사진..이었던것"
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          class="d-block w-100"
+          src="@/assets/images/이마트24.png"
+          alt="사진..이었던것"
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          class="d-block w-100"
+          src="@/assets/images/koreanfood.jpg"
+          alt="사진..이었던것"
+        />
+      </div>
+    </div>
+    <a
+      class="carousel-control-prev"
+      href="#carouselExampleControls"
+      role="button"
+      data-slide="prev"
     >
-      <v-carousel-item v-for="(slide, i) in slides" :key="i">
-        <v-sheet :color="colors[i]" height="100%">
-          <v-row class="fill-height" align="center" justify="center">
-            <div class="text-h2">{{ slide }}</div>
-          </v-row>
-        </v-sheet>
-      </v-carousel-item>
-    </v-carousel>
-  </v-window>
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a
+      class="carousel-control-next"
+      href="#carouselExampleControls"
+      role="button"
+      data-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
 </template>
-
 <script>
 export default {
   name: "SloganPage",
-  data() {
-    return {
-      colors: [
-        "indigo",
-        "warning",
-        "pink darken-2",
-        "red lighten-1",
-        "deep-purple accent-4",
-      ],
-      slides: ["장창완", "손효재", "공지훈", "김가흔", "최지은"],
-    };
-  },
 };
 </script>
 
-<style scoped>
-.carousel-box {
-  margin: 5% 0;
-}
-</style>
+<style scoped></style>
