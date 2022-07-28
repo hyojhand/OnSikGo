@@ -117,7 +117,7 @@ div {
   }
     
 .main_container .mobile{ 
-    width:360px;
+    width:350px;
     margin:0 auto;
 }
 
@@ -153,7 +153,6 @@ ul.tabs li{
 }
 
 .search-result{
-  padding-right: 5px; 
   font-size: 12px;
 }
 .search-box{
