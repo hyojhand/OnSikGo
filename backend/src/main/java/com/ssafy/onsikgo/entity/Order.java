@@ -6,7 +6,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -38,6 +40,9 @@ public class Order {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "saleItemId")
     private SaleItem saleItem;
+
+    @OneToMany(mappedBy = "order")
+    private List<Order> orders = new ArrayList<>();
 
     public Order update(State state) {
         this.state = state;
