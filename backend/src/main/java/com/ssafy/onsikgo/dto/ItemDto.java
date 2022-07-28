@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ItemDto {
 
+    private Long itemId;
     private String itemName;
     private Integer price;
     private String itemImgUrl;
@@ -18,6 +19,7 @@ public class ItemDto {
     public Item toEntity() {
 
         return Item.builder()
+                .itemId(this.getItemId())
                 .itemName(this.getItemName())
                 .price(this.getPrice())
                 .itemImgUrl(this.getItemImgUrl())
