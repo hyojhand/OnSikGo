@@ -1,5 +1,7 @@
 package com.ssafy.onsikgo.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,6 +11,8 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @RequiredArgsConstructor
 public class Follow {
 
