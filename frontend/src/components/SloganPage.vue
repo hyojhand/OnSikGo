@@ -1,51 +1,67 @@
 <template>
-  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img
-          class="d-block w-100"
-          src="@/assets/images/hambuger.jpg"
-          alt="사진..이었던것"
-        />
-      </div>
-      <div class="carousel-item">
-        <img
-          class="d-block w-100"
-          src="@/assets/images/이마트24.png"
-          alt="사진..이었던것"
-        />
-      </div>
-      <div class="carousel-item">
-        <img
-          class="d-block w-100"
-          src="@/assets/images/koreanfood.jpg"
-          alt="사진..이었던것"
-        />
-      </div>
-    </div>
-    <a
-      class="carousel-control-prev"
-      href="#carouselExampleControls"
-      role="button"
-      data-slide="prev"
+  <div>
+    <b-carousel
+      id="carousel-1"
+      v-model="slide"
+      :interval="2000"
+      controls
+      indicators
+      img-width="1024"
+      img-height="480"
+      style="text-shadow: 1px 1px 2px #333"
+      @sliding-start="onSlideStart"
+      @sliding-end="onSlideEnd"
     >
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a
-      class="carousel-control-next"
-      href="#carouselExampleControls"
-      role="button"
-      data-slide="next"
-    >
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
+      <b-carousel-slide>
+        <template #img>
+          <img
+            width="100%"
+            height="350px"
+            src="@/assets/images/hambuger.jpg"
+            alt="image slot"
+          />
+        </template>
+      </b-carousel-slide>
+      <b-carousel-slide>
+        <template #img>
+          <img
+            width="100%"
+            height="350px"
+            src="@/assets/images/westernfood.jpg"
+            alt="image slot"
+          />
+        </template>
+      </b-carousel-slide>
+
+      <b-carousel-slide>
+        <template #img>
+          <img
+            width="100%"
+            height="350px"
+            src="@/assets/images/snackbar.jpg"
+            alt="image slot"
+          />
+        </template>
+      </b-carousel-slide>
+    </b-carousel>
   </div>
 </template>
 <script>
 export default {
   name: "SloganPage",
+  data() {
+    return {
+      slide: 0,
+    };
+  },
+  methods: {
+    onSlideStart() {
+      this.sliding = true;
+    },
+    onSlideEnd() {
+      this.sliding = false;
+    },
+  },
 };
 </script>
 
