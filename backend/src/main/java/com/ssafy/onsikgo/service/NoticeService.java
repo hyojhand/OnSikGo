@@ -1,9 +1,10 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.NoticeDto;
-import com.ssafy.onsikgo.entity.Notice;
-import com.ssafy.onsikgo.entity.Order;
-import com.ssafy.onsikgo.entity.User;
+import com.ssafy.onsikgo.dto.OrderDto;
+import com.ssafy.onsikgo.dto.SaleItemDto;
+import com.ssafy.onsikgo.dto.UserDto;
+import com.ssafy.onsikgo.entity.*;
 import com.ssafy.onsikgo.repository.NoticeRepository;
 import com.ssafy.onsikgo.repository.UserRepository;
 import com.ssafy.onsikgo.security.TokenProvider;
@@ -43,19 +44,28 @@ public class NoticeService {
 
         List<Notice> notices = noticeRepository.findByReceivedId(findUser.get().getUserId());
         List<NoticeDto> noticeDtos = new ArrayList<>();
-
+        UserDto userDto = findUser.get().toDto();
         for(Notice notice : notices) {
             Order order = notice.getOrder();
+            SaleItem saleItem = order.getSaleItem();
+            Item item = saleItem.getItem();
+            Sale sale = saleItem.getSale();
+            Store store = sale.getStore();
+            SaleItemDto saleItemDto = saleItem.toDto(item.toDto(), sale.toDto(store.toDto()));
+            OrderDto orderDto = order.toDto(saleItemDto);
+            noticeDtos.add(notice.toDto(userDto,orderDto));
         }
 
-
-
-
-
+        return new ResponseEntity<>(noticeDtos, HttpStatus.OK);
     }
 
     @Transactional
     public ResponseEntity<String> delete(Long notice_id) {
 
+        Optional<Notice> findNotice = noticeRepository.findById(notice_id);
+        Notice notice = findNotice.get();
+        noticeRepository.delete(notice);
+        return new ResponseEntity<>("알림이 삭제되었습니다." , HttpStatus.OK);
     }
 }
+
