@@ -20,7 +20,7 @@
           <span>{{ tab }}</span>
         </li>
       </ul>
-
+<!-- test용 -->
       <!-- 지도 or Category Store -->
       <div class="tab-content">
         <kakao-map class="tab-link currnet" v-if="selectedTab === tabs[0]"></kakao-map>
@@ -117,7 +117,7 @@ div {
   }
     
 .main_container .mobile{ 
-    width:360px;
+    width:350px;
     margin:0 auto;
 }
 
@@ -153,7 +153,6 @@ ul.tabs li{
 }
 
 .search-result{
-  padding-right: 5px; 
   font-size: 12px;
 }
 .search-box{
