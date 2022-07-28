@@ -26,4 +26,8 @@ public class FollowController {
     public ResponseEntity<Object> getFollowList(HttpServletRequest request){
         return followService.getFollowList(request);
     }
+    @DeleteMapping("/{store_id}")
+    public ResponseEntity<Object> delete(HttpServletRequest request,@PathVariable Long store_id){
+        return followService.delete(request,store_id);
+    }
 }
