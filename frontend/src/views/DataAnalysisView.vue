@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h3>데이터분석</h3>
-    <br />
     <p>지금 내 매장 이름</p>
     <br />
     <h3>이번 주 매장 남은 재고량</h3>
@@ -40,12 +38,11 @@
 </template>
 
 <script>
-
-import doughnutChart from "@/components/doughnutChart.vue"
+import doughnutChart from "@/components/doughnutChart.vue";
 
 export default {
   name: "dataAnalysisView",
-  components:{
+  components: {
     doughnutChart,
   },
   data() {
