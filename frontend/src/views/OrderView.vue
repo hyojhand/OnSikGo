@@ -63,13 +63,17 @@
         <router-link class='main-moving' :to="{name : 'shopView'}">픽업 신청하기</router-link>
       </div>
     </div>
-    
+
   </div>
 </template>
 
 <script>
+
+
 export default {
   name: "OrderView",
+
+
 };
 </script>
 
@@ -83,7 +87,7 @@ export default {
   }
     
 .main_container .mobile{ 
-    width:360px;
+    width:340px;
     margin:0 auto;
 }
 /* 주소 위치 */

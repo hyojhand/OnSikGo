@@ -87,6 +87,7 @@
           <b-form-timepicker v-model="value" locale="ko"></b-form-timepicker>
         </b-form-group>
         <br />
+
         <!--매장 휴무일 INPUT BOX -->
         <v-app id="inspire">
           <v-card>
@@ -94,7 +95,7 @@
               <v-row>
                 <v-col cols="12">
                   <v-select
-                    v-model="value"
+                    v-model="values"
                     :items="items"
                     attach
                     chips
@@ -141,7 +142,7 @@ export default {
         "토요일",
         "일요일",
       ],
-      value: [
+      values: [
         "월요일",
         "화요일",
         "수요일",

@@ -1,7 +1,7 @@
 <template>
   <v-app id="app" class="margin">
     <!-- nav -->
-    <v-app-bar absolute temporary flat="false" dense color="#ffffff">
+    <v-app-bar v-if="pageType === true" absolute temporary flat="false" dense color="#ffffff">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
 
       <v-spacer></v-spacer>
@@ -187,7 +187,7 @@ export default {
       // 일반 유저 0, 업주 1
       userState: 0,
       title: document.title,
-
+      pageType: true,
       users: [
         { title: "홈", router: "/" },
         { title: "마이페이지", router: "/mypage/user" },
@@ -202,10 +202,21 @@ export default {
       ],
       settingUsers: [{ title: "회원정보수정", router: "/userinfochange" }],
       settingOwners: [{ title: "회원정보수정", router: "/ownerinfochange" }],
+      pages : ["온식고", "기부 페이지", "회원정보변경", "알림조회",
+              "상품조회", "주문하기", "가게조회", "전상품조회",
+              "상품변경", "상품등록", "마이페이지", "재고분석",
+              "가게정보변경", "내주문조회", "내리뷰조회",
+      ]
     };
+  },
+  created() {
+    this.pageType = this.pages.includes(this.title);
   },
   updated() {
     this.title = document.title;
+    // 판단
+    this.pageType = this.pages.includes(this.title);
+
   },
 };
 </script>

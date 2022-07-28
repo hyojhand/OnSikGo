@@ -1,8 +1,5 @@
 <template>
   <div>
-
-
-
     <div class="d-flex justify-content-end">
       <b-dropdown
         id="dropdown1"

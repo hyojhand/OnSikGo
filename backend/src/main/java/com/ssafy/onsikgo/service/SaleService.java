@@ -107,7 +107,7 @@ public class SaleService {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NO_CONTENT);
         }
 
-        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
+        Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(findStore.get(), date);
         if(!findSale.isPresent()) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NO_CONTENT);
         }
