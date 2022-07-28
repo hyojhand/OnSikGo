@@ -6,12 +6,11 @@
       absolute
       temporary
       flat
-      dense
-      color="#ffffff"
-      class="row"
+      color="white"
+      class="nav-box"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
-
+      <v-spacer></v-spacer>
       <img
         v-if="title === '온식고'"
         src="@/assets/logo.jpg"
@@ -19,21 +18,22 @@
         style="height: 100%; width: 20%"
       />
       <div v-else>
-        <p class="nav-title">{{ title }}</p>
+        {{ title }}
       </div>
-      <div>
-        <router-link :to="{ name: 'notice' }" class="col-sm">
-          <i class="fa-solid fa-bell" width="16" height="16"></i>
+      <v-spacer></v-spacer>
+      <div class="icon-box">
+        <router-link :to="{ name: 'notice' }">
+          <i class="fa-solid fa-bell" width="24px" height="16"></i>
         </router-link>
-
+        <v-spacer></v-spacer>
         <!-- 마이페이지 일 경우에 톱니바퀴도 보이기 -->
         <button v-if="title === '마이페이지'" @click.stop="setting = !setting">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="24"
+            height="24"
             fill="currentColor"
-            class="bi bi-gear"
+            class="bi bi-gear ml-3"
             viewBox="0 0 16 16"
           >
             <path
@@ -180,8 +180,8 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
-      <router-view class="view" />
+    <v-main class="view">
+      <router-view />
     </v-main>
   </v-app>
 </template>
@@ -258,7 +258,11 @@ export default {
   right: 30px;
   color: red;
 }
-
+.icon-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 // mobile
 @media screen and (max-width: 414px) {
   #app {
