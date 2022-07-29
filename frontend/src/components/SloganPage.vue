@@ -17,7 +17,7 @@
           <img
             width="100%"
             height="350px"
-            src="@/assets/images/hambuger.jpg"
+            src="@/assets/images/slogan_1.jpg"
             alt="image slot"
           />
         </template>
@@ -27,7 +27,7 @@
           <img
             width="100%"
             height="350px"
-            src="@/assets/images/westernfood.jpg"
+            src="@/assets/images/slogan_2.jpg"
             alt="image slot"
           />
         </template>
@@ -38,7 +38,17 @@
           <img
             width="100%"
             height="350px"
-            src="@/assets/images/snackbar.jpg"
+            src="@/assets/images/slogan_4.jpg"
+            alt="image slot"
+          />
+        </template>
+      </b-carousel-slide>
+      <b-carousel-slide>
+        <template #img>
+          <img
+            width="100%"
+            height="350px"
+            src="@/assets/images/slogan_3.jpg"
             alt="image slot"
           />
         </template>
