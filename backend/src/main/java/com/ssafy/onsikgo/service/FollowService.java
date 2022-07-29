@@ -31,7 +31,7 @@ public class FollowService {
     private final StoreRepository storeRepository;
     private final TokenProvider tokenProvider;
     @Transactional
-    public ResponseEntity<String>register(HttpServletRequest request, Long store_id){
+    public ResponseEntity<String>register(HttpServletRequest request, String store_id){
         String token = request.getHeader("access-token");
         User findUser = null;
         if (!tokenProvider.validateToken(token)) {
@@ -71,7 +71,7 @@ public class FollowService {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     @Transactional
-    public ResponseEntity<Object>delete(HttpServletRequest request, Long store_id){
+    public ResponseEntity<Object>delete(HttpServletRequest request, String store_id){
         String token = request.getHeader("access-token");
         User findUser = null;
         if (!tokenProvider.validateToken(token)) {
@@ -81,7 +81,7 @@ public class FollowService {
 
         findUser = userRepository.findByEmail(userEmail).get();
 
-        Store findStore = storeRepository.findById(store_id).get();
+        Store findStore = storeRepository.findById(Long.valueOf(store_id)).get();
 
         Follow follow = followRepository.findFollowByUserAndStore(findUser,findStore);
 

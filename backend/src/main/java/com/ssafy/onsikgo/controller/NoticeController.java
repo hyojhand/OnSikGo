@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
 @RequestMapping("/notice")
@@ -24,7 +25,7 @@ public class NoticeController {
     }
 
     @DeleteMapping("/{notice_id}")
-    public ResponseEntity<String> delete(@PathVariable Long notice_id) {
+    public ResponseEntity<String> delete(@PathVariable String notice_id) {
         return noticeService.delete(notice_id);
     }
 }

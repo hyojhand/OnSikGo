@@ -78,8 +78,8 @@ public class ReviewService {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<ReviewDto>> getStoreReview(Long store_id){
-        Store findStore = storeRepository.findById(store_id).get();
+    public ResponseEntity<List<ReviewDto>> getStoreReview(String store_id){
+        Store findStore = storeRepository.findById(Long.valueOf(store_id)).get();
 
         List<Review> reviews = findStore.getReviews();
         List<ReviewDto> result = new ArrayList<>();
@@ -89,17 +89,17 @@ public class ReviewService {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     @Transactional
-    public ResponseEntity<String> delete(Long review_id){
-        Review review = reviewRepository.findById(review_id).get();
+    public ResponseEntity<String> delete(String review_id){
+        Review review = reviewRepository.findById(Long.valueOf(review_id)).get();
         reviewRepository.delete(review);
-        if(reviewRepository.findById(review_id).orElse(null) != null) {
+        if(reviewRepository.findById(Long.valueOf(review_id)).orElse(null) != null) {
             return new ResponseEntity<>("삭제실패", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("삭제완료", HttpStatus.OK);
     }
     @Transactional
-    public ResponseEntity<String> report(Long review_id){
-        Review review = reviewRepository.findById(review_id).get();
+    public ResponseEntity<String> report(String review_id){
+        Review review = reviewRepository.findById(Long.valueOf(review_id)).get();
         review.update();
         reviewRepository.save(review);
         return new ResponseEntity<>("리뷰가 신고되었습니다.", HttpStatus.OK);
