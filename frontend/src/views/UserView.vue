@@ -49,13 +49,13 @@
           @blur="$v.name.$touch()"
         ></v-text-field>
         <v-text-field
-          v-model="nikname"
-          :error-messages="niknameErrors"
+          v-model="nickname"
+          :error-messages="nicknameErrors"
           :counter="10"
           label="닉네임을 입력해주세요."
           required
-          @input="$v.nikname.$touch()"
-          @blur="$v.nikname.$touch()"
+          @input="$v.nickname.$touch()"
+          @blur="$v.nickname.$touch()"
         ></v-text-field>
 
         <v-checkbox
@@ -67,7 +67,7 @@
           @blur="$v.checkbox.$touch()"
         ></v-checkbox>
 
-        <v-btn class="mr-4" @click="submit" color="success"> 가입하기 </v-btn>
+        <v-btn class="mr-4" @click="signup()" color="success"> 가입하기 </v-btn>
         <v-btn @click="clear" color="error"> 초기화 </v-btn>
         <v-btn @click="tempgo()"> 임시 넘어가기</v-btn>
       </form>
@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import http from "@/util/http-common";
 import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
 import minLength from "vuelidate/lib/validators/minLength";
@@ -87,7 +88,7 @@ export default {
     email: { required, email },
     password: { required, minLength: minLength(8) },
     name: { required, maxLength: maxLength(10) },
-    nikname: { required, maxLength: maxLength(10) },
+    nickname: { required, maxLength: maxLength(10) },
     checkbox: {
       checked(val) {
         return val;
@@ -99,7 +100,8 @@ export default {
     name: "",
     email: "",
     password: "",
-    nikname: "",
+    nickname: "",
+    role: "USER",
     checkbox: false,
   }),
 
@@ -125,12 +127,12 @@ export default {
       !this.$v.password.required && errors.push("비밀번호를 입력해주세요.");
       return errors;
     },
-    niknameErrors() {
+    nicknameErrors() {
       const errors = [];
-      if (!this.$v.nikname.$dirty) return errors;
-      !this.$v.nikname.maxLength &&
+      if (!this.$v.nickname.$dirty) return errors;
+      !this.$v.nickname.maxLength &&
         errors.push("닉네임은 10글자 이내로 입력해야합니다.");
-      !this.$v.nikname.required && errors.push("닉네임을 입력해주세요.");
+      !this.$v.nickname.required && errors.push("닉네임을 입력해주세요.");
       return errors;
     },
     emailErrors() {
@@ -153,8 +155,26 @@ export default {
       this.name = "";
       this.email = "";
       this.password = "";
-      this.nikname = "";
+      this.nickname = "";
       this.checkbox = false;
+    },
+    signup() {
+      http
+        .post("/user/signup", {
+          email: this.email,
+          password: this.password,
+          nickname: this.nickname,
+          userName: this.name,
+          role: this.role,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            this.$router.push("/signup/complete");
+            console.log(response.data);
+          } else {
+            alert("회원가입에 실패했습니다");
+          }
+        });
     },
   },
 };

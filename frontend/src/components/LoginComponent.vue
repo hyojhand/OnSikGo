@@ -1,35 +1,71 @@
 <template>
-<div>
-   <form name="form">
-        <div class="form-group">
-          <input
-            type="text"
-            class="form-control"
-            name="username"
-            v-validate="'required'"
-            placeholder="아이디를 입력해주세요"
-          />
-        </div>
-        <br>
-        <div class="form-group">
-          <input
-            type="text"
-            class="form-control"
-            name="username"
-            v-validate="'required'"
-            placeholder="비밀번호를 입력해주세요"
-          />
-        </div>
-        <br>
-   <b-button type="button" id="btn_login" squared variant="primary">로그인하기</b-button>
-   </form>
-   </div>
+  <div>
+    <form name="form">
+      <div class="form-group">
+        <input
+          v-model="email"
+          type="text"
+          class="form-control"
+          name="username"
+          v-validate="'required'"
+          placeholder="아이디를 입력해주세요"
+        />
+      </div>
+      <br />
+      <div class="form-group">
+        <input
+          v-model="password"
+          type="password"
+          class="form-control"
+          name="username"
+          v-validate="'required'"
+          placeholder="비밀번호를 입력해주세요"
+        />
+      </div>
+      <br />
+      <b-button
+        @click="login()"
+        @keyup.enter="login()"
+        type="button"
+        id="btn_login"
+        squared
+        variant="primary"
+        >로그인하기</b-button
+      >
+    </form>
+  </div>
 </template>
 
 <script>
+import http from "@/util/http-common";
 export default {
-    name: "LoginComponent"
-}
+  name: "LoginComponent",
+
+  data: () => ({
+    email: "",
+    password: "",
+  }),
+
+  methods: {
+    login() {
+      http
+        .post("/user/login", {
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            console.log(response.data);
+            localStorage.setItem("access-token", response.data.token);
+            this.$router.push("/");
+            this.$router.go();
+          } else {
+            alert("로그인에 실패했습니다");
+          }
+        });
+    },
+  },
+};
 </script>
 
 <style scoped>

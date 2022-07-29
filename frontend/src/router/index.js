@@ -7,6 +7,7 @@ import MainView from "../views/MainView.vue";
 import DonationView from "../views/DonationView.vue";
 // 회원관리
 import LoginView from "../views/LoginView.vue";
+import LogoutView from "../views/LogoutView.vue";
 import SignupView from "../views/SignupView.vue";
 import UserView from "../views/UserView.vue";
 import OwnerView from "../views/OwnerView.vue";
@@ -35,8 +36,7 @@ import MypageUserView from "../views/MypageUserView.vue";
 import OrderHistoryView from "../views/OrderHistoryView.vue";
 import MyreviewView from "../views/MyreviewView.vue";
 // 오류
-import NotFoundView from "../views/NotFoundView.vue"
-
+import NotFoundView from "../views/NotFoundView.vue";
 
 Vue.use(VueRouter);
 
@@ -66,7 +66,15 @@ const routes = [
     component: LoginView,
     meta: {
       title: "로그인",
-    }
+    },
+  },
+  {
+    path: "/logout",
+    name: "logout",
+    component: LogoutView,
+    meta: {
+      title: "로그아웃",
+    },
   },
   {
     path: "/signup",
@@ -254,7 +262,6 @@ const routes = [
     path: "*",
     redirect: "/404",
   },
-
 ];
 
 const router = new VueRouter({
@@ -264,8 +271,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title
-  next()
-})
+  document.title = to.meta.title;
+  next();
+});
 
 export default router;
