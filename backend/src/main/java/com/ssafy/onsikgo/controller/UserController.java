@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
 @RequestMapping("/user")
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signup(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
         return userService.signup(userDto);
     }
 
