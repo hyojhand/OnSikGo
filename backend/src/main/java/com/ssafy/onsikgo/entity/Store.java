@@ -91,6 +91,7 @@ public class Store {
     public StoreDto toDto() {
 
         return StoreDto.builder()
+                .storeId(this.storeId)
                 .storeName(this.getStoreName())
                 .location(this.getLocation())
                 .tel(this.getTel())

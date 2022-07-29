@@ -276,6 +276,11 @@ export default {
   },
   created() {
     this.pageType = this.pages.includes(this.title);
+  },
+  updated() {
+    this.title = document.title;
+    // 판단
+    this.pageType = this.pages.includes(this.title);
 
     if (localStorage.getItem("access-token") == null) {
       this.logincheck = false;
@@ -283,6 +288,7 @@ export default {
       this.logincheck = true;
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
+
       http.get("/user").then((response) => {
         console.log(response.data.role);
         if (response.data.role == "OWNER") {
@@ -290,11 +296,6 @@ export default {
         }
       });
     }
-  },
-  updated() {
-    this.title = document.title;
-    // 판단
-    this.pageType = this.pages.includes(this.title);
   },
 };
 </script>

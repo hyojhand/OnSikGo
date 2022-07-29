@@ -106,7 +106,7 @@ public class OrderService {
     }
 
     @Transactional
-    public ResponseEntity<String> signOrder(Long order_id, HttpServletRequest request) {
+    public ResponseEntity<String> signOrder(String order_id, HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
             return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
@@ -118,7 +118,7 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 유저", HttpStatus.NO_CONTENT);
         }
 
-        Optional<Order> findOrder = orderRepository.findById(order_id);
+        Optional<Order> findOrder = orderRepository.findById(Long.valueOf(order_id));
         if(!findOrder.isPresent()) {
             return new ResponseEntity<>("존재하지 않는 주문", HttpStatus.NO_CONTENT);
         }
@@ -140,7 +140,7 @@ public class OrderService {
     }
 
     @Transactional
-    public ResponseEntity<String> refuseOrder(HashMap<String, String> map, Long order_id,HttpServletRequest request) {
+    public ResponseEntity<String> refuseOrder(HashMap<String, String> map, String order_id,HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
             return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
@@ -152,7 +152,7 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 유저", HttpStatus.NO_CONTENT);
         }
 
-        Optional<Order> findOrder = orderRepository.findById(order_id);
+        Optional<Order> findOrder = orderRepository.findById(Long.valueOf(order_id));
         if(!findOrder.isPresent()) {
             return new ResponseEntity<>("존재하지 않는 주문", HttpStatus.NO_CONTENT);
         }
@@ -169,7 +169,7 @@ public class OrderService {
     }
 
     @Transactional
-    public ResponseEntity<String> cancelOrder(Long order_id,HttpServletRequest request) {
+    public ResponseEntity<String> cancelOrder(String order_id,HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
             return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
@@ -181,7 +181,7 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 유저", HttpStatus.NO_CONTENT);
         }
 
-        Optional<Order> findOrder = orderRepository.findById(order_id);
+        Optional<Order> findOrder = orderRepository.findById(Long.valueOf(order_id));
         if(!findOrder.isPresent()) {
             return new ResponseEntity<>("존재하지 않는 주문", HttpStatus.NO_CONTENT);
         }

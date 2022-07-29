@@ -83,13 +83,13 @@ public class StoreService {
     }
 
     @Transactional
-    public ResponseEntity<String> modify(HttpServletRequest request, Long store_id, StoreDto storeDto) {
+    public ResponseEntity<String> modify(HttpServletRequest request, String store_id, StoreDto storeDto) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
             return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
         }
 
-        Store findStore = storeRepository.findById(store_id).get();
+        Store findStore = storeRepository.findById(Long.valueOf(store_id)).get();
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
         findStore.update(storeDto, coordinate);
@@ -99,21 +99,40 @@ public class StoreService {
     }
 
     @Transactional
-    public ResponseEntity<String> delete(Long store_id) {
+    public ResponseEntity<String> delete(String store_id) {
 
-        Optional<Store> findStore = storeRepository.findById(store_id);
+        Optional<Store> findStore = storeRepository.findById(Long.valueOf(store_id));
         storeRepository.delete(findStore.get());
         return new ResponseEntity<>("가게 정보가 삭제되었습니다.", HttpStatus.OK);
     }
 
-    public ResponseEntity<StoreDto> getInfo(Long store_id) {
-        Store findStore = storeRepository.findById(store_id).get();
+    public ResponseEntity<StoreDto> getInfo(String store_id) {
+        Store findStore = storeRepository.findById(Long.valueOf(store_id)).get();
 
         StoreDto findStoreDto = findStore.toDto();
         return new ResponseEntity<>(findStoreDto, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<StoreDto>> getList(ListDto listDto) {
+    public ResponseEntity<List<StoreDto>> getList(HttpServletRequest request) {
+        String token = request.getHeader("access-token");
+        User findUser = null;
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
+        String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
+        findUser = userRepository.findByEmail(userEmail).get();
+
+        List<Store> storeList = storeRepository.findByUser(findUser);
+        List<StoreDto> storeDtoList = new ArrayList<>();
+        for(Store store : storeList) {
+            StoreDto storeDto = store.toDto();
+            storeDtoList.add(storeDto);
+        }
+        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<StoreDto>> getCategoryKeyword(ListDto listDto) {
         if(listDto.getKeyword() != null) {
             List<Store> storeList = storeRepository.findByStoreNameContaining(listDto.getKeyword());
             List<StoreDto> storeDtoList = new ArrayList<>();
@@ -137,9 +156,9 @@ public class StoreService {
 
 
     @Transactional
-    public ResponseEntity<String> closeStore(Long store_id) {
+    public ResponseEntity<String> closeStore(String store_id) {
 
-        Optional<Store> findStore = storeRepository.findById(store_id);
+        Optional<Store> findStore = storeRepository.findById(Long.valueOf(store_id));
         if(!findStore.isPresent()) {
             return new ResponseEntity<>("해당하는 가게가 없습니다.", HttpStatus.NOT_FOUND);
         }

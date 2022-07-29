@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
 @RequestMapping("/order")
@@ -30,17 +31,17 @@ public class OrderController {
     }
 
     @PatchMapping("/sign/{order_id}")
-    public ResponseEntity<String> signOrder(@PathVariable Long order_id,HttpServletRequest request) {
+    public ResponseEntity<String> signOrder(@PathVariable String order_id,HttpServletRequest request) {
         return orderService.signOrder(order_id,request);
     }
 
     @PatchMapping("/refuse/{order_id}")
-    public ResponseEntity<String> refuseOrder(@RequestBody HashMap<String, String> map, @PathVariable Long order_id, HttpServletRequest request) {
+    public ResponseEntity<String> refuseOrder(@RequestBody HashMap<String, String> map, @PathVariable String order_id, HttpServletRequest request) {
         return orderService.refuseOrder(map, order_id, request);
     }
 
     @PatchMapping("/cancel/{order_id}")
-    public ResponseEntity<String> cancelOrder(@PathVariable Long order_id, HttpServletRequest request) {
+    public ResponseEntity<String> cancelOrder(@PathVariable String order_id, HttpServletRequest request) {
         return orderService.cancelOrder(order_id, request);
     }
 

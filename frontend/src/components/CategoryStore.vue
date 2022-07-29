@@ -3,30 +3,30 @@
     <!-- 상위 가게 카테고리 -->
     <div class="row">
       <div class="col">
-        <img src="@/assets/images/dessert.jpg" alt="dessert">
+        <img src="@/assets/images/dessert.png" alt="dessert">
         <p>디저트</p>
       </div>
       <div class="col">
-        <img src="@/assets/images/japanesefood.jpg" alt="japanesefood">
+        <img src="@/assets/images/japanesefood.png" alt="japanesefood">
         <p>일식</p>
       </div>
       <div class="col">
-        <img src="@/assets/images/chinesefood.jpg" alt="chinesefood">
+        <img src="@/assets/images/chinesefood.png" alt="chinesefood">
         <p>중식</p>
       </div>
     </div>
     <!-- 하위 가게 카테고리 -->
     <div class="row">
       <div class="col">
-        <img src="@/assets/images/koreanfood.jpg" alt="koreanfood">
+        <img src="@/assets/images/koreanfood.png" alt="koreanfood">
         <p>한식</p>
       </div>
       <div class="col">
-        <img src="@/assets/images/snackbar.jpg" alt="snackbar">
+        <img src="@/assets/images/snackbar.png" alt="snackbar">
         <p>분식</p>
       </div>
       <div class="col">
-        <img src="@/assets/images/westernfood.jpg" alt="westernfood">
+        <img src="@/assets/images/westernfood.png" alt="westernfood">
         <p>양식</p>
       </div>
     </div>
