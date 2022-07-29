@@ -100,14 +100,14 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<UserDto> signup(UserDto userDto) {
+    public ResponseEntity<String> signup(UserDto userDto) {
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         User user = userDto.toEntity(LoginType.ONSIKGO);
 
         userRepository.save(user);
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
     public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
