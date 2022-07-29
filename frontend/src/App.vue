@@ -6,7 +6,6 @@
       absolute
       temporary
       flat
-      color="white"
       class="nav-box"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
@@ -244,7 +243,9 @@ export default {
 .view {
   margin-top: 58px;
 }
+
 #app {
+  background-color: #f0f0f0;
   align-items: center;
   text-align: center;
   margin: 0 auto;
