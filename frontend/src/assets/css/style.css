@@ -4,7 +4,6 @@
   font-weight: 800;
   font-size: 15px;
   color: rgb(140, 184, 131);
-  background-color: rgb(240, 240, 240);
 }
 /* basic btn */
 button {
@@ -19,10 +18,6 @@ button {
   color: inherit;
   position: relative;
   z-index: 1;
-}
-
-v-card * {
-  background-color: white;
 }
 
 /* font size */
