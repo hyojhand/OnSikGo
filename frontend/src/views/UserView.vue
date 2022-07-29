@@ -101,6 +101,7 @@ export default {
     email: "",
     password: "",
     nickname: "",
+    role: "USER",
     checkbox: false,
   }),
 
@@ -164,6 +165,7 @@ export default {
           password: this.password,
           nickname: this.nickname,
           userName: this.name,
+          role: this.role,
         })
         .then((response) => {
           if (response.status == 200) {

@@ -7,13 +7,16 @@
         </b-button>
       </template>
       <v-card>
-        <v-card-title class="d-flex justify-content-center">  <br>
-        그래도, 우리는 <br>세상을 구하는 당신을 응원합니다! <br>
+        <v-card-title class="d-flex justify-content-center">
+          <br />
+          그래도, 우리는 <br />세상을 구하는 당신을 응원합니다! <br />
         </v-card-title>
-        <img src="@/assets/logo.jpg" width="120" height="80"><br><br><br>
+        <img
+          src="@/assets/logo.png"
+          width="120"
+          height="80"
+        /><br /><br /><br />
         <b-button pill variant="outline-danger">안녕~!</b-button>
-
-        
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -37,6 +40,6 @@ export default {
   max-width: 344px;
 }
 #green {
-    color: green;
+  color: green;
 }
 </style>
