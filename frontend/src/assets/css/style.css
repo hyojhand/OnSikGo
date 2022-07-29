@@ -21,15 +21,19 @@ button {
   z-index: 1;
 }
 
+v-card * {
+  background-color: white;
+}
+
 /* font size */
 .font-s {
-  font-size: 6px;
+  font-size: 10px;
 }
 .font-m {
-  font-size: 8px;
+  font-size: 20px;
 }
 .font-l {
-  font-size: 12px;
+  font-size: 25px;
 }
 
 /* font thick */

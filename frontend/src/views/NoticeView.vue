@@ -1,8 +1,6 @@
 <template>
   <div>
     <notice-card class="notice-card"></notice-card>
-    <notice-card class="notice-card"></notice-card>
-    <notice-card class="notice-card"></notice-card>
   </div>
 </template>
 
