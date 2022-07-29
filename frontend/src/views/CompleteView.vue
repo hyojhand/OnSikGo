@@ -1,6 +1,6 @@
 <template>
   <div class="container" width="100%">
-    <img src="@/assets/logo.jpg" alt="" />
+    <img src="@/assets/logo.png" alt="" />
     <div class="text-h5 mt-5">가입이 완료되었어요</div>
     <div>
       <v-list-item-title class="mt-3 mb-3">

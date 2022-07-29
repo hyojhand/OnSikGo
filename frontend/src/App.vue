@@ -6,7 +6,7 @@
       <v-spacer></v-spacer>
       <img
         v-if="title === '온식고'"
-        src="@/assets/logo.jpg"
+        src="@/assets/logo.png"
         alt="logo였던것.."
         style="height: 100%; width: 20%"
       />
@@ -44,7 +44,7 @@
     <v-navigation-drawer app v-model="drawer" absolute clipped temporary>
       <router-link :to="{ name: 'main' }">
         <img
-          src="@/assets/logo.jpg"
+          src="@/assets/logo.png"
           alt="logo였던것.."
           style="height: 6%; width: 20%; margin: 3% 0%"
         />
@@ -146,7 +146,7 @@
     <v-navigation-drawer app v-model="setting" absolute clipped temporary>
       <router-link :to="{ name: 'main' }">
         <img
-          src="@/assets/logo.jpg"
+          src="@/assets/logo.png"
           alt="logo였던것.."
           style="height: 6%; width: 20%; margin: 3% 0%"
         />
@@ -220,6 +220,7 @@
 </template>
 
 <script>
+import http from "@/util/http-common";
 export default {
   data() {
     return {
@@ -246,6 +247,7 @@ export default {
       ],
       owners: [
         { title: "홈", router: "/" },
+        { title: "로그아웃", router: "/logout" },
         { title: "마이페이지", router: "/mypage/owner" },
         { title: "온식고", router: "/shop" },
         { title: "전체상품", router: "/allprod" },
@@ -279,6 +281,14 @@ export default {
       this.logincheck = false;
     } else {
       this.logincheck = true;
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http.get("/user").then((response) => {
+        console.log(response.data.role);
+        if (response.data.role == "OWNER") {
+          this.userState = 1;
+        }
+      });
     }
   },
   updated() {
