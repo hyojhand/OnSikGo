@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       stores: [],
-      storeId: Number,
+      storeId: "",
       itemName: "",
       itemPrice: "",
       itemComment: "",
@@ -84,13 +84,12 @@ export default {
     http.get("/store/list").then((response) => {
       this.stores = response.data;
       this.storeId = response.data[0].storeId;
-      console.log(typeof(this.storeId));
     });
   },
 
   methods: {
     register() {
-      http.post("/item/register/${this.storeId}", {
+      http.post(`/item/register/${this.storeId}`, {
         itemName : this.itemName,
         price: this.itemPrice,
         comment : this.itemComment,
