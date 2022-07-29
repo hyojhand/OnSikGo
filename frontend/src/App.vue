@@ -295,7 +295,7 @@ export default {
 }
 
 #app {
-  background-color: #f0f0f0;
+  background-color: rgb(240, 240, 240);
   align-items: center;
   text-align: center;
   margin: 0 auto;
