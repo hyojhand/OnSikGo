@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto card-box" max-width="344" outlined shaped>
+  <v-card class="mx-auto card-box" max-width="344">
     <div class="row card-box">
       <img
         class="img-box col-5"
@@ -45,6 +45,7 @@ export default {
   flex-direction: row;
   align-items: center;
   background-color: rgb(240, 240, 240);
+  border-bottom: 2px solid rgba(0, 0, 0, 10%);
 }
 .img-box {
   margin: 0 auto;
@@ -54,10 +55,6 @@ export default {
 }
 .msg-box {
   text-align: start;
-}
-.card-box {
-  display: flex;
-  flex-direction: row;
 }
 .order-box {
   display: flex;

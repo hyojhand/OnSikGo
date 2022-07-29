@@ -1,7 +1,6 @@
 <template>
   <div>
     <notice-user-card ref class="notice-card"></notice-user-card>
-    <notice-user-card ref class="notice-card"></notice-user-card>
   </div>
 </template>
 
