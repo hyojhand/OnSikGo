@@ -1,53 +1,53 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="dialog" width="344">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn rounded color="error" dark v-bind="attrs" v-on="on">
+        <button
+          class="border-m radius-l text-m btn-reject"
+          v-bind="attrs"
+          v-on="on"
+        >
           거절
-        </v-btn>
+        </button>
       </template>
 
-      <v-card>
+      <div class="card-refuse">
         <v-card-title class="text-h5 lighten-2"> 주문 거절 사유 </v-card-title>
 
         <div class="mx-auto my-auto option-box">
           <v-list-item-content class="btn-box">
-            <v-btn
-              rounded
-              class="reason mb-2"
-              :class="{ error: id1 }"
+            <button
+              class="reason mb-2 border-m radius-l text-m"
+              :class="{ select: id1 }"
               @click="reason1()"
             >
-              상품 품절</v-btn
-            >
-            <v-btn
-              rounded
-              class="reason mb-2"
-              :class="{ error: id2 }"
+              상품 품절
+            </button>
+            <button
+              class="reason mb-2 border-m radius-l text-m"
+              :class="{ select: id2 }"
               @click="reason2()"
             >
-              마감</v-btn
-            >
-            <v-btn
-              rounded
-              class="reason mb-2"
-              :class="{ error: id3 }"
+              마감
+            </button>
+            <button
+              class="reason mb-2 border-m radius-l text-m"
+              :class="{ select: id3 }"
               @click="reason3()"
             >
-              고객 요청</v-btn
-            >
+              고객 요청
+            </button>
             <reason-modal @two-check-it="twoCheckIt"></reason-modal>
           </v-list-item-content>
         </div>
-
-        <v-btn rounded color="success" @click="checkIt()" class="mb-3">
+        <button
+          @click="checkIt()"
+          class="border-m radius-l text-m btn-send"
+          :class="{ send: reason }"
+        >
           사유전송하기
-        </v-btn>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
+        </button>
+      </div>
     </v-dialog>
   </div>
 </template>
@@ -98,8 +98,26 @@ export default {
 </script>
 
 <style scoped>
+.card-refuse {
+  background-color: white;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.btn-reject {
+  color: rgb(255, 82, 82);
+  width: 64px;
+  height: 35px;
+}
+.btn-send {
+  margin: 2%;
+  width: 250px;
+}
 .option-box {
   padding: 0 3%;
+  background-color: rgb(240, 240, 240);
+  width: 100%;
 }
 .btn-box {
   justify-content: center;
@@ -108,7 +126,12 @@ export default {
   width: 100%;
   max-width: 344px;
 }
-.error {
-  color: error;
+.select {
+  color: white;
+  background-color: rgb(255, 82, 82);
+}
+.send {
+  color: white;
+  background-color: rgb(140, 184, 131);
 }
 </style>

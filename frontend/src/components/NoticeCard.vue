@@ -44,6 +44,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  background-color: rgb(240, 240, 240);
 }
 .img-box {
   margin: 0 auto;
