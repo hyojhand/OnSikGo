@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto card-box" max-width="344" outlined shaped>
+  <v-card class="mx-auto card-box" max-width="344">
     <div class="row card-box" v-if="user">
       <img
         class="img-box col-5"
