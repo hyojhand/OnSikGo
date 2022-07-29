@@ -2,11 +2,19 @@
   <div>
     <!--매장선택-->
     <div class = "d-flex justify-content-center mt-5">
-      <b-dropdown id="dropdown1" text="1번째 매장 이름" style="border-color:#63BF68;">
-        <b-dropdown-item>2번째 매장 이름</b-dropdown-item>
-        <b-dropdown-item>3번째 매장 이름</b-dropdown-item>
-        <b-dropdown-item>4번째 매장 이름</b-dropdown-item>
-      </b-dropdown>
+      <select
+        id="dropdown1"
+        style="border-color: #63bf68"
+        @change="selectStore($event)"
+      >
+        <option
+          :key="store.storeName"
+          :value="store.storeId"
+          v-for="store in stores"
+        >
+          {{ store.storeName }}
+        </option>
+      </select>
     </div>
     <!--back 버튼-->
     <a href="" class="back-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
@@ -34,23 +42,68 @@
 
       <!--정보입력칸-->
       <div class="col-8">
-        <input class="form-control form-control-sm" type="text" placeholder="상풍명을 입력해주세요" aria-label=".form-control-sm example"> 
-        <input class="form-control form-control-sm mt-2" type="text" placeholder="정상가를 입력해주세요" aria-label=".form-control-sm example"> 
-        <input class="form-control form-control-sm mt-2" type="text" placeholder="특이사항을 입력해주세요" aria-label=".form-control-sm example"> 
-      </div>
+      <form class="mb-2">
+        <v-text-field
+          v-model="itemName"
+          label="상품명을 입력해주세요."
+      ></v-text-field>
+        <v-text-field
+          v-model="itemPrice"
+          label="정상가를 입력해주세요."
+      ></v-text-field>
+        <v-text-field
+          v-model="itemComment"
+          label="특이사항을 적어주세요."
+      ></v-text-field>
+      </form>
     </div>
-    <b-button @click="prodlist" pill variant="outline-success" class="d-grid col-8 mx-auto mt-5">등록</b-button>
+    <b-button @click="register" pill variant="outline-success" class="d-grid col-8 mx-auto mt-5">등록</b-button>
+  </div>
   </div>
 </template>
 
 <script>
+import http from '@/util/http-common'
+
 export default {
   name: "ProdRegisterView",
+  
+  data() {
+    return {
+      stores: [],
+      storeId: Number,
+      itemName: "",
+      itemPrice: "",
+      itemComment: "",
+    };
+  },
+
+  created () {
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+    http.get("/store/list").then((response) => {
+      this.stores = response.data;
+      this.storeId = response.data[0].storeId;
+      console.log(typeof(this.storeId));
+    });
+  },
 
   methods: {
-    prodlist () {
-      this.$router.push('/allprod')
-    },
+    register() {
+      http.post("/item/register/${this.storeId}", {
+        itemName : this.itemName,
+        price: this.itemPrice,
+        comment : this.itemComment,
+      })
+      .then( (response) => {
+        if (response.status == 200) {
+          this.$router.push('/allprod')
+        }
+        else {
+          alert ("상품 등록에 실패했습니다.")
+        }
+      })
+    }
   }
 };
 </script>
