@@ -27,18 +27,18 @@ public class StoreController {
 
     @PutMapping("/{store_id}")
     public ResponseEntity<String> modify(HttpServletRequest request,
-                                         @PathVariable Long store_id,
+                                         @PathVariable String store_id,
                                          @RequestBody StoreDto storeDto) {
         return storeService.modify(request, store_id, storeDto);
     }
 
     @DeleteMapping("/{store_id}")
-    public ResponseEntity<String> delete(@PathVariable Long store_id) {
+    public ResponseEntity<String> delete(@PathVariable String store_id) {
         return storeService.delete(store_id);
     }
 
     @GetMapping("/{store_id}")
-    public ResponseEntity<StoreDto> getInfo(@PathVariable Long store_id) {
+    public ResponseEntity<StoreDto> getInfo(@PathVariable String store_id) {
         return storeService.getInfo(store_id);
     }
 
@@ -53,7 +53,7 @@ public class StoreController {
     }
 
     @PutMapping("/close/{store_id}")
-    public ResponseEntity<String> closeStore(@PathVariable Long store_id) {
+    public ResponseEntity<String> closeStore(@PathVariable String store_id) {
         return storeService.closeStore(store_id);
     }
 

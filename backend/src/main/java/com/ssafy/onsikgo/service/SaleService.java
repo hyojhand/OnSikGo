@@ -35,13 +35,13 @@ public class SaleService {
     private final ItemRepository itemRepository;
 
     @Transactional
-    public ResponseEntity<String> register(SaleItemDto saleItemDto, Long store_id) {
+    public ResponseEntity<String> register(SaleItemDto saleItemDto, String store_id) {
 
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = today.format(formatter);
 
-        Store findStore = storeRepository.findById(store_id).get();
+        Store findStore = storeRepository.findById(Long.valueOf(store_id)).get();
         List<Sale> saleList = saleRepository.findByStoreOrderByDateDesc(findStore);
         if(saleList.size() == 0 || !saleList.get(0).getDate().equals(date)) {
             Sale sale = Sale.builder()
@@ -64,11 +64,11 @@ public class SaleService {
     }
 
 
-    public ResponseEntity<SaleResultDto> getSaleResult(HashMap<String, String> map, Long store_id) {
+    public ResponseEntity<SaleResultDto> getSaleResult(HashMap<String, String> map, String store_id) {
 
         String date = map.get("date");
 
-        Optional<Store> findStore = storeRepository.findById(store_id);
+        Optional<Store> findStore = storeRepository.findById(Long.valueOf(store_id));
         if(!findStore.isPresent()) {
             return new ResponseEntity<>(new SaleResultDto(), HttpStatus.NO_CONTENT);
         }
@@ -97,12 +97,12 @@ public class SaleService {
         return new ResponseEntity<>(saleResultDto,HttpStatus.OK);
     }
 
-    public ResponseEntity<List<SaleItemDto>> getSaleItemList(Long store_id) {
+    public ResponseEntity<List<SaleItemDto>> getSaleItemList(String store_id) {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = today.format(formatter);
 
-        Optional<Store> findStore = storeRepository.findById(store_id);
+        Optional<Store> findStore = storeRepository.findById(Long.valueOf(store_id));
         if(!findStore.isPresent()) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NO_CONTENT);
         }
@@ -128,9 +128,9 @@ public class SaleService {
     }
 
     @Transactional
-    public ResponseEntity<String> updateStock(HashMap<String,Integer> map, Long sale_item_id) {
+    public ResponseEntity<String> updateStock(HashMap<String,Integer> map, String sale_item_id) {
 
-        Optional<SaleItem> findSaleItem = saleItemRepository.findById(sale_item_id);
+        Optional<SaleItem> findSaleItem = saleItemRepository.findById(Long.valueOf(sale_item_id));
         if(!findSaleItem.isPresent()) {
             return new ResponseEntity<>("등록된 판매상품이 없습니다.", HttpStatus.NO_CONTENT);
         }
@@ -141,9 +141,9 @@ public class SaleService {
     }
 
     @Transactional
-    public ResponseEntity<String> delete(Long sale_item_id) {
+    public ResponseEntity<String> delete(String sale_item_id) {
 
-        SaleItem findSaleItem = saleItemRepository.findById(sale_item_id).get();
+        SaleItem findSaleItem = saleItemRepository.findById(Long.valueOf(sale_item_id)).get();
         saleItemRepository.delete(findSaleItem);
         return new ResponseEntity<>("재고 상품 삭제 완료" ,HttpStatus.OK);
     }
