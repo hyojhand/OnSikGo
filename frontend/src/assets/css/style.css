@@ -1,6 +1,74 @@
 * {
   box-sizing: border-box;
   font-family: "IBM Plex Sans KR", sans-serif;
-  font-size: 20px;
-  color: black;
+  font-weight: 800;
+  font-size: 15px;
+  color: rgb(140, 184, 131);
+  background-color: rgb(240, 240, 240);
+}
+/* basic btn */
+button {
+  font-family: "IBM Plex Sans KR", sans-serif;
+  float: left;
+  min-width: 30px;
+  display: block;
+  margin: 1em;
+  border: none;
+  background: none;
+  padding: 1% 2%;
+  color: inherit;
+  position: relative;
+  z-index: 1;
+}
+
+/* font size */
+.font-s {
+  font-size: 6px;
+}
+.font-m {
+  font-size: 8px;
+}
+.font-l {
+  font-size: 12px;
+}
+
+/* font thick */
+.text-s {
+  font-weight: 500;
+}
+
+.text-m {
+  font-weight: 600;
+}
+
+.text-l {
+  font-weight: 800;
+}
+
+/* border thick*/
+.border-s {
+  border: 1px solid;
+}
+.border-m {
+  border: 2px solid;
+}
+.border-l {
+  border: 3px solid;
+}
+
+/* Uppercase */
+.upper {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* border radius */
+.radius-s {
+  border-radius: 5px;
+}
+.radius-m {
+  border-radius: 15px;
+}
+.radius-l {
+  border-radius: 40px;
 }
