@@ -95,6 +95,7 @@ export default {
 }
 
 .location span {
+  color: #333;
   font-weight: 500;
   font-size : 16px;
   margin-left: 5px;
