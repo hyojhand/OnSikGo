@@ -60,9 +60,9 @@ public class NoticeService {
     }
 
     @Transactional
-    public ResponseEntity<String> delete(String notice_id) {
+    public ResponseEntity<String> delete(Long notice_id) {
 
-        Optional<Notice> findNotice = noticeRepository.findById(Long.valueOf(notice_id));
+        Optional<Notice> findNotice = noticeRepository.findById(notice_id);
         Notice notice = findNotice.get();
         noticeRepository.delete(notice);
         return new ResponseEntity<>("알림이 삭제되었습니다." , HttpStatus.OK);

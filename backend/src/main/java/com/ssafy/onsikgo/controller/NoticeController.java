@@ -25,7 +25,7 @@ public class NoticeController {
     }
 
     @DeleteMapping("/{notice_id}")
-    public ResponseEntity<String> delete(@PathVariable String notice_id) {
+    public ResponseEntity<String> delete(@PathVariable Long notice_id) {
         return noticeService.delete(notice_id);
     }
 }

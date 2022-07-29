@@ -20,7 +20,7 @@ public class FollowController {
     private final FollowService followService;
 
     @GetMapping("/{store_id}")
-    public ResponseEntity<String> register(HttpServletRequest request,@PathVariable String store_id){
+    public ResponseEntity<String> register(HttpServletRequest request,@PathVariable Long store_id){
         return followService.register(request,store_id);
     }
     @GetMapping
@@ -28,7 +28,7 @@ public class FollowController {
         return followService.getFollowList(request);
     }
     @DeleteMapping("/{store_id}")
-    public ResponseEntity<Object> delete(HttpServletRequest request,@PathVariable String store_id){
+    public ResponseEntity<Object> delete(HttpServletRequest request,@PathVariable Long store_id){
         return followService.delete(request,store_id);
     }
 }
