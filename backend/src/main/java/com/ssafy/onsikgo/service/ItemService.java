@@ -26,39 +26,39 @@ public class ItemService {
     private final StoreRepository storeRepository;
 
     @Transactional
-    public ResponseEntity<String> register(ItemDto itemDto, String store_id) {
+    public ResponseEntity<String> register(ItemDto itemDto, Long store_id) {
 
         Item item = itemDto.toEntity();
-        Store findStore = storeRepository.findById(Long.valueOf(store_id)).get();
+        Store findStore = storeRepository.findById(store_id).get();
         item.addStore(findStore);
 
         itemRepository.save(item);
         return new ResponseEntity<>("상품등록이 완료되었습니다.", HttpStatus.OK);
     }
 
-    public ResponseEntity<ItemDto> getInfo(String item_id) {
-        Optional<Item> findItem = itemRepository.findById(Long.valueOf(item_id));
+    public ResponseEntity<ItemDto> getInfo(Long item_id) {
+        Optional<Item> findItem = itemRepository.findById(item_id);
         ItemDto itemDto = findItem.get().toDto();
         return new ResponseEntity<>(itemDto, HttpStatus.OK);
     }
 
     @Transactional
-    public ResponseEntity<String> delete(String item_id) {
-        Optional<Item> findItem = itemRepository.findById(Long.valueOf(item_id));
+    public ResponseEntity<String> delete(Long item_id) {
+        Optional<Item> findItem = itemRepository.findById(item_id);
         itemRepository.delete(findItem.get());
         return new ResponseEntity<>("상품 삭제가 완료되었습니다." , HttpStatus.OK);
     }
 
     @Transactional
-    public ResponseEntity<String> modify(ItemDto itemDto, String item_id) {
-        Item findItem = itemRepository.findById(Long.valueOf(item_id)).get();
+    public ResponseEntity<String> modify(ItemDto itemDto, Long item_id) {
+        Item findItem = itemRepository.findById(item_id).get();
         findItem.update(itemDto);
         itemRepository.save(findItem);
         return new ResponseEntity<>("상품 수정이 완료되었습니다.",HttpStatus.OK);
     }
 
-    public ResponseEntity<List<ItemDto>> getList(String store_id) {
-        Store findStore = storeRepository.findById(Long.valueOf(store_id)).get();
+    public ResponseEntity<List<ItemDto>> getList(Long store_id) {
+        Store findStore = storeRepository.findById(store_id).get();
         List<Item> items = findStore.getItems();
         List<ItemDto> itemDtos = new ArrayList<>();
         for(int i = 0; i < items.size(); i++) {
