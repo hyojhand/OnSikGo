@@ -1,5 +1,6 @@
 package com.ssafy.onsikgo.entity;
 
+import com.ssafy.onsikgo.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -69,6 +70,16 @@ public class User {
     public User changePw(String password) {
         this.password = password;
         return this;
+    }
+
+    public UserDto toDto() {
+        return UserDto.builder()
+                .email(this.email)
+                .nickname(this.nickname)
+                .userName(this.userName)
+                .imgUrl(this.imgUrl)
+                .role(this.role)
+                .build();
     }
 
 }

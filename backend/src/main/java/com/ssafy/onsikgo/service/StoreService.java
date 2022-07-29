@@ -1,6 +1,7 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.ListDto;
+import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Sale;
 import com.ssafy.onsikgo.entity.SaleItem;
@@ -47,6 +48,17 @@ public class StoreService {
     private final UserRepository userRepository;
 
     private final SaleRepository saleRepository;
+
+    @Transactional
+    public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
+
+        HashMap<String, String> coordinate = getCoordinate(ownerDto.getLocation());
+        Store store = ownerDto.toStoreEntity(coordinate);
+        store.addUser(user);
+
+        storeRepository.save(store);
+        return new ResponseEntity<>("가게 정보가 등록되었습니다.", HttpStatus.OK);
+    }
 
     @Transactional
     public ResponseEntity<String> register(HttpServletRequest request, StoreDto storeDto) {

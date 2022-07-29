@@ -32,18 +32,10 @@
           <v-text-field
             v-model="name"
             :error-messages="nameErrors"
-            label="대표자명을 입력해주세요."
+            label="사용자명을 입력해주세요."
             required
             @input="$v.name.$touch()"
             @blur="$v.name.$touch()"
-          ></v-text-field>
-          <v-text-field
-            v-model="number"
-            :error-messages="numberErrors"
-            label="가게 전화번호를 입력해주세요."
-            required
-            @input="$v.number.$touch()"
-            @blur="$v.number.$touch()"
           ></v-text-field>
         </form>
 
@@ -61,7 +53,7 @@
           <v-text-field
             v-model="store"
             :error-messages="storeErrors"
-            label="가게명을 입력해주세요."
+            label="상호명을 입력해주세요."
             required
             @input="$v.store.$touch()"
             @blur="$v.store.$touch()"
@@ -70,7 +62,7 @@
           <v-text-field
             v-model="address"
             :error-messages="adressErrors"
-            label="사업장 주소를 입력해주세요."
+            label="가게 주소를 입력해주세요."
             required
             type="address"
             @input="$v.address.$touch()"
@@ -78,26 +70,45 @@
           ></v-text-field>
 
           <v-text-field
+            v-model="tel"
+            :error-messages="telErrors"
+            label="가게 전화번호를 입력해주세요."
+            required
+            @input="$v.tel.$touch()"
+            @blur="$v.tel.$touch()"
+          ></v-text-field>
+
+          <v-text-field
             v-model="identify"
             :error-messages="identifyErrors"
-            label="사업장 번호를 입력해주세요."
+            label="사업자 등록번호를 입력해주세요."
             required
             @input="$v.identify.$touch()"
             @blur="$v.identify.$touch()"
           ></v-text-field>
           <v-text-field
-            v-model="start"
-            :error-messages="startErrors"
-            label="개업일을 입력해주세요."
+            v-model="end"
+            :error-messages="endErrors"
+            label="마감시간을 입력해주세요."
             required
-            @input="$v.start.$touch()"
-            @blur="$v.start.$touch()"
+            @input="$v.end.$touch()"
+            @blur="$v.end.$touch()"
+          ></v-text-field>
+          <v-text-field
+            v-model="off"
+            label="휴무일을 입력해주세요."
+          ></v-text-field>
+          <v-text-field
+            v-model="category"
+            :error-messages="categoryErrors"
+            label="카테고리를 선택해주세요."
+            required
+            @input="$v.category.$touch()"
+            @blur="$v.category.$touch()"
           ></v-text-field>
         </form>
 
-        <v-btn color="success" class="mx-5" @click="gocomplete()">
-          다음으로
-        </v-btn>
+        <v-btn color="success" class="mx-5" @click="signup()"> 다음으로 </v-btn>
         <v-btn text @click="e1 = 1"> 이전으로 </v-btn>
       </v-stepper-content>
       <v-stepper-header class="status-box">
@@ -124,6 +135,7 @@
 import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
 import minLength from "vuelidate/lib/validators/minLength";
+import http from "@/util/http-common";
 
 export default {
   mixins: [validationMixin],
@@ -134,11 +146,14 @@ export default {
       name: "",
       email: "",
       password: "",
-      number: "",
+      role: "OWNER",
       store: "",
       address: "",
+      tel: "",
       identify: "",
-      start: "",
+      end: "",
+      off: "",
+      category: "",
     };
   },
 
@@ -149,8 +164,10 @@ export default {
     number: { required },
     store: { required },
     address: { required },
+    tel: { required },
     identify: { required },
-    start: { required },
+    end: { required },
+    category: { required },
   },
 
   computed: {
@@ -169,12 +186,6 @@ export default {
       !this.$v.password.required && errors.push("비밀번호를 입력해주세요.");
       return errors;
     },
-    numberErrors() {
-      const errors = [];
-      if (!this.$v.number.$dirty) return errors;
-      !this.$v.number.required && errors.push("전화번호를 입력해주세요.");
-      return errors;
-    },
     emailErrors() {
       const errors = [];
       if (!this.$v.email.$dirty) return errors;
@@ -191,7 +202,13 @@ export default {
     addressErrors() {
       const errors = [];
       if (!this.$v.address.$dirty) return errors;
-      !this.$v.address.required && errors.push("주소를 입력해주세요.");
+      !this.$v.address.required && errors.push("가게주소를 입력해주세요.");
+      return errors;
+    },
+    telErrors() {
+      const errors = [];
+      if (!this.$v.tel.$dirty) return errors;
+      !this.$v.tel.required && errors.push("전화번호를 입력해주세요.");
       return errors;
     },
     identifyErrors() {
@@ -200,15 +217,34 @@ export default {
       !this.$v.identify.required && errors.push("사업장 번호를 입력해주세요.");
       return errors;
     },
-    startErrors() {
+    endErrors() {
       const errors = [];
-      if (!this.$v.start.$dirty) return errors;
-      !this.$v.start.required && errors.push("개업일을 입력해주세요.");
+      if (!this.$v.end.$dirty) return errors;
+      !this.$v.end.required && errors.push("마감시간을 입력해주세요.");
+      return errors;
+    },
+    categoryErrors() {
+      const errors = [];
+      if (!this.$v.category.$dirty) return errors;
+      !this.$v.category.required && errors.push("카테고리를 선택해주세요.");
       return errors;
     },
   },
   methods: {
-    gocomplete() {
+    signup() {
+      http.post("/user/signup/owner", {
+        email: this.email,
+        password: this.password,
+        userName: this.name,
+        role: this.role,
+        storeName: this.store,
+        location: this.address,
+        tel: this.tel,
+        storeNum: this.identify,
+        closingTime: this.end,
+        offDay: this.off,
+        category: this.category,
+      });
       this.$router.push("/signup/complete");
     },
   },

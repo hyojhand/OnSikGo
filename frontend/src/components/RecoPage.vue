@@ -3,10 +3,9 @@
     <b-carousel
       id="carousel-1"
       v-model="slide"
-      :interval="2000"
+      :interval="3000"
       controls
       indicators
-      background="#ababab"
       img-width="1024"
       img-height="480"
       style="text-shadow: 1px 1px 2px #333"
@@ -16,34 +15,26 @@
       <b-carousel-slide>
         <template #img>
           <img
-            width="100%"
-            height="350px"
-            src="@/assets/images/hambuger.jpg"
+            width="90%"
+            height="180px"
+            src="@/assets/images/recommend_1.jpg"
             alt="image slot"
+            style="border-radius: 7px;"
           />
         </template>
       </b-carousel-slide>
       <b-carousel-slide>
         <template #img>
           <img
-            width="100%"
-            height="350px"
-            src="@/assets/images/westernfood.jpg"
+            width="90%"
+            height="180px"
+            src="@/assets/images/recommend_2.jpg"
             alt="image slot"
+            style="border-radius: 7px;"
           />
         </template>
       </b-carousel-slide>
 
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="100%"
-            height="350px"
-            src="@/assets/images/snackbar.jpg"
-            alt="image slot"
-          />
-        </template>
-      </b-carousel-slide>
     </b-carousel>
   </div>
 </template>
