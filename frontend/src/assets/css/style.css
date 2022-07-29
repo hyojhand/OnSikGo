@@ -4,7 +4,6 @@
   font-weight: 800;
   font-size: 15px;
   color: rgb(140, 184, 131);
-  background-color: rgb(240, 240, 240);
 }
 /* basic btn */
 button {
@@ -23,13 +22,13 @@ button {
 
 /* font size */
 .font-s {
-  font-size: 6px;
+  font-size: 10px;
 }
 .font-m {
-  font-size: 8px;
+  font-size: 20px;
 }
 .font-l {
-  font-size: 12px;
+  font-size: 25px;
 }
 
 /* font thick */
