@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 슬로건 -->
     <b-carousel
       id="carousel-1"
       v-model="slide"
