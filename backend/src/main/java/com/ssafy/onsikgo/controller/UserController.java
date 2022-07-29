@@ -1,6 +1,7 @@
 package com.ssafy.onsikgo.controller;
 
 import com.ssafy.onsikgo.dto.LoginDto;
+import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.TokenDto;
 import com.ssafy.onsikgo.dto.UserDto;
 import com.ssafy.onsikgo.service.KakaoUserService;
@@ -46,6 +47,11 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
         return userService.signup(userDto);
+    }
+
+    @PostMapping("/signup/owner")
+    public ResponseEntity<String> signup(@RequestBody OwnerDto ownerDto) {
+        return userService.signupOwner(ownerDto);
     }
 
     @PostMapping("/login")
