@@ -58,6 +58,7 @@ export default {
             console.log(response.data);
             localStorage.setItem("access-token", response.data.token);
             this.$router.push("/");
+            this.$router.go();
           } else {
             alert("로그인에 실패했습니다");
           }
