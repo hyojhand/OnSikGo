@@ -32,12 +32,8 @@
       <!-- 검색란 -->
       <div class="container" v-if="selectedTab === tabs[0]">
         <div class="row">
-          <div class="col-4">
-            <span class="search-result">총 3개 검색 결과</span>
-          </div>
-        
           <div class="col">
-            <input class="search-box" type="search" placeholder=" 상품을 입력해주세요">
+            <input class="search-box" type="search" placeholder="        상품을 입력해주세요">
             <!-- 검색 아이콘 -->
             <button class="product-search">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -155,13 +151,28 @@ ul.tabs li{
 .search-result{
   font-size: 12px;
 }
-.search-box{
-  border: solid 1px;
-  font-size: 12px
-}
+
 
 .product-search {
   padding-right: 5px;
   padding-left: 5px;
+}
+
+.search-box{
+  border: solid 1px;
+  border-radius: 12px;
+  font-size: 12px;
+  background-repeat: no-repeat;
+  padding: 5px 5px;
+  width: 260px;
+  background-color: #FFF;
+}
+
+.search-box::-webkit-input-placeholder{
+  background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png) ;
+  background-size: contain;
+  background-position:  1px center;
+  background-repeat: no-repeat;
+  text-indent: 0;
 }
 </style>
