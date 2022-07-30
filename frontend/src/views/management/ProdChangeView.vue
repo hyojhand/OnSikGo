@@ -6,7 +6,7 @@
     </div>
     <!--수정정보나타내기-->
     <div>
-      <img src="@/assets/images/hambuger.jpg" alt="IMG-PRODUCT" />
+      <img :src="`${itemDto.itemImgUrl}`" alt="IMG-PRODUCT" />
       <div class="item-name">
         {{ this.itemDto.itemName }}
       </div>
@@ -57,7 +57,7 @@
       <button @click="prodchange" class="border-m radius-m edit-btn">
         수 정
       </button>
-      <product-delete-modal></product-delete-modal>
+      <product-delete-modal :no="this.itemDto.itemId"></product-delete-modal>
     </div>
   </div>
 </template>

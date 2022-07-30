@@ -6,7 +6,7 @@
       <b-row>
         <b-col md="3">
           <div id="tobecenter">
-            <img fluid src="@/assets/images/solo.jpg" />
+            <img class="store-image" :src="`${itemDto.itemImgUrl}`" />
           </div>
         </b-col>
         <b-col md="9">
@@ -64,6 +64,7 @@ export default {
   align-items: center;
   margin-top: 4px;
 } */
+
 #firstPrice {
   text-decoration: line-through;
 }
