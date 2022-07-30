@@ -293,6 +293,8 @@ export default {
         console.log(response.data.role);
         if (response.data.role == "OWNER") {
           this.userState = 1;
+        } else {
+          this.userState = 0;
         }
       });
     }
