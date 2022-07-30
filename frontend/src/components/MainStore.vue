@@ -48,7 +48,6 @@ export default {
 <style scoped>
  .container {
   width: 360px;
-
  }
  .container .row .col{
   font-size: 20px;
