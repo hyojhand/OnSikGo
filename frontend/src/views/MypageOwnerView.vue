@@ -1,17 +1,15 @@
 <template>
   <div>
     <div class="d-flex justify-content-end">
-      <b-dropdown
+      <select
         id="dropdown1"
-        text="1번째 매장 이름"
-        class="m-md-2"
         style="border-color: #63bf68"
+        @change="selectStore($event)"
       >
-        <b-dropdown-item>2번째 매장 이름</b-dropdown-item>
-        <b-dropdown-item>3번째 매장 이름</b-dropdown-item>
-        <b-dropdown-item>4번째 매장 이름</b-dropdown-item>
-      </b-dropdown>
-
+        <option :key="index" :value="store" v-for="(store, index) in stores">
+          {{ store.storeName }}
+        </option>
+      </select>
     </div>
     <br />
     <!--이미지 가져오기-->
@@ -51,7 +49,7 @@
     </div>
     <hr />
 
-    <discountList></discountList>
+    <discountList> </discountList>
 
     <!--모달 -->
     <MemberQuitModal></MemberQuitModal>
@@ -63,12 +61,38 @@
 import discountList from "@/components/discountList.vue";
 import StoreInfoDiscardModal from "@/components/StoreInfoDiscardModal.vue";
 import MemberQuitModal from "@/components/MemberQuitModal.vue";
+import http from "@/util/http-common";
 export default {
   name: "MypageOwnerView",
   components: {
     discountList,
     StoreInfoDiscardModal,
     MemberQuitModal,
+  },
+  data() {
+    return {
+      stores: [],
+      storeId: "",
+      date: Date.today().toString("yyyyMMdd"),
+    };
+  },
+  async created() {
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+    await http.get("/store/list").then((response) => {
+      this.stores = response.data;
+      this.storeId = response.data[0].storeId;
+    });
+
+    console.log(this.date);
+
+    await http
+      .get(`/sale/list/${this.storeId}`, {
+        date: this.date,
+      })
+      .then((response) => {
+        console.log(response.data);
+      });
   },
   methods: {
     dataAnalysis() {
