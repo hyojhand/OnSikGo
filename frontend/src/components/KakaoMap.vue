@@ -17,8 +17,8 @@ export default {
   name: "KakaoMap",
   data() {
     return {
-      x: "",
-      y: "",
+      x: 33.452278,
+      y: 126.567803,
 
       markerPositions1: [
         [33.452278, 126.567803],
@@ -118,11 +118,12 @@ export default {
 
       this.map.setCenter(iwPosition);
     },
+    // 현재 위치 찾기
     curruntLocation() {
-      // if (navigator.geolocation) {
+      if (navigator.geolocation) {
 
       // 현재 위치
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition((position) => {
         console.log(position.coords)
         this.x = position.coords.latitude, // 위도
         this.y = position.coords.longitude; // 경도
@@ -130,7 +131,7 @@ export default {
         console.log(this.y)
       });
       // 못찾은 경우
-      // } 
+      } 
       // return true
     }
   },
