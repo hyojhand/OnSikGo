@@ -290,7 +290,6 @@ export default {
         localStorage.getItem("access-token");
 
       http.get("/user").then((response) => {
-        console.log(response.data.role);
         if (response.data.role == "OWNER") {
           this.userState = 1;
         } else {
