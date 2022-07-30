@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import orderList from "@/components/orderList.vue";
+import orderList from "@/components/profile/orderList.vue";
 export default {
   name: "OrderHistoryView",
   components: {

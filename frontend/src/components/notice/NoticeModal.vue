@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import RefuseModal from "@/components/RefuseModal.vue";
+import RefuseModal from "@/components/notice/RefuseModal.vue";
 export default {
   name: "NoticeModal",
   components: { RefuseModal },
