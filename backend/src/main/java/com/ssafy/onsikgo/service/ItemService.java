@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,14 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final StoreRepository storeRepository;
+    private final AwsS3Service awsS3Service;
 
     @Transactional
-    public ResponseEntity<String> register(ItemDto itemDto, Long store_id) {
+    public ResponseEntity<String> register(MultipartFile file,ItemDto itemDto, Long store_id) {
 
+        String itemImgUrl = awsS3Service.uploadImge(file);
+        log.info(itemImgUrl);
+        itemDto.setItemImgUrl(itemImgUrl);
         Item item = itemDto.toEntity();
         Store findStore = storeRepository.findById(store_id).get();
         item.addStore(findStore);
