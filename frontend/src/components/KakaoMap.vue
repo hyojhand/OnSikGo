@@ -17,6 +17,9 @@ export default {
   name: "KakaoMap",
   data() {
     return {
+      x: "",
+      y: "",
+
       markerPositions1: [
         [33.452278, 126.567803],
         [33.452671, 126.574792],
@@ -35,6 +38,9 @@ export default {
       infowindow: null,
     };
   },
+  created() {
+    this.curruntLocation();
+  },
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -51,14 +57,15 @@ export default {
     initMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        center: new kakao.maps.LatLng(this.x, this.y),
         level: 3,
       };
-
+      console.log(kakao.maps.LatLng)
       //지도 객체를 등록합니다.
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
     },
+
     changeSize(size) {
       const container = document.getElementById("map");
       container.style.width = `${size}px`;
@@ -111,6 +118,21 @@ export default {
 
       this.map.setCenter(iwPosition);
     },
+    curruntLocation() {
+      // if (navigator.geolocation) {
+
+      // 현재 위치
+        navigator.geolocation.getCurrentPosition(function(position) {
+        console.log(position.coords)
+        this.x = position.coords.latitude, // 위도
+        this.y = position.coords.longitude; // 경도
+        console.log(this.x)
+        console.log(this.y)
+      });
+      // 못찾은 경우
+      // } 
+      // return true
+    }
   },
 };
 </script>
