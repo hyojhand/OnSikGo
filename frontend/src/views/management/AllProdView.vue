@@ -3,7 +3,11 @@
     <!--매장선택-->
     <div>
       <select id="dropdown1" class="store-name" @change="selectStore($event)">
-        <option :key="index" :value="store" v-for="(store, index) in stores">
+        <option
+          :key="index"
+          :value="store.storeId"
+          v-for="(store, index) in stores"
+        >
           {{ store.storeName }}
         </option>
       </select>

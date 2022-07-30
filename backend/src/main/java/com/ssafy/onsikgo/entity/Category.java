@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum Category {
-    DESSERT, JAPAN, CHINA, KOREA, SNACK, WESTERN, PIZZA
+    DESSERT, JAPAN, CHINA, KOREA, SNACK, WESTERN
 }
