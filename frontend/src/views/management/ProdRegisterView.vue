@@ -30,7 +30,7 @@
         />
       </svg>
       <p class="d-flex justify-content-end">
-        <input type="file" class="" />
+        <input v-on:change="fileSelect()" type="file" ref="imgFile" />
       </p>
     </div>
 
@@ -70,11 +70,13 @@ export default {
 
   data() {
     return {
+      imgFile: "",
       stores: [],
       storeId: "",
       itemName: "",
       itemPrice: "",
       itemComment: "",
+      itemDto: [],
     };
   },
 
@@ -88,12 +90,27 @@ export default {
   },
 
   methods: {
+    fileSelect() {
+      console.log(this.$refs);
+      this.imgFile = this.$refs.imgFile.files[0];
+    },
     register() {
+      this.itemDto = {
+        itemName: this.itemName,
+        price: this.itemPrice,
+        comment: this.comment,
+      };
+      const formData = new FormData();
+      formData.append("file", this.imgFile);
+      formData.append(
+        "itemDto",
+        new Blob([JSON.stringify(this.itemDto)], { type: "application/json" })
+      );
       http
-        .post(`/item/register/${this.storeId}`, {
-          itemName: this.itemName,
-          price: this.itemPrice,
-          comment: this.itemComment,
+        .post(`/item/register/${this.storeId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
         .then((response) => {
           if (response.status == 200) {
