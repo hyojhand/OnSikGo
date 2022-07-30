@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import ReasonModal from "@/components/ReasonModal.vue";
+import ReasonModal from "@/components/notice/ReasonModal.vue";
 export default {
   name: "RefuseModal",
   components: { ReasonModal },

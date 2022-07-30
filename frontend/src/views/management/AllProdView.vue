@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import AllProductList from "@/components/AllProductList.vue";
+import AllProductList from "@/components/management/AllProductList.vue";
 import http from "@/util/http-common";
 export default {
   name: "AllProdView",

@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import ProductDeleteModal from "@/components/ProductDeleteModal.vue";
+import ProductDeleteModal from "@/components/management/ProductDeleteModal.vue";
 import http from "@/util/http-common";
 export default {
   name: "ProdChangeView",

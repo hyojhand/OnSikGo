@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import NoticeCard from "../components/NoticeCard.vue";
+import NoticeCard from "@/components/notice/NoticeCard.vue";
 
 export default {
   name: "NoticeView",
