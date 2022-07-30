@@ -1,72 +1,63 @@
 <template>
-  <div>
+  <div class="container">
     <!--매장선택-->
-    <div class="d-flex justify-content-center">
+    <div class="store-name mx-auto">
       {{ storeDto.storeName }}
     </div>
     <!--수정정보나타내기-->
-    <div class="head">
-      <div class="container">
-        <img
-          src="@/assets/images/hambuger.jpg"
-          alt="IMG-PRODUCT"
-          class="mt-2 mb-5"
-        />
+    <div>
+      <img src="@/assets/images/hambuger.jpg" alt="IMG-PRODUCT" />
+      <div class="item-name">
+        {{ this.itemDto.itemName }}
       </div>
-      <div class="bg-secondary bg-opacity-75 text-white fw-bold fs-2">
-        <p class="head">{{ this.itemDto.itemName }}</p>
-      </div>
-      <br />
 
       <!--상품정보-->
-      <div class="d-flex justify-content-center">
-        <div class="col-4">
-          <p class="mb-5">정상가</p>
-          <br />
-          <p class="mt-4">할인가</p>
-          <p>수량</p>
-          <p>특이사항</p>
+
+      <form class="info-container">
+        <div class="info-box row">
+          <div class="col-4">정상가</div>
+          <div class="col-7 price">{{ this.itemDto.price }}</div>
         </div>
-        <div class="col-8">
-          <p>{{ this.itemDto.price }}</p>
-          <p>🔻할인율입력해야함</p>
+        <div class="info-box row">
+          <div class="col-4">할인율</div>
+          <div class="col-7 price font-l">🔻70%</div>
+        </div>
+
+        <div class="info-box row">
+          <div class="col-4">할인가</div>
           <input
+            class="col-7"
             v-model="salePrice"
-            class="form-control form-control-sm"
             type="text"
-            placeholder="원하시는 금액을 입력해주세요"
-            aria-label=".form-control-sm example"
+            placeholder="할인된 판매 금액을 입력해주세요."
           />
+        </div>
+        <div class="info-box row">
+          <div class="col-4">수량</div>
           <input
+            class="col-7"
             v-model="stock"
-            class="form-control form-control-sm mt-2"
-            type="text"
-            placeholder="원하시는 수량을 입력해주세요"
-            aria-label=".form-control-sm example"
+            type="number"
+            placeholder="등록할 수량을 입력해주세요."
           />
+        </div>
+        <div class="info-box row">
+          <div class="col-4">특이사항</div>
           <input
+            class="col-7"
             v-model="this.itemDto.price"
-            class="form-control form-control-sm mt-2"
             type="text"
             placeholder="특이사항을 입력해주세요"
-            aria-label=".form-control-sm example"
           />
         </div>
-      </div>
-      <br />
-      <br />
-
-      <!--버튼모음-->
-      <div class="d-flex justify-content-around">
-        <b-button
-          @click="prodchange"
-          pill
-          variant="success"
-          class="d-grid gap-2 col-4 mx-auto"
-          >수정</b-button
-        >
-        <product-delete-modal></product-delete-modal>
-      </div>
+      </form>
+    </div>
+    <!--버튼모음-->
+    <div class="btn-box">
+      <button @click="prodchange" class="border-m radius-m edit-btn">
+        수 정
+      </button>
+      <product-delete-modal></product-delete-modal>
     </div>
   </div>
 </template>
@@ -113,23 +104,54 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  width: 300px;
-  height: 220px;
-  overflow: hidden;
-  position: relative;
-}
-
-.container > img {
-  position: absolute;
+img {
   width: 100%;
-  /* height: 100%; */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
-
-.head {
-  margin-top: 50px;
+input {
+  width: 57%;
+  padding: 8px 3px;
+  border-bottom: 1px solid black;
+  color: rgba(0, 0, 0, 60%);
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.store-name {
+  width: 40%;
+  font-size: 30px;
+  text-align: center;
+  padding: 2% 0;
+  color: rgba(0, 0, 0, 60%);
+}
+.item-name {
+  font-size: 30px;
+  margin: 5% auto;
+  border-bottom: 2px solid rgba(0, 0, 0, 10%);
+}
+.info-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10%;
+}
+.info-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.price {
+  text-align: start;
+}
+.btn-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto 5% auto;
+}
+.edit-btn {
+  width: 74px;
 }
 </style>

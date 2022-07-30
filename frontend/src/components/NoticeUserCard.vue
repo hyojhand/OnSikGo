@@ -77,6 +77,7 @@ export default {
   flex-direction: row;
   align-items: center;
   background-color: rgb(240, 240, 240);
+  border-bottom: 2px solid rgba(0, 0, 0, 10%);
 }
 .img-box {
   margin: 0 auto;
