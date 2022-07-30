@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import RecoPage from "@/components/RecoPage.vue";
-import SloganPage from "@/components/SloganPage.vue";
-import MainStore from '@/components/MainStore.vue'
+import RecoPage from "@/components/home/RecoPage.vue";
+import SloganPage from "@/components/home/SloganPage.vue";
+import MainStore from '@/components/home/MainStore.vue'
 export default {
   name: "MainView",
   components: {

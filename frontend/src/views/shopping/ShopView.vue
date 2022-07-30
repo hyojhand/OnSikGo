@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import KakaoMap from '@/components/KakaoMap';
-import CategoryStore from '@/components/CategoryStore';
-import ProductItem from '@/components/ProductItem';
+import KakaoMap from '@/components/shopping/KakaoMap';
+import CategoryStore from '@/components/shopping/CategoryStore';
+import ProductItem from '@/components/shopping/ProductItem';
 
 export default {
   name: "ShopView",

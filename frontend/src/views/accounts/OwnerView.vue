@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import SignupOwner from "@/components/SignupOwner.vue";
+import SignupOwner from "@/components/accounts/SignupOwner.vue";
 
 export default {
   name: "OwnerView",

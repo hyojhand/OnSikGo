@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import KakaoMap from '@/components/KakaoMap';
-import StoreProductItem from '@/components/StoreProductItem.vue';
-import StoreReview from '@/components/StoreReview.vue';
+import KakaoMap from '@/components/shopping/KakaoMap';
+import StoreProductItem from '@/components/shopping/StoreProductItem.vue';
+import StoreReview from '@/components/shopping/StoreReview.vue';
 
 export default {
   name: "StoreView",

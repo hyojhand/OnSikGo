@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import NoticeModal from "@/components/NoticeModal.vue";
+import NoticeModal from "@/components/notice/NoticeModal.vue";
 
 export default {
   name: "NoticeCard",

@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import noQuitModal from "@/components/noQuitModal.vue";
+import noQuitModal from "@/components/profile/noQuitModal.vue";
 import http from "@/util/http-common";
 export default {
   name: "NoticeModal",
