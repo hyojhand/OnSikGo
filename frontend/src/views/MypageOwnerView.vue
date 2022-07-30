@@ -26,11 +26,15 @@
         <b-col md="9">
           <div class="text-align-center" id="cardInText">
             <br />
-            <span>안녕하세요, 온식고입니다.</span>
-            <p>매장 위치 가져오기</p>
+            <span>안녕하세요, {{ store.storeName }}입니다.</span>
+            <p>{{ store.location }}</p>
           </div>
           <div class="d-flex justify-content-end">
-            <b-button size="sm" pill variant="outline-danger"
+            <b-button
+              size="sm"
+              pill
+              variant="outline-danger"
+              @click="storeClose()"
               >영업종료</b-button
             >
           </div>
@@ -49,11 +53,16 @@
     </div>
     <hr />
 
-    <discountList> </discountList>
+    <discountList
+      v-for="(saleItem, index) in saleItemList"
+      :key="index"
+      v-bind="saleItem"
+      :no="storeId"
+    />
 
     <!--모달 -->
     <MemberQuitModal></MemberQuitModal>
-    <StoreInfoDiscardModal></StoreInfoDiscardModal>
+    <StoreInfoDiscardModal :no="this.storeId"></StoreInfoDiscardModal>
   </div>
 </template>
 
@@ -72,8 +81,9 @@ export default {
   data() {
     return {
       stores: [],
+      store: {},
       storeId: "",
-      date: Date.today().toString("yyyyMMdd"),
+      saleItemList: [],
     };
   },
   async created() {
@@ -81,18 +91,13 @@ export default {
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
       this.stores = response.data;
+      this.store = response.data[0];
       this.storeId = response.data[0].storeId;
     });
 
-    console.log(this.date);
-
-    await http
-      .get(`/sale/list/${this.storeId}`, {
-        date: this.date,
-      })
-      .then((response) => {
-        console.log(response.data);
-      });
+    await http.get(`/sale/list/${this.storeId}`, {}).then((response) => {
+      this.saleItemList = response.data;
+    });
   },
   methods: {
     dataAnalysis() {
@@ -100,6 +105,18 @@ export default {
     },
     storechange() {
       this.$router.push("/mypage/store/infochange");
+    },
+    selectStore(event) {
+      this.store(event.target.value);
+    },
+    storeClose() {
+      http.put(`/store/close/${this.storeId}`).then((response) => {
+        if (response.status == 200) {
+          alert("가게 결산이 완료되었습니다.");
+        } else {
+          alert("해당 날짜의 판매정보가 없습니다.");
+        }
+      });
     },
   },
 };
