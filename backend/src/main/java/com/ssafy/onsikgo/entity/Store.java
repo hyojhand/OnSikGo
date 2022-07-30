@@ -47,7 +47,6 @@ public class Store {
     @Column(nullable = false)
     private String closingTime; // 가게 마감시간
 
-    @Column(nullable = false)
     private String offDay; // 휴무일
 
     @Enumerated(EnumType.STRING)
@@ -92,6 +91,7 @@ public class Store {
     public StoreDto toDto() {
 
         return StoreDto.builder()
+                .storeId(this.storeId)
                 .storeName(this.getStoreName())
                 .location(this.getLocation())
                 .tel(this.getTel())

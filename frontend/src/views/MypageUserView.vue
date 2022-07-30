@@ -1,8 +1,7 @@
 <template>
   <div>
-    <img src="@/assets/logo.jpg" width="60" height="40" />
+    <img src="@/assets/logo.png" width="60" height="40" />
     <br /><br />
-
 
     <span
       >사용자 이름님!, <br />이번 달에 <strong id="green">온식고</strong>를 통해

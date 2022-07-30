@@ -1,6 +1,7 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.ListDto;
+import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Sale;
 import com.ssafy.onsikgo.entity.SaleItem;
@@ -47,6 +48,17 @@ public class StoreService {
     private final UserRepository userRepository;
 
     private final SaleRepository saleRepository;
+
+    @Transactional
+    public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
+
+        HashMap<String, String> coordinate = getCoordinate(ownerDto.getLocation());
+        Store store = ownerDto.toStoreEntity(coordinate);
+        store.addUser(user);
+
+        storeRepository.save(store);
+        return new ResponseEntity<>("가게 정보가 등록되었습니다.", HttpStatus.OK);
+    }
 
     @Transactional
     public ResponseEntity<String> register(HttpServletRequest request, StoreDto storeDto) {
@@ -101,7 +113,26 @@ public class StoreService {
         return new ResponseEntity<>(findStoreDto, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<StoreDto>> getList(ListDto listDto) {
+    public ResponseEntity<List<StoreDto>> getList(HttpServletRequest request) {
+        String token = request.getHeader("access-token");
+        User findUser = null;
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
+        String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
+        findUser = userRepository.findByEmail(userEmail).get();
+
+        List<Store> storeList = storeRepository.findByUser(findUser);
+        List<StoreDto> storeDtoList = new ArrayList<>();
+        for(Store store : storeList) {
+            StoreDto storeDto = store.toDto();
+            storeDtoList.add(storeDto);
+        }
+        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<StoreDto>> getCategoryKeyword(ListDto listDto) {
         if(listDto.getKeyword() != null) {
             List<Store> storeList = storeRepository.findByStoreNameContaining(listDto.getKeyword());
             List<StoreDto> storeDtoList = new ArrayList<>();

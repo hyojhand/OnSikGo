@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
 @RequestMapping("/store")
@@ -41,9 +42,14 @@ public class StoreController {
         return storeService.getInfo(store_id);
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<List<StoreDto>> getList(HttpServletRequest request) {
+        return storeService.getList(request);
+    }
+
     @PostMapping("/list")
-    public ResponseEntity<List<StoreDto>> getList(@RequestBody ListDto listDto) {
-        return storeService.getList(listDto);
+    public ResponseEntity<List<StoreDto>> getCategoryKeyword(@RequestBody ListDto listDto) {
+        return storeService.getCategoryKeyword(listDto);
     }
 
     @PutMapping("/close/{store_id}")
