@@ -37,9 +37,15 @@ public class SaleService {
     @Transactional
     public ResponseEntity<String> register(SaleItemDto saleItemDto, Long store_id) {
 
-        LocalDateTime today = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String date = today.format(formatter);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
 
         Store findStore = storeRepository.findById(store_id).get();
         List<Sale> saleList = saleRepository.findByStoreOrderByDateDesc(findStore);
@@ -98,9 +104,16 @@ public class SaleService {
     }
 
     public ResponseEntity<List<SaleItemDto>> getSaleItemList(Long store_id) {
-        LocalDateTime today = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String date = today.format(formatter);
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
 
         Optional<Store> findStore = storeRepository.findById(store_id);
         if(!findStore.isPresent()) {
