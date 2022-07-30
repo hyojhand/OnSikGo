@@ -41,7 +41,7 @@ public class FollowService {
 
         findUser = userRepository.findByEmail(userEmail).get();
 
-        Long storeId = Long.valueOf(store_id);
+        Long storeId = store_id;
         Store findStore = storeRepository.findById(storeId).get();
 
         Follow follow = Follow.builder()
