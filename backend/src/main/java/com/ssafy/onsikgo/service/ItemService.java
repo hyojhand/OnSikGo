@@ -1,6 +1,8 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.ItemDto;
+import com.ssafy.onsikgo.dto.SelectDto;
+import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Item;
 import com.ssafy.onsikgo.entity.Store;
 import com.ssafy.onsikgo.repository.ItemRepository;
@@ -59,11 +61,21 @@ public class ItemService {
 
     public ResponseEntity<List<ItemDto>> getList(Long store_id) {
         Store findStore = storeRepository.findById(store_id).get();
-        List<Item> items = findStore.getItems();
-        List<ItemDto> itemDtos = new ArrayList<>();
-        for(int i = 0; i < items.size(); i++) {
-            itemDtos.add(items.get(i).toDto());
+        List<Item> itemList = findStore.getItems();
+        List<ItemDto> itemDtoList = new ArrayList<>();
+        for(int i = 0; i < itemList.size(); i++) {
+            itemDtoList.add(itemList.get(i).toDto());
         }
-        return new ResponseEntity<>(itemDtos, HttpStatus.OK);
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<ItemDto>> getKeyword(Long store_id, SelectDto selectDto) {
+        Optional<Store> findStore = storeRepository.findById(store_id);
+        List<Item> itemList = itemRepository.findByStoreAndItemNameContaining(findStore.get(), selectDto.getKeyword());
+        List<ItemDto> itemDtoList = new ArrayList<>();
+        for(int i = 0; i < itemList.size(); i++) {
+            itemDtoList.add(itemList.get(i).toDto());
+        }
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
     }
 }
