@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import http from "@/util/http-common";
 export default {
   data() {
     return {
@@ -44,11 +45,13 @@ export default {
       boxTwo: "",
     };
   },
-
+  props: {
+    no: Number,
+  },
   methods: {
-    showMsgBoxTwo() {
+    async showMsgBoxTwo() {
       this.boxTwo = "";
-      this.$bvModal
+      await this.$bvModal
         .msgBoxConfirm("정말로 삭제하시겠습니까?", {
           title: "상품 삭제를 선택하셨습니다",
           size: "m",
@@ -63,6 +66,14 @@ export default {
         .then((value) => {
           this.boxTwo = value;
         });
+
+      if (this.boxTwo == true) {
+        await http.delete(`/item/${this.no}`).then((response) => {
+          if (response.status == 200) {
+            this.$router.push("ProdChangeView");
+          }
+        });
+      }
       // .catch(err => {
       //   // An error occurred
       // })

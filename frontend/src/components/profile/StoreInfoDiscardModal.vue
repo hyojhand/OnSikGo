@@ -70,14 +70,17 @@ export default {
   props: {
     no: Number,
   },
+  created() {
+    console.log(this.no);
+  },
   methods: {
     backToMypage() {
       this.dialog = false;
     },
-    deleteStore() {
-      http.delete(`/store/${this.no}`).then((response) => {
+    async deleteStore() {
+      await http.delete(`/store/${this.no}`).then((response) => {
         if (response.status == 200) {
-          alert("가게 정보가 삭제되었습니다.");
+          this.$router.push("MypageOwnerView");
         } else {
           alert("가게 정보 삭제에 실패했습니다.");
         }
