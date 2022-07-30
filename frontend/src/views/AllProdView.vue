@@ -8,23 +8,23 @@
           style="border-color: #63bf68"
           @change="selectStore($event)"
         >
-          <option
-            :key="store.storeName"
-            :value="store.storeId"
-            v-for="store in stores"
-          >
+          <option :key="index" :value="store" v-for="(store, index) in stores">
             {{ store.storeName }}
           </option>
         </select>
 
-        <!-- <b-dropdown id="dropdown1" style="border-color: #63bf68">
+        <!-- <b-dropdown
+          id="dropdown-1"
+          style="border-color: #63bf68"
+          text="this.stores[0].storeName"
+        >
           <b-dropdown-item>
             <option
-              :key="i"
-              :value="storeName"
-              v-for="(storeName, i) in stores"
+              :key="index"
+              :value="store"
+              v-for="(store, index) in stores"
             >
-              {{ stores[i].storeName }}
+              {{ store.storeName }}
             </option>
           </b-dropdown-item>
         </b-dropdown> -->
@@ -103,12 +103,13 @@
       </div>
     </div>
 
-    <!--상품정렬: 이거 나중에 for로 돌리고 싶어요!!-->
     <div class="row justify-content-center">
-      <all-product-list></all-product-list>
-      <all-product-list></all-product-list>
-      <all-product-list></all-product-list>
-      <all-product-list></all-product-list>
+      <all-product-list
+        v-for="(item, index) in items"
+        :key="index"
+        v-bind="item"
+        :no="storeId"
+      />
     </div>
     <br />
     <br />
@@ -141,16 +142,20 @@ export default {
     return {
       stores: [],
       storeId: "",
+      items: [],
     };
   },
 
-  created() {
+  async created() {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
-    http.get("/store/list").then((response) => {
-      console.log(response.data);
+    await http.get("/store/list").then((response) => {
       this.stores = response.data;
-      this.storeId = response.data.storeId;
+      this.storeId = response.data[0].storeId;
+    });
+
+    await http.get(`/item/list/${this.storeId}`).then((response) => {
+      this.items = response.data;
     });
   },
 
