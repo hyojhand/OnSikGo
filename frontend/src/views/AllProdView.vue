@@ -60,6 +60,7 @@
           <!-- 검색란 -->
           <div class="col">
             <input
+              v-model="keyword"
               class="search-box"
               type="search"
               placeholder=" 상품을 입력해주세요"
@@ -67,6 +68,7 @@
             <!-- 검색 아이콘 -->
             <button class="product-search">
               <svg
+                @click="keywordSelect()"
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
                 height="20"
@@ -82,6 +84,7 @@
             <!-- 초기화 -->
             <button class="search-reset">
               <svg
+                @click="resetItemList()"
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
                 height="20"
@@ -143,6 +146,7 @@ export default {
       stores: [],
       storeId: "",
       items: [],
+      keyword: "",
     };
   },
 
@@ -169,6 +173,21 @@ export default {
     },
     selectStore() {
       this.storeId = event.target.value;
+    },
+    keywordSelect() {
+      http
+        .post(`/item/list/keyword/${this.storeId}`, {
+          keyword: this.keyword,
+        })
+        .then((response) => {
+          this.items = response.data;
+        });
+    },
+    resetItemList() {
+      this.keyword = "";
+      http.get(`/item/list/${this.storeId}`).then((response) => {
+        this.items = response.data;
+      });
     },
   },
 };

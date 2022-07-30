@@ -7,11 +7,7 @@
         style="border-color: #63bf68"
         @change="selectStore($event)"
       >
-        <option
-          :key="store.storeName"
-          :value="store.storeId"
-          v-for="store in stores"
-        >
+        <option :key="index" :value="store" v-for="(store, index) in stores">
           {{ store.storeName }}
         </option>
       </select>
