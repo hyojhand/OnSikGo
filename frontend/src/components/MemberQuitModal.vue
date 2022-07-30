@@ -2,9 +2,7 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="success" dark v-bind="attrs" v-on="on">
-          회원탈퇴
-        </v-btn>
+        <v-btn color="success" dark v-bind="attrs" v-on="on"> 회원탈퇴 </v-btn>
       </template>
 
       <v-card>
@@ -20,21 +18,23 @@
             <div class="col-7 mt-2 order-box">
               <v-list-item-content>
                 <v-list-item-title class="text msg-box">
-                  최지은님, 정말 탈퇴하시겠습니까?
+                  {{ userDto.userName }}님, 정말 탈퇴하시겠습니까?
                 </v-list-item-title>
                 <v-list-item-title class="text msg-box"
-                  >지구를 지키는 용사여,, </v-list-item-title
-                >
+                  >지구를 지키는 용사여,,
+                </v-list-item-title>
               </v-list-item-content>
             </div>
           </div>
-          <br>
-          
+          <br />
+
           <div class="btn-box">
             <v-card-actions>
-                <noQuitModal></noQuitModal>
-              </v-card-actions>
-          <b-button pill variant="outline-success" @click="backToMypage()"> 아니요! </b-button>
+              <noQuitModal></noQuitModal>
+            </v-card-actions>
+            <b-button pill variant="outline-success" @click="backToMypage()">
+              아니요!
+            </b-button>
           </div>
         </v-card>
         <v-divider></v-divider>
@@ -48,21 +48,30 @@
 </template>
 
 <script>
-import noQuitModal from "@/components/noQuitModal.vue"
+import noQuitModal from "@/components/noQuitModal.vue";
+import http from "@/util/http-common";
 export default {
   name: "NoticeModal",
   components: {
     noQuitModal,
   },
-  methods: {
-    backToMypage() {
-        this.dialog = false;
-    }
-  },
   data() {
     return {
       dialog: false,
+      userDto: [],
     };
+  },
+  created() {
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+    http.get("/user").then((response) => {
+      this.userDto = response.data;
+    });
+  },
+  methods: {
+    backToMypage() {
+      this.dialog = false;
+    },
   },
 };
 </script>

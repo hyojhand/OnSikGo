@@ -16,7 +16,9 @@
           width="120"
           height="80"
         /><br /><br /><br />
-        <b-button pill variant="outline-danger">안녕~!</b-button>
+        <b-button pill variant="outline-danger" @click="deleteUser()"
+          >안녕~!</b-button
+        >
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -27,8 +29,18 @@
 </template>
 
 <script>
+import http from "@/util/http-common";
 export default {
   name: "noQuitModal",
+  methods: {
+    deleteUser() {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http.delete(`/user`).then(() => {
+        this.$router.push("/");
+      });
+    },
+  },
 };
 </script>
 

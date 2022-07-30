@@ -2,9 +2,7 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="success" dark v-bind="attrs" v-on="on">
-          매장폐기
-        </v-btn>
+        <v-btn color="success" dark v-bind="attrs" v-on="on"> 매장폐기 </v-btn>
       </template>
 
       <v-card>
@@ -20,7 +18,7 @@
             <div class="col-7 mt-2 order-box">
               <v-list-item-content>
                 <v-list-item-title class="text msg-box">
-                정말로 매장정보를 
+                  정말로 매장정보를
                 </v-list-item-title>
                 <v-list-item-title class="text msg-box"
                   >폐기하시겠습니까?</v-list-item-title
@@ -38,10 +36,18 @@
             </div>
             <div class="btn-box">
               <v-card-actions>
-                <b-button pill @click="backToMypage()" variant="outline-success"> 아니요 </b-button>
+                <b-button
+                  pill
+                  @click="backToMypage()"
+                  variant="outline-success"
+                >
+                  아니요
+                </b-button>
               </v-card-actions>
               <v-card-actions>
-                <b-button pill variant="outline-danger"> 예, 삭제합니다 </b-button>
+                <b-button pill variant="outline-danger" @click="deleteStore()">
+                  예, 삭제합니다
+                </b-button>
               </v-card-actions>
             </div>
           </v-card>
@@ -58,12 +64,25 @@
 </template>
 
 <script>
+import http from "@/util/http-common";
 export default {
   name: "NoticeModal",
+  props: {
+    no: Number,
+  },
   methods: {
     backToMypage() {
-        this.dialog = false;
-    }
+      this.dialog = false;
+    },
+    deleteStore() {
+      http.delete(`/store/${this.no}`).then((response) => {
+        if (response.status == 200) {
+          alert("가게 정보가 삭제되었습니다.");
+        } else {
+          alert("가게 정보 삭제에 실패했습니다.");
+        }
+      });
+    },
   },
   data() {
     return {
