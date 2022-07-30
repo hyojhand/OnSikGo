@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ListDto {
+public class SelectDto {
 
     private String keyword;
     private String category;

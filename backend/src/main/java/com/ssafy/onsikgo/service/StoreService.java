@@ -1,6 +1,6 @@
 package com.ssafy.onsikgo.service;
 
-import com.ssafy.onsikgo.dto.ListDto;
+import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Sale;
@@ -132,9 +132,9 @@ public class StoreService {
         return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<StoreDto>> getCategoryKeyword(ListDto listDto) {
-        if(listDto.getKeyword() != null) {
-            List<Store> storeList = storeRepository.findByStoreNameContaining(listDto.getKeyword());
+    public ResponseEntity<List<StoreDto>> getCategoryKeyword(SelectDto selectDto) {
+        if(selectDto.getKeyword() != null) {
+            List<Store> storeList = storeRepository.findByStoreNameContaining(selectDto.getKeyword());
             List<StoreDto> storeDtoList = new ArrayList<>();
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
@@ -142,8 +142,8 @@ public class StoreService {
             return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
         }
 
-        if(listDto.getCategory() != null) {
-            List<Store> storeList = storeRepository.findByCategory(listDto.getCategory());
+        if(selectDto.getCategory() != null) {
+            List<Store> storeList = storeRepository.findByCategory(selectDto.getCategory());
             List<StoreDto> storeDtoList = new ArrayList<>();
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
