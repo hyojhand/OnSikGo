@@ -33,7 +33,6 @@ public class ItemService {
     public ResponseEntity<String> register(MultipartFile file,ItemDto itemDto, Long store_id) {
 
         String itemImgUrl = awsS3Service.uploadImge(file);
-        log.info(itemImgUrl);
         itemDto.setItemImgUrl(itemImgUrl);
         Item item = itemDto.toEntity();
         Store findStore = storeRepository.findById(store_id).get();
