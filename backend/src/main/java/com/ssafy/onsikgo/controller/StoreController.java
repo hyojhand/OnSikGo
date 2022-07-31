@@ -1,6 +1,6 @@
 package com.ssafy.onsikgo.controller;
 
-import com.ssafy.onsikgo.dto.ListDto;
+import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
 @RequestMapping("/store")
@@ -41,9 +42,19 @@ public class StoreController {
         return storeService.getInfo(store_id);
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<List<StoreDto>> getList(HttpServletRequest request) {
+        return storeService.getList(request);
+    }
+
     @PostMapping("/list")
-    public ResponseEntity<List<StoreDto>> getList(@RequestBody ListDto listDto) {
-        return storeService.getList(listDto);
+    public ResponseEntity<List<StoreDto>> getCategoryKeyword(@RequestBody SelectDto selectDto) {
+        return storeService.getCategoryKeyword(selectDto);
+    }
+
+    @PutMapping("/close/{store_id}")
+    public ResponseEntity<String> closeStore(@PathVariable Long store_id) {
+        return storeService.closeStore(store_id);
     }
 
 

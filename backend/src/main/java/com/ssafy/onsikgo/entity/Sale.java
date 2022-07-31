@@ -47,4 +47,14 @@ public class Sale {
                 .build();
     }
 
+    public Sale updateTotalPrice(Integer totalPrice) {
+        this.totalPrice = totalPrice;
+        return this;
+    }
+
+    public Sale updateClosed() {
+        this.closed = true;
+        return this;
+    }
+
 }

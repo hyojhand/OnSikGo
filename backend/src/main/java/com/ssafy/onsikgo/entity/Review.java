@@ -22,7 +22,6 @@ public class Review {
     @Column(nullable = false)
     private String content; // 내용
 
-    @CreatedDate
     @Column(nullable = false)
     private String createdDate; // 작성일
 

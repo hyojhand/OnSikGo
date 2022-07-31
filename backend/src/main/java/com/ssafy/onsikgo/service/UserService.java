@@ -1,6 +1,7 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.LoginDto;
+import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.TokenDto;
 import com.ssafy.onsikgo.dto.UserDto;
 import com.ssafy.onsikgo.entity.LoginType;
@@ -44,6 +45,7 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final AwsS3Service awsS3Service;
     private final JavaMailSenderImpl mailSender;
+    private final StoreService storeService;
 
     private final RedisUtil redisUtil;
     public ResponseEntity<String> checkEmail(String email) {
@@ -100,14 +102,27 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<UserDto> signup(UserDto userDto) {
+    public ResponseEntity<String> signup(UserDto userDto) {
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         User user = userDto.toEntity(LoginType.ONSIKGO);
 
         userRepository.save(user);
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+
+
+    @Transactional
+    public ResponseEntity<String> signupOwner(OwnerDto ownerDto) {
+        ownerDto.setPassword(passwordEncoder.encode(ownerDto.getPassword()));
+
+        String storeName = ownerDto.getStoreName();
+        User user = ownerDto.toUserEntity(LoginType.ONSIKGO, storeName);
+        userRepository.save(user);
+
+        storeService.firstRegister(ownerDto, user);
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
     public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
@@ -207,12 +222,7 @@ public class UserService {
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
         User findUser = userRepository.findByEmail(userEmail).get();
 
-        UserDto userDto = new UserDto();
-        userDto.setUserName(findUser.getUserName());
-        userDto.setEmail(findUser.getEmail());
-        userDto.setImgUrl(findUser.getImgUrl());
-        userDto.setNickname(findUser.getNickname());
-        userDto.setRole(findUser.getRole());
+        UserDto userDto = findUser.toDto();
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }

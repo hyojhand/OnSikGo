@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
 @RequestMapping("/review")
@@ -29,11 +30,11 @@ public class ReviewController {
         return reviewService.getUserReview(request);
     }
     @GetMapping("/store/{store_id}")
-    public ResponseEntity<List<ReviewDto>> getStoreReview(@PathVariable String store_id){
+    public ResponseEntity<List<ReviewDto>> getStoreReview(@PathVariable Long store_id){
         return reviewService.getStoreReview(store_id);
     }
     @DeleteMapping("/{review_id}")
-    public ResponseEntity<String> delete(@PathVariable String review_id){
+    public ResponseEntity<String> delete(@PathVariable Long review_id){
         return reviewService.delete(review_id);
     }
     @PatchMapping("/{review_id}")

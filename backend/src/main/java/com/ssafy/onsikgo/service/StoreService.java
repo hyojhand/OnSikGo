@@ -1,9 +1,10 @@
 package com.ssafy.onsikgo.service;
 
-import com.ssafy.onsikgo.dto.ListDto;
+import com.ssafy.onsikgo.dto.SelectDto;
+import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.StoreDto;
-import com.ssafy.onsikgo.entity.Store;
-import com.ssafy.onsikgo.entity.User;
+import com.ssafy.onsikgo.entity.*;
+import com.ssafy.onsikgo.repository.SaleRepository;
 import com.ssafy.onsikgo.repository.StoreRepository;
 import com.ssafy.onsikgo.repository.UserRepository;
 import com.ssafy.onsikgo.security.TokenProvider;
@@ -26,6 +27,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +43,19 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
+
+    private final SaleRepository saleRepository;
+
+    @Transactional
+    public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
+
+        HashMap<String, String> coordinate = getCoordinate(ownerDto.getLocation());
+        Store store = ownerDto.toStoreEntity(coordinate);
+        store.addUser(user);
+
+        storeRepository.save(store);
+        return new ResponseEntity<>("가게 정보가 등록되었습니다.", HttpStatus.OK);
+    }
 
     @Transactional
     public ResponseEntity<String> register(HttpServletRequest request, StoreDto storeDto) {
@@ -94,9 +110,28 @@ public class StoreService {
         return new ResponseEntity<>(findStoreDto, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<StoreDto>> getList(ListDto listDto) {
-        if(listDto.getKeyword() != null) {
-            List<Store> storeList = storeRepository.findByStoreNameContaining(listDto.getKeyword());
+    public ResponseEntity<List<StoreDto>> getList(HttpServletRequest request) {
+        String token = request.getHeader("access-token");
+        User findUser = null;
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
+        String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
+        findUser = userRepository.findByEmail(userEmail).get();
+
+        List<Store> storeList = storeRepository.findByUser(findUser);
+        List<StoreDto> storeDtoList = new ArrayList<>();
+        for(Store store : storeList) {
+            StoreDto storeDto = store.toDto();
+            storeDtoList.add(storeDto);
+        }
+        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<StoreDto>> getCategoryKeyword(SelectDto selectDto) {
+        if(selectDto.getKeyword() != null && selectDto.getCategory() != null) {
+            List<Store> storeList = storeRepository.findByStoreNameContainingAndCategory(selectDto.getKeyword(),Category.valueOf(selectDto.getCategory()));
             List<StoreDto> storeDtoList = new ArrayList<>();
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
@@ -104,8 +139,17 @@ public class StoreService {
             return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
         }
 
-        if(listDto.getCategory() != null) {
-            List<Store> storeList = storeRepository.findByCategory(listDto.getCategory());
+        if(selectDto.getKeyword() != null) {
+            List<Store> storeList = storeRepository.findByStoreNameContaining(selectDto.getKeyword());
+            List<StoreDto> storeDtoList = new ArrayList<>();
+            for(int i = 0; i < storeList.size(); i++) {
+                storeDtoList.add(storeList.get(i).toDto());
+            }
+            return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+        }
+
+        if(selectDto.getCategory() != null) {
+            List<Store> storeList = storeRepository.findByCategory(Category.valueOf(selectDto.getCategory()));
             List<StoreDto> storeDtoList = new ArrayList<>();
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
@@ -114,6 +158,35 @@ public class StoreService {
         }
 
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+
+
+    @Transactional
+    public ResponseEntity<String> closeStore(Long store_id) {
+
+        Optional<Store> findStore = storeRepository.findById(store_id);
+        if(!findStore.isPresent()) {
+            return new ResponseEntity<>("해당하는 가게가 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
+        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
+        if(!findSale.isPresent()) {
+            return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        findSale.get().updateClosed();
+        saleRepository.save(findSale.get());
+
+        return new ResponseEntity<>("가게 결산이 완료되었습니다.", HttpStatus.OK);
     }
 
     // 좌표 가져오는 메서드
