@@ -18,6 +18,7 @@
     "chart.js": "^3.8.2",
     "core-js": "^3.8.3",
     "cucumber": "^6.0.7",
+    "geolocation": "^0.2.0",
     "hchs-vue-charts": "^1.2.8",
     "vue": "^2.7.7",
     "vue-apexcharts": "^1.6.2",

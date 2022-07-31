@@ -1,6 +1,6 @@
 package com.ssafy.onsikgo.controller;
 
-import com.ssafy.onsikgo.dto.ListDto;
+import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +48,8 @@ public class StoreController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<List<StoreDto>> getCategoryKeyword(@RequestBody ListDto listDto) {
-        return storeService.getCategoryKeyword(listDto);
+    public ResponseEntity<List<StoreDto>> getCategoryKeyword(@RequestBody SelectDto selectDto) {
+        return storeService.getCategoryKeyword(selectDto);
     }
 
     @PutMapping("/close/{store_id}")

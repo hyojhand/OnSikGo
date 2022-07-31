@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -43,7 +44,7 @@ public class ReviewService {
 
         findUser = userRepository.findByEmail(userEmail).get();
 
-        Long storeId = Long.valueOf(map.get("store_id"));
+        Long storeId = Long.valueOf(map.get("storeId"));
         Store findStore = storeRepository.findById(storeId).get();
 
         LocalDateTime today = LocalDateTime.now();
@@ -52,7 +53,7 @@ public class ReviewService {
 
         String content = map.get("content");
 
-        ReviewDto reviewDto = new ReviewDto(content,createdDate,false,findUser.getNickname(),null);
+        ReviewDto reviewDto = new ReviewDto(content,createdDate,false,findUser.getNickname(),null, findUser.getImgUrl());
 
         Review review = reviewDto.toEntity(findUser,findStore);
         reviewRepository.save(review);
@@ -76,6 +77,18 @@ public class ReviewService {
             result.add(review.toDto());
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<ReviewDto>> getUserNicknameReview(HashMap<String, String> map) {
+        String nickName = map.get("nickname");
+        Optional<User> findUser = userRepository.findByNickname(nickName);
+        List<Review> reviewList = reviewRepository.findByUser(findUser.get());
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+        for(Review review : reviewList) {
+            reviewDtoList.add(review.toDto());
+        }
+
+        return new ResponseEntity<>(reviewDtoList, HttpStatus.OK);
     }
 
     public ResponseEntity<List<ReviewDto>> getStoreReview(Long store_id){
@@ -104,4 +117,5 @@ public class ReviewService {
         reviewRepository.save(review);
         return new ResponseEntity<>("리뷰가 신고되었습니다.", HttpStatus.OK);
     }
+
 }

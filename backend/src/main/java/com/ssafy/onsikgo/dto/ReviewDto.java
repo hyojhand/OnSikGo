@@ -16,8 +16,9 @@ public class ReviewDto {
     private String content;
     private String createdDate;
     private Boolean reported;
-    private String nickName;
+    private String nickname;
     private StoreDto storeDto;
+    private String userImgUrl;
 
     public Review toEntity(User user, Store store){
 
