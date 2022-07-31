@@ -174,6 +174,7 @@ const routes = [
     meta: {
       title: "가게조회",
     },
+    props: true,
   },
   // 전체상품보기
   {

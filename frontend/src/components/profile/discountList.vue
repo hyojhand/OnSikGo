@@ -6,7 +6,12 @@
       <b-row>
         <b-col md="3">
           <div id="tobecenter">
-            <img class="store-image" :src="`${itemDto.itemImgUrl}`" />
+            <img
+              class="store-image"
+              :src="`${itemDto.itemImgUrl}`"
+              height="80"
+              width="110"
+            />
           </div>
         </b-col>
         <b-col md="9">
@@ -15,6 +20,9 @@
             <span>상품명 : {{ itemDto.itemName }} </span>
             <span>재고: {{ stock }} 개</span>
             <br />
+            <div class="product-discount">
+              {{ (1 - salePrice / itemDto.price) * 100 }} %
+            </div>
             <span
               >할인가: {{ salePrice }}
               <class id="firstPrice">{{ itemDto.price }}</class>
@@ -72,5 +80,12 @@ export default {
 #cardInText {
   text-align: left;
   font-size: 10px;
+}
+.product-discount {
+  padding-top: 5px;
+  padding-left: 8px;
+  color: red;
+  font-weight: bolder;
+  font-size: 12px;
 }
 </style>
