@@ -99,7 +99,10 @@ export default {
       this.$router.push("/mypage/owner/analysis");
     },
     storechange() {
-      this.$router.push("/mypage/store/infochange");
+      this.$router.push({
+        name: "storeInfoChange",
+        params: { storeId: this.storeId },
+      });
     },
     selectStore(event) {
       this.store(event.target.value);

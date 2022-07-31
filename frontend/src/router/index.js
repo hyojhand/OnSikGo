@@ -225,6 +225,7 @@ const routes = [
     meta: {
       title: "가게정보변경",
     },
+    props: true,
   },
   // 마이페이지(사용자)
   {
