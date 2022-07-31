@@ -105,6 +105,7 @@ public class UserService {
     public ResponseEntity<String> signup(UserDto userDto) {
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userDto.setImgUrl("https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png");
 
         User user = userDto.toEntity(LoginType.ONSIKGO);
 
@@ -116,6 +117,7 @@ public class UserService {
     @Transactional
     public ResponseEntity<String> signupOwner(OwnerDto ownerDto) {
         ownerDto.setPassword(passwordEncoder.encode(ownerDto.getPassword()));
+        ownerDto.setImgUrl("https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png");
 
         String storeName = ownerDto.getStoreName();
         User user = ownerDto.toUserEntity(LoginType.ONSIKGO, storeName);
