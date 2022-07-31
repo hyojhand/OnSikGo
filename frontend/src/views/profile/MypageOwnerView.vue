@@ -16,12 +16,7 @@
     <b-card>
       <b-row>
         <b-col md="3">
-          <img
-            fluid
-            src="@/assets/images/이마트24.png"
-            height="50"
-            width="50"
-          />
+          <img fluid :src="`${store.storeImgUrl}`" height="90" width="100" />
         </b-col>
         <b-col md="9">
           <div class="text-align-center" id="cardInText">
