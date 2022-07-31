@@ -138,20 +138,24 @@ export default {
     await http.get(`/store/${this.storeId}`).then((response) => {
       this.storeDto = response.data;
     });
+
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
       this.saleItemList = response.data;
+      console.log(response.data);
     });
-  },
-  mounted() {
-    http.get(`/review/store/${this.storeId}`).then((response) => {
-      if (response.status == 200) {
-        this.reviewList = response.data;
-      }
-    });
+
+    await this.selectReview();
   },
   methods: {
     onClickTab(tab) {
       this.selectedTab = tab;
+    },
+    selectReview() {
+      http.get(`/review/store/${this.storeId}`).then((response) => {
+        if (response.status == 200) {
+          this.reviewList = response.data;
+        }
+      });
     },
     registerReview() {
       http.defaults.headers["access-token"] =
@@ -165,6 +169,7 @@ export default {
           if (response.status == 200) {
             alert("리뷰작성이 완료되었습니다.");
             this.reviewContent = "";
+            this.selectReview();
           }
         });
     },

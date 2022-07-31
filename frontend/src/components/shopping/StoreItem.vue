@@ -60,7 +60,6 @@ export default {
     http.get(`/sale/list/${this.storeId}`).then((response) => {
       if (response.status == 200) {
         this.saleItemDtoList = response.data;
-        console.log(this.saleItemDtoList);
       }
     });
   },
