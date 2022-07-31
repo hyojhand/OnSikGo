@@ -56,7 +56,7 @@
     <br />
     <!-- 상품 설명란 -->
     <div class="product mt-3" v-if="selectedTab === tabs[0]">
-      <p class="head">📃해당 매장에서 오늘 등록된 상품</p>
+      <p class="head">📃 해당 매장에서 오늘 등록된 상품</p>
       <store-product-item
         v-for="(saleItem, index) in saleItemList"
         :key="index"
@@ -65,19 +65,24 @@
       />
     </div>
     <div class="product mt-3" v-else>
-      <p class="head">🥨온식고 식구들의 입소문</p>
-      <StoreReview></StoreReview>
+      <p class="head">🥨 온식고 식구들의 입소문</p>
+      <store-review
+        v-for="(reviewDto, index) in reviewList"
+        :key="index"
+        v-bind="reviewDto"
+      />
       <!--리뷰입력창-->
       <div class="input-group comment">
         <input
+          v-model="reviewContent"
           type="text"
           class="form-control"
           placeholder="리뷰를 입력해주세요"
           aria-label="Input Review"
           aria-describedby="basic-addon1"
         />
-        <a href=""
-          ><span class="input-group-text" id="basic-addon1">
+        <button @click="registerReview()">
+          <span class="input-group-text" id="basic-addon1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
@@ -92,8 +97,9 @@
               <path
                 d="M8 3.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"
               ></path>
-            </svg> </span
-        ></a>
+            </svg>
+          </span>
+        </button>
       </div>
     </div>
   </div>
@@ -120,6 +126,8 @@ export default {
       storeId: Number,
       storeDto: {},
       saleItemList: [],
+      reviewContent: "",
+      reviewList: [],
     };
   },
 
@@ -132,12 +140,33 @@ export default {
     });
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
       this.saleItemList = response.data;
-      console.log(this.saleList);
+    });
+  },
+  mounted() {
+    http.get(`/review/store/${this.storeId}`).then((response) => {
+      if (response.status == 200) {
+        this.reviewList = response.data;
+      }
     });
   },
   methods: {
     onClickTab(tab) {
       this.selectedTab = tab;
+    },
+    registerReview() {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .post("/review", {
+          storeId: this.storeId,
+          content: this.reviewContent,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            alert("리뷰작성이 완료되었습니다.");
+            this.reviewContent = "";
+          }
+        });
     },
   },
 };

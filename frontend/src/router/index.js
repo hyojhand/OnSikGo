@@ -250,6 +250,7 @@ const routes = [
     meta: {
       title: "내리뷰조회",
     },
+    props: true,
   },
   {
     path: "/404",

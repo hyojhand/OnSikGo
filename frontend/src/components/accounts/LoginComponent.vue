@@ -7,7 +7,6 @@
           type="text"
           class="form-control"
           name="username"
-          v-validate="'required'"
           placeholder="아이디를 입력해주세요"
         />
       </div>
@@ -18,7 +17,6 @@
           type="password"
           class="form-control"
           name="username"
-          v-validate="'required'"
           placeholder="비밀번호를 입력해주세요"
         />
       </div>
@@ -55,7 +53,6 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            console.log(response.data);
             localStorage.setItem("access-token", response.data.token);
             this.$router.push("/");
           } else {
