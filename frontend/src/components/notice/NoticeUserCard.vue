@@ -3,7 +3,7 @@
     <div class="row card-box" v-if="user">
       <img
         class="img-box col-5"
-        src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4gqX/image/wIXZfUhOPGGGZxaZ0Nsmigd1paU.jpeg"
+        :src="`${orderDto.saleItemDto.saleDto.storeDto.storeImgUrl}`"
         alt="사진이었던것.."
       />
       <div class="col-7 order-box">
@@ -28,21 +28,21 @@
     <div class="row card-box" v-else>
       <img
         class="img-box col-5"
-        src="@/assets/images/이마트24.png"
+        :src="`${orderDto.saleItemDto.saleDto.storeDto.storeImgUrl}`"
         alt="사진이었던것...jpg"
       />
       <div class="col-7 order-box">
         <v-list-item-content>
           <v-list-item-title class="text mb-3 msg-box">
-            <span>{ E mart } </span>
-            <span class="notice">매장이</span>
+            <!-- <span> {{ userDto.nickname }} </span>
+            <span class="notice">매장이</span> -->
           </v-list-item-title>
-          <v-list-item-title class="text mb-3 msg-box notice"
-            >할인정보를 게시했습니다.</v-list-item-title
+          <v-list-item-title class="text mb-3 msg-box notice">
+            {{ content }}</v-list-item-title
           >
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
-          <p class="time-text">10분전</p>
+          <p class="time-text">{{ createdDate }}</p>
           <button class="border-m radius-m notice-btn" @click="gostore()">
             정보 보러가기
           </button>
@@ -55,6 +55,15 @@
 <script>
 export default {
   name: "NoticeCard",
+  props: {
+    content: String,
+    location: String,
+    orderDto: [],
+    receivedId: Number,
+    state: Boolean,
+    userDto: [],
+    createdDate: String,
+  },
   methods: {
     gohistory() {
       this.$router.push("/mypage/user/history");
