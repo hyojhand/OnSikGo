@@ -104,7 +104,7 @@
         v-for="(item, index) in items"
         :key="index"
         v-bind="item"
-        :no="storeId"
+        :storeId="storeId"
       />
     </div>
     <!--페이지네이션-->
@@ -136,6 +136,7 @@ export default {
       storeId: "",
       items: [],
       keyword: "",
+      saleList: [],
     };
   },
 

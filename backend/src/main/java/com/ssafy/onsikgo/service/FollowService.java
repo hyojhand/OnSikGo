@@ -83,10 +83,31 @@ public class FollowService {
 
         Store findStore = storeRepository.findById(store_id).get();
 
-        Follow follow = followRepository.findFollowByUserAndStore(findUser,findStore);
+        Optional<Follow> findFollow = followRepository.findFollowByUserAndStore(findUser, findStore);
 
-        followRepository.delete(follow);
+        followRepository.delete(findFollow.get());
 
         return new ResponseEntity<>("팔로우 삭제", HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> findFollow(HttpServletRequest request, Long store_id) {
+        String token = request.getHeader("access-token");
+        User findUser = null;
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
+        }
+        String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
+        findUser = userRepository.findByEmail(userEmail).get();
+
+
+        Optional<Store> findstore = storeRepository.findById(store_id);
+
+
+        Optional<Follow> findFollow = followRepository.findFollowByUserAndStore(findUser, findstore.get());
+        if(!findFollow.isPresent()) {
+            return new ResponseEntity<>("fail", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }
