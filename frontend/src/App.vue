@@ -163,6 +163,8 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <MemberQuitModal></MemberQuitModal>
+        <StoreInfoDiscardModal :no="this.storeId"></StoreInfoDiscardModal>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="25"
@@ -193,6 +195,7 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <MemberQuitModal></MemberQuitModal>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="25"
@@ -221,7 +224,13 @@
 
 <script>
 import http from "@/util/http-common";
+import MemberQuitModal from "@/components/profile/MemberQuitModal.vue"
+import StoreInfoDiscardModal from "@/components/profile/StoreInfoDiscardModal.vue"
 export default {
+  components :{
+    MemberQuitModal,
+    StoreInfoDiscardModal,
+  },
   data() {
     return {
       drawer: false,
@@ -231,6 +240,10 @@ export default {
       title: document.title,
       pageType: true,
       logincheck: false,
+      stores: [],
+      store: {},
+      storeId: "",
+      saleItemList: [],
 
       notlogins: [
         { title: "홈", router: "/" },
@@ -274,6 +287,7 @@ export default {
       ],
     };
   },
+  
   created() {
     this.pageType = this.pages.includes(this.title);
   },
