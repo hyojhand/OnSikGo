@@ -186,7 +186,17 @@ export default {
   },
   methods: {
     nicknameCheck() {
-      this.nicknameDuple = !this.nicknameDuple;
+      http
+        .post("/user/nickname", {
+          nickname: this.nickname
+        })
+      .then((response) => {
+        if (response.status == 200) {
+          this.nicknameDuple = !this.nicknameDuple;
+        } else {
+          alert("중복된 닉네임이 있습니다");
+        }
+      });
     },
     isCheck() {
       this.sendMail = true;
