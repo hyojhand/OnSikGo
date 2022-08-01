@@ -24,8 +24,9 @@
           />
         </svg> -->
         <!--좋아요 버튼-->
-<i id="heart" v-if="isLiking" @click="like" style="color:crimson; font-size:60px; text-align:center; margin-top:30px;" class="fas fa-heart"></i>
-        <i id="heart" v-else @click="like" style="font-size:60px; text-align:center; margin-top:30px;" class="far fa-heart"></i>
+        <button @click="like" v-if="isliking === 'fail'">좋아요</button>
+       
+      <button v-else @click="unlike">좋아요 취소</button>
       </div>
     </div>
 
@@ -132,7 +133,7 @@ export default {
       saleItemList: [],
       reviewContent: "",
       reviewList: [],
-      liking: '',
+      isliking: false,
     };
   },
 
@@ -150,6 +151,10 @@ export default {
     });
 
     await this.selectReview();
+    await this.likecheck();
+  },
+  updated(){
+    this.likecheck();
   },
   methods: {
     onClickTab(tab) {
@@ -178,6 +183,34 @@ export default {
           }
         });
     },
+    likecheck(){
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .get(`/follow/find/${this.storeId}`)
+        .then((res) => {
+          this.isliking = res.data
+        })
+    },
+    like () {
+        http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+        http.get(`/follow/${this.storeId}`).then((response) => {
+          if(response.status == 200) {
+            alert("좋아요 눌렀음");
+          }
+        })
+    },
+    unlike() {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .delete(`/follow/${this.storeId}`).then((response) =>{
+          if(response.status == 200) {
+            alert("좋아요 취소");
+          }
+        })
+    }
   },
 };
 </script>
