@@ -3,7 +3,12 @@
     <div class="row">
       <!-- 가게 이미지 -->
       <div class="col-2">
-        <img class="store-image" :src="`${storeImgUrl}`" />
+        <img
+          class="store-image"
+          :src="`${storeImgUrl}`"
+          height="50"
+          width="50"
+        />
       </div>
       <!-- 가게 설명 -->
       <div class="store col">
@@ -13,9 +18,12 @@
       <!-- 물품수량 & 버튼 -->
       <div class="col">
         <p class="store-product">
-          등록물품 : <span class="product-count">2</span> 개
+          등록물품 :
+          <span class="product-count"> {{ saleItemDtoList.length }}</span> 개
         </p>
-        <router-link class="store-moving" :to="{ name: 'storeView' }"
+        <router-link
+          class="store-moving"
+          :to="{ name: 'storeView', params: { storeId: this.storeId } }"
           >가게보기</router-link
         >
       </div>
@@ -25,6 +33,7 @@
 </template>
 
 <script>
+import http from "@/util/http-common";
 export default {
   name: "StoreItem",
 
@@ -40,6 +49,19 @@ export default {
     category: String,
     lat: String,
     lng: String,
+  },
+
+  data() {
+    return {
+      saleItemDtoList: [],
+    };
+  },
+  created() {
+    http.get(`/sale/list/${this.storeId}`).then((response) => {
+      if (response.status == 200) {
+        this.saleItemDtoList = response.data;
+      }
+    });
   },
 };
 </script>

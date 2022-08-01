@@ -52,7 +52,10 @@ export default {
       this.$router.push("/mypage/user/history");
     },
     reviewlist() {
-      this.$router.push("/mypage/user/review");
+      this.$router.push({
+        name: "myReview",
+        params: { nickname: this.userDto.nickname },
+      });
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <!--상품정렬-->
   <div>
-    <img :src="`${itemImgUrl}`" alt="IMG-PRODUCT" />
+    <img :src="`${itemImgUrl}`" alt="IMG-PRODUCT" style="height: 150px" />
     <div class="item-name">
       {{ itemName }}
     </div>
