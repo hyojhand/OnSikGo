@@ -1,6 +1,8 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.ItemDto;
+import com.ssafy.onsikgo.dto.SelectDto;
+import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Item;
 import com.ssafy.onsikgo.entity.Store;
 import com.ssafy.onsikgo.repository.ItemRepository;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +27,13 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final StoreRepository storeRepository;
+    private final AwsS3Service awsS3Service;
 
     @Transactional
-    public ResponseEntity<String> register(ItemDto itemDto, Long store_id) {
+    public ResponseEntity<String> register(MultipartFile file,ItemDto itemDto, Long store_id) {
 
+        String itemImgUrl = awsS3Service.uploadImge(file);
+        itemDto.setItemImgUrl(itemImgUrl);
         Item item = itemDto.toEntity();
         Store findStore = storeRepository.findById(store_id).get();
         item.addStore(findStore);
@@ -59,11 +65,21 @@ public class ItemService {
 
     public ResponseEntity<List<ItemDto>> getList(Long store_id) {
         Store findStore = storeRepository.findById(store_id).get();
-        List<Item> items = findStore.getItems();
-        List<ItemDto> itemDtos = new ArrayList<>();
-        for(int i = 0; i < items.size(); i++) {
-            itemDtos.add(items.get(i).toDto());
+        List<Item> itemList = findStore.getItems();
+        List<ItemDto> itemDtoList = new ArrayList<>();
+        for(int i = 0; i < itemList.size(); i++) {
+            itemDtoList.add(itemList.get(i).toDto());
         }
-        return new ResponseEntity<>(itemDtos, HttpStatus.OK);
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<ItemDto>> getKeyword(Long store_id, SelectDto selectDto) {
+        Optional<Store> findStore = storeRepository.findById(store_id);
+        List<Item> itemList = itemRepository.findByStoreAndItemNameContaining(findStore.get(), selectDto.getKeyword());
+        List<ItemDto> itemDtoList = new ArrayList<>();
+        for(int i = 0; i < itemList.size(); i++) {
+            itemDtoList.add(itemList.get(i).toDto());
+        }
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
     }
 }

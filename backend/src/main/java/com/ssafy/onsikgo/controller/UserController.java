@@ -1,6 +1,7 @@
 package com.ssafy.onsikgo.controller;
 
 import com.ssafy.onsikgo.dto.LoginDto;
+import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.TokenDto;
 import com.ssafy.onsikgo.dto.UserDto;
 import com.ssafy.onsikgo.service.KakaoUserService;
@@ -10,10 +11,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.HashMap;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
 @RequestMapping("/user")
@@ -24,18 +29,29 @@ public class UserController {
     private final KakaoUserService kakaoUserService;
     private final NaverUserService naverUserService;
     @PostMapping("/email")
-    public ResponseEntity<String> checkEmail(@RequestBody UserDto userDto) {
-        return userService.checkEmail(userDto.getEmail());
+    public ResponseEntity<String> checkEmail(@RequestBody HashMap<String, Object> map) {
+        String email = (String)map.get("email");
+        return userService.checkEmail(email);
     }
-
+    @PostMapping("/emailAuthNumber")
+    public ResponseEntity<String> checkAuthNumber(@RequestBody HashMap<String, Object> map) {
+        String authNum = (String) map.get("authNum");
+        String email = (String)map.get("email");
+        return userService.checkAuthNumber(email,authNum);
+    }
     @PostMapping("/nickname")
     public ResponseEntity<String> checkNickname(@RequestBody UserDto userDto) {
         return userService.checkNickname(userDto.getNickname());
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signup(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
         return userService.signup(userDto);
+    }
+
+    @PostMapping("/signup/owner")
+    public ResponseEntity<String> signup(@RequestBody OwnerDto ownerDto) {
+        return userService.signupOwner(ownerDto);
     }
 
     @PostMapping("/login")
@@ -44,7 +60,11 @@ public class UserController {
     }
 
     @PatchMapping
-    public ResponseEntity<String> modify(@RequestBody UserDto userDto, HttpServletRequest request) {
+    public ResponseEntity<String> modify(
+            @Valid @RequestPart UserDto userDto,
+            @RequestPart(required = false) MultipartFile file,
+            HttpServletRequest request) {
+        userDto.setFile(file);
         return userService.modify(userDto, request);
     }
 

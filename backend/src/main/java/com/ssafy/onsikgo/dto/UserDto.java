@@ -5,6 +5,7 @@ import com.ssafy.onsikgo.entity.LoginType;
 import com.ssafy.onsikgo.entity.Role;
 import com.ssafy.onsikgo.entity.User;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 
@@ -20,6 +21,7 @@ public class UserDto {
     private String userName;
     private String nickname;
     private String imgUrl;
+    private MultipartFile file;
     private Role role;
 
     public User toEntity(LoginType loginType){
@@ -35,7 +37,7 @@ public class UserDto {
                 .imgUrl(this.getImgUrl())
                 .nickname(this.getNickname())
                 .authorities(Collections.singleton(authority))
-                .role(Role.USER)
+                .role(this.role)
                 .loginType(loginType)
                 .build();
     }
