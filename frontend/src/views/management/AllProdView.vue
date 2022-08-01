@@ -137,6 +137,8 @@ export default {
       items: [],
       keyword: "",
       saleList: [],
+      totalPage: Number,
+      page: Number,
     };
   },
 
@@ -148,8 +150,12 @@ export default {
       this.storeId = response.data[0].storeId;
     });
 
-    await http.get(`/item/list/${this.storeId}`).then((response) => {
-      this.items = response.data;
+    await http.post(`/item/page/${this.storeId}`, {
+      page: 0,
+      size: 4,
+    }).then((response) => {
+      this.items = response.data.content;
+      this.totalPage = response.data.totalPages;
     });
   },
 
@@ -158,6 +164,14 @@ export default {
   },
 
   methods: {
+    selectPage() {
+      http.post(`/item/page/${this.storeId}`, {
+      page: this.page,
+      size: 4,
+    }).then((response) => {
+      this.items = response.data.content;
+    });
+    },
     prodregister() {
       this.$router.push("/allprod/register");
     },
