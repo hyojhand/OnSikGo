@@ -14,6 +14,7 @@
     </div>
     <v-card class="btn-box" black outlined min-width="330">
       <form class="mb-2 el-case">
+        <!-- -------메일 입력하기---------------------------- -->
         <div class="mail-input">
           <v-text-field
             class="input-box mt-5"
@@ -25,12 +26,12 @@
             @input="$v.email.$touch()"
             @blur="$v.email.$touch()"
           ></v-text-field>
-          <!-- ------------------- -->
+
           <button class="border-m radius-m confrim-btn" @click="isCheck">
             {{ checkmsg }}
           </button>
         </div>
-        <!-- --------------------------------- -->
+        <!-- ------------인증 메일 보내기-------------------- -->
         <div v-if="sendMail">
           <div class="mailconfim-case">
             <input
@@ -47,7 +48,7 @@
           </div>
         </div>
 
-        <!-- -------------------- -->
+        <!-- --------비밀번호 입력------------ -->
         <v-text-field
           class="input-box"
           v-model="password"
@@ -60,6 +61,20 @@
           @blur="$v.password.$touch()"
         ></v-text-field>
 
+        <!-- ----------비밀번호 재확인-------------- -->
+        <v-text-field
+          class="input-box"
+          v-model="passwordConfirm"
+          :error-messages="passwordConfirmErrors"
+          label="비밀번호를 다시 입력해주세요."
+          required
+          color="black"
+          type="password"
+          @input="$v.passwordConfirm.$touch()"
+          @blur="$v.passwordComfirm.$touch()"
+        ></v-text-field>
+
+        <!-- ----------사용자 이름 입력-------------- -->
         <v-text-field
           class="input-box"
           v-model="name"
@@ -70,6 +85,8 @@
           @input="$v.name.$touch()"
           @blur="$v.name.$touch()"
         ></v-text-field>
+
+        <!-- --------닉네임 입력---------------        -->
         <div class="mail-input">
           <v-text-field
             class="input-box"
@@ -81,6 +98,7 @@
             @input="$v.nickname.$touch()"
             @blur="$v.nickname.$touch()"
           ></v-text-field>
+          <!-- ------닉네임 중복확인------- -->
           <button
             class="border-m radius-m name-confrim-btn"
             @click="nicknameCheck"
@@ -90,6 +108,7 @@
           <div v-if="nicknameDuple">사용가능한 닉네임입니다.</div>
         </div>
 
+        <!-- ----------회원가입 동의 체크------------ -->
         <v-checkbox
           v-model="checkbox"
           :error-messages="checkboxErrors"
@@ -125,6 +144,7 @@ export default {
   validations: {
     email: { required, email },
     password: { required, minLength: minLength(8) },
+    passwordConfirm: { required, minLength: minLength(8) },
     name: { required, maxLength: maxLength(10) },
     nickname: { required, maxLength: maxLength(10) },
     checkbox: {
@@ -138,6 +158,7 @@ export default {
     name: "",
     email: "",
     password: "",
+    passwordConfirm: "",
     nickname: "",
     role: "USER",
     checkbox: false,
@@ -166,6 +187,12 @@ export default {
       if (!this.$v.password.$dirty) return errors;
       !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
       !this.$v.password.required && errors.push(" ");
+      return errors;
+    },
+    passwordConfirmErrors() {
+      const errors = [];
+      if (this.password == this.passwordConfirm) return errors;
+      errors.push("비밀번호가 일치하지 않습니다.");
       return errors;
     },
     nicknameErrors() {
