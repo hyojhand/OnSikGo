@@ -47,10 +47,12 @@
           <v-text-field
             v-model="itemPrice"
             label="정상가를 입력해주세요."
+            color="black"
           ></v-text-field>
           <v-text-field
             v-model="itemComment"
             label="특이사항을 적어주세요."
+            color="black"
           ></v-text-field>
         </form>
 
