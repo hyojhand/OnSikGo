@@ -29,6 +29,12 @@ public class ReviewController {
     public ResponseEntity<Object> getUserReview(HttpServletRequest request){
         return reviewService.getUserReview(request);
     }
+
+    @PostMapping("/user")
+    public ResponseEntity<List<ReviewDto>> getUserNicknameReview(@RequestBody HashMap<String,String> map){
+        return reviewService.getUserNicknameReview(map);
+    }
+
     @GetMapping("/store/{store_id}")
     public ResponseEntity<List<ReviewDto>> getStoreReview(@PathVariable Long store_id){
         return reviewService.getStoreReview(store_id);

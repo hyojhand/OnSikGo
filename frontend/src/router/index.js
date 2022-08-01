@@ -174,6 +174,7 @@ const routes = [
     meta: {
       title: "가게조회",
     },
+    props: true,
   },
   // 전체상품보기
   {
@@ -224,6 +225,7 @@ const routes = [
     meta: {
       title: "가게정보변경",
     },
+    props: true,
   },
   // 마이페이지(사용자)
   {
@@ -249,6 +251,7 @@ const routes = [
     meta: {
       title: "내리뷰조회",
     },
+    props: true,
   },
   {
     path: "/404",

@@ -31,4 +31,9 @@ public class FollowController {
     public ResponseEntity<Object> delete(HttpServletRequest request,@PathVariable Long store_id){
         return followService.delete(request,store_id);
     }
+
+    @GetMapping("/find/{store_id}")
+    public ResponseEntity<String> findFollow(HttpServletRequest request,@PathVariable Long store_id) {
+        return followService.findFollow(request,store_id);
+    }
 }

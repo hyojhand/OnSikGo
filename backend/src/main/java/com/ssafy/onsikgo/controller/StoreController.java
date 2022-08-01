@@ -1,5 +1,6 @@
 package com.ssafy.onsikgo.controller;
 
+import com.ssafy.onsikgo.dto.ItemDto;
 import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.service.StoreService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -28,8 +30,9 @@ public class StoreController {
     @PutMapping("/{store_id}")
     public ResponseEntity<String> modify(HttpServletRequest request,
                                          @PathVariable Long store_id,
-                                         @RequestBody StoreDto storeDto) {
-        return storeService.modify(request, store_id, storeDto);
+                                         @RequestPart(value = "file",required = false) MultipartFile file,
+                                         @RequestPart(value = "itemDto",required = false) StoreDto storeDto) {
+        return storeService.modify(request, store_id, file, storeDto);
     }
 
     @DeleteMapping("/{store_id}")

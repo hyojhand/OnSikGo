@@ -16,12 +16,7 @@
     <b-card>
       <b-row>
         <b-col md="3">
-          <img
-            fluid
-            src="@/assets/images/이마트24.png"
-            height="50"
-            width="50"
-          />
+          <img fluid :src="`${store.storeImgUrl}`" height="90" width="100" />
         </b-col>
         <b-col md="9">
           <div class="text-align-center" id="cardInText">
@@ -68,15 +63,11 @@
 
 <script>
 import discountList from "@/components/profile/discountList.vue";
-import StoreInfoDiscardModal from "@/components/profile/StoreInfoDiscardModal.vue";
-import MemberQuitModal from "@/components/profile/MemberQuitModal.vue";
 import http from "@/util/http-common";
 export default {
   name: "MypageOwnerView",
   components: {
     discountList,
-    StoreInfoDiscardModal,
-    MemberQuitModal,
   },
   data() {
     return {
@@ -104,7 +95,10 @@ export default {
       this.$router.push("/mypage/owner/analysis");
     },
     storechange() {
-      this.$router.push("/mypage/store/infochange");
+      this.$router.push({
+        name: "storeInfoChange",
+        params: { storeId: this.storeId },
+      });
     },
     selectStore(event) {
       this.store(event.target.value);

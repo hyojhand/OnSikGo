@@ -1,7 +1,7 @@
 <template>
   <!--상품정렬-->
   <div>
-    <img :src="`${itemImgUrl}`" alt="IMG-PRODUCT" />
+    <img :src="`${itemImgUrl}`" alt="IMG-PRODUCT" style="height: 150px" />
     <div class="item-name">
       {{ itemName }}
     </div>
@@ -13,7 +13,7 @@
         </div>
         <div class="info-box">
           <div>수량 :</div>
-          <div class="ml-1">0</div>
+          <div class="ml-1">{{ this.saleDto.stock}}</div>
         </div>
       </div>
       <button @click="prodmodify()" class="border-m radius-s">수 정</button>
@@ -22,10 +22,17 @@
 </template>
 
 <script>
+import http from "@/util/http-common";
 export default {
   name: "AllProductList",
+  data() {
+    return {
+       saleDto: {},
+       stock: Number,
+    };
+  },
   props: {
-    no: Number,
+    storeId: Number,
     itemId: Number,
     itemName: String,
     price: Number,
@@ -33,13 +40,21 @@ export default {
     comment: String,
   },
 
-  create() {},
+  created() {
+      http.get(`/sale/${this.itemId}`).then((response) => {
+       if(response.status == 200) {
+        this.saleDto = response.data;
+      }
+    });
+
+    
+  },
 
   methods: {
     prodmodify() {
       this.$router.push({
         name: "prodChange",
-        params: { itemId: this.itemId, storeId: this.no },
+        params: { itemId: this.itemId, storeId: this.storeId },
       });
     },
   },

@@ -45,7 +45,7 @@
           <div class="col-4">특이사항</div>
           <input
             class="col-7"
-            v-model="this.itemDto.price"
+            v-model="this.itemDto.comment"
             type="text"
             placeholder="특이사항을 입력해주세요"
           />
@@ -98,6 +98,7 @@ export default {
       });
 
       this.$router.push("/allprod/");
+      this.$router.go();
     },
   },
 };

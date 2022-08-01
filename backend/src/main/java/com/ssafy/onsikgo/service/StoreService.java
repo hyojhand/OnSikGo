@@ -17,6 +17,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -43,8 +44,8 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
-
     private final SaleRepository saleRepository;
+    private final AwsS3Service awsS3Service;
 
     @Transactional
     public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
@@ -80,7 +81,7 @@ public class StoreService {
     }
 
     @Transactional
-    public ResponseEntity<String> modify(HttpServletRequest request, Long store_id, StoreDto storeDto) {
+    public ResponseEntity<String> modify(HttpServletRequest request, Long store_id, MultipartFile file, StoreDto storeDto) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
             return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
@@ -90,6 +91,9 @@ public class StoreService {
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
         findStore.update(storeDto, coordinate);
+
+        String storeImgUrl = awsS3Service.uploadImge(file);
+        storeDto.setStoreImgUrl(storeImgUrl);
 
         storeRepository.save(findStore);
         return new ResponseEntity<>("가게 정보가 수정되었습니다.", HttpStatus.OK);
@@ -170,7 +174,6 @@ public class StoreService {
         }
 
         LocalDateTime now = LocalDateTime.now();
-
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
         String time = now.format(timeFormatter);
         if(Integer.parseInt(time) < 6) {
@@ -184,13 +187,7 @@ public class StoreService {
             return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        List<SaleItem> saleItems = findSale.get().getSaleItems();
-        int total = 0;
-        for(SaleItem saleItem : saleItems) {
-             total += (saleItem.getTotalStock() - saleItem.getStock()) * saleItem.getSalePrice();
-        }
-
-        findSale.get().updateClosed(total);
+        findSale.get().updateClosed();
         saleRepository.save(findSale.get());
 
         return new ResponseEntity<>("가게 결산이 완료되었습니다.", HttpStatus.OK);

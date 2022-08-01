@@ -55,6 +55,14 @@ public class SaleItem {
                 .build();
     }
 
+    public SaleItemDto toSaleItemDto() {
+        return SaleItemDto.builder()
+                .stock(this.stock)
+                .totalStock(this.totalStock)
+                .salePrice(this.salePrice)
+                .build();
+    }
+
     public SaleItem update(Integer stock) {
         this.stock = stock;
         return this;

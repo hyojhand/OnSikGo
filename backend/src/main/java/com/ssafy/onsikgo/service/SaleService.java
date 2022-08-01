@@ -37,9 +37,15 @@ public class SaleService {
     @Transactional
     public ResponseEntity<String> register(SaleItemDto saleItemDto, Long store_id) {
 
-        LocalDateTime today = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String date = today.format(formatter);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
 
         Store findStore = storeRepository.findById(store_id).get();
         List<Sale> saleList = saleRepository.findByStoreOrderByDateDesc(findStore);
@@ -98,9 +104,16 @@ public class SaleService {
     }
 
     public ResponseEntity<List<SaleItemDto>> getSaleItemList(Long store_id) {
-        LocalDateTime today = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String date = today.format(formatter);
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
 
         Optional<Store> findStore = storeRepository.findById(store_id);
         if(!findStore.isPresent()) {
@@ -146,5 +159,19 @@ public class SaleService {
         SaleItem findSaleItem = saleItemRepository.findById(sale_item_id).get();
         saleItemRepository.delete(findSaleItem);
         return new ResponseEntity<>("재고 상품 삭제 완료" ,HttpStatus.OK);
+    }
+
+    public ResponseEntity<SaleItemDto> getSaleItemInfo(Long item_id) {
+        Optional<Item> findItem = itemRepository.findById(item_id);
+
+        Optional<SaleItem> findSaleItem = saleItemRepository.findByItem(findItem.get());
+        if(!findSaleItem.isPresent()) {
+            SaleItemDto saleItemDto = new SaleItemDto();
+            saleItemDto.setStock(0);
+            return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
+        }
+
+        SaleItemDto saleItemDto = findSaleItem.get().toSaleItemDto();
+        return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
     }
 }
