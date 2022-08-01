@@ -11,7 +11,7 @@
       />
       <span class="col-4 mt-2 fw-bold">{{ storeDto.storeName }}</span>
       <div class="col-4 mt-2">
-        <svg
+        <!-- <svg
           xmlns="http://www.w3.org/2000/svg"
           width="40"
           height="40"
@@ -22,7 +22,11 @@
           <path
             d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"
           />
-        </svg>
+        </svg> -->
+        <!--좋아요 버튼-->
+        <button @click="like" v-if="isliking === 'fail'">좋아요</button>
+       
+      <button v-else @click="unlike">좋아요 취소</button>
       </div>
     </div>
 
@@ -110,6 +114,7 @@ import KakaoMap from "@/components/shopping/KakaoMap";
 import StoreProductItem from "@/components/shopping/StoreProductItem.vue";
 import StoreReview from "@/components/shopping/StoreReview.vue";
 import http from "@/util/http-common";
+// import axios from 'axios'
 export default {
   name: "StoreView",
 
@@ -128,6 +133,7 @@ export default {
       saleItemList: [],
       reviewContent: "",
       reviewList: [],
+      isliking: false,
     };
   },
 
@@ -138,20 +144,28 @@ export default {
     await http.get(`/store/${this.storeId}`).then((response) => {
       this.storeDto = response.data;
     });
+
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
       this.saleItemList = response.data;
+      console.log(response.data);
     });
+
+    await this.selectReview();
+    await this.likecheck();
   },
-  mounted() {
-    http.get(`/review/store/${this.storeId}`).then((response) => {
-      if (response.status == 200) {
-        this.reviewList = response.data;
-      }
-    });
+  updated(){
+    this.likecheck();
   },
   methods: {
     onClickTab(tab) {
       this.selectedTab = tab;
+    },
+    selectReview() {
+      http.get(`/review/store/${this.storeId}`).then((response) => {
+        if (response.status == 200) {
+          this.reviewList = response.data;
+        }
+      });
     },
     registerReview() {
       http.defaults.headers["access-token"] =
@@ -165,9 +179,38 @@ export default {
           if (response.status == 200) {
             alert("리뷰작성이 완료되었습니다.");
             this.reviewContent = "";
+            this.selectReview();
           }
         });
     },
+    likecheck(){
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .get(`/follow/find/${this.storeId}`)
+        .then((res) => {
+          this.isliking = res.data
+        })
+    },
+    like () {
+        http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+        http.get(`/follow/${this.storeId}`).then((response) => {
+          if(response.status == 200) {
+            alert("좋아요 눌렀음");
+          }
+        })
+    },
+    unlike() {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .delete(`/follow/${this.storeId}`).then((response) =>{
+          if(response.status == 200) {
+            alert("좋아요 취소");
+          }
+        })
+    }
   },
 };
 </script>

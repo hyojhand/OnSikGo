@@ -1,6 +1,6 @@
 <template>
   <div class="signup-box" width="100%">
-    <div class="mb-5">
+    <div>
       <v-list-item-title class="text-h5 mt-3 mb-5">
         회원 가입하기
       </v-list-item-title>
@@ -40,8 +40,8 @@ export default {
 .signup-box {
   display: flex;
   flex-direction: column;
-  height: 60vh;
-  justify-content: center;
+  height: 100vh;
+  justify-content: start;
   align-items: center;
 }
 .btn-box {

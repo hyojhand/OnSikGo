@@ -5,22 +5,23 @@
         <input
           v-model="email"
           type="text"
-          class="form-control"
+          class="form-control input_login"
           name="username"
           placeholder="아이디를 입력해주세요"
         />
       </div>
-      <br />
+      
       <div class="form-group">
         <input
           v-model="password"
+          @keyup.enter="login()"
           type="password"
-          class="form-control"
+          class="form-control input_login"
           name="username"
           placeholder="비밀번호를 입력해주세요"
         />
       </div>
-      <br />
+      
       <b-button
         @click="login()"
         @keyup.enter="login()"
@@ -67,5 +68,9 @@ export default {
 <style scoped>
 #btn_login {
   width: 100%;
+  margin-bottom: 2%;
+}
+.input_login {
+  margin-bottom: 2%;
 }
 </style>

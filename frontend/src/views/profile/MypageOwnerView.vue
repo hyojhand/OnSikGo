@@ -63,15 +63,11 @@
 
 <script>
 import discountList from "@/components/profile/discountList.vue";
-import StoreInfoDiscardModal from "@/components/profile/StoreInfoDiscardModal.vue";
-import MemberQuitModal from "@/components/profile/MemberQuitModal.vue";
 import http from "@/util/http-common";
 export default {
   name: "MypageOwnerView",
   components: {
     discountList,
-    StoreInfoDiscardModal,
-    MemberQuitModal,
   },
   data() {
     return {
@@ -99,7 +95,10 @@ export default {
       this.$router.push("/mypage/owner/analysis");
     },
     storechange() {
-      this.$router.push("/mypage/store/infochange");
+      this.$router.push({
+        name: "storeInfoChange",
+        params: { storeId: this.storeId },
+      });
     },
     selectStore(event) {
       this.store(event.target.value);
