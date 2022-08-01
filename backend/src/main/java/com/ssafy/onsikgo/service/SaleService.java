@@ -160,4 +160,18 @@ public class SaleService {
         saleItemRepository.delete(findSaleItem);
         return new ResponseEntity<>("재고 상품 삭제 완료" ,HttpStatus.OK);
     }
+
+    public ResponseEntity<SaleItemDto> getSaleItemInfo(Long item_id) {
+        Optional<Item> findItem = itemRepository.findById(item_id);
+
+        Optional<SaleItem> findSaleItem = saleItemRepository.findByItem(findItem.get());
+        if(!findSaleItem.isPresent()) {
+            SaleItemDto saleItemDto = new SaleItemDto();
+            saleItemDto.setStock(0);
+            return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
+        }
+
+        SaleItemDto saleItemDto = findSaleItem.get().toSaleItemDto();
+        return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
+    }
 }
