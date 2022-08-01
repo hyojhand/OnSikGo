@@ -40,10 +40,9 @@
             @blur="$v.name.$touch()"
           ></v-text-field>
         </form>
-
-        <button class="border-m radius-m next-btn" @click="e1 = 2">
-          다음으로
-        </button>
+        <div class="next-btn">
+          <button class="border-m radius-m" @click="e1 = 2">다음으로</button>
+        </div>
       </v-stepper-content>
 
       <v-stepper-content
@@ -119,8 +118,8 @@
           ></v-text-field>
         </form>
         <div class="sign-btn">
-          <button class="border-m radius-m" @click="signup()">가입하기</button>
           <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
+          <button class="border-m radius-m" @click="signup()">가입하기</button>
         </div>
       </v-stepper-content>
       <v-stepper-header class="status-box">
@@ -257,7 +256,7 @@ export default {
         category: this.category,
       });
       this.$router.push("/signup/complete");
-    },  
+    },
   },
 };
 </script>
@@ -277,7 +276,16 @@ export default {
 .status-btn {
   padding: 0;
 }
-
+.next-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
 .sign-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 </style>
