@@ -13,18 +13,41 @@
       </div>
     </div>
     <v-card class="btn-box" black outlined min-width="330">
-      <form class="mb-2">
-        <v-text-field
-          class="input-box"
-          v-model="email"
-          :error-messages="emailErrors"
-          label="이메일을 입력해주세요."
-          required
-          color="black"
-          @input="$v.email.$touch()"
-          @blur="$v.email.$touch()"
-        ></v-text-field>
+      <form class="mb-2 el-case">
+        <div class="mail-input">
+          <v-text-field
+            class="input-box mt-5"
+            v-model="email"
+            :error-messages="emailErrors"
+            label="이메일을 입력해주세요."
+            required
+            color="black"
+            @input="$v.email.$touch()"
+            @blur="$v.email.$touch()"
+          ></v-text-field>
+          <!-- ------------------- -->
+          <button class="border-m radius-m confrim-btn" @click="isCheck">
+            {{ checkmsg }}
+          </button>
+        </div>
+        <!-- --------------------------------- -->
+        <div v-if="sendMail">
+          <div class="mailconfim-case">
+            <input
+              id="mail-confirm"
+              class="mail-confirm"
+              placeholder="인증번호를 입력하세요."
+            />
+            <button
+              class="border-m radius-m mailconfirm-btn"
+              @click="checkMail"
+            >
+              확인하기
+            </button>
+          </div>
+        </div>
 
+        <!-- -------------------- -->
         <v-text-field
           class="input-box"
           v-model="password"
@@ -47,16 +70,25 @@
           @input="$v.name.$touch()"
           @blur="$v.name.$touch()"
         ></v-text-field>
-        <v-text-field
-          class="input-box"
-          v-model="nickname"
-          :error-messages="nicknameErrors"
-          label="닉네임을 입력해주세요."
-          required
-          color="black"
-          @input="$v.nickname.$touch()"
-          @blur="$v.nickname.$touch()"
-        ></v-text-field>
+        <div class="mail-input">
+          <v-text-field
+            class="input-box"
+            v-model="nickname"
+            :error-messages="nicknameErrors"
+            label="닉네임을 입력해주세요."
+            required
+            color="black"
+            @input="$v.nickname.$touch()"
+            @blur="$v.nickname.$touch()"
+          ></v-text-field>
+          <button
+            class="border-m radius-m name-confrim-btn"
+            @click="nicknameCheck"
+          >
+            중복확인하기
+          </button>
+          <div v-if="nicknameDuple">사용가능한 닉네임입니다.</div>
+        </div>
 
         <v-checkbox
           v-model="checkbox"
@@ -68,7 +100,7 @@
           @blur="$v.checkbox.$touch()"
         ></v-checkbox>
 
-        <div class="btns">
+        <div class="btns mb-5">
           <button class="border-m radius-m notice-btn" @click="signup()">
             가입하기
           </button>
@@ -109,6 +141,9 @@ export default {
     nickname: "",
     role: "USER",
     checkbox: false,
+    sendMail: false,
+    checkmsg: "메일 인증하기",
+    nicknameDuple: false,
   }),
 
   computed: {
@@ -150,6 +185,13 @@ export default {
     },
   },
   methods: {
+    nicknameCheck() {
+      this.nicknameDuple = !this.nicknameDuple;
+    },
+    isCheck() {
+      this.sendMail = true;
+      this.checkmsg = "재전송하기";
+    },
     tempgo() {
       this.$router.push("/signup/complete");
     },
@@ -187,6 +229,23 @@ export default {
 </script>
 
 <style scoped>
+.el-case {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+.mailconfim-case {
+  margin: 3% 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  color: black;
+}
+.mailconfirm-btn {
+  color: black;
+  width: 70px;
+}
 .ment-box {
   text-align: start;
 }
@@ -201,7 +260,6 @@ export default {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 450px;
 }
 .select-btn {
   width: 100px;
@@ -218,7 +276,43 @@ export default {
 .notice-btn {
   width: 80px;
 }
+.btn-case {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.mail-input {
+  position: relative;
+}
+.confrim-btn {
+  right: 0px;
+  top: 32px;
+  position: absolute;
+  width: 90px;
+  font-size: 13px;
+  color: black;
+}
+.name-confrim-btn {
+  right: 0px;
+  top: 15px;
+  position: absolute;
+  width: 90px;
+  font-size: 13px;
+  color: black;
+}
 .clear {
   color: rgb(255, 82, 82);
+}
+.mail-box {
+  display: flex;
+  flex-direction: row;
+}
+.mail-confirm {
+  color: black;
+  border-bottom: 1px solid rgba(0, 0, 0, 30%);
+}
+.input-box {
+  min-width: 266px;
 }
 </style>
