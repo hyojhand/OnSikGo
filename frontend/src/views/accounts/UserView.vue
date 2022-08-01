@@ -12,48 +12,48 @@
         >
       </div>
     </div>
-    <v-card
-      class="btn-box mt-5"
-      black
-      outlined
-      min-width="330"
-      min-height="200"
-    >
+    <v-card class="btn-box" black outlined min-width="330">
       <form class="mb-2">
         <v-text-field
+          class="input-box"
           v-model="email"
           :error-messages="emailErrors"
           label="이메일을 입력해주세요."
           required
+          color="black"
           @input="$v.email.$touch()"
           @blur="$v.email.$touch()"
         ></v-text-field>
 
         <v-text-field
+          class="input-box"
           v-model="password"
           :error-messages="passwordErrors"
           label="비밀번호를 입력해주세요."
           required
+          color="black"
           type="password"
           @input="$v.password.$touch()"
           @blur="$v.password.$touch()"
         ></v-text-field>
 
         <v-text-field
+          class="input-box"
           v-model="name"
           :error-messages="nameErrors"
-          :counter="10"
           label="이름을 입력해주세요."
           required
+          color="black"
           @input="$v.name.$touch()"
           @blur="$v.name.$touch()"
         ></v-text-field>
         <v-text-field
+          class="input-box"
           v-model="nickname"
           :error-messages="nicknameErrors"
-          :counter="10"
           label="닉네임을 입력해주세요."
           required
+          color="black"
           @input="$v.nickname.$touch()"
           @blur="$v.nickname.$touch()"
         ></v-text-field>
@@ -63,13 +63,19 @@
           :error-messages="checkboxErrors"
           label="회원 가입에 동의하십니까?"
           required
+          color="black"
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
         ></v-checkbox>
 
-        <v-btn class="mr-4" @click="signup()" color="success"> 가입하기 </v-btn>
-        <v-btn @click="clear" color="error"> 초기화 </v-btn>
-        <v-btn @click="tempgo()"> 임시 넘어가기</v-btn>
+        <div class="btns">
+          <button class="border-m radius-m notice-btn" @click="signup()">
+            가입하기
+          </button>
+          <button @click="clear" class="border-m radius-m notice-btn clear">
+            초기화
+          </button>
+        </div>
       </form>
     </v-card>
   </div>
@@ -109,7 +115,7 @@ export default {
     checkboxErrors() {
       const errors = [];
       if (!this.$v.checkbox.$dirty) return errors;
-      !this.$v.checkbox.checked && errors.push("'동의합니다'를 눌러주세요");
+      !this.$v.checkbox.checked && errors.push(" ");
       return errors;
     },
     nameErrors() {
@@ -117,14 +123,14 @@ export default {
       if (!this.$v.name.$dirty) return errors;
       !this.$v.name.maxLength &&
         errors.push("이름은 10글자 이내로 입력해야합니다.");
-      !this.$v.name.required && errors.push("이름을 입력해주세요.");
+      !this.$v.name.required && errors.push(" ");
       return errors;
     },
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
       !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
-      !this.$v.password.required && errors.push("비밀번호를 입력해주세요.");
+      !this.$v.password.required && errors.push(" ");
       return errors;
     },
     nicknameErrors() {
@@ -132,14 +138,14 @@ export default {
       if (!this.$v.nickname.$dirty) return errors;
       !this.$v.nickname.maxLength &&
         errors.push("닉네임은 10글자 이내로 입력해야합니다.");
-      !this.$v.nickname.required && errors.push("닉네임을 입력해주세요.");
+      !this.$v.nickname.required && errors.push(" ");
       return errors;
     },
     emailErrors() {
       const errors = [];
       if (!this.$v.email.$dirty) return errors;
       !this.$v.email.email && errors.push("이메일 형식이 아닙니다.");
-      !this.$v.email.required && errors.push("이메일을 입력해주세요.");
+      !this.$v.email.required && errors.push(" ");
       return errors;
     },
   },
@@ -187,20 +193,32 @@ export default {
 .signup-box {
   display: flex;
   flex-direction: column;
-  height: 80vh;
-  justify-content: center;
+  height: 100vh;
+  justify-content: start;
   align-items: center;
 }
 .btn-box {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 70vh;
+  height: 450px;
 }
 .select-btn {
   width: 100px;
   min-height: 100px;
   border-radius: 50%;
   opacity: 90%;
+}
+.btns {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: space-evenly;
+}
+.notice-btn {
+  width: 80px;
+}
+.clear {
+  color: rgb(255, 82, 82);
 }
 </style>

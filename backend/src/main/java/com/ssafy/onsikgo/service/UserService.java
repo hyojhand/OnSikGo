@@ -48,6 +48,7 @@ public class UserService {
     private final StoreService storeService;
 
     private final RedisUtil redisUtil;
+    private final String defaultImg="https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
     public ResponseEntity<String> checkEmail(String email) {
         if (userRepository.findByEmail(email).orElse(null) != null) {
             log.info("이미존재하는 이메일");
@@ -105,7 +106,7 @@ public class UserService {
     public ResponseEntity<String> signup(UserDto userDto) {
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userDto.setImgUrl("https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png");
+        userDto.setImgUrl(defaultImg);
 
         User user = userDto.toEntity(LoginType.ONSIKGO);
 
@@ -117,7 +118,7 @@ public class UserService {
     @Transactional
     public ResponseEntity<String> signupOwner(OwnerDto ownerDto) {
         ownerDto.setPassword(passwordEncoder.encode(ownerDto.getPassword()));
-        ownerDto.setImgUrl("https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png");
+        ownerDto.setImgUrl(defaultImg);
 
         String storeName = ownerDto.getStoreName();
         User user = ownerDto.toUserEntity(LoginType.ONSIKGO, storeName);
@@ -158,6 +159,9 @@ public class UserService {
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
 
         User findUser = userRepository.findByEmail(userEmail).get();
+        if(!findUser.getImgUrl().equals(defaultImg)){
+            awsS3Service.delete(findUser.getImgUrl());
+        }
         findUser.update(userDto.getNickname(), awsS3Service.uploadImge(userDto.getFile()));
 
         userRepository.save(findUser);

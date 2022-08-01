@@ -6,7 +6,7 @@
         class="btn-box mt-3"
         black
         outlined
-        min-height="200"
+        min-height="450"
       >
         <form class="mb-2">
           <v-text-field
@@ -14,6 +14,7 @@
             :error-messages="emailErrors"
             label="이메일을 입력해주세요."
             required
+            color="black"
             @input="$v.email.$touch()"
             @blur="$v.email.$touch()"
           ></v-text-field>
@@ -21,9 +22,9 @@
           <v-text-field
             v-model="password"
             :error-messages="passwordErrors"
-            :counter="8"
             label="비밀번호를 입력해주세요."
             required
+            color="black"
             type="password"
             @input="$v.password.$touch()"
             @blur="$v.password.$touch()"
@@ -34,12 +35,14 @@
             :error-messages="nameErrors"
             label="사용자명을 입력해주세요."
             required
+            color="black"
             @input="$v.name.$touch()"
             @blur="$v.name.$touch()"
           ></v-text-field>
         </form>
-
-        <v-btn color="success" @click="e1 = 2"> 다음으로 </v-btn>
+        <div class="next-btn">
+          <button class="border-m radius-m" @click="e1 = 2">다음으로</button>
+        </div>
       </v-stepper-content>
 
       <v-stepper-content
@@ -55,6 +58,7 @@
             :error-messages="storeErrors"
             label="상호명을 입력해주세요."
             required
+            color="black"
             @input="$v.store.$touch()"
             @blur="$v.store.$touch()"
           ></v-text-field>
@@ -64,6 +68,7 @@
             :error-messages="adressErrors"
             label="가게 주소를 입력해주세요."
             required
+            color="black"
             type="address"
             @input="$v.address.$touch()"
             @blur="$v.address.$touch()"
@@ -74,6 +79,7 @@
             :error-messages="telErrors"
             label="가게 전화번호를 입력해주세요."
             required
+            color="black"
             @input="$v.tel.$touch()"
             @blur="$v.tel.$touch()"
           ></v-text-field>
@@ -83,6 +89,7 @@
             :error-messages="identifyErrors"
             label="사업자 등록번호를 입력해주세요."
             required
+            color="black"
             @input="$v.identify.$touch()"
             @blur="$v.identify.$touch()"
           ></v-text-field>
@@ -91,25 +98,29 @@
             :error-messages="endErrors"
             label="마감시간을 입력해주세요."
             required
+            color="black"
             @input="$v.end.$touch()"
             @blur="$v.end.$touch()"
           ></v-text-field>
           <v-text-field
             v-model="off"
             label="휴무일을 입력해주세요."
+            color="black"
           ></v-text-field>
           <v-text-field
             v-model="category"
             :error-messages="categoryErrors"
             label="카테고리를 선택해주세요."
             required
+            color="black"
             @input="$v.category.$touch()"
             @blur="$v.category.$touch()"
           ></v-text-field>
         </form>
-
-        <v-btn color="success" class="mx-5" @click="signup()"> 다음으로 </v-btn>
-        <v-btn text @click="e1 = 1"> 이전으로 </v-btn>
+        <div class="sign-btn">
+          <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
+          <button class="border-m radius-m" @click="signup()">가입하기</button>
+        </div>
       </v-stepper-content>
       <v-stepper-header class="status-box">
         <v-stepper-step
@@ -174,59 +185,58 @@ export default {
     nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.maxLength &&
-        errors.push("이름은 10글자 이내로 입력해야합니다.");
-      !this.$v.name.required && errors.push("이름을 입력해주세요.");
+      !this.$v.name.maxLength && errors.push(" ");
+      !this.$v.name.required && errors.push(" ");
       return errors;
     },
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
-      !this.$v.password.required && errors.push("비밀번호를 입력해주세요.");
+      !this.$v.password.minLength && errors.push(" ");
+      !this.$v.password.required && errors.push(" ");
       return errors;
     },
     emailErrors() {
       const errors = [];
       if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email && errors.push("이메일 형식이 아닙니다.");
-      !this.$v.email.required && errors.push("이메일을 입력해주세요.");
+      !this.$v.email.email && errors.push(" ");
+      !this.$v.email.required && errors.push(" ");
       return errors;
     },
     storeErrors() {
       const errors = [];
       if (!this.$v.store.$dirty) return errors;
-      !this.$v.store.required && errors.push("상호명을 입력해주세요.");
+      !this.$v.store.required && errors.push(" ");
       return errors;
     },
     addressErrors() {
       const errors = [];
       if (!this.$v.address.$dirty) return errors;
-      !this.$v.address.required && errors.push("가게주소를 입력해주세요.");
+      !this.$v.address.required && errors.push(" ");
       return errors;
     },
     telErrors() {
       const errors = [];
       if (!this.$v.tel.$dirty) return errors;
-      !this.$v.tel.required && errors.push("전화번호를 입력해주세요.");
+      !this.$v.tel.required && errors.push(" ");
       return errors;
     },
     identifyErrors() {
       const errors = [];
       if (!this.$v.identify.$dirty) return errors;
-      !this.$v.identify.required && errors.push("사업장 번호를 입력해주세요.");
+      !this.$v.identify.required && errors.push(" ");
       return errors;
     },
     endErrors() {
       const errors = [];
       if (!this.$v.end.$dirty) return errors;
-      !this.$v.end.required && errors.push("마감시간을 입력해주세요.");
+      !this.$v.end.required && errors.push(" ");
       return errors;
     },
     categoryErrors() {
       const errors = [];
       if (!this.$v.category.$dirty) return errors;
-      !this.$v.category.required && errors.push("카테고리를 선택해주세요.");
+      !this.$v.category.required && errors.push(" ");
       return errors;
     },
   },
@@ -254,6 +264,9 @@ export default {
 <style scoped>
 .btn-box {
   min-width: 344px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .status-box {
   display: flex;
@@ -262,5 +275,17 @@ export default {
 }
 .status-btn {
   padding: 0;
+}
+.next-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.sign-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 </style>
