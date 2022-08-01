@@ -1,17 +1,16 @@
 <template>
   <div>
-    <br><br><br>
     <div class="onsikgotext">
-    <h3>OnSikGo</h3>
-    <h5>로그인을 통해 <br> 함께 세상을 구해나가봐요</h5></div>
-    <br><br>
-    <LoginComponent></LoginComponent>
-    <br>
-    <b-button id="btn_signup" squared  variant="danger">회원가입</b-button>
-    <br>
-    <br>
-    <div class="container">
-      <div class="row">
+      <h3>OnSikGo</h3>
+      <h5>로그인을 통해</h5> 
+      <h5>함께 세상을 구해나가봐요</h5>
+    </div>
+    <!--로그인버튼-->
+      <LoginComponent></LoginComponent>
+      <b-button @click="signup()" id="btn_signup" squared  variant="danger">회원가입</b-button>
+
+    <div class="find container">
+      <div class="row mt-5">
         <div class="col-6">
           <span id="bold">아이디를 잊었다면?</span>
         </div>
@@ -42,6 +41,11 @@ export default {
   name: "LoginView",
   components: {
     LoginComponent
+  },
+  methods: {
+    signup() {
+      this.$router.push("/signup");
+    },
   }
 };
 </script>
@@ -49,6 +53,7 @@ export default {
 <style scoped>
 .onsikgotext {
   text-align: start;
+  margin-bottom: 15%;
 }
 #btn_signup {
   width: 100%;
@@ -56,5 +61,9 @@ export default {
 #bold {
   font-weight: bold;
   font-size: 0.75rem;
+}
+
+.find {
+  margin-top: 130px;
 }
 </style>

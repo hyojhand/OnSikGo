@@ -257,7 +257,7 @@ export default {
         category: this.category,
       });
       this.$router.push("/signup/complete");
-    },
+    },  
   },
 };
 </script>
