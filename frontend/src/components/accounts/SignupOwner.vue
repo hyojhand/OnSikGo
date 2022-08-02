@@ -8,9 +8,9 @@
         outlined
         min-height="450"
       >
-        <form class="mb-2">
+        <form class="mb-2 el-case">
           <!-- 메일 입력하기 -->
-          <div class="mail-input">
+          <div class="position-box">
             <v-text-field
               v-model="email"
               :error-messages="emailErrors"
@@ -21,7 +21,7 @@
               @input="$v.email.$touch()"
               @blur="$v.email.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m confrim-btn" @click="isCheck">
+            <button class="border-m radius-m confirm-btn" @click="isCheck">
               {{ checkmsg }}
             </button>
           </div>
@@ -95,6 +95,7 @@
             :error-messages="storeErrors"
             label="상호명을 입력해주세요."
             required
+            class="input-box"
             color="black"
             @input="$v.store.$touch()"
             @blur="$v.store.$touch()"
@@ -106,6 +107,7 @@
             :error-messages="adressErrors"
             label="가게 주소를 입력해주세요."
             required
+            class="input-box"
             color="black"
             type="address"
             @input="$v.address.$touch()"
@@ -113,15 +115,21 @@
           ></v-text-field> -->
 
           <!-- -----------가게 주소 입력-------------- -->
-          <v-text-field
-            v-model="address"
-            label="가게 주소를 입력해주세요."
-            required
-            color="black"
-            type="address"
-            @input="$v.address.$touch()"
-            @blur="$v.address.$touch()"
-          ></v-text-field>
+          <div class="position-box">
+            <v-text-field
+              v-model="address"
+              label="가게 주소를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              type="address"
+              @input="$v.address.$touch()"
+              @blur="$v.address.$touch()"
+            ></v-text-field>
+            <button class="border-m radius-m address-btn" @click="tempAlert">
+              주소 검색하기
+            </button>
+          </div>
 
           <!-- -------------전화번호 입력----------- -->
           <v-text-field
@@ -129,28 +137,35 @@
             :error-messages="telErrors"
             label="가게 전화번호를 입력해주세요."
             required
+            class="input-box"
             color="black"
             @input="$v.tel.$touch()"
             @blur="$v.tel.$touch()"
           ></v-text-field>
 
           <!-- --------------사업자 등록번호 입력------------ -->
-          <v-text-field
-            v-model="identify"
-            :error-messages="identifyErrors"
-            label="사업자 등록번호를 입력해주세요."
-            required
-            color="black"
-            @input="$v.identify.$touch()"
-            @blur="$v.identify.$touch()"
-          ></v-text-field>
-
+          <div class="position-box">
+            <v-text-field
+              v-model="identify"
+              :error-messages="identifyErrors"
+              label="사업자번호를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              @input="$v.identify.$touch()"
+              @blur="$v.identify.$touch()"
+            ></v-text-field>
+            <button class="border-m radius-m address-btn" @click="tempAlert">
+              등록하기
+            </button>
+          </div>
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
             :error-messages="endErrors"
             label="마감시간을 입력해주세요."
             required
+            class="input-box"
             color="black"
             @input="$v.end.$touch()"
             @blur="$v.end.$touch()"
@@ -169,6 +184,7 @@
             :error-messages="categoryErrors"
             label="카테고리를 선택해주세요."
             required
+            class="input-box"
             color="black"
             @input="$v.category.$touch()"
             @blur="$v.category.$touch()"
@@ -308,6 +324,9 @@ export default {
     },
   },
   methods: {
+    tempAlert() {
+      alert("뭐가 뜰겁니다");
+    },
     isCheck() {
       this.sendMail = true;
       this.checkmsg = "재전송하기";
@@ -333,6 +352,12 @@ export default {
 </script>
 
 <style scoped>
+.el-case {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
 .btn-box {
   min-width: 344px;
   display: flex;
@@ -360,13 +385,22 @@ export default {
   flex-direction: row;
   justify-content: space-evenly;
 }
-.mail-input {
+.position-box {
   position: relative;
 }
 .confirm-btn {
   position: absolute;
-  background-color: tomato;
   color: black;
+  right: 0;
+  top: 32px;
+  font-size: 13px;
+}
+.address-btn {
+  position: absolute;
+  color: black;
+  right: 0;
+  top: 12px;
+  font-size: 13px;
 }
 .mailconfim-case {
   margin: 3% 0;
@@ -382,5 +416,8 @@ export default {
 .mail-confirm {
   color: black;
   border-bottom: 1px solid rgba(0, 0, 0, 30%);
+}
+.input-box {
+  min-width: 266px;
 }
 </style>
