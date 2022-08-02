@@ -101,7 +101,6 @@
             @input="$v.store.$touch()"
             @blur="$v.store.$touch()"
           ></v-text-field>
-
           <!-- -----------가게 주소 에러 생략----------------- -->
           <!-- <v-text-field
             v-model="address"
@@ -179,7 +178,17 @@
             color="black"
           ></v-text-field>
 
-          <!-- ------------카테고리----------- -->
+          <!-- ------------카테고리셀렉트 박스----------- -->
+          <v-select
+            :items="items"
+            v-model = "category"
+            label="카테고리를 선택해주세요."
+            required
+            color="black"
+            @input = "$v.category.$touch()"
+            @blur= "$v.category.$touch()"
+          ></v-select>
+          <!-- ------------카테고리-----------
           <v-text-field
             v-model="category"
             :error-messages="categoryErrors"
@@ -189,7 +198,7 @@
             color="black"
             @input="$v.category.$touch()"
             @blur="$v.category.$touch()"
-          ></v-text-field>
+          ></v-text-field> -->
         </form>
         <div class="sign-btn">
           <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
@@ -243,6 +252,7 @@ export default {
       checkmsg: "메일 인증하기",
       sendMail: false,
       authNum: Number,
+      items: ['DESSERT', 'JAPAN', 'CHINA', 'KOREA', 'SNACK', 'WESTERN'],
     };
   },
 
