@@ -166,7 +166,12 @@ public class SaleService {
 
         Optional<SaleItem> findSaleItem = saleItemRepository.findByItem(findItem.get());
         if(!findSaleItem.isPresent()) {
+            Sale findSale = findSaleItem.get().getSale();
+            Store findStore = findSale.getStore();
             SaleItemDto saleItemDto = new SaleItemDto();
+            saleItemDto.setItemDto(findItem.get().toDto());
+            saleItemDto.setSaleDto(findSale.toDto(findStore.toDto()));
+
             saleItemDto.setStock(0);
             return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
         }
@@ -174,4 +179,31 @@ public class SaleService {
         SaleItemDto saleItemDto = findSaleItem.get().toSaleItemDto();
         return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
     }
+
+//    public ResponseEntity<List<SaleItemDto>> getSaleItemKeyword(SelectDto selectDto) {
+//
+//        LocalDateTime now = LocalDateTime.now();
+//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+//        String time = now.format(timeFormatter);
+//        if(Integer.parseInt(time) < 6) {
+//            now = now.minusDays(1);
+//        }
+//
+//        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//        String date = now.format(dayFormatter);
+//
+//        List<SaleItem> saleItemList = saleItemRepository.findByDateAndItemNameContainingAndClosedFalse(date, selectDto.getKeyword());
+//
+//        List<SaleItemDto> saleItemDtoList = new ArrayList<>();
+//        for(int i = 0; i < saleItemList.size(); i++) {
+//            SaleItem saleItem = saleItemList.get(i);
+//            Sale sale = saleItem.getSale();
+//            Store store = sale.getStore();
+//            ItemDto itemDto = saleItem.getItem().toDto();
+//            SaleItemDto saleItemDto = saleItemList.get(i).toDto(itemDto,sale.toDto(store.toDto()));
+//            saleItemDtoList.add(saleItemDto);
+//        }
+//
+//        return new ResponseEntity<>(saleItemDtoList, HttpStatus.OK);
+//    }
 }
