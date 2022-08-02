@@ -55,7 +55,7 @@
           </div>
         </form>
         <div class="btn-box">
-          <button @click="prodchange" class="border-m radius-m edit-btn">
+          <button @click="stockchange" class="border-m radius-m edit-btn">
             수량변경
           </button>
         </div>
@@ -94,9 +94,8 @@ export default {
   },
 
   methods: {
-    prodchange() {
+    stockchange() {
       http.post(`/sale/${this.store}`, {
-        itemId: this.no,
         salePrice: this.salePrice,
         stock: this.stock,
       });
