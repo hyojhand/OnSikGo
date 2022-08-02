@@ -78,7 +78,7 @@ public class NaverUserService implements SocialUserService {
             log.info("회원가입 완료");
         }
         // 이미 가입된 이메일
-        if(!user.getLoginType().equals("NAVER")){
+        if(!user.getLoginType().equals(LoginType.NAVER)){
             return new ResponseEntity<>("이미 존재하는 이메일", HttpStatus.NO_CONTENT);
         }
         else{
