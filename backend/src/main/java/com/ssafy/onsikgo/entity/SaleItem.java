@@ -57,6 +57,7 @@ public class SaleItem {
 
     public SaleItemDto toSaleItemDto() {
         return SaleItemDto.builder()
+                .saleItemId(this.saleItemId)
                 .stock(this.stock)
                 .totalStock(this.totalStock)
                 .salePrice(this.salePrice)
