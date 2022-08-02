@@ -13,5 +13,4 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     Optional<Sale> findByStoreAndDate(Store store, String date);
     Optional<Sale> findByStoreAndDateAndClosedFalse(Store store, String date);
 
-
 }
