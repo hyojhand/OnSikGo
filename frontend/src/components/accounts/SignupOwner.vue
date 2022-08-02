@@ -141,18 +141,6 @@
               @blur="$v.address.$touch()"
             ></v-text-field>
 
-          <!-- -------------전화번호 입력----------- -->
-          <v-text-field
-            v-model="tel"
-            :error-messages="telErrors"
-            label="가게 전화번호를 입력해주세요."
-            required
-            class="input-box"
-            color="black"
-            @input="$v.tel.$touch()"
-            @blur="$v.tel.$touch()"
-          ></v-text-field>
-
           <!-- --------------사업자 등록번호 입력------------ -->
           <div class="position-box">
             <v-text-field
@@ -169,6 +157,34 @@
               등록하기
             </button>
           </div>
+        </form>
+
+        <div class="sign-btn">
+          <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
+          <button class="border-m radius-m" @click="e1 = 3">다음으로</button>
+        </div>
+      </v-stepper-content>
+
+      <v-stepper-content
+        step="3"
+        class="btn-box mt-3"
+        black
+        outlined
+        min-height="200"
+      >
+        <form class="mb-2">
+          <!-- -------------전화번호 입력----------- -->
+          <v-text-field
+            v-model="tel"
+            :error-messages="telErrors"
+            label="가게 전화번호를 입력해주세요."
+            required
+            class="input-box"
+            color="black"
+            @input="$v.tel.$touch()"
+            @blur="$v.tel.$touch()"
+          ></v-text-field>
+
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
@@ -201,10 +217,11 @@
         </form>
 
         <div class="sign-btn">
-          <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
+          <button class="border-m radius-m" @click="e1 = 2">이전으로</button>
           <button class="border-m radius-m" @click="signup()">가입하기</button>
         </div>
       </v-stepper-content>
+
       <v-stepper-header class="status-box">
         <v-stepper-step
           class="status-btn"
@@ -218,6 +235,13 @@
           color="success"
           :complete="e1 > 2"
           step="2"
+        >
+        </v-stepper-step>
+        <v-stepper-step
+          class="status-btn"
+          color="success"
+          :complete="e1 > 3"
+          step="3"
         >
         </v-stepper-step>
       </v-stepper-header>
