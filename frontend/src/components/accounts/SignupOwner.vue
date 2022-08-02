@@ -126,8 +126,8 @@
               @input="$v.address.$touch()"
               @blur="$v.address.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="tempAlert">
-              주소 검색하기
+            <button class="border-m radius-m address-btn" @click="execDaumPostcode()">
+              주소 검색
             </button>
           </div>
 
@@ -333,8 +333,22 @@ export default {
     },
   },
   methods: {
+    execDaumPostcode() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          if (data.userSelectedType === "R") {
+            // 사용자가 도로명 주소를 선택했을 경우
+            this.address = data.roadAddress;
+          } else {
+            // 사용자가 지번 주소를 선택했을 경우(J)
+            this.address = data.jibunAddress;
+          }
+        },
+      }).open();
+    },
+
     tempAlert() {
-      alert("뭐가 뜰겁니다");
+      alert("인증 확인");
     },
     isCheck() {
       http
