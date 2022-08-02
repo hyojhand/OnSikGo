@@ -95,7 +95,7 @@ export default {
 
   methods: {
     stockchange() {
-      http.post(`/sale/${this.store}`, {
+      http.put(`/sale/${this.saleItemDto.saleItemId}`, {
         salePrice: this.salePrice,
         stock: this.stock,
       });
