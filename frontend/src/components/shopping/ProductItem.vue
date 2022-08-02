@@ -29,15 +29,15 @@
         v-bind="item"
       >
       <!-- 마커 -->
-      <div class="col-2">
+      <!-- <div class="col-2">
         <h1>{{ item.index }}</h1>
-      </div>
-      <div class="col-3">
+      </div> -->
+      <div class="col-5">
         <img :src="item.itemDto.itemImgUrl" style="widght:80px; height:80px" alt="">
       </div>
       <div class="col-4">
         <div class="product-name">{{ item.itemDto.itemName }}</div>
-        <div class="product-location">매장위치 : 이마트 37</div>
+        <div class="product-location">매장위치 : {{ item.saleDto.storeDto.storeName }}</div>
         <div class="product-prediction">300m, 도보로 3분</div>
         <div class="product-discount">30%</div>
         <span class="price">{{ item.itemDto.price }}원</span>
@@ -49,7 +49,7 @@
       <div class="col-3">
 
         <p class="product-quantity">재고 : <span class="product-number">{{ item.stock }}</span> 개</p>
-        <router-link class="product-order" :to="{ name: 'orderView' }">주문하기</router-link>
+        <button @click="productOrder(item)">주문하기</button>
       </div>
       <hr style="border : 1px solid #222; margin: 0.5rem;">
     </div>
@@ -58,6 +58,7 @@
 
 <script>
 import http from "@/util/http-common";
+import {mapActions} from "vuex";
 
 export default {
     name:'ProductItem',
@@ -71,10 +72,13 @@ export default {
 
     created () {
       this.productFind();
-      console.log(this.items)
-
     },
     methods: {
+      // 현재 위치 주소 vuex에 넣기
+      ...mapActions("store", [
+        "getItemId",
+        "getOrderStore",
+      ]),
       // 판매중인 가게 조회
       storeFind() {
         http
@@ -89,22 +93,21 @@ export default {
         http
           .get(`/sale/list/${this.storeId}`)
           .then((response) => {
-            console.log(response.data)
+            // console.log(response.data)
             this.items = response.data
-            console.log(this.items)
+            // console.log(this.items)
             
           })
       },
-      productOrder() {
+      productOrder(item) {
+        console.log(item)
+        this.getItemId(item.itemId),
+        this.getOrderStore(item.saleDto.storeDto.storeId)
         this.$router.push({
           name: "orderView",
-          params: { 
-            itemId : this.itemId,
-            stock : this.stock,
-            comment : this.itemDto.comment,
-            itemImage : this.itemDto.itemImgUrl,
-          }
         })
+        
+        
       }
 
     }

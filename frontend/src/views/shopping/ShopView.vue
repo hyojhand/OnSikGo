@@ -26,7 +26,7 @@
         <kakao-map
           class="tab-link currnet" 
           v-if="selectedTab === tabs[0]"
-          @addressEvent="addressEvent"></kakao-map>
+        ></kakao-map>
         <category-store class="tab-link" v-else></category-store>
       </div>
 
@@ -61,7 +61,7 @@ export default {
           selectedTab: '',
       };
     },
-
+  // vuex에서 현재주소 가져오기
   computed: {
   ...mapGetters("store",[
     "currentAddress"
@@ -73,11 +73,8 @@ export default {
   },
   methods:{
     onClickTab(tab) {
-            this.selectedTab = tab
+      this.selectedTab = tab
 
-    },
-    addressEvent(currentAddress){
-      this.currentAddress = currentAddress; //child 컴포넌트로부터 받은 Txt를 콘솔에 출력
     },
   },
 };
@@ -135,8 +132,14 @@ ul.tabs li{
 }
 
 .location {
-  text-align: left;
   padding-bottom: 10px;
 }
-
+.location span {
+  color: #333;
+  font-weight: 500;
+  font-size : 16px;
+  margin-left: 5px;
+  /* 밑줄 */
+  border-bottom:2px solid #8cb883;
+}
 </style>

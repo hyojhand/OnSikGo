@@ -7,38 +7,37 @@
           <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>
           <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
         </svg>
-        <span> 서구 임시수도기념로 37, 구덕로 119길</span>
+        <span> {{ storeLocation }} </span>
       </div>
       <!-- 단일 상품 설명 -->
       <!-- 상품명, 상품이미지, 주소,현재위치에서 거리, 매장상세보기 버튼, 정가, 할인가, 재고, 한줄평-->
       <div class="product_container">
         <!-- 상품명 -->
-        <h3 class="product-name">불고기 버거</h3>
+        <h3 class="product-name">{{productName}}</h3>
         <!-- 상품이미지, 상세설명 -->
         <div class="row">
           <div class="col-5">
-            <img class="product-image" src="@/assets/images/hambuger.jpg" alt="e-mart">
+            <img class="product-image" :src="`${ itemImgUrl }`" :alt="`${ productName }`">
           </div>
           <div class="col product-description">
-            <p class="product-location">상호 명 : 이마트 37</p>
+            <p class="product-location">상호 명 : {{ storeName }}</p>
             <p class="product-prediction">300m, 도보로 3분</p>
             <router-link class="store-moving" :to="{name: 'storeView'}">상세보기</router-link>
             <p class="total-price">가격 : 
-              <span class="price">5700원</span>
+              <span class="price">{{ price }}원</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
               </svg>
-              <span class="discount-price">4000원</span>
+              <span class="discount-price">{{ price - salePrice }}원</span>
             </p>
-            <p style="margin-top:0px">재고 <span>3</span> 개</p>
+            <p style="margin-top:0px">재고 <span>{{ stock }}</span> 개</p>
           </div>
         </div>
         <!-- 꿀팁 -->
         <div class="row">
-          <p class="col-4">이미지</p>
-          <p class="col" style="text-align:left; font-size:12px; word-break: keep-all;">생각보다 매워요.
-            =.= 땅콩이 들어가있으니 주의바랍니다. 
-            식었다면 랩씌우고 전자레인지에 30초~!</p>
+          <p class="col-4">아이콘 넣을예정</p>
+          <p class="col" style="text-align:left; font-size:12px; word-break: keep-all;">
+            {{ comment }}</p>
         </div>
         
       </div>
@@ -46,12 +45,14 @@
       <!-- 고객명, 매장, 상품명, 수량, 소요시간, 경고문, 픽업 신청버튼 -->
       <div class="order">
         <p class="order-header">주문서</p>
-        <p class="order-name">주문자 : 동근곤듀</p>
-        <p class="order-store">매장 명 : 이마트 37</p>
-        <p class="order-product">불고기 버거</p>
+        <p class="order-name">주문자 : {{ nickName }}</p>
+        <p class="order-store">매장 명 : {{ storeName }}</p>
+        <p class="order-product">{{productName}}</p>
         <div class="order-number" style="margin-bottom: 0.5rem">
           <span>수량 : </span>
-          <input type="number">
+          <input
+            v-model="count"
+            type="number">
         </div>
         <div class="order-number">
           <span>소요시간 : </span>
@@ -60,7 +61,7 @@
         <p class="order-text">* 매장에서 '승인 완료'시 고객님에게 알림이 갑니다</p>
         <p class="order-text">반드시 알림을 확인하고 출발해주세요.</p>
         <p class="order-text">상품은 금일 취식 부탁드립니다</p>
-        <router-link class='main-moving' :to="{name : 'shopView'}">픽업 신청하기</router-link>
+        <button @click="productOrder()" class='main-moving' :to="{name : 'shopView'}">픽업 신청하기</button>
       </div>
     </div>
 
@@ -68,10 +69,96 @@
 </template>
 
 <script>
-
+import { mapGetters } from "vuex";
+import http from "@/util/http-common";
 
 export default {
   name: "OrderView",
+  data () {
+    return {
+      productName: "",
+      price : "",
+      stock : "",
+      salePrice : "",
+      itemImgUrl : "",
+      comment : "",
+      userName : "",
+      nickName : "",
+      storeName : "",
+      storeLocation : "",
+      count : "",
+    }
+  },
+  computed: {
+    ...mapGetters("store", [
+      "currentAddress",
+      "currentItemId",
+      "orderStore",
+    ])
+  },
+  created (){
+    this.findProduct()
+    this.findUser()
+    this.findStock()
+  },
+  methods: {
+    // 상품 정보 조회
+    findProduct() {
+      http
+        .get(`/item/${this.currentItemId}`)
+        .then((response) => {
+          this.productName = response.data.itemName
+          this.price = response.data.price
+          this.itemImgUrl = response.data.itemImgUrl
+          this.comment = response.data.comment
+          // console.log(response.data)
+        }),
+      http
+        .get(`/sale/${this.currentItemId}`)
+        .then((response) => {
+          this.stock = response.data.stock
+          this.salePrice = response.data.salePrice 
+          // console.log(response.data)
+        })
+    },
+    // 가게정보 조회
+    findStock() {
+      http
+        .get(`/store/${this.orderStore}`)
+        .then((response) => {
+          this.storeName = response.data.storeName
+          this.storeLocation = response.data.location
+          // console.log(response.data)
+        })
+    },
+    // 유저 조회
+    findUser() {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .get('/user')
+        .then((response) => {
+          this.userName = response.data.userName
+          this.nickName = response.data.nickname
+          // console.log(response.data)
+        })
+    },
+    //  주문하기
+    productOrder() {
+      http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+      http
+        .post('/order', {
+          saleItemId : this.currentItemId,
+          count : this.count
+        })
+        .then((response) => {
+          console.log(response)
+        })
+
+      this.$router.push("/shop")
+    }
+  }
 
 
 };
