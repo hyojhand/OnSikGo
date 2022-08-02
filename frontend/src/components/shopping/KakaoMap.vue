@@ -3,7 +3,6 @@
     <div id="map"></div>
     <div class="button-group">
 
-      <button @click="displayMarker(markerPositions1)">marker set 1</button>
     </div>
   </div>
 </template>

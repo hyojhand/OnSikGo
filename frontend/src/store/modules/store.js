@@ -4,7 +4,6 @@ const store = {
       currentAddress:"",
       currentItemId:"",
       orderStore:"",
-      
     },
     getters: {
       currentAddress: state => state.currentAddress,
@@ -35,8 +34,6 @@ const store = {
       GET_ORDERSTORE: (state, storeId) => {
         state.orderStore = storeId;
       },
-
-
     },
   };
   
