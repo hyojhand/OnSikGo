@@ -116,7 +116,7 @@
               <v-row>
                 <v-col cols="12">
                   <v-select
-                    v-model="values"
+                    v-model="this.storeDto.offDay"
                     :items="items"
                     attach
                     chips
@@ -127,7 +127,7 @@
               </v-row>
             </v-container>
           </v-card>
-        </v-app> -->
+        </v-app>  -->
         <br />
         <!--form 끝-->
         <div class="d-flex justify-content-between">
@@ -188,6 +188,7 @@ export default {
   },
   created() {
     http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+      console.log(this.$route.params.storeId)
       this.storeDto = response.data;
       console.log(this.storeDto);
     });
@@ -221,9 +222,6 @@ export default {
     },
     onSubmit(event) {
       event.preventDefault();
-      alert(
-        "안녕하세요 변경한 사항을 저장하겠습니다" + JSON.stringify(this.form)
-      );
     },
     onReset(event) {
       event.preventDefault();

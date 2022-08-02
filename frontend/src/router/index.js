@@ -15,6 +15,7 @@ import CompleteView from "../views/accounts/CompleteView.vue";
 import OwnerInfoChangeView from "../views/accounts/OwnerInfoChangeView.vue";
 import UserInfoChangeView from "../views/accounts/UserInfoChangeView.vue";
 import PasswordChangeView from "../views/accounts/PasswordChangeView.vue";
+import storeAddView from "../views/accounts/storeAddView.vue";
 // 알림+
 import NoticeView from "../views/notice/NoticeView.vue";
 import NoticeUserView from "../views/notice/NoticeUserView.vue";
@@ -66,6 +67,14 @@ const routes = [
     component: LoginView,
     meta: {
       title: "로그인",
+    },
+  },
+  {
+    path: "/addstore",
+    name: "addstore",
+    component: storeAddView,
+    meta: {
+      title: "매장추가",
     },
   },
   {
