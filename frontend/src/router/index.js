@@ -165,6 +165,7 @@ const routes = [
     meta: {
       title: "주문하기",
     },
+    props: true
   },
   // 가게보기
   {
