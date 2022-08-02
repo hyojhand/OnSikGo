@@ -59,7 +59,7 @@ public class StoreService {
     }
 
     @Transactional
-    public ResponseEntity<String> register(HttpServletRequest request, StoreDto storeDto) {
+    public ResponseEntity<String> register(HttpServletRequest request, MultipartFile file, StoreDto storeDto) {
 
         String token = request.getHeader("access-token");
         User findUser = null;
@@ -68,9 +68,10 @@ public class StoreService {
         }
 
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
-
         findUser = userRepository.findByEmail(userEmail).get();
 
+        String storeImgUrl = awsS3Service.uploadImge(file);
+        storeDto.setStoreImgUrl(storeImgUrl);
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
         Store store = storeDto.toEntity(coordinate);

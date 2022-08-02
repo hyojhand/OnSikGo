@@ -39,9 +39,8 @@
 
 <script>
 
-
 export default {
-    name: "CategoryStore",
+  name: "CategoryStore",
 }
 </script>
 

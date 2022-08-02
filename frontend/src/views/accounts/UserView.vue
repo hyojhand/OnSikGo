@@ -27,7 +27,7 @@
             @blur="$v.email.$touch()"
           ></v-text-field>
 
-          <button class="border-m radius-m confrim-btn" @click="isCheck">
+          <button class="border-m radius-m confrim-btn" @click="isCheck()" >
             {{ checkmsg }}
           </button>
         </div>
@@ -37,11 +37,12 @@
             <input
               id="mail-confirm"
               class="mail-confirm"
+              v-model="authNum"
               placeholder="인증번호를 입력하세요."
             />
             <button
               class="border-m radius-m mailconfirm-btn"
-              @click="checkMail"
+              @click="checkMail()"
             >
               확인하기
             </button>
@@ -101,7 +102,7 @@
           <!-- ------닉네임 중복확인------- -->
           <button
             class="border-m radius-m name-confrim-btn"
-            @click="nicknameCheck"
+            @click="nicknameCheck()"
           >
             중복확인하기
           </button>
@@ -165,6 +166,7 @@ export default {
     sendMail: false,
     checkmsg: "메일 인증하기",
     nicknameDuple: false,
+    authNum: Number,
   }),
 
   computed: {
@@ -212,12 +214,47 @@ export default {
     },
   },
   methods: {
-    nicknameCheck() {
-      this.nicknameDuple = !this.nicknameDuple;
-    },
     isCheck() {
-      this.sendMail = true;
-      this.checkmsg = "재전송하기";
+      http
+        .post("/user/email", {
+          email: this.email
+        })
+        .then((response) => {
+        if (response.status == 200) {
+          alert("인증번호를 확인해주세요");
+          this.sendMail = true;
+          this.checkmsg = "재전송하기";
+        } else {
+          alert("이미 가입된 이메일입니다");
+        }
+      });
+    },
+    checkMail() {
+      http
+        .post("/user/emailAuthNumber", {
+          email: this.email,
+          authNum: this.authNum,
+        })
+        .then((response) => {
+        if ((response.status) == 200) {
+          console.log(response.data);
+        } else {
+          alert("인증번호 확인에 실패했습니다");
+        }
+      });
+    },
+    nicknameCheck() {
+      http
+        .post("/user/nickname", {
+          nickname: this.nickname
+        })
+        .then((response) => {
+        if (response.status == 200) {
+          this.nicknameDuple = !this.nicknameDuple;
+        } else {
+          alert("중복된 닉네임이 있습니다");
+        }
+      });
     },
     tempgo() {
       this.$router.push("/signup/complete");

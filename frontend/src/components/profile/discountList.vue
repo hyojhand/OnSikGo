@@ -1,59 +1,62 @@
 <template>
-  <div>
-    <h3>오늘 할인 판매 상품</h3>
+  <div class="container row">
+    <div class="col-5">
+      <img :src="`${this.itemDto.itemImgUrl}`" />
+    </div>
 
-    <b-card>
-      <b-row>
-        <b-col md="3">
-          <div id="tobecenter">
-            <img
-              class="store-image"
-              :src="`${itemDto.itemImgUrl}`"
-              height="80"
-              width="110"
-            />
-          </div>
-        </b-col>
-        <b-col md="9">
-          <div class="text-align-center" id="cardInText">
-            <br />
-            <span>상품명 : {{ itemDto.itemName }} </span>
-            <span>재고: {{ stock }} 개</span>
-            <br />
-            <div class="product-discount">
-              {{ (1 - salePrice / itemDto.price) * 100 }} %
-            </div>
-            <span
-              >할인가: {{ salePrice }}
-              <class id="firstPrice">{{ itemDto.price }}</class>
-            </span>
-          </div>
-          <div class="d-flex justify-content-end">
-            <b-button
-              @click="prodmodify()"
-              size="sm"
-              pill
-              variant="outline-success"
-              >할인수정</b-button
-            >
-          </div>
-        </b-col>
-      </b-row>
-    </b-card>
+    <div class="col-7">
+      <div>
+        <div class="info-box">상품명 : {{ this.itemDto.itemName }}</div>
+        <div class="info-box">남은 재고: {{ this.saleDto.stock }} 개</div>
+
+        <div class="info-box">정상판매가 : {{ this.itemDto.price }} 원</div>
+        <div class="info-box sale">
+          할인율 : 🔻{{ ((1 - salePrice / itemDto.price) * 100).toFixed(2) }}%
+        </div>
+        <div class="info-box">할인판매가: {{ this.salePrice }} 원</div>
+      </div>
+      <div>
+        <edit-stock-modal
+          :no="this.itemId"
+          :store="this.storeId"
+        ></edit-stock-modal>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import EditStockModal from "@/components/management/EditStockModal.vue";
+import http from "@/util/http-common";
 export default {
   name: "discountList",
+  components: {
+    EditStockModal,
+  },
+  data() {
+    return {
+      itemDto: {},
+      saleDto: {},
+      salePrice: "",
+    };
+  },
   props: {
-    no: Number,
-    itemDto: {},
-    saleDto: {},
-    stock: Number,
+    storeId: Number,
     totalStock: Number,
-    salePrice: Number,
     itemId: Number,
+  },
+
+  async created() {
+    await http.get(`/sale/${this.itemId}`).then((response) => {
+      if (response.status == 200) {
+        this.saleDto = response.data;
+        this.salePrice = this.saleDto.salePrice;
+      }
+    });
+
+    await http.get(`/item/${this.itemId}`).then((response) => {
+      this.itemDto = response.data;
+    });
   },
   methods: {
     prodmodify() {
@@ -66,26 +69,21 @@ export default {
 };
 </script>
 
-<style>
-/* #tobecenter {
-  align-content: center;
+<style scoped>
+img {
+  width: 100%;
+}
+.container {
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  margin-top: 4px;
-} */
-
-#firstPrice {
-  text-decoration: line-through;
+  border-bottom: 1px solid rgba(0, 0, 0, 10%);
+  margin: 0;
 }
-
-#cardInText {
-  text-align: left;
-  font-size: 10px;
+.info-box {
+  text-align: start;
 }
-.product-discount {
-  padding-top: 5px;
-  padding-left: 8px;
-  color: red;
-  font-weight: bolder;
-  font-size: 12px;
+.sale {
+  color: tomato;
 }
 </style>
