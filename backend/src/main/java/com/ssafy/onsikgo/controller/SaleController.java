@@ -51,8 +51,8 @@ public class SaleController {
         return saleService.getSaleItemInfo(item_id);
     }
 
-    @PostMapping("/keyword")
-    public ResponseEntity<List<SaleItemDto>> getSaleItemKeyword(@RequestBody SelectDto selectDto) {
-        return saleService.getSaleItemKeyword(selectDto);
-    }
+//    @PostMapping("/keyword")
+//    public ResponseEntity<List<SaleItemDto>> getSaleItemKeyword(@RequestBody SelectDto selectDto) {
+//        return saleService.getSaleItemKeyword(selectDto);
+//    }
 }
