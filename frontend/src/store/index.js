@@ -8,7 +8,6 @@ Vue.use(Vuex);
 import accounts from "@/store/modules/accouts.js"
 import store from "@/store/modules/store.js"
 
-
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   modules: {

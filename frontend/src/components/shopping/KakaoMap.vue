@@ -4,7 +4,6 @@
     <div class="button-group">
 
       <button @click="displayMarker(markerPositions1)">marker set 1</button>
-      <button @click="setEmitData()">이모트</button>
     </div>
   </div>
 </template>
@@ -28,11 +27,7 @@ export default {
       infowindow: null,
     };
   },
-  // computed: {
-  //   ...mapState("store",[
-  //     "currentAddress"
-  //   ]),
-  // },
+
   created() {
   if (navigator.geolocation) {
     // 현재 위치
@@ -45,12 +40,10 @@ export default {
     });
     // 못찾은 경우
     } 
-  
-    
   },
 
   methods: {
-    // veux 사용
+    // 현재 위치 주소 vuex에 넣기
     ...mapActions("store", [
       "getAddress"
     ]),
@@ -106,12 +99,14 @@ export default {
         this.map.setBounds(bounds);
       }
     },
+
     // 현재 위치 찾기
     async curruntLocation() {
       this.changeaddress()
       this.createMap()
 
     },
+
     // 도로명 주소 변환
     changeaddress() {
       var geocoder = new kakao.maps.services.Geocoder();
@@ -148,4 +143,6 @@ export default {
 button {
   margin: 0 3px;
 }
+
+
 </style>
