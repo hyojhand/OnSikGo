@@ -150,13 +150,15 @@ export default {
       this.storeId = response.data[0].storeId;
     });
 
-    await http.post(`/item/page/${this.storeId}`, {
-      page: 0,
-      size: 4,
-    }).then((response) => {
-      this.items = response.data.content;
-      this.totalPage = response.data.totalPages;
-    });
+    await http
+      .post(`/item/page/${this.storeId}`, {
+        page: 0,
+        size: 4,
+      })
+      .then((response) => {
+        this.items = response.data.content;
+        this.totalPage = response.data.totalPages;
+      });
   },
 
   components: {
@@ -165,12 +167,14 @@ export default {
 
   methods: {
     selectPage() {
-      http.post(`/item/page/${this.storeId}`, {
-      page: this.page,
-      size: 4,
-    }).then((response) => {
-      this.items = response.data.content;
-    });
+      http
+        .post(`/item/page/${this.storeId}`, {
+          page: this.page,
+          size: 8,
+        })
+        .then((response) => {
+          this.items = response.data.content;
+        });
     },
     prodregister() {
       this.$router.push("/allprod/register");
