@@ -62,6 +62,7 @@ export default {
     };
   },
   created() {
+    if (localStorage.getItem("access-token") == null) return;
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     http.get("/user").then((response) => {
