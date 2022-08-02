@@ -33,7 +33,7 @@ public class ItemService {
     private final AwsS3Service awsS3Service;
 
     @Transactional
-    public ResponseEntity<String> register(MultipartFile file,ItemDto itemDto, Long store_id) {
+    public ResponseEntity<String> register(MultipartFile file, ItemDto itemDto, Long store_id) {
 
         String itemImgUrl = awsS3Service.uploadImge(file);
         itemDto.setItemImgUrl(itemImgUrl);
@@ -59,10 +59,19 @@ public class ItemService {
     }
 
     @Transactional
-    public ResponseEntity<String> modify(ItemDto itemDto, Long item_id) {
-        Item findItem = itemRepository.findById(item_id).get();
-        findItem.update(itemDto);
-        itemRepository.save(findItem);
+    public ResponseEntity<String> modify(MultipartFile file, ItemDto itemDto, Long item_id) {
+
+        Optional<Item> findItem = itemRepository.findById(item_id);
+        awsS3Service.delete(findItem.get().getItemImgUrl());
+
+        String itemImgUrl = awsS3Service.uploadImge(file);
+        itemDto.setItemImgUrl(itemImgUrl);
+        Item item = itemDto.toEntity();
+
+        Store store = findItem.get().getStore();
+        item.addStore(store);
+        itemRepository.save(item);
+
         return new ResponseEntity<>("상품 수정이 완료되었습니다.",HttpStatus.OK);
     }
 
