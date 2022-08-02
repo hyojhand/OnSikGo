@@ -87,7 +87,6 @@ export default {
     });
     await http.get(`/sale/${this.no}`).then((response) => {
       this.saleItemDto = response.data;
-      console.log(this.saleItemDto);
       this.salePrice = this.saleItemDto.salePrice;
       this.stock = this.saleItemDto.stock;
     });

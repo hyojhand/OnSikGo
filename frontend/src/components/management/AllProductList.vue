@@ -5,6 +5,7 @@
     <div class="item-name">
       {{ itemName }}
     </div>
+    <div>{{ this.no }}</div>
     <div class="info-container">
       <div class="item-info">
         <div class="info-box">
@@ -60,6 +61,8 @@ export default {
     price: Number,
     itemImgUrl: String,
     comment: String,
+    no: Number,
+    item: Number,
   },
 
   created() {
@@ -67,7 +70,6 @@ export default {
       if (response.status == 200) {
         this.saleDto = response.data;
       }
-      console.log(this.saleDto);
     });
   },
 
