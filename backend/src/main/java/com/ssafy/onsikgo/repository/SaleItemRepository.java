@@ -9,7 +9,7 @@ import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
-public interface SaleItemRepository extends JpaRepository<SaleItem, Long> {
+public interface SaleItemRepository extends JpaRepository<SaleItem, Long>, SaleItemRepositoryCustom {
 
     List<SaleItem> findBySale(Sale sale);
     Optional<SaleItem> findBySaleAndItem(Sale sale, Item item);

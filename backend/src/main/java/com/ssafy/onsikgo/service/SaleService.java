@@ -199,30 +199,30 @@ public class SaleService {
         return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
     }
 
-//    public ResponseEntity<List<SaleItemDto>> getSaleItemKeyword(SelectDto selectDto) {
-//
-//        LocalDateTime now = LocalDateTime.now();
-//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
-//        String time = now.format(timeFormatter);
-//        if(Integer.parseInt(time) < 6) {
-//            now = now.minusDays(1);
-//        }
-//
-//        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-//        String date = now.format(dayFormatter);
-//
-//        List<SaleItem> saleItemList = saleItemRepository.findByDateAndItemNameContainingAndClosedFalse(date, selectDto.getKeyword());
-//
-//        List<SaleItemDto> saleItemDtoList = new ArrayList<>();
-//        for(int i = 0; i < saleItemList.size(); i++) {
-//            SaleItem saleItem = saleItemList.get(i);
-//            Sale sale = saleItem.getSale();
-//            Store store = sale.getStore();
-//            ItemDto itemDto = saleItem.getItem().toDto();
-//            SaleItemDto saleItemDto = saleItemList.get(i).toDto(itemDto,sale.toDto(store.toDto()));
-//            saleItemDtoList.add(saleItemDto);
-//        }
-//
-//        return new ResponseEntity<>(saleItemDtoList, HttpStatus.OK);
-//    }
+    public ResponseEntity<List<SaleItemDto>> getSaleItemKeyword(SelectDto selectDto) {
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
+
+        List<SaleItem> saleItemKeywordList = saleItemRepository.findSaleItemKeyword(selectDto.getKeyword(),date);
+        List<SaleItemDto> saleItemDtoList = new ArrayList<>();
+        for(int i = 0; i < saleItemKeywordList.size(); i++) {
+            SaleItem saleItem = saleItemKeywordList.get(i);
+            Sale sale = saleItem.getSale();
+            Store store = sale.getStore();
+            ItemDto itemDto = saleItem.getItem().toDto();
+            SaleItemDto saleItemDto = saleItemKeywordList.get(i).toDto(itemDto,sale.toDto(store.toDto()));
+            saleItemDtoList.add(saleItemDto);
+        }
+
+        return new ResponseEntity<>(saleItemDtoList, HttpStatus.OK);
+    }
+
 }
