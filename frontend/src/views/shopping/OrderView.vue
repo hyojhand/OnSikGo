@@ -2,7 +2,7 @@
   <div class="main_container">
     <div class="mobile" >
       <!-- 주소 -->
-      <div class="location">
+      <div class="location mt-5 ">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pin-map" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>
           <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
@@ -11,7 +11,7 @@
       </div>
       <!-- 단일 상품 설명 -->
       <!-- 상품명, 상품이미지, 주소,현재위치에서 거리, 매장상세보기 버튼, 정가, 할인가, 재고, 한줄평-->
-      <div class="product_container">
+      <div class="product_container border-l radius-m">
         <!-- 상품명 -->
         <h3 class="product-name">{{productName}}</h3>
         <!-- 상품이미지, 상세설명 -->
@@ -22,7 +22,8 @@
           <div class="col product-description">
             <p class="product-location">상호 명 : {{ storeName }}</p>
             <p class="product-prediction">300m, 도보로 3분</p>
-            <router-link class="store-moving" :to="{name: 'storeView'}">상세보기</router-link>
+            <button @click="detailStore(item)" class="store-moving">상세보기</button>
+            <br><br>
             <p class="total-price">가격 : 
               <span class="price">{{ price }}원</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
@@ -34,8 +35,13 @@
           </div>
         </div>
         <!-- 꿀팁 -->
-        <div class="row">
-          <p class="col-4">아이콘 넣을예정</p>
+        <div class="row ">
+          <p class="col-4 m-1">
+            <img 
+              src="@/assets/images/cooker.png"
+              width="90%"
+            >
+          </p>
           <p class="col" style="text-align:left; font-size:12px; word-break: keep-all;">
             {{ comment }}</p>
         </div>
@@ -43,26 +49,45 @@
       </div>
       <!-- 픽업 주문서 -->
       <!-- 고객명, 매장, 상품명, 수량, 소요시간, 경고문, 픽업 신청버튼 -->
-      <div class="order">
-        <p class="order-header">주문서</p>
-        <p class="order-name">주문자 : {{ nickName }}</p>
-        <p class="order-store">매장 명 : {{ storeName }}</p>
-        <p class="order-product">{{productName}}</p>
-        <div class="order-number" style="margin-bottom: 0.5rem">
-          <span>수량 : </span>
-          <input
-            v-model="count"
-            type="number">
-        </div>
-        <div class="order-number">
-          <span>소요시간 : </span>
-          <input type="number">
-        </div>
-        <p class="order-text">* 매장에서 '승인 완료'시 고객님에게 알림이 갑니다</p>
-        <p class="order-text">반드시 알림을 확인하고 출발해주세요.</p>
-        <p class="order-text">상품은 금일 취식 부탁드립니다</p>
-        <button @click="productOrder()" class='main-moving' :to="{name : 'shopView'}">픽업 신청하기</button>
-      </div>
+      <v-stepper v-model="e1" class="order m-1">
+        <v-stepper-items>
+          <v-stepper-content
+            step="1"
+            class="btn-box mt-3"
+            black
+            outlined
+            min-height="450">
+            <p class="order-header">주문서</p>
+            <p class="order-name">주문자 : {{ nickName }}</p>
+            <p class="order-store">매장 명 : {{ storeName }}</p>
+            <p class="order-product">상품 명 : {{productName}}</p>
+            <form  class="mb-2 el-case">
+              <v-text-field
+                v-model="count"
+                :error-messages="countErrors"
+                label="수량을 입력해주세요."
+                required
+                class="input-box mt-5"
+                color="black"
+              >
+              </v-text-field>
+              <v-text-field
+                v-model="count"
+                :error-messages="countErrors"
+                label="소요시간을 입력해주세요."
+                required
+                class="input-box mt-1"
+                color="black"
+              >
+              </v-text-field>
+            </form>
+            <p class="order-text">* 매장에서 '승인 완료'시 고객님에게 알림이 갑니다</p>
+            <p class="order-text">반드시 알림을 확인하고 출발해주세요.</p>
+            <p class="order-text">상품은 금일 취식 부탁드립니다</p>
+            <button class="order-button border-m radius-m" @click="productOrder()">신청하기</button>
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-stepper>
     </div>
 
   </div>
@@ -155,12 +180,15 @@ export default {
         .then((response) => {
           console.log(response)
         })
-
       this.$router.push("/shop")
+
+      
+    },
+    // 할때 가게정보도 추가 할 것
+    detailStore() {
+        this.$router.push("/store")
     }
   }
-
-
 };
 </script>
 
@@ -241,13 +269,8 @@ export default {
 .discount-price{
   font-size:12px;
 }
-
 .order {
-  margin: 1.5rem;
-  border: 1px solid;
-  border-radius: 20px;
-  font-size: 12px;
-  
+  color : black;
 }
 .order-header {
   font-size: 16px;
@@ -255,17 +278,16 @@ export default {
 }
 .order-name {
   margin: 0;
-  margin-left:1rem;
+  margin-bottom: 0.5rem;
   text-align: left;
 }
 .order-store {
   margin: 0;
-  margin-left:1rem;
+  margin-bottom: 0.5rem;
   text-align: left;
 }
 .order-product {
   margin: 0;
-  margin-left:1rem;
   text-align: left;
 }
 .order input{
@@ -281,15 +303,10 @@ export default {
 .order .order-text {
   color: red;
   margin: 0;
-  margin-left:1rem;
+  margin-bottom: 0.5rem;
   text-align: left;
 }
-.main-moving {
-  border:  1px solid;
-  text-decoration-line: none;
-  border-radius: 15px;
-  font-size: 12px;
-  padding: 3px;
-  color: #222;
+.order-button {
+  margin-left: 35%;
 }
 </style>
