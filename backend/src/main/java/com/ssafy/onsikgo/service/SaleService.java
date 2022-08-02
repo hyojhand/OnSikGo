@@ -148,7 +148,17 @@ public class SaleService {
             return new ResponseEntity<>("등록된 판매상품이 없습니다.", HttpStatus.NO_CONTENT);
         }
 
-        findSaleItem.get().update(map.get("stock"));
+        Integer stock = findSaleItem.get().getStock();
+        if(map.get("stock") != null) {
+            stock = map.get("stock");
+        }
+
+        Integer salePrice = findSaleItem.get().getSalePrice();
+        if(map.get("salePrice") != null) {
+            salePrice = map.get("salePrice");
+        }
+
+        findSaleItem.get().update(stock, salePrice);
         saleItemRepository.save(findSaleItem.get());
         return new ResponseEntity<>("재고 수정완료" ,HttpStatus.OK);
     }
@@ -162,15 +172,24 @@ public class SaleService {
     }
 
     public ResponseEntity<SaleItemDto> getSaleItemInfo(Long item_id) {
-        Optional<Item> findItem = itemRepository.findById(item_id);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
 
-        Optional<SaleItem> findSaleItem = saleItemRepository.findByItem(findItem.get());
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
+
+        Optional<Item> findItem = itemRepository.findById(item_id);
+        Store store = findItem.get().getStore();
+        Optional<Sale> findSale = saleRepository.findByStoreAndDate(store, date);
+
+        Optional<SaleItem> findSaleItem = saleItemRepository.findBySaleAndItem(findSale.get(), findItem.get());
         if(!findSaleItem.isPresent()) {
-            Sale findSale = findSaleItem.get().getSale();
-            Store findStore = findSale.getStore();
             SaleItemDto saleItemDto = new SaleItemDto();
             saleItemDto.setItemDto(findItem.get().toDto());
-            saleItemDto.setSaleDto(findSale.toDto(findStore.toDto()));
 
             saleItemDto.setStock(0);
             return new ResponseEntity<>(saleItemDto, HttpStatus.OK);

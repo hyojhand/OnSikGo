@@ -132,7 +132,7 @@ public class OrderService {
 
         SaleItem saleItem = findOrder.get().getSaleItem();
         int stockCount = saleItem.getStock() - findOrder.get().getCount();
-        saleItem.update(stockCount);
+        saleItem.updateStock(stockCount);
         saleItemRepository.save(saleItem);
 
 
