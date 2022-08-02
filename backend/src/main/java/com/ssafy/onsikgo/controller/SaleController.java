@@ -2,6 +2,7 @@ package com.ssafy.onsikgo.controller;
 
 import com.ssafy.onsikgo.dto.SaleItemDto;
 import com.ssafy.onsikgo.dto.SaleResultDto;
+import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,5 +49,10 @@ public class SaleController {
     @GetMapping("/{item_id}")
     public ResponseEntity<SaleItemDto> getSaleItemInfo(@PathVariable Long item_id) {
         return saleService.getSaleItemInfo(item_id);
+    }
+
+    @PostMapping("/keyword")
+    public ResponseEntity<List<SaleItemDto>> getSaleItemKeyword(@RequestBody SelectDto selectDto) {
+        return saleService.getSaleItemKeyword(selectDto);
     }
 }
