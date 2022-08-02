@@ -1,6 +1,7 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.ItemDto;
+import com.ssafy.onsikgo.dto.PageDto;
 import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Item;
@@ -9,6 +10,8 @@ import com.ssafy.onsikgo.repository.ItemRepository;
 import com.ssafy.onsikgo.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -81,5 +84,17 @@ public class ItemService {
             itemDtoList.add(itemList.get(i).toDto());
         }
         return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Page<ItemDto>> getListPage(PageDto pageDto, Long store_id) {
+
+        Optional<Store> findStore = storeRepository.findById(store_id);
+
+        PageRequest pageRequest = PageRequest.of(pageDto.getPage(), pageDto.getSize());
+        Page<Item> page = itemRepository.findByStore(findStore.get(), pageRequest);
+        Page<ItemDto> map = page.map(item -> new ItemDto(item.getItemId(),item.getItemName(),item.getPrice(),
+                item.getItemImgUrl(), item.getComment()));
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

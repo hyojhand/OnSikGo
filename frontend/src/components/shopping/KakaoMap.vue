@@ -11,13 +11,14 @@
 
 <script >
 
+import {mapActions} from "vuex";
+
 export default {
   name: "KakaoMap",
   data() {
     return {
       currentxLatitude: 33.452278,
       currentLongitude: 126.567803,
-      currentAddress: '',
       markerPositions1: [
         [33.452278, 126.567803],
         [33.452671, 126.574792],
@@ -27,7 +28,11 @@ export default {
       infowindow: null,
     };
   },
-
+  // computed: {
+  //   ...mapState("store",[
+  //     "currentAddress"
+  //   ]),
+  // },
   created() {
   if (navigator.geolocation) {
     // 현재 위치
@@ -45,6 +50,11 @@ export default {
   },
 
   methods: {
+    // veux 사용
+    ...mapActions("store", [
+      "getAddress"
+    ]),
+    // 카카오맵 생성
     createMap(){
         if (window.kakao && window.kakao.maps) {
         this.initMap();
@@ -100,7 +110,7 @@ export default {
     async curruntLocation() {
       this.changeaddress()
       this.createMap()
-      this.addressEvent();
+
     },
     // 도로명 주소 변환
     changeaddress() {
@@ -110,7 +120,8 @@ export default {
       var coord = new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude);
       var callback = (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
-              this.currentAddress = result[0].address.address_name
+              var address = result[0].address.address_name
+              this.getAddress(address);
           }
           else{
             console.log('실패')
@@ -118,11 +129,6 @@ export default {
       };
       geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
     },
-    // 상위 컨포넌트로 전송
-    setEmitData() { 
-        this.$emit('addressEvent',this.currentAddress);
-        console.log(this.currentAddress)
-    }
 
   },
 };

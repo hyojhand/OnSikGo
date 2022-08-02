@@ -45,6 +45,7 @@
 import KakaoMap from '@/components/shopping/KakaoMap';
 import CategoryStore from '@/components/shopping/CategoryStore';
 import ProductItem from '@/components/shopping/ProductItem';
+import { mapGetters } from "vuex";
 
 export default {
   name: "ShopView",
@@ -58,9 +59,14 @@ export default {
       return{
           tabs: ['지도보기', '가게보기'],
           selectedTab: '',
-          currentAddress:''
       };
     },
+
+  computed: {
+  ...mapGetters("store",[
+    "currentAddress"
+  ]),
+  },
   // 디볼트는 지도보기
   created() {
       this.selectedTab = this.tabs[0]

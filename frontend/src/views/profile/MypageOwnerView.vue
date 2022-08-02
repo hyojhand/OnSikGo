@@ -63,15 +63,11 @@
 
 <script>
 import discountList from "@/components/profile/discountList.vue";
-import StoreInfoDiscardModal from "@/components/profile/StoreInfoDiscardModal.vue";
-import MemberQuitModal from "@/components/profile/MemberQuitModal.vue";
 import http from "@/util/http-common";
 export default {
   name: "MypageOwnerView",
   components: {
     discountList,
-    StoreInfoDiscardModal,
-    MemberQuitModal,
   },
   data() {
     return {

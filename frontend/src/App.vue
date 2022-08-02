@@ -164,7 +164,7 @@
           </v-list-item-content>
         </v-list-item>
         <MemberQuitModal></MemberQuitModal>
-        <StoreInfoDiscardModal></StoreInfoDiscardModal>
+        <StoreInfoDiscardModal :no="this.storeId"></StoreInfoDiscardModal>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="25"
@@ -240,6 +240,10 @@ export default {
       title: document.title,
       pageType: true,
       logincheck: false,
+      stores: [],
+      store: {},
+      storeId: "",
+      saleItemList: [],
 
       notlogins: [
         { title: "홈", router: "/" },
@@ -283,6 +287,7 @@ export default {
       ],
     };
   },
+  
   created() {
     this.pageType = this.pages.includes(this.title);
   },

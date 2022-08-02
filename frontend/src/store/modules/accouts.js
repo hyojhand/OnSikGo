@@ -1,12 +1,16 @@
 const accounts = {
     state: {
+
+
     },
     getters: {
 
     },
     actions: {
+
     },
     mutations: {
+
     },
   };
   
