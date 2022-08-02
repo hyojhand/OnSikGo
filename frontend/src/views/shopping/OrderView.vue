@@ -1,17 +1,16 @@
 <template>
   <div class="main_container">
     <div class="mobile" >
-      <!-- 주소 -->
-      <div class="location mt-5 ">
+      <!-- <div class="location mt-5 ">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pin-map" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>
           <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
         </svg>
         <span> {{ storeLocation }} </span>
-      </div>
+      </div> -->
       <!-- 단일 상품 설명 -->
       <!-- 상품명, 상품이미지, 주소,현재위치에서 거리, 매장상세보기 버튼, 정가, 할인가, 재고, 한줄평-->
-      <div class="product_container border-l radius-m">
+      <div class="product_container border-l radius-m mt-5">
         <!-- 상품명 -->
         <h3 class="product-name">{{productName}}</h3>
         <!-- 상품이미지, 상세설명 -->
@@ -49,7 +48,7 @@
       </div>
       <!-- 픽업 주문서 -->
       <!-- 고객명, 매장, 상품명, 수량, 소요시간, 경고문, 픽업 신청버튼 -->
-      <v-stepper v-model="e1" class="order m-1">
+      <v-stepper  class="order mt-3">
         <v-stepper-items>
           <v-stepper-content
             step="1"
@@ -64,7 +63,6 @@
             <form  class="mb-2 el-case">
               <v-text-field
                 v-model="count"
-                :error-messages="countErrors"
                 label="수량을 입력해주세요."
                 required
                 class="input-box mt-5"
@@ -73,7 +71,6 @@
               </v-text-field>
               <v-text-field
                 v-model="count"
-                :error-messages="countErrors"
                 label="소요시간을 입력해주세요."
                 required
                 class="input-box mt-1"
@@ -136,14 +133,14 @@ export default {
           this.price = response.data.price
           this.itemImgUrl = response.data.itemImgUrl
           this.comment = response.data.comment
-          // console.log(response.data)
+          console.log(response.data)
         }),
       http
         .get(`/sale/${this.currentItemId}`)
         .then((response) => {
           this.stock = response.data.stock
           this.salePrice = response.data.salePrice 
-          // console.log(response.data)
+          console.log(response.data)
         })
     },
     // 가게정보 조회
@@ -201,6 +198,15 @@ export default {
 
   }
     
+
+.location span {
+  color: #333;
+  font-weight: 500;
+  font-size : 16px;
+  margin-left: 5px;
+  /* 밑줄 */
+  border-bottom:2px solid #8cb883;
+}
 .main_container .mobile{ 
     width:340px;
     margin:0 auto;

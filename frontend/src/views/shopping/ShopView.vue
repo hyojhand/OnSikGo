@@ -30,9 +30,6 @@
         <category-store class="tab-link" v-else></category-store>
       </div>
 
-      
-      
-      
       <!-- 상품 설명란 -->
       <div class="product" v-if="selectedTab === tabs[0]">
         <product-item></product-item>
