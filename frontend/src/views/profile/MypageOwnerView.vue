@@ -24,15 +24,7 @@
             <span>안녕하세요, {{ store.storeName }}입니다.</span>
             <p>{{ store.location }}</p>
           </div>
-          <div class="d-flex justify-content-end">
-            <b-button
-              size="sm"
-              pill
-              variant="outline-danger"
-              @click="storeClose()"
-              >영업종료</b-button
-            >
-          </div>
+          <div class="d-flex justify-content-end"></div>
         </b-col>
       </b-row>
     </b-card>
@@ -53,7 +45,6 @@
       v-bind="saleItem"
       :storeId="storeId"
     />
-
   </div>
 </template>
 
@@ -69,7 +60,7 @@ export default {
     return {
       stores: [],
       store: {},
-      storeId: "",
+      storeId: Number,
       saleItemList: [],
       itemList: [],
     };

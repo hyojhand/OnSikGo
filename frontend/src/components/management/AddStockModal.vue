@@ -89,6 +89,7 @@ export default {
   async created() {
     await http.get(`/item/${this.no}`).then((response) => {
       this.itemDto = response.data;
+      console.log(this.no)
     });
   },
 
