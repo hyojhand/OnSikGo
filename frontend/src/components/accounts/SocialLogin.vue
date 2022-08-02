@@ -31,6 +31,7 @@ export default {
               }
             )
             .then((res) => {
+              console.log(res);
               if (res.status == 200) {
                 localStorage.setItem("access-token", res.data.token);
                 this.$router.push("/");
