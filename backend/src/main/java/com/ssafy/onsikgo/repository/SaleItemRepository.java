@@ -12,5 +12,5 @@ public interface SaleItemRepository extends JpaRepository<SaleItem, Long> {
 
     List<SaleItem> findBySale(Sale sale);
     Optional<SaleItem> findByItem(Item item);
-    List<SaleItem> findByDateAndItemNameContainingAndClosedFalse(String date, String keyword);
+//    List<SaleItem> findByDateAndItemNameContainingAndClosedFalse(String date, String keyword);
 }
