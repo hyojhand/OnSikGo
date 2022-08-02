@@ -110,14 +110,22 @@
     <!--페이지네이션-->
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center nav-box">
-        <li class="page-item disabled">
-          <a class="page-link">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
         <li class="page-item">
-          <a class="page-link" href="#">Next</a>
+          <a class="page-link" href="#" @click="previousPage()">Previous</a>
+        </li>
+
+        <li
+          class="page-item"
+          v-for="(index, page) in totalPage"
+          :key="index"
+          v-bind="page"
+        >
+          <a class="page-link" href="#" @click="selectPage(index)">{{
+            index
+          }}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" @click="nextPage()">Next</a>
         </li>
       </ul>
     </nav>
@@ -166,15 +174,32 @@ export default {
   },
 
   methods: {
-    selectPage() {
+    selectPage(index) {
+      console.log(index);
+      this.page = index - 1;
       http
         .post(`/item/page/${this.storeId}`, {
           page: this.page,
-          size: 8,
+          size: 4,
         })
         .then((response) => {
           this.items = response.data.content;
         });
+    },
+    nextPage() {
+      if (this.page + 1 >= this.totalPage) {
+        this.page = this.totalPage;
+        this.selectPage(this.page);
+      } else {
+        this.page = this.page + 2;
+        this.selectPage(this.page);
+      }
+    },
+    previousPage() {
+      if (this.page - 1 < 0) this.selectPage(1);
+      else {
+        this.selectPage(this.page);
+      }
     },
     prodregister() {
       this.$router.push("/allprod/register");
