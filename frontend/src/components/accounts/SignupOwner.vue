@@ -21,7 +21,7 @@
               @input="$v.email.$touch()"
               @blur="$v.email.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m confirm-btn" @click="isCheck">
+            <button class="border-m radius-m confirm-btn" @click="isCheck()">
               {{ checkmsg }}
             </button>
           </div>
@@ -31,6 +31,7 @@
               <input
                 id="mail-confirm"
                 class="mail-confirm"
+                v-model="authNum"
                 placeholder="인증번호를 입력하세요."
               />
               <button class="border-m radius-m mailconfirm-btn">
@@ -241,6 +242,7 @@ export default {
       category: "",
       checkmsg: "메일 인증하기",
       sendMail: false,
+      authNum: Number,
     };
   },
 
@@ -328,8 +330,33 @@ export default {
       alert("뭐가 뜰겁니다");
     },
     isCheck() {
-      this.sendMail = true;
-      this.checkmsg = "재전송하기";
+      http
+        .post("/user/email", {
+          email: this.email
+        })
+        .then((response) => {
+        if (response.status == 200) {
+          alert("인증번호를 확인해주세요");
+          this.sendMail = true;
+          this.checkmsg = "재전송하기";
+        } else {
+          alert("이미 가입된 이메일입니다");
+        }
+      });
+    },
+    checkMail() {
+      http
+        .post("/user/emailAuthNumber", {
+          email: this.email,
+          authNum: this.authNum,
+        })
+        .then((response) => {
+        if ((response.status) == 200) {
+          console.log(response.data);
+        } else {
+          alert("인증번호 확인에 실패했습니다");
+        }
+      });
     },
     signup() {
       http.post("/user/signup/owner", {

@@ -27,7 +27,7 @@
             @blur="$v.email.$touch()"
           ></v-text-field>
 
-          <button class="border-m radius-m confrim-btn" @click="isCheck()">
+          <button class="border-m radius-m confrim-btn" @click="isCheck()" >
             {{ checkmsg }}
           </button>
         </div>
