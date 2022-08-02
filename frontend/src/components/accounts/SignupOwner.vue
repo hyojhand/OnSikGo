@@ -198,11 +198,13 @@
           ></v-text-field>
 
           <!-- -------------휴무일 입력---------------- -->
-          <v-text-field
-            v-model="off"
+          <v-select
+            v-model="offDay"
+            :items="days"
             label="휴무일을 입력해주세요."
-            color="black"
-          ></v-text-field>
+            multiple
+            chips
+          ></v-select>
 
           <!-- ------------카테고리셀렉트 박스----------- -->
           <v-select
@@ -284,7 +286,9 @@ export default {
         {value: 'SNACK', text: '분식'},
         {value: 'DESSERT', text: '디저트'},
         {value: 'INGREDIENT', text: '식자재'},
-      ]
+      ],
+      days: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
+      offDay: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
     };
   },
 
@@ -450,7 +454,7 @@ export default {
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
-        offDay: this.off,
+        offDay: this.offDay,
         category: this.category,
       });
       this.$router.push("/signup/complete");
