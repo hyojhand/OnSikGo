@@ -3,10 +3,13 @@ const store = {
     state: {
       currentAddress:"",
       currentItemId:"",
+      orderStore:"",
+      
     },
     getters: {
       currentAddress: state => state.currentAddress,
       currentItemId: state => state.currentItemId,
+      orderStore: state => state.orderStore,
     },
     actions: {
       getAddress :({commit}, address) => {
@@ -17,6 +20,10 @@ const store = {
         commit("GET_ITEMID", itemId)
         console.log("ItemId 등록 완료")
       },
+      getOrderStore : ({commit}, storeId) => {
+        commit("GET_ORDERSTORE", storeId)
+        console.log("storeId 등록 완료")
+      },
     },
     mutations: {
       GET_ADDRESS: (state, address) => {
@@ -25,6 +32,10 @@ const store = {
       GET_ITEMID: (state, itemId) => {
         state.currentItemId = itemId;
       },
+      GET_ORDERSTORE: (state, storeId) => {
+        state.orderStore = storeId;
+      },
+
 
     },
   };

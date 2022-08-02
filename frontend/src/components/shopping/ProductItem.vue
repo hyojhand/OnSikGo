@@ -37,7 +37,7 @@
       </div>
       <div class="col-4">
         <div class="product-name">{{ item.itemDto.itemName }}</div>
-        <div class="product-location">매장위치 : 이마트 37</div>
+        <div class="product-location">매장위치 : {{ item.saleDto.storeDto.storeName }}</div>
         <div class="product-prediction">300m, 도보로 3분</div>
         <div class="product-discount">30%</div>
         <span class="price">{{ item.itemDto.price }}원</span>
@@ -49,7 +49,7 @@
       <div class="col-3">
 
         <p class="product-quantity">재고 : <span class="product-number">{{ item.stock }}</span> 개</p>
-        <button @click="productOrder">주문하기</button>
+        <button @click="productOrder(item)">주문하기</button>
       </div>
       <hr style="border : 1px solid #222; margin: 0.5rem;">
     </div>
@@ -72,13 +72,12 @@ export default {
 
     created () {
       this.productFind();
-      console.log(this.items)
-
     },
     methods: {
       // 현재 위치 주소 vuex에 넣기
       ...mapActions("store", [
-        "getItemId"
+        "getItemId",
+        "getOrderStore",
       ]),
       // 판매중인 가게 조회
       storeFind() {
@@ -100,13 +99,15 @@ export default {
             
           })
       },
-      productOrder() {
-        
+      productOrder(item) {
+        console.log(item)
+        this.getItemId(item.itemId),
+        this.getOrderStore(item.saleDto.storeDto.storeId)
         this.$router.push({
           name: "orderView",
-        }),
-        console.log(this.item)
-        this.getItemId(this.item)
+        })
+        
+        
       }
 
     }
