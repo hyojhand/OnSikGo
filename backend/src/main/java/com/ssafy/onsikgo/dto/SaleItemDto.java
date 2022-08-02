@@ -14,7 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 public class SaleItemDto {
 
-//    private Long saleItemId;
+    private Long saleItemId;
     private Long itemId;
 
     private SaleDto saleDto;
