@@ -36,7 +36,7 @@ public class SaleController {
         return saleService.getSaleItemList(store_id);
     }
 
-    @PatchMapping("/{sale_item_id}")
+    @PutMapping("/{sale_item_id}")
     public ResponseEntity<String> updateStock(@RequestBody HashMap<String,Integer> map, @PathVariable Long sale_item_id) {
         return saleService.updateStock(map,sale_item_id);
     }

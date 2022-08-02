@@ -63,8 +63,14 @@ public class SaleItem {
                 .build();
     }
 
-    public SaleItem update(Integer stock) {
+    public SaleItem updateStock(Integer stock) {
         this.stock = stock;
+        return this;
+    }
+
+    public SaleItem update(Integer stock, Integer salePrice) {
+        this.stock = stock;
+        this.salePrice = salePrice;
         return this;
     }
 }
