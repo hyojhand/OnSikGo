@@ -15,7 +15,11 @@
       </div>
     </b-modal> -->
     <div class="mb-1">
-      <button @click="showMsgBoxTwo" class="border-m radius-m del-btn">
+      <button
+        @click="showMsgBoxTwo"
+        class="border-m radius-m del-btn"
+        width="340"
+      >
         <div class="font-color">
           <!-- <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -46,28 +46,31 @@
         >정보수정</b-button
       >
     </div>
-    <hr />
-
+    <div class="font-l sales">오늘 할인 판매 상품</div>
     <discountList
       v-for="(saleItem, index) in saleItemList"
       :key="index"
       v-bind="saleItem"
-      :no="storeId"
+      :storeId="storeId"
     />
 
     <!--모달 -->
-    <MemberQuitModal></MemberQuitModal>
-    <StoreInfoDiscardModal :no="this.storeId"></StoreInfoDiscardModal>
+    <member-quit-modal></member-quit-modal>
+    <store-info-discard-modal :no="this.storeId"></store-info-discard-modal>
   </div>
 </template>
 
 <script>
 import discountList from "@/components/profile/discountList.vue";
+import MemberQuitModal from "@/components/profile/MemberQuitModal.vue";
+import StoreInfoDiscardModal from "@/components/profile/StoreInfoDiscardModal.vue";
 import http from "@/util/http-common";
 export default {
   name: "MypageOwnerView",
   components: {
     discountList,
+    StoreInfoDiscardModal,
+    MemberQuitModal,
   },
   data() {
     return {
@@ -75,6 +78,7 @@ export default {
       store: {},
       storeId: "",
       saleItemList: [],
+      itemList: [],
     };
   },
   async created() {
@@ -88,6 +92,10 @@ export default {
 
     await http.get(`/sale/list/${this.storeId}`, {}).then((response) => {
       this.saleItemList = response.data;
+    });
+
+    await http.get(`item/list/${this.storeId}`).then((response) => {
+      this.itemList = response.data;
     });
   },
   methods: {
@@ -125,5 +133,12 @@ export default {
 #space-even {
   display: flex;
   justify-content: space-evenly;
+}
+.sales {
+  margin-top: 3%;
+  padding: 3% 0;
+  background-color: white;
+  border-top: 2px solid rgba(0, 0, 0, 20%);
+  border-bottom: 2px solid rgba(0, 0, 0, 20%);
 }
 </style>

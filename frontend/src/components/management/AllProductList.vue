@@ -5,6 +5,7 @@
     <div class="item-name">
       {{ itemName }}
     </div>
+    <div>{{ this.no }}</div>
     <div class="info-container">
       <div class="item-info">
         <div class="info-box">
@@ -13,7 +14,7 @@
         </div>
         <div class="info-box">
           <div>할인 판매가 :</div>
-          <div class="ml-1">{{ price }} 원</div>
+          <div class="ml-1">{{ this.saleDto.salePrice }} 원</div>
         </div>
         <div class="info-box">
           <div>등록 수량 :</div>
@@ -23,19 +24,29 @@
       <button @click="prodmodify()" class="border-m radius-s my-1 edit-btn">
         정보수정
       </button>
-      <stock-modal></stock-modal>
-      <button @click="prodmodify()" class="border-m radius-s">재고등록</button>
+      <add-stock-modal
+        :no="this.itemId"
+        :store="this.storeId"
+        class="stock-btn mb-1"
+      ></add-stock-modal>
+      <edit-stock-modal
+        :no="this.itemId"
+        :store="this.storeId"
+        class="stock-btn"
+      ></edit-stock-modal>
     </div>
   </div>
 </template>
 
 <script>
 import http from "@/util/http-common";
-import StockModal from "@/components/management/StockModal.vue";
+import EditStockModal from "@/components/management/EditStockModal.vue";
+import AddStockModal from "@/components/management/AddStockModal.vue";
 export default {
   name: "AllProductList",
   components: {
-    StockModal,
+    AddStockModal,
+    EditStockModal,
   },
   data() {
     return {
@@ -50,6 +61,8 @@ export default {
     price: Number,
     itemImgUrl: String,
     comment: String,
+    no: Number,
+    item: Number,
   },
 
   created() {
@@ -83,6 +96,10 @@ button {
   background-color: rgb(140, 184, 131);
   width: 100%;
 }
+.stock-btn {
+  width: 100%;
+}
+
 .item-name {
   margin: 5% auto;
   padding-bottom: 3%;

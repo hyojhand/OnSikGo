@@ -21,7 +21,14 @@
     <br />
     <hr />
     <br />
-    <regularList></regularList>
+     <h5>✨ {{ userDto.userName }} 님의 단골매장</h5>
+    <div>
+      <regularList
+      v-for="(store, index) in storeregularList"
+      :key="index"
+      v-bind="store">
+      </regularList>
+    </div>
 
     <br />
   </div>
@@ -38,14 +45,21 @@ export default {
   data() {
     return {
       userDto: {},
+      storeregularList:[],
     };
   },
   created() {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
+
     http.get("/user").then((response) => {
       this.userDto = response.data;
     });
+
+    http.get("/follow").then((response) => {
+      console.log(response.data);
+      this.storeregularList = response.data;
+    })
   },
   methods: {
     orderlist() {

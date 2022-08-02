@@ -126,22 +126,20 @@
               @input="$v.address.$touch()"
               @blur="$v.address.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="tempAlert">
-              주소 검색하기
+            <button class="border-m radius-m address-btn" @click="execDaumPostcode()">
+              주소 검색
             </button>
           </div>
-
-          <!-- -------------전화번호 입력----------- -->
-          <v-text-field
-            v-model="tel"
-            :error-messages="telErrors"
-            label="가게 전화번호를 입력해주세요."
-            required
-            class="input-box"
-            color="black"
-            @input="$v.tel.$touch()"
-            @blur="$v.tel.$touch()"
-          ></v-text-field>
+            <v-text-field
+              v-model="extraAddress"
+              label="상세 주소를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              type="address"
+              @input="$v.address.$touch()"
+              @blur="$v.address.$touch()"
+            ></v-text-field>
 
           <!-- --------------사업자 등록번호 입력------------ -->
           <div class="position-box">
@@ -159,6 +157,34 @@
               등록하기
             </button>
           </div>
+        </form>
+
+        <div class="sign-btn">
+          <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
+          <button class="border-m radius-m" @click="e1 = 3">다음으로</button>
+        </div>
+      </v-stepper-content>
+
+      <v-stepper-content
+        step="3"
+        class="btn-box mt-3"
+        black
+        outlined
+        min-height="200"
+      >
+        <form class="mb-2">
+          <!-- -------------전화번호 입력----------- -->
+          <v-text-field
+            v-model="tel"
+            :error-messages="telErrors"
+            label="가게 전화번호를 입력해주세요."
+            required
+            class="input-box"
+            color="black"
+            @input="$v.tel.$touch()"
+            @blur="$v.tel.$touch()"
+          ></v-text-field>
+
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
@@ -188,23 +214,14 @@
             @input = "$v.category.$touch()"
             @blur= "$v.category.$touch()"
           ></v-select>
-          <!-- ------------카테고리-----------
-          <v-text-field
-            v-model="category"
-            :error-messages="categoryErrors"
-            label="카테고리를 선택해주세요."
-            required
-            class="input-box"
-            color="black"
-            @input="$v.category.$touch()"
-            @blur="$v.category.$touch()"
-          ></v-text-field> -->
         </form>
+
         <div class="sign-btn">
-          <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
+          <button class="border-m radius-m" @click="e1 = 2">이전으로</button>
           <button class="border-m radius-m" @click="signup()">가입하기</button>
         </div>
       </v-stepper-content>
+
       <v-stepper-header class="status-box">
         <v-stepper-step
           class="status-btn"
@@ -218,6 +235,13 @@
           color="success"
           :complete="e1 > 2"
           step="2"
+        >
+        </v-stepper-step>
+        <v-stepper-step
+          class="status-btn"
+          color="success"
+          :complete="e1 > 3"
+          step="3"
         >
         </v-stepper-step>
       </v-stepper-header>
@@ -244,6 +268,7 @@ export default {
       role: "OWNER",
       store: "",
       address: "",
+      extraAddress: "",
       tel: "",
       identify: "",
       end: "",
@@ -252,7 +277,14 @@ export default {
       checkmsg: "메일 인증하기",
       sendMail: false,
       authNum: Number,
-      items: ['DESSERT', 'JAPAN', 'CHINA', 'KOREA', 'SNACK', 'WESTERN'],
+      items: [
+        {value: 'KOREA', text: '한식'},
+        {value: 'JAPAN', text: '일식'},
+        {value: 'WESTERN', text: '양식'},
+        {value: 'SNACK', text: '분식'},
+        {value: 'DESSERT', text: '디저트'},
+        {value: 'INGREDIENT', text: '식자재'},
+      ]
     };
   },
 
@@ -336,8 +368,47 @@ export default {
     },
   },
   methods: {
+    execDaumPostcode() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          if (this.extraAddress !== "") {
+            this.extraAddress = "";
+          }
+          if (data.userSelectedType === "R") {
+            // 사용자가 도로명 주소를 선택했을 경우
+            this.address = data.roadAddress;
+          } else {
+            // 사용자가 지번 주소를 선택했을 경우(J)
+            this.address = data.jibunAddress;
+          }
+  
+          // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+          if (data.userSelectedType === "R") {
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+              this.extraAddress += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if (data.buildingName !== "" && data.apartment === "Y") {
+              this.extraAddress +=
+                this.extraAddress !== ""
+                  ? `, ${data.buildingName}`
+                  : data.buildingName;
+            }
+            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if (this.extraAddress !== "") {
+              this.extraAddress = `(${this.extraAddress})`;
+            }
+          } else {
+            this.extraAddress = "";
+          }
+        },
+      }).open();
+    },
+
     tempAlert() {
-      alert("뭐가 뜰겁니다");
+      alert("인증 확인");
     },
     isCheck() {
       http
