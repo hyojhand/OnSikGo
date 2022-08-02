@@ -54,23 +54,16 @@
       :storeId="storeId"
     />
 
-    <!--모달 -->
-    <member-quit-modal></member-quit-modal>
-    <store-info-discard-modal :no="this.storeId"></store-info-discard-modal>
   </div>
 </template>
 
 <script>
 import discountList from "@/components/profile/discountList.vue";
-import MemberQuitModal from "@/components/profile/MemberQuitModal.vue";
-import StoreInfoDiscardModal from "@/components/profile/StoreInfoDiscardModal.vue";
 import http from "@/util/http-common";
 export default {
   name: "MypageOwnerView",
   components: {
     discountList,
-    StoreInfoDiscardModal,
-    MemberQuitModal,
   },
   data() {
     return {
