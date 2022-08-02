@@ -42,8 +42,9 @@ public class ItemController {
     }
 
     @PutMapping("/{item_id}")
-    public ResponseEntity<String> modify(@RequestBody ItemDto itemDto, @PathVariable Long item_id) {
-        return itemService.modify(itemDto, item_id);
+    public ResponseEntity<String> modify(@RequestPart(value = "file",required = false) MultipartFile file,
+                                         @RequestPart(value = "itemDto",required = false) ItemDto itemDto, @PathVariable Long item_id) {
+        return itemService.modify(file,itemDto, item_id);
     }
 
     @GetMapping("/list/{store_id}")
