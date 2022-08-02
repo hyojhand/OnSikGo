@@ -102,7 +102,7 @@
         >
           <b-form-input
             id="input-4"
-            v-model="this.storeDto.offDay"
+            v-model="storeDto.offDay"
             type="text"
             placeholder="매장 휴무일"
             required
@@ -198,6 +198,7 @@ export default {
       this.storeDto = {};
     },
     modifyStore() {
+      console.log(this.storeDto.offday)
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
 
