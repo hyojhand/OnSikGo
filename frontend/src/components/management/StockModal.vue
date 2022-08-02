@@ -18,7 +18,6 @@
 
         <div class="mx-auto my-auto input-reason">
           <v-text-field
-            :rules="rules"
             placeholder="사유를 입력하세요."
             class="mx-5"
           ></v-text-field>

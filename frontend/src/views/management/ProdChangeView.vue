@@ -106,6 +106,7 @@ export default {
 
       this.$router.push("/allprod/");
       this.$router.go();
+      console.log(this.itemDto);
     },
   },
 };

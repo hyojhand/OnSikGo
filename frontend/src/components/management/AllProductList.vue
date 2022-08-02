@@ -23,6 +23,7 @@
       <button @click="prodmodify()" class="border-m radius-s my-1 edit-btn">
         정보수정
       </button>
+      <stock-modal></stock-modal>
       <button @click="prodmodify()" class="border-m radius-s">재고등록</button>
     </div>
   </div>
