@@ -30,3 +30,5 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+
+window.Kakao.init("dbd3360c2a3a37fb0ad6c06395351c2f");

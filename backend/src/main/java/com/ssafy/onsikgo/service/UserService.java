@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 @Service
@@ -63,7 +62,7 @@ public class UserService {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,"UTF-8");
 
-        String setFrom = "wlgns3914@naver.com";
+        String setFrom = "onsikgoinfo@naver.com";
         String toMail = email;
         String title = "회원 가입 인증 이메일 입니다.";
         String content =

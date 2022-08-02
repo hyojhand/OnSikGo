@@ -2,12 +2,16 @@ package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.UserDto;
 import com.ssafy.onsikgo.entity.LoginType;
+import com.ssafy.onsikgo.entity.Role;
 import com.ssafy.onsikgo.entity.User;
 import com.ssafy.onsikgo.repository.UserRepository;
 import com.ssafy.onsikgo.security.JwtFilter;
 import com.ssafy.onsikgo.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +21,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -76,8 +78,9 @@ public class KakaoUserService implements SocialUserService{
             userRepository.save(userDto.toEntity(LoginType.KAKAO));
             log.info("회원가입 완료");
         }
+        user = userRepository.findByEmail(userDto.getEmail()).orElse(null);
         // 이미 가입된 이메일
-        if(!user.getLoginType().equals("KAKAO")){
+        if(!user.getLoginType().equals(LoginType.KAKAO)){
             return new ResponseEntity<>("이미 존재하는 이메일", HttpStatus.NO_CONTENT);
         }
         else{
@@ -90,7 +93,7 @@ public class KakaoUserService implements SocialUserService{
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-            return new ResponseEntity<>(jwt, HttpStatus.OK);
+            return new ResponseEntity<>(jwt,httpHeaders, HttpStatus.OK);
 
             // TokenDto에도 넣어서 RequestBody로 리턴해준다
 //        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
@@ -108,6 +111,9 @@ public class KakaoUserService implements SocialUserService{
             JSONObject kakao_account = (JSONObject) jsonObj.get("kakao_account");
             JSONObject profile =(JSONObject) kakao_account.get("profile");
 
+            userDto.setRole(Role.USER);
+            //닉네임이 없음
+            userDto.setUserName(profile.get("nickname").toString());
             userDto.setEmail(kakao_account.get("email").toString());
             userDto.setNickname(profile.get("nickname").toString());
             userDto.setImgUrl(profile.get("profile_image_url").toString());
