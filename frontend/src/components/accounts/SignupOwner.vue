@@ -177,6 +177,7 @@
           <v-text-field
             v-model="tel"
             :error-messages="telErrors"
+            type="tel"
             label="가게 전화번호를 입력해주세요."
             required
             class="input-box"
@@ -189,6 +190,7 @@
           <v-text-field
             v-model="end"
             :error-messages="endErrors"
+            type="time"
             label="마감시간을 입력해주세요."
             required
             class="input-box"
@@ -274,7 +276,6 @@ export default {
       tel: "",
       identify: "",
       end: "",
-      off: "",
       category: "",
       checkmsg: "메일 인증하기",
       sendMail: false,
