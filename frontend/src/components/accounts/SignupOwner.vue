@@ -80,7 +80,7 @@
         <div class="next-btn">
           <button 
           class="border-m radius-m" 
-          @click="e1 = 2" 
+          @click="e1 = 2"
           >
           다음으로</button>
         </div>
@@ -155,7 +155,8 @@
           <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
           <button 
           class="border-m radius-m" 
-          @click="e1 = 3" 
+          @click="e1 = 3"
+          v-bind:disabled="check2 == false"  
           >다음으로</button>
         </div>
       </v-stepper-content>
@@ -219,7 +220,10 @@
 
         <div class="sign-btn">
           <button class="border-m radius-m" @click="e1 = 2">이전으로</button>
-          <button class="border-m radius-m" @click="signup()">가입하기</button>
+          <button 
+          v-if="category != defined"
+          class="border-m radius-m" 
+          @click="signup()">가입하기</button>
         </div>
       </v-stepper-content>
 
@@ -279,8 +283,9 @@ export default {
       checkmsg: "메일 인증하기",
       sendMail: false,
       authNum: "",
-      // check1: false,
-      // check2: false,
+      check1: false,
+      check2: false,
+      check3: false,
       items: [
         {value: 'KOREA', text: '한식'},
         {value: 'JAPAN', text: '일식'},
@@ -417,13 +422,13 @@ export default {
 
     // 사업자 등록번호 인증
     checkOwner() {
-      // const url = "https://api.odcloud.kr/api/nts-businessman/v1/status"
         axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON', {
           b_no: [this.identify]
         })
         .then((response) => {
           if (response.data.match_cnt == 1) {
             alert("사업자 번호가 확인되었습니다.");
+            this.check2 = true;
           } else {
             alert("다시 확인해주시길 바랍니다.");
           }
@@ -460,15 +465,13 @@ export default {
         if ((response.status) == 200) {
           console.log(response.data);
           alert("인증번호 확인이 되었습니다.");
-          // this.check1 = true;
+          this.check1 = true;
         } else {
           alert("인증번호 확인에 실패했습니다.");
         }
       });
     },
     signup() {
-      console.log(this.off);
-      console.log(this.off.join());
       http.post("/user/signup/owner", {
         email: this.email,
         password: this.password,
