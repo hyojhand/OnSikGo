@@ -120,7 +120,7 @@
           @blur="$v.checkbox.$touch()"
           v-bind:disabled="check1 == false | check1 == false"
         ></v-checkbox>
-
+        <!-- 가입하기 버튼 -->
         <div class="btns mb-5">
           <button 
           class="border-m radius-m notice-btn" 
@@ -220,6 +220,7 @@ export default {
     },
   },
   methods: {
+    // 이메일 중복 확인 및 인증번호 전송
     isCheck() {
       http
         .post("/user/email", {
@@ -235,6 +236,7 @@ export default {
         }
       });
     },
+    // 인증번호 확인
     checkMail() {
       http
         .post("/user/emailAuthNumber", {
@@ -250,6 +252,7 @@ export default {
         }
       });
     },
+    // 닉네임 중복 확인
     nicknameCheck() {
       http
         .post("/user/nickname", {
