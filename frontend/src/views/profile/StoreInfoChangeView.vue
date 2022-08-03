@@ -53,6 +53,9 @@
             placeholder="매장위치"
             required
           ></b-form-input>
+        <button class="border-m radius-m address-btn" @click="execDaumPostcode()">
+              주소 검색
+        </button>
         </b-form-group>
         <br />
         <!--사업자등록번호 -->
@@ -70,9 +73,9 @@
             required
           ></b-form-input>
           <br />
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-success">인증</button>
-          </div>
+            <button class="border-m radius-m address-btn" @click="checkOwner()">
+              등록하기
+            </button>
         </b-form-group>
         <br />
         <!--매장 종료시간-->
@@ -85,7 +88,7 @@
           <b-form-input
             id="input-4"
             v-model="this.storeDto.closingTime"
-            type="text"
+            type="time"
             placeholder="매장 종료시간"
             required
           ></b-form-input>
@@ -105,6 +108,22 @@
             v-model="storeDto.offDay"
             type="text"
             placeholder="매장 휴무일"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+        <!-- 카테고리 -->
+        <b-form-group
+          class="d-flex justify-content-between"
+          id="input-group-5"
+          label="카테고리"
+          label-for="input-5"
+        >
+          <b-form-input
+            id="input-4"
+            v-model="storeDto.category"
+            type="text"
+            placeholder="카테고리"
             required
           ></b-form-input>
         </b-form-group>
@@ -166,23 +185,16 @@ export default {
         value: "",
       },
       show: true,
-      items: [
-        "월요일",
-        "화요일",
-        "수요일",
-        "목요일",
-        "금요일",
-        "토요일",
-        "일요일",
-      ],
-      values: [
-        "월요일",
-        "화요일",
-        "수요일",
-        "목요일",
-        "금요일",
-        "토요일",
-        "일요일",
+      address: "",
+      extraAddress: "",
+      days: [
+        {value: '월', text: '월요일'},
+        {value: '화', text: '화요일'},
+        {value: '수', text: '수요일'},
+        {value: '목', text: '목요일'},
+        {value: '금', text: '금요일'},
+        {value: '토', text: '토요일'},
+        {value: '일', text: '일요일'},
       ],
     };
   },
@@ -197,6 +209,46 @@ export default {
     resetStoreDto() {
       this.storeDto = {};
     },
+
+    execDaumPostcode() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          if (this.extraAddress !== "") {
+            this.extraAddress = "";
+          }
+          if (data.userSelectedType === "R") {
+            // 사용자가 도로명 주소를 선택했을 경우
+            this.address = data.roadAddress;
+          } else {
+            // 사용자가 지번 주소를 선택했을 경우(J)
+            this.address = data.jibunAddress;
+          }
+  
+          // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+          if (data.userSelectedType === "R") {
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+              this.extraAddress += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if (data.buildingName !== "" && data.apartment === "Y") {
+              this.extraAddress +=
+                this.extraAddress !== ""
+                  ? `, ${data.buildingName}`
+                  : data.buildingName;
+            }
+            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if (this.extraAddress !== "") {
+              this.extraAddress = `(${this.extraAddress})`;
+            }
+          } else {
+            this.extraAddress = "";
+          }
+        },
+      }).open();
+    },
+
     modifyStore() {
       console.log(this.storeDto.offday)
       http.defaults.headers["access-token"] =
