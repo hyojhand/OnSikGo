@@ -62,12 +62,12 @@
         <div class="product-name">{{ item.itemDto.itemName }}</div>
         <div class="product-location">매장위치 : {{ item.saleDto.storeDto.storeName }}</div>
         <div class="product-prediction">현재 위치로부터 {{ item.distance }} m</div>
-        <div class="product-discount">{{ 100 - ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(0) }}%</div>
+        <div class="product-discount">{{ ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(0) }}%</div>
         <span class="price">{{ item.itemDto.price }}원</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
         </svg>
-        <span class="discount-price">{{ item.itemDto.price - item.salePrice }}원</span>
+        <span class="discount-price">{{ item.salePrice }}원</span>
       </div>
       <div class="col-3">
 
@@ -107,23 +107,31 @@ export default {
       ...mapActions("store", [
         "getItemId",
         "getOrderStore",
+        "getAroundSaleStore",
       ]),
       // 상품 조회
       productFind() {
+        this.keyword = "";
         http
           .post("/sale/keyword/", {
             keyword: this.keyword,
           })
           .then((response) => {
-            this.items = response.data
-            this.items.forEach((item) => {
+            var saleStore = []
+            response.data.forEach((item) => {
               var distance
+              saleStore.push([item.saleDto.storeDto.lat, item.saleDto.storeDto.lng])
               distance = this.getdistance(this.currentX, this.currentY, item.saleDto.storeDto.lat, item.saleDto.storeDto.lng)
               item.distance = distance
+              // 초기에 근방에 위치한 가게만 보여주기
+              if (distance < 100000000){
+                this.items.push(item)
+              }
             })
-            
+            this.getAroundSaleStore(saleStore)
           })
       },
+      // 
       productOrder(item) {
         console.log(item)
         this.getItemId(item.itemId),
@@ -132,6 +140,7 @@ export default {
           name: "orderView",
         })
       },
+      // 키워드 검색
       keywordSelect() {
         http
         .post("/sale/keyword/", {
@@ -147,6 +156,7 @@ export default {
           })
         });
       },
+      // 초기화
       resetLitemList() {
         this.keyword = "";
         http
@@ -177,7 +187,7 @@ export default {
 
         dist = Math.acos(dist);
         dist = dist * 180 / Math.PI;
-        dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+        dist = dist * 60 * 1.1515 * 1.609344 * 100 / 2;
         if (dist < 100) dist = Math.round(dist / 10) * 10;
         else dist = Math.round(dist / 100) * 100;
 
