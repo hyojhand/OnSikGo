@@ -31,6 +31,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final StoreRepository storeRepository;
     private final AwsS3Service awsS3Service;
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
 
     @Transactional
     public ResponseEntity<String> register(MultipartFile file, ItemDto itemDto, Long store_id) {
@@ -61,16 +62,23 @@ public class ItemService {
     @Transactional
     public ResponseEntity<String> modify(MultipartFile file, ItemDto itemDto, Long item_id) {
 
-        Optional<Item> findItem = itemRepository.findById(item_id);
-        awsS3Service.delete(findItem.get().getItemImgUrl());
+        Item findItem = itemRepository.findById(item_id).get();
 
-        String itemImgUrl = awsS3Service.uploadImge(file);
-        itemDto.setItemImgUrl(itemImgUrl);
-        Item item = itemDto.toEntity();
+        if(file == null) {
+            itemDto.setItemImgUrl(findItem.getItemImgUrl());
+            findItem.update(itemDto);
+        } else {
+            if (!findItem.getItemImgUrl().equals(defaultImg)) {
+                awsS3Service.delete(findItem.getItemImgUrl());
+            }
+            String itemImgUrl = awsS3Service.uploadImge(file);
+            itemDto.setItemImgUrl(itemImgUrl);
+            findItem.update(itemDto);
+        }
 
-        Store store = findItem.get().getStore();
-        item.addStore(store);
-        itemRepository.save(item);
+        Store store = findItem.getStore();
+        findItem.addStore(store);
+        itemRepository.save(findItem);
 
         return new ResponseEntity<>("상품 수정이 완료되었습니다.",HttpStatus.OK);
     }
