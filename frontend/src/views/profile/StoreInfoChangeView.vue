@@ -33,7 +33,7 @@
           <b-form-input
             id="input-2"
             v-model="this.storeDto.tel"
-            type="text"
+            type="tel"
             placeholder="매장 전화번호"
             required
           ></b-form-input>
@@ -73,9 +73,6 @@
             required
           ></b-form-input>
           <br />
-            <button class="border-m radius-m address-btn" @click="checkOwner()">
-              등록하기
-            </button>
         </b-form-group>
         <br />
         <!--매장 종료시간-->
@@ -112,6 +109,17 @@
           ></b-form-input>
         </b-form-group>
 
+          <!-- -------------휴무일 입력---------------- -->
+          <v-select
+            :items="days"
+            v-model="off"
+            label="휴무일을 입력해주세요."
+            multiple
+            chips
+            @input = "$v.off.$touch()"
+            @blur= "$v.off.$touch()"
+          ></v-select>
+
         <!-- 카테고리 -->
         <b-form-group
           class="d-flex justify-content-between"
@@ -127,6 +135,20 @@
             required
           ></b-form-input>
         </b-form-group>
+
+
+          <!-- ------------카테고리셀렉트 박스----------- -->
+          <v-select
+            :items="items"
+            v-model = "category"
+            label="카테고리를 선택해주세요."
+            required
+            color="black"
+            @input = "$v.category.$touch()"
+            @blur= "$v.category.$touch()"
+          ></v-select>
+
+
 
         <!--매장 휴무일 INPUT BOX -->
         <!-- <v-app id="inspire">
@@ -187,6 +209,14 @@ export default {
       show: true,
       address: "",
       extraAddress: "",
+      items: [
+        {value: 'KOREA', text: '한식'},
+        {value: 'JAPAN', text: '일식'},
+        {value: 'WESTERN', text: '양식'},
+        {value: 'SNACK', text: '분식'},
+        {value: 'DESSERT', text: '디저트'},
+        {value: 'INGREDIENT', text: '식자재'},
+      ],
       days: [
         {value: '월', text: '월요일'},
         {value: '화', text: '화요일'},
