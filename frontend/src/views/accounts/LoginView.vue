@@ -126,6 +126,7 @@ button {
 .find-box > div {
   color: black;
   font-weight: 500;
+  font-size: 13px;
 }
 .find-box > button {
   color: black;
