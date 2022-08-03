@@ -27,7 +27,7 @@
             @blur="$v.email.$touch()"
           ></v-text-field>
 
-          <button class="border-m radius-m confrim-btn" @click="isCheck">
+          <button class="border-m radius-m confrim-btn" @click="isCheck()" >
             {{ checkmsg }}
           </button>
         </div>
@@ -37,11 +37,12 @@
             <input
               id="mail-confirm"
               class="mail-confirm"
+              v-model="authNum"
               placeholder="인증번호를 입력하세요."
             />
             <button
               class="border-m radius-m mailconfirm-btn"
-              @click="checkMail"
+              @click="checkMail()"
             >
               확인하기
             </button>
@@ -101,7 +102,7 @@
           <!-- ------닉네임 중복확인------- -->
           <button
             class="border-m radius-m name-confrim-btn"
-            @click="nicknameCheck"
+            @click="nicknameCheck()"
           >
             중복확인하기
           </button>
@@ -117,10 +118,14 @@
           color="black"
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
+          v-bind:disabled="check1 == false | check1 == false"
         ></v-checkbox>
-
+        <!-- 가입하기 버튼 -->
         <div class="btns mb-5">
-          <button class="border-m radius-m notice-btn" @click="signup()">
+          <button 
+          class="border-m radius-m notice-btn" 
+          @click="signup()"
+          v-bind:disabled="check1 == false | check1 == false">
             가입하기
           </button>
           <button @click="clear" class="border-m radius-m notice-btn clear">
@@ -165,6 +170,9 @@ export default {
     sendMail: false,
     checkmsg: "메일 인증하기",
     nicknameDuple: false,
+    authNum: "",
+    check1: false,
+    check2: false,
   }),
 
   computed: {
@@ -212,12 +220,52 @@ export default {
     },
   },
   methods: {
-    nicknameCheck() {
-      this.nicknameDuple = !this.nicknameDuple;
-    },
+    // 이메일 중복 확인 및 인증번호 전송
     isCheck() {
-      this.sendMail = true;
-      this.checkmsg = "재전송하기";
+      http
+        .post("/user/email", {
+          email: this.email
+        })
+        .then((response) => {
+        if (response.status == 200) {
+          alert("인증번호를 확인해주세요");
+          this.sendMail = true;
+          this.checkmsg = "재전송하기";
+        } else {
+          alert("이미 가입된 이메일입니다");
+        }
+      });
+    },
+    // 인증번호 확인
+    checkMail() {
+      http
+        .post("/user/emailAuthNumber", {
+          email: this.email,
+          authNum: this.authNum,
+        })
+        .then((response) => {
+        if ((response.status) == 200) {
+          alert("인증번호 확인이 되었습니다.");
+          this.check1 = true;
+        } else {
+          alert("인증번호 확인에 실패했습니다");
+        }
+      });
+    },
+    // 닉네임 중복 확인
+    nicknameCheck() {
+      http
+        .post("/user/nickname", {
+          nickname: this.nickname
+        })
+        .then((response) => {
+        if (response.status == 200) {
+          this.nicknameDuple = !this.nicknameDuple;
+          this.check2 =true;
+        } else {
+          alert("중복된 닉네임이 있습니다");
+        }
+      });
     },
     tempgo() {
       this.$router.push("/signup/complete");

@@ -24,15 +24,7 @@
             <span>안녕하세요, {{ store.storeName }}입니다.</span>
             <p>{{ store.location }}</p>
           </div>
-          <div class="d-flex justify-content-end">
-            <b-button
-              size="sm"
-              pill
-              variant="outline-danger"
-              @click="storeClose()"
-              >영업종료</b-button
-            >
-          </div>
+          <div class="d-flex justify-content-end"></div>
         </b-col>
       </b-row>
     </b-card>
@@ -46,18 +38,13 @@
         >정보수정</b-button
       >
     </div>
-    <hr />
-
+    <div class="font-l sales">오늘 할인 판매 상품</div>
     <discountList
       v-for="(saleItem, index) in saleItemList"
       :key="index"
       v-bind="saleItem"
-      :no="storeId"
+      :storeId="storeId"
     />
-
-    <!--모달 -->
-    <MemberQuitModal></MemberQuitModal>
-    <StoreInfoDiscardModal :no="this.storeId"></StoreInfoDiscardModal>
   </div>
 </template>
 
@@ -73,8 +60,9 @@ export default {
     return {
       stores: [],
       store: {},
-      storeId: "",
+      storeId: Number,
       saleItemList: [],
+      itemList: [],
     };
   },
   async created() {
@@ -88,6 +76,10 @@ export default {
 
     await http.get(`/sale/list/${this.storeId}`, {}).then((response) => {
       this.saleItemList = response.data;
+    });
+
+    await http.get(`item/list/${this.storeId}`).then((response) => {
+      this.itemList = response.data;
     });
   },
   methods: {
@@ -125,5 +117,12 @@ export default {
 #space-even {
   display: flex;
   justify-content: space-evenly;
+}
+.sales {
+  margin-top: 3%;
+  padding: 3% 0;
+  background-color: white;
+  border-top: 2px solid rgba(0, 0, 0, 20%);
+  border-bottom: 2px solid rgba(0, 0, 0, 20%);
 }
 </style>
