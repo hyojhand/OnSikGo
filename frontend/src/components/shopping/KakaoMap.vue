@@ -33,12 +33,14 @@ export default {
   },
 
   created() {
-  if (navigator.geolocation) {
+    console.log(this.aroundSaleStore)
+    if (navigator.geolocation) {
     // 현재 위치
       navigator.geolocation.getCurrentPosition((position) => {
       this.currentxLatitude = position.coords.latitude, // 위도
       this.currentLongitude = position.coords.longitude; // 경도
-      console.log(this.currentLongitude, this.currentxLatitude)
+      // 현재위치
+      // console.log(this.currentLongitude, this.currentxLatitude)
       this.curruntLocation();
       
     });
@@ -66,7 +68,7 @@ export default {
         document.head.appendChild(script);
       }
     },
-    async initMap() {
+    initMap() {
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude),
@@ -77,25 +79,26 @@ export default {
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
 
-      await this.nowMarker()
+      this.nowMarker()
     },
     // 
     nowMarker(){
-    
+
       this.aroundSaleStore.forEach((store) =>{
         var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
         // 마커 이미지의 이미지 크기 입니다
         var imageSize = new kakao.maps.Size(24, 35); 
-        console.log(store)
+        console.log("가게 하나의 위도 경도",store)
         
         // 마커 이미지를 생성합니다    
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
 
         var marker = new kakao.maps.Marker({
-            position: store, // 마커를 표시할 위치
+            position: new kakao.maps.LatLng(store[0], store[1]), // 마커를 표시할 위치
             // title : positions[i].title, 
             image : markerImage // 마커 이미지 
           });
+          // console.log(this.map)
           marker.setMap(this.map);
       })
     },
@@ -103,6 +106,7 @@ export default {
     // 현재 위치 찾기
     async curruntLocation() {
       this.changeaddress()
+      this.createMap()
     },
 
     // 도로명 주소 변환

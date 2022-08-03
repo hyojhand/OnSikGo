@@ -193,7 +193,7 @@ export default {
 
         dist = Math.acos(dist);
         dist = dist * 180 / Math.PI;
-        dist = dist * 60 * 1.1515 * 1.609344 * 100 / 2;
+        dist = dist * 60 * 1.1515 * 1.609344 * 1000;
         if (dist < 100) dist = Math.round(dist / 10) * 10;
         else dist = Math.round(dist / 100) * 100;
 
