@@ -120,7 +120,13 @@ export default {
             var saleStore = []
             response.data.forEach((item) => {
               var distance
-              saleStore.push([item.saleDto.storeDto.lat, item.saleDto.storeDto.lng])
+              console.log(item.saleDto.storeDto.lat, item.saleDto.storeDto.lng)
+              if (saleStore.includes([item.saleDto.storeDto.lat, item.saleDto.storeDto.lng])){
+                console.log("안에 있음")
+              } else {
+                saleStore.push([item.saleDto.storeDto.lat, item.saleDto.storeDto.lng])
+              }
+              
               distance = this.getdistance(this.currentX, this.currentY, item.saleDto.storeDto.lat, item.saleDto.storeDto.lng)
               item.distance = distance
               // 초기에 근방에 위치한 가게만 보여주기
