@@ -1,18 +1,22 @@
 <template>
   <div>
-    <h1>{{ store.storeId }}</h1>
     <b-card>
       <b-row>
-        <b-col md="3">
-          <img fluid :src="`${store.storeImgUrl}`" height="90" width="100" />
+        <b-col md="4">
+          <div class="align-center">
+            <img fluid :src="`${store.storeImgUrl}`" height="120" width="100" />
+          </div>
         </b-col>
-        <b-col md="9">
+        <b-col md="8" class="ml-auto p-3">
           <div class="text-align-center" id="cardInText">
             <br />
-            <span>안녕하세요, {{ store.storeName }}입니다.</span>
-            <p>매장 위치: {{ store.location }}</p>
+            <h3>👨‍🍳안녕하세요,<br />{{ store.storeName }}입니다.</h3>
+            <span>매장 위치: {{ store.location }}</span
+            ><br />
+            <span>매장 휴무일: {{ store.offDay }}</span>
           </div>
           <div class="d-flex justify-content-end">
+            <!--영업종료 버튼은 빨간색으로 하기-->
             <button @click="movetoClose">영업 종료</button>
           </div>
         </b-col>
@@ -20,21 +24,33 @@
     </b-card>
 
     <br />
-    <div id="space-even">
-      <b-button size="sm" @click="dataAnalysis()" pill variant="outline-success"
-        >데이터 분석</b-button
-      >
-      <b-button size="sm" @click="storechange()" pill variant="outline-success"
-        >정보수정</b-button
-      >
+    <div>
+      <b-container class="bv-example-row">
+        <b-row align-h="around">
+          <b-col cols="4">
+            <b-button @click="dataAnalysis()" pill variant="outline-success"
+              >데이터 분석</b-button
+            ></b-col
+          >
+          <b-col cols="4">
+            <b-button @click="storechange()" pill variant="outline-success"
+              >정보수정</b-button
+            ></b-col
+          >
+        </b-row>
+      </b-container>
     </div>
-    <div class="font-l sales">오늘 할인 판매 상품</div>
-    <discountList
-      v-for="(saleItem, index) in saleItemList"
-      :key="index"
-      v-bind="saleItem"
-      :storeId="storeId"
-    />
+    <br />
+
+    <div class="container">
+      <div class="font-l sales">오늘 할인 판매 상품</div>
+      <discountList
+        v-for="(saleItem, index) in saleItemList"
+        :key="index"
+        v-bind="saleItem"
+        :storeId="storeId"
+      />
+    </div>
   </div>
 </template>
 

@@ -2,32 +2,44 @@
   <div class="container">
     <!-- 상위 가게 카테고리 -->
     <div class="row">
-      <div class="col" @click="selectDesssert()">
-        <img src="@/assets/images/dessert.png" alt="dessert" />
-        <p>디저트</p>
+      <div class="col" id="category-img" @click="selectKorea()">
+        <a>
+          <img src="@/assets/images/koreanfood.png" alt="koreanfood" />
+        </a>
+        <p>한식</p>
       </div>
-      <div class="col" @click="selectJapan()">
-        <img src="@/assets/images/japanesefood.png" alt="japanesefood" />
+
+      <div class="col" id="category-img" @click="selectJapan()">
+        <a>
+          <img src="@/assets/images/japanesefood.png" alt="japanesefood" />
+        </a>
         <p>일식</p>
       </div>
-      <div class="col" @click="selectChina()">
-        <img src="@/assets/images/chinesefood.png" alt="chinesefood" />
-        <p>중식</p>
+      <div class="col" id="category-img" @click="selectWestern()">
+        <a>
+          <img src="@/assets/images/snackbar.png" alt="westernfood" />
+        </a>
+        <p>양식</p>
       </div>
     </div>
     <!-- 하위 가게 카테고리 -->
     <div class="row">
-      <div class="col" @click="selectKorea()">
-        <img src="@/assets/images/koreanfood.png" alt="koreanfood" />
-        <p>한식</p>
-      </div>
-      <div class="col" @click="selectSnack()">
-        <img src="@/assets/images/snackbar.png" alt="snackbar" />
+      <div class="col" id="category-img" @click="selectSnack()">
+        <a>
+          <img src="@/assets/images/chinesefood.png" alt="snackbar" />
+        </a>
         <p>분식</p>
       </div>
-      <div class="col" @click="selectWestern()">
-        <img src="@/assets/images/westernfood.png" alt="westernfood" />
-        <p>양식</p>
+      <div class="col" id="category-img" @click="selectDesssert()">
+        <a>
+          <img src="@/assets/images/dessert.png" alt="dessert" />
+        </a>
+        <p>디저트</p>
+      </div>
+
+      <div class="col" id="category-img" @click="selectIngredient()">
+        <a><img src="@/assets/images/westernfood.png" alt="ingredient" /> </a>
+        <p>식자재</p>
       </div>
     </div>
     <!-- 검색 서칭 -->
@@ -101,7 +113,7 @@ export default {
   name: "CategoryStore",
   data() {
     return {
-      category: "DESSERT",
+      category: "KOREA",
       storeList: [],
       keyword: "",
     };
@@ -132,8 +144,8 @@ export default {
       this.category = "JAPAN";
       this.selectStoreList();
     },
-    selectChina() {
-      this.category = "CHINA";
+    selectIngredient() {
+      this.category = "INGREDIENT";
       this.selectStoreList();
     },
     selectKorea() {
@@ -161,7 +173,7 @@ export default {
         });
     },
     resetList() {
-      this.category = "DESSERT";
+      this.category = "KOREA";
       this.selectStoreList();
       this.keyword = "";
     },
@@ -203,5 +215,10 @@ export default {
 .product-search {
   padding-right: 5px;
   padding-left: 5px;
+}
+.container .row #category-img:hover {
+  width: 50px; /* 사진크기 조절 */
+  transform: scale(1.5, 1.5); /* 가로2배 새로 1.5배 로 커짐 */
+  transition: transform.5s; /* 커지는 시간 */
 }
 </style>

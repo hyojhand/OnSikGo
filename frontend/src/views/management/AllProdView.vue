@@ -135,6 +135,7 @@
 <script>
 import AllProductList from "@/components/management/AllProductList.vue";
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
 export default {
   name: "AllProdView",
 
@@ -174,6 +175,8 @@ export default {
   },
 
   methods: {
+    ...mapActions("itemStore", ["getItemId"]),
+    ...mapActions("storeStore", ["getStoreId"]),
     selectPage(index) {
       this.page = index - 1;
       http
@@ -201,9 +204,10 @@ export default {
       }
     },
     prodregister() {
+      this.getItemId(this.itemId);
+      this.getStoreId(this.storeId);
       this.$router.push({
         name: "prodRegister",
-        // params: { storeId: this.storeId },
       });
     },
     keywordSelect() {

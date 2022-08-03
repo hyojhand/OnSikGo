@@ -103,4 +103,8 @@ public class UserController {
         UserDto userDto = naverUserService.getUserInfoByAccessToken(param.get("access_token"));
         return naverUserService.login(userDto);
     }
+    @PostMapping("/pw-find")
+    public ResponseEntity<String> findPw(@RequestBody HashMap<String, String> map) {
+        return userService.findPw(map);
+    }
 }

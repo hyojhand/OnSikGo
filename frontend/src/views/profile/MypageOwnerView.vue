@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-center">
       <select
         id="dropdown1"
         style="border-color: #63bf68"

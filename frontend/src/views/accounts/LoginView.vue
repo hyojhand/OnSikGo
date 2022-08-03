@@ -28,16 +28,47 @@
       </button>
       <button class="radius-m error" @click="signup()">회원 가입</button>
     </div>
-    <div class="find-box">
-      <div>아이디를 잊으셨나요?</div>
-      <button>아이디 찾기</button>
-    </div>
-
-    <!--제발 커밋,, -->
 
     <div class="find-box">
       <div>비밀번호를 잊으셨나요?</div>
-      <button>비밀번호 찾기</button>
+      <v-dialog 
+      v-model="dialog"
+      persistent>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          v-bind="attrs"
+          v-on="on">
+          비밀번호 찾기</v-btn>
+      </template>
+      <v-card>
+        <v-card-title><span class="text-h5">비밀번호 찾기</span></v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <div>
+              <v-text-field
+                v-model="userName"
+                label="이름을 입력해주세요."
+                required
+                ></v-text-field>
+              </div>
+              <v-text-field
+                v-model="emailCheck"
+                label="이메일을 입력해주세요."
+                required
+                @keyup.enter="checkName()"
+                ></v-text-field>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="find-button1" color="success" depressed @click="checkName()">
+              임시비밀번호 전송</v-btn>
+          <v-btn class="find-button2" color="error" depressed  @click="dialog = false">닫기</v-btn>
+        </v-card-actions>
+      </v-card>
+      </v-dialog>
     </div>
 
     <!--소셜 로그인을 위한 아이콘 넣기-->
@@ -56,6 +87,9 @@ export default {
   data: () => ({
     email: "",
     password: "",
+    userName: "",
+    emailCheck:"",
+    dialog: false,
   }),
 
   methods: {
@@ -71,9 +105,24 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             localStorage.setItem("access-token", response.data.token);
-            this.$router.push("/");
+            this.$router.push("/login");
           } else {
             alert("로그인에 실패했습니다");
+          }
+        });
+    },
+    checkName() {
+      http
+        .post("/user/pw-find", {
+          email: this.emailCheck,
+          userName: this.userName,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            alert("임시 비밀번호를 발송하였습니다");
+            this.dialog = false;
+          } else {
+            alert("가입된 이름 혹은 이메일이 아닙니다.");
           }
         });
     },
@@ -133,5 +182,14 @@ button {
   width: 50%;
   text-align: end;
   background-color: rgb(240, 240, 240);
+}
+
+.find-button1 {
+  display: flex;
+  width: 50%;
+}
+.find-button2 {
+  display: flex;
+  width: 30%;
 }
 </style>

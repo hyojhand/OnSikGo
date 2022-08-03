@@ -17,25 +17,37 @@
     <div class="mt-5">
       <div class="row">
         <div class="col">
-          <img src="@/assets/images/dessert.png" alt="dessert" />
+          <a>
+            <img src="@/assets/images/dessert.png" alt="dessert" />
+          </a>
         </div>
         <div class="col">
-          <img src="@/assets/images/japanesefood.png" alt="japanesefood" />
+          <a>
+            <img src="@/assets/images/japanesefood.png" alt="japanesefood" />
+          </a>
         </div>
         <div class="col">
-          <img src="@/assets/images/chinesefood.png" alt="chinesefood" />
+          <a>
+            <img src="@/assets/images/chinesefood.png" alt="chinesefood" />
+          </a>
         </div>
       </div>
       <!-- 하위 가게 카테고리 -->
       <div class="row">
         <div class="col">
-          <img src="@/assets/images/koreanfood.png" alt="koreanfood" />
+          <a>
+            <img src="@/assets/images/koreanfood.png" alt="koreanfood" />
+          </a>
         </div>
         <div class="col">
-          <img src="@/assets/images/snackbar.png" alt="snackbar" />
+          <a>
+            <img src="@/assets/images/snackbar.png" alt="snackbar" />
+          </a>
         </div>
         <div class="col">
-          <img src="@/assets/images/westernfood.png" alt="westernfood" />
+          <a
+            ><img src="@/assets/images/westernfood.png" alt="westernfood" />
+          </a>
         </div>
       </div>
     </div>
@@ -86,5 +98,10 @@ export default {
   background-position: 1px center;
   background-repeat: no-repeat;
   text-indent: 0;
+}
+.container .row .col img:hover {
+  width: 60px; /* 사진크기 조절 */
+  transform: scale(1.5, 1.5); /* 가로2배 새로 1.5배 로 커짐 */
+  transition: transform.5s; /* 커지는 시간 */
 }
 </style>

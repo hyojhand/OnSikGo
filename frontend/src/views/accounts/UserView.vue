@@ -118,7 +118,6 @@
           color="black"
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
-          v-bind:disabled="check1 == false | check1 == false"
         ></v-checkbox>
         <!-- 가입하기 버튼 -->
         <div class="btns mb-5">
