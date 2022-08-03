@@ -18,7 +18,7 @@
 
     <br />
     <div class="item-container">
-      <mypage-owner-component :storeId="this.storeId" />
+      <mypage-owner-component :storeId="this.storeId"></mypage-owner-component>
     </div>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default {
     return {
       stores: [],
       store: {},
-      storeId: "",
+      storeId: Number,
       saleItemList: [],
       itemList: [],
     };
@@ -59,19 +59,16 @@ export default {
     });
   },
   methods: {
-    dataAnalysis() {
-      this.$router.push("/mypage/owner/analysis");
-    },
-    storechange() {
-      this.$router.push({
-        name: "storeInfoChange",
-        params: { storeId: this.storeId },
-      });
-    },
     selectStore(event) {
-      console.log(event.target.value);
       this.storeId = event.target.value;
-      console.log(this.storeId);
+      this.changeStore();
+    },
+    changeStore() {
+      http.get(`/store/${this.storeId}`).then((response) => {
+        this.store = response.data;
+        this.storeName = response.data.storeName;
+        // console.log(response.data);
+      });
     },
     storeClose() {
       http.put(`/store/close/${this.storeId}`).then((response) => {
@@ -80,12 +77,6 @@ export default {
         } else {
           alert("해당 날짜의 판매정보가 없습니다.");
         }
-      });
-    },
-    movetoClose() {
-      this.$router.push({
-        name: "closeCheck",
-        params: { storeId: this.storeId },
       });
     },
   },
