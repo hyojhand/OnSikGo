@@ -1,63 +1,77 @@
 <template>
   <div class="container">
     <!-- 검색 서칭 -->
-    <div class="search-container mb-5">
-        <div class="row">
-          <div class="col">
-            <!-- 검색 아이콘 -->
-            <input class="search-box" type="search" placeholder="        가게 명을 입력해주세요.">
-          </div>
+    <div class="search-container mb-5 mt-5">
+      <div class="row">
+        <div class="col">
+          <!-- 검색 아이콘 -->
+          <input
+            class="search-box"
+            type="search"
+            placeholder="         가게 명을 입력해주세요."
+          />
         </div>
+      </div>
     </div>
     <!-- 상위 가게 카테고리 -->
-    <div class="row">
-      <div class="col">
-        <img src="@/assets/images/dessert.png" alt="dessert">
+    <div class="mt-5">
+      <div class="row">
+        <div class="col">
+          <a>
+            <img src="@/assets/images/dessert.png" alt="dessert" />
+          </a>
+        </div>
+        <div class="col">
+          <a>
+            <img src="@/assets/images/japanesefood.png" alt="japanesefood" />
+          </a>
+        </div>
+        <div class="col">
+          <a>
+            <img src="@/assets/images/chinesefood.png" alt="chinesefood" />
+          </a>
+        </div>
       </div>
-      <div class="col">
-        <img src="@/assets/images/japanesefood.png" alt="japanesefood">
-      </div>
-      <div class="col">
-        <img src="@/assets/images/chinesefood.png" alt="chinesefood">
+      <!-- 하위 가게 카테고리 -->
+      <div class="row">
+        <div class="col">
+          <a>
+            <img src="@/assets/images/koreanfood.png" alt="koreanfood" />
+          </a>
+        </div>
+        <div class="col">
+          <a>
+            <img src="@/assets/images/snackbar.png" alt="snackbar" />
+          </a>
+        </div>
+        <div class="col">
+          <a
+            ><img src="@/assets/images/westernfood.png" alt="westernfood" />
+          </a>
+        </div>
       </div>
     </div>
-    <!-- 하위 가게 카테고리 -->
-    <div class="row">
-      <div class="col">
-        <img src="@/assets/images/koreanfood.png" alt="koreanfood">
-      </div>
-      <div class="col">
-        <img src="@/assets/images/snackbar.png" alt="snackbar">
-      </div>
-      <div class="col">
-        <img src="@/assets/images/westernfood.png" alt="westernfood">
-      </div>
-    </div>
-
   </div>
 </template>
 
 <script>
-
-
 export default {
-    name: "CategoryStore",
-}
+  name: "CategoryStore",
+};
 </script>
 
 <style scoped>
- .container {
+.container {
   width: 360px;
- }
- .container .row .col{
+}
+.container .row .col {
   font-size: 20px;
   font-weight: bolder;
- }
- .container .row .col img{
+}
+.container .row .col img {
   width: 70px;
   height: 70px;
-
- }
+}
 
 .location {
   text-align: left;
@@ -68,22 +82,26 @@ export default {
   padding: 0;
 }
 
-.search-box{
+.search-box {
   border: solid 1px;
   border-radius: 12px;
   font-size: 12px;
   background-repeat: no-repeat;
-  padding: 5px 5px;
+  padding: 5px 8px;
   width: 370px;
-  background-color: #FFF;
+  background-color: #fff;
 }
 
-.search-box::-webkit-input-placeholder{
-  background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png) ;
+.search-box::-webkit-input-placeholder {
+  background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
   background-size: contain;
-  background-position:  1px center;
+  background-position: 1px center;
   background-repeat: no-repeat;
   text-indent: 0;
 }
-
+.container .row .col img:hover {
+  width: 60px; /* 사진크기 조절 */
+  transform: scale(1.5, 1.5); /* 가로2배 새로 1.5배 로 커짐 */
+  transition: transform.5s; /* 커지는 시간 */
+}
 </style>

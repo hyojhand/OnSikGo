@@ -1,138 +1,158 @@
 <template>
   <div>
     <div id="map"></div>
-    <!-- <div class="button-group">
-      <button @click="changeSize(0)">Hide</button>
-      <button @click="changeSize(400)">show</button>
-      <button @click="displayMarker(markerPositions1)">marker set 1</button>
-      <button @click="displayMarker(markerPositions2)">marker set 2</button>
-      <button @click="displayMarker([])">marker set 3 (empty)</button>
-      <button @click="displayInfoWindow">infowindow</button>
-    </div> -->
+    <div class="button-group">
+
+    </div>
   </div>
 </template>
 
-<script>
+<script >
+
+import {mapGetters, mapActions} from "vuex";
+
 export default {
   name: "KakaoMap",
   data() {
     return {
-      x: 33.452278,
-      y: 126.567803,
-
+      currentxLatitude: 33.452278,
+      currentLongitude: 126.567803,
       markerPositions1: [
-        [33.452278, 126.567803],
-        [33.452671, 126.574792],
-        [33.451744, 126.572441],
-      ],
-      markerPositions2: [
-        [37.499590490909185, 127.0263723554437],
-        [37.499427948430814, 127.02794423197847],
-        [37.498553760499505, 127.02882598822454],
-        [37.497625593121384, 127.02935713582038],
-        [37.49629291770947, 127.02587362608637],
-        [37.49754540521486, 127.02546694890695],
-        [37.49646391248451, 127.02675574250912],
+        [35.230016, 129.076428],
+        [35.200016, 129.056428],
+        [35.160016, 129.036428],
       ],
       markers: [],
       infowindow: null,
     };
   },
+  computed: {
+    ...mapGetters("store", [
+      "aroundSaleStore",
+    ])
+  },
+
   created() {
-    this.curruntLocation();
+    console.log(this.aroundSaleStore)
+    if (navigator.geolocation) {
+    // 현재 위치
+      navigator.geolocation.getCurrentPosition((position) => {
+      this.currentxLatitude = position.coords.latitude, // 위도
+      this.currentLongitude = position.coords.longitude; // 경도
+      // 현재위치
+      // console.log(this.currentLongitude, this.currentxLatitude)
+      this.curruntLocation();
+      
+    });
+    // 못찾은 경우
+    } 
   },
-  mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=204f7abed9a6558eb3411fabf8202302";
-      document.head.appendChild(script);
-    }
-  },
+
   methods: {
+    // 현재 위치 주소 vuex에 넣기
+    ...mapActions("store", [
+      "getAddress",
+      "getCurrentX",
+      "getCurrentY",
+    ]),
+    // 카카오맵 생성
+    createMap(){
+        if (window.kakao && window.kakao.maps) {
+        this.initMap();
+      } else {
+        const script = document.createElement("script");
+        /* global kakao */
+        script.onload = () => kakao.maps.load(this.initMap);
+        script.src =
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=204f7abed9a6558eb3411fabf8202302";
+        document.head.appendChild(script);
+      }
+    },
     initMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(this.x, this.y),
+        center: new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude),
         level: 3,
       };
-      console.log(kakao.maps.LatLng)
+
       //지도 객체를 등록합니다.
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
+
+      this.nowMarker()
     },
+    // 
+    nowMarker(){
 
-    changeSize(size) {
-      const container = document.getElementById("map");
-      container.style.width = `${size}px`;
-      container.style.height = `${size}px`;
-      this.map.relayout();
+      this.aroundSaleStore.forEach((store) =>{
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+        // 마커 이미지의 이미지 크기 입니다
+        var imageSize = new kakao.maps.Size(24, 35); 
+        console.log("가게 하나의 위도 경도",store)
+        
+        // 마커 이미지를 생성합니다    
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+
+        var marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(store.saleDto.storeDto.lat, store.saleDto.storeDto.lng), // 마커를 표시할 위치
+            // title : positions[i].title, 
+            image : markerImage, // 마커 이미지
+            clickable: true,
+          });
+        var infowindow = new kakao.maps.InfoWindow({
+            content: 
+              `<div>${store.saleDto.storeDto.storeName}</div>
+  
+              <div>${store.saleDto.storeDto.tel}</div>
+              <div>공휴일 : ${store.saleDto.storeDto.offDay}</div>
+              <div>마감시간 : ${store.saleDto.storeDto.closingTime}</div>` // 인포윈도우에 표시할 내용
+        });
+          // console.log(this.map)
+        
+
+        kakao.maps.event.addListener(marker, 'mouseover', this.makeOverListener(this.map, marker, infowindow));
+        kakao.maps.event.addListener(marker, 'mouseout', this.makeOutListener(infowindow));
+
+        marker.setMap(this.map);
+      })
     },
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
-
-      const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
-      );
-
-      if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: this.map,
-              position,
-            })
-        );
-
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
-        );
-
-        this.map.setBounds(bounds);
-      }
-    },
-    displayInfoWindow() {
-      if (this.infowindow && this.infowindow.getMap()) {
-        //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-        this.map.setCenter(this.infowindow.getPosition());
-        return;
-      }
-
-      var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-      this.infowindow = new kakao.maps.InfoWindow({
-        map: this.map, // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      });
-
-      this.map.setCenter(iwPosition);
-    },
+      
     // 현재 위치 찾기
-    curruntLocation() {
-      if (navigator.geolocation) {
+    async curruntLocation() {
+      this.changeaddress()
+      this.createMap()
+    },
 
-      // 현재 위치
-        navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position.coords)
-        this.x = position.coords.latitude, // 위도
-        this.y = position.coords.longitude; // 경도
-        console.log(this.x)
-        console.log(this.y)
-      });
-      // 못찾은 경우
-      } 
-      // return true
+    // 도로명 주소 변환
+    changeaddress() {
+      var geocoder = new kakao.maps.services.Geocoder();
+
+      this.getCurrentX(this.currentxLatitude)
+      this.getCurrentY(this.currentLongitude)
+      var coord = new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude);
+      var callback = (result, status) => {
+          if (status === kakao.maps.services.Status.OK) {
+              var address = result[0].address.address_name
+              this.getAddress(address);
+          }
+          else{
+            console.log('실패')
+          }
+      };
+      geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+    },
+    // 인포원도우를 표시하는 클로지를 만드는 함수
+    makeOverListener(map, marker, infowindow) {
+        return function() {
+            infowindow.open(map, marker);
+        };
+    },
+
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+    makeOutListener(infowindow) {
+        return function() {
+            infowindow.close();
+        };
     }
   },
 };
@@ -152,4 +172,6 @@ export default {
 button {
   margin: 0 3px;
 }
+
+
 </style>

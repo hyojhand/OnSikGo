@@ -37,6 +37,7 @@ export default {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http.delete(`/user`).then(() => {
+        localStorage.removeItem("access-token");
         this.$router.push("/");
       });
     },

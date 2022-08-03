@@ -23,15 +23,17 @@ public class StoreController {
     private final StoreService storeService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(HttpServletRequest request, @RequestBody StoreDto storeDto) {
-        return storeService.register(request, storeDto);
+    public ResponseEntity<String> register(HttpServletRequest request,
+                                           @RequestPart(value = "file",required = false) MultipartFile file,
+                                           @RequestPart(value = "storeDto",required = false) StoreDto storeDto) {
+        return storeService.register(request,file, storeDto);
     }
 
     @PutMapping("/{store_id}")
     public ResponseEntity<String> modify(HttpServletRequest request,
                                          @PathVariable Long store_id,
                                          @RequestPart(value = "file",required = false) MultipartFile file,
-                                         @RequestPart(value = "itemDto",required = false) StoreDto storeDto) {
+                                         @RequestPart(value = "storeDto",required = false) StoreDto storeDto) {
         return storeService.modify(request, store_id, file, storeDto);
     }
 

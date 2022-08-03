@@ -8,27 +8,50 @@
     <div class="info-container">
       <div class="item-info">
         <div class="info-box">
-          <div>정가 :</div>
-          <div class="ml-1">{{ price }}</div>
+          <div>정상 판매가 :</div>
+          <div class="ml-1">{{ price }} 원</div>
         </div>
         <div class="info-box">
-          <div>수량 :</div>
-          <div class="ml-1">{{ this.saleDto.stock}}</div>
+          <div>할인 판매가 :</div>
+          <div class="ml-1">{{ saleDto.salePrice }} 원</div>
+        </div>
+        <div class="info-box">
+          <div>등록 수량 :</div>
+          <div class="ml-1">{{ saleDto.stock }} 개</div>
         </div>
       </div>
-      <button @click="prodmodify()" class="border-m radius-s">수 정</button>
+      <button @click="prodmodify()" class="border-m radius-s my-1 edit-btn">
+        정보수정
+      </button>
+      <add-stock-modal
+        :no="this.itemId"
+        :store="this.storeId"
+        class="stock-btn mb-1"
+      ></add-stock-modal>
+      <edit-stock-modal
+        :no="this.itemId"
+        :store="this.storeId"
+        class="stock-btn"
+      ></edit-stock-modal>
     </div>
   </div>
 </template>
 
 <script>
 import http from "@/util/http-common";
+import EditStockModal from "@/components/management/EditStockModal.vue";
+import AddStockModal from "@/components/management/AddStockModal.vue";
+import { mapActions } from "vuex";
 export default {
   name: "AllProductList",
+  components: {
+    AddStockModal,
+    EditStockModal,
+  },
   data() {
     return {
-       saleDto: {},
-       stock: Number,
+      saleDto: {},
+      stock: Number,
     };
   },
   props: {
@@ -38,23 +61,27 @@ export default {
     price: Number,
     itemImgUrl: String,
     comment: String,
+    no: Number,
+    item: Number,
   },
 
-  created() {
-      http.get(`/sale/${this.itemId}`).then((response) => {
-       if(response.status == 200) {
+  mounted() {
+    http.get(`/sale/${this.itemId}`).then((response) => {
+      if (response.status == 200) {
         this.saleDto = response.data;
+        this.$forceUpdate();
       }
     });
-
-    
   },
 
   methods: {
+    ...mapActions("itemStore", ["getItemId"]),
+    ...mapActions("storeStore", ["getStoreId"]),
     prodmodify() {
+      this.getItemId(this.itemId);
+      this.getStoreId(this.storeId);
       this.$router.push({
         name: "prodChange",
-        params: { itemId: this.itemId, storeId: this.storeId },
       });
     },
   },
@@ -73,6 +100,10 @@ button {
   background-color: rgb(140, 184, 131);
   width: 100%;
 }
+.stock-btn {
+  width: 100%;
+}
+
 .item-name {
   margin: 5% auto;
   padding-bottom: 3%;
@@ -94,5 +125,9 @@ button {
   display: flex;
   flex-direction: row;
   padding-bottom: 3%;
+  margin: 2% 0;
+}
+.edit-btn {
+  background-color: rgb(255, 82, 82);
 }
 </style>

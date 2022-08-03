@@ -6,46 +6,38 @@
     </div>
     <!--수정정보나타내기-->
     <div>
-      <img :src="`${itemDto.itemImgUrl}`" alt="IMG-PRODUCT" />
-      <div class="item-name">
-        {{ this.itemDto.itemName }}
+      <div class="img-box">
+        <img :src="`${itemDto.itemImgUrl}`" alt="IMG-PRODUCT" />
+        <div class="img-input">
+          <input v-on:change="fileSelect()" type="file" ref="imgFile" />
+        </div>
       </div>
+      <input
+        class="item-name"
+        v-model="itemDto.itemName"
+        type="text"
+        placeholder="상품명을 입력해주세요."
+      />
 
       <!--상품정보-->
 
       <form class="info-container">
         <div class="info-box row">
-          <div class="col-4">정상가</div>
-          <div class="col-7 price">{{ this.itemDto.price }}</div>
-        </div>
-        <div class="info-box row">
-          <div class="col-4">할인율</div>
-          <div class="col-7 price font-l">🔻70%</div>
+          <div class="col-4">정상 판매가</div>
+          <input
+            class="col-4 price-input"
+            v-model="itemDto.price"
+            type="text"
+            placeholder="정상 판매가를 입력해주세요."
+          />
+          <div class="col-1">원</div>
         </div>
 
         <div class="info-box row">
-          <div class="col-4">할인가</div>
-          <input
-            class="col-7"
-            v-model="salePrice"
-            type="text"
-            placeholder="할인된 판매 금액을 입력해주세요."
-          />
-        </div>
-        <div class="info-box row">
-          <div class="col-4">수량</div>
-          <input
-            class="col-7"
-            v-model="stock"
-            type="number"
-            placeholder="등록할 수량을 입력해주세요."
-          />
-        </div>
-        <div class="info-box row">
           <div class="col-4">특이사항</div>
           <input
-            class="col-7"
-            v-model="this.itemDto.comment"
+            class="col-7 comment-input"
+            v-model="itemDto.comment"
             type="text"
             placeholder="특이사항을 입력해주세요"
           />
@@ -65,40 +57,56 @@
 <script>
 import ProductDeleteModal from "@/components/management/ProductDeleteModal.vue";
 import http from "@/util/http-common";
+import { mapGetters } from "vuex";
 export default {
   name: "ProdChangeView",
 
   components: { ProductDeleteModal },
   data() {
     return {
+      imgFile: null,
       itemDto: {},
-      salePrice: "",
-      stock: "",
       storeDto: {},
-      storeId: Number,
     };
+  },
+  computed: {
+    ...mapGetters("itemStore", ["getItemId"]),
+    ...mapGetters("storeStore", ["getStoreId"]),
   },
 
   async created() {
-    await http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+    await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
     });
 
-    await http.get(`/item/${this.$route.params.itemId}`).then((response) => {
+    await http.get(`/item/${this.getItemId}`).then((response) => {
       this.itemDto = response.data;
     });
   },
 
   methods: {
+    fileSelect() {
+      this.imgFile = this.$refs.imgFile.files[0];
+    },
     prodchange() {
-      http.post(`/sale/${this.$route.params.storeId}`, {
-        itemId: this.$route.params.itemId,
-        salePrice: this.salePrice,
-        stock: this.stock,
-      });
-
-      this.$router.push("/allprod/");
-      this.$router.go();
+      const formData = new FormData();
+      formData.append("file", this.imgFile);
+      formData.append(
+        "itemDto",
+        new Blob([JSON.stringify(this.itemDto)], { type: "application/json" })
+      );
+      http
+        .put(`/item/${this.itemDto.itemId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            alert("상품정보 수정완료");
+            this.$router.push("/allprod/");
+          }
+        });
     },
   },
 };
@@ -108,11 +116,26 @@ export default {
 img {
   width: 100%;
 }
-input {
-  width: 57%;
+.img-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.img-input {
+  margin-top: 3%;
+}
+.price-input {
+  width: 47%;
   padding: 8px 3px;
-  border-bottom: 1px solid black;
   color: rgba(0, 0, 0, 60%);
+  text-align: right;
+}
+.comment-input {
+  width: 47%;
+  padding: 8px 3px;
+  color: rgba(0, 0, 0, 60%);
+  border-bottom: 1px solid rgba(0, 0, 0, 10%);
 }
 .container {
   display: flex;
@@ -128,7 +151,9 @@ input {
 }
 .item-name {
   font-size: 30px;
+  width: 100%;
   margin: 5% auto;
+  text-align: center;
   border-bottom: 2px solid rgba(0, 0, 0, 10%);
 }
 .info-container {

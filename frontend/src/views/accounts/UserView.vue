@@ -13,18 +13,43 @@
       </div>
     </div>
     <v-card class="btn-box" black outlined min-width="330">
-      <form class="mb-2">
-        <v-text-field
-          class="input-box"
-          v-model="email"
-          :error-messages="emailErrors"
-          label="이메일을 입력해주세요."
-          required
-          color="black"
-          @input="$v.email.$touch()"
-          @blur="$v.email.$touch()"
-        ></v-text-field>
+      <form class="mb-2 el-case">
+        <!-- -------메일 입력하기---------------------------- -->
+        <div class="mail-input">
+          <v-text-field
+            class="input-box mt-5"
+            v-model="email"
+            :error-messages="emailErrors"
+            label="이메일을 입력해주세요."
+            required
+            color="black"
+            @input="$v.email.$touch()"
+            @blur="$v.email.$touch()"
+          ></v-text-field>
 
+          <button class="border-m radius-m confrim-btn" @click="isCheck()" >
+            {{ checkmsg }}
+          </button>
+        </div>
+        <!-- ------------인증 메일 보내기-------------------- -->
+        <div v-if="sendMail">
+          <div class="mailconfim-case">
+            <input
+              id="mail-confirm"
+              class="mail-confirm"
+              v-model="authNum"
+              placeholder="인증번호를 입력하세요."
+            />
+            <button
+              class="border-m radius-m mailconfirm-btn"
+              @click="checkMail()"
+            >
+              확인하기
+            </button>
+          </div>
+        </div>
+
+        <!-- --------비밀번호 입력------------ -->
         <v-text-field
           class="input-box"
           v-model="password"
@@ -37,6 +62,20 @@
           @blur="$v.password.$touch()"
         ></v-text-field>
 
+        <!-- ----------비밀번호 재확인-------------- -->
+        <v-text-field
+          class="input-box"
+          v-model="passwordConfirm"
+          :error-messages="passwordConfirmErrors"
+          label="비밀번호를 다시 입력해주세요."
+          required
+          color="black"
+          type="password"
+          @input="$v.passwordConfirm.$touch()"
+          @blur="$v.passwordComfirm.$touch()"
+        ></v-text-field>
+
+        <!-- ----------사용자 이름 입력-------------- -->
         <v-text-field
           class="input-box"
           v-model="name"
@@ -47,17 +86,30 @@
           @input="$v.name.$touch()"
           @blur="$v.name.$touch()"
         ></v-text-field>
-        <v-text-field
-          class="input-box"
-          v-model="nickname"
-          :error-messages="nicknameErrors"
-          label="닉네임을 입력해주세요."
-          required
-          color="black"
-          @input="$v.nickname.$touch()"
-          @blur="$v.nickname.$touch()"
-        ></v-text-field>
 
+        <!-- --------닉네임 입력---------------        -->
+        <div class="mail-input">
+          <v-text-field
+            class="input-box"
+            v-model="nickname"
+            :error-messages="nicknameErrors"
+            label="닉네임을 입력해주세요."
+            required
+            color="black"
+            @input="$v.nickname.$touch()"
+            @blur="$v.nickname.$touch()"
+          ></v-text-field>
+          <!-- ------닉네임 중복확인------- -->
+          <button
+            class="border-m radius-m name-confrim-btn"
+            @click="nicknameCheck()"
+          >
+            중복확인하기
+          </button>
+          <div v-if="nicknameDuple">사용가능한 닉네임입니다.</div>
+        </div>
+
+        <!-- ----------회원가입 동의 체크------------ -->
         <v-checkbox
           v-model="checkbox"
           :error-messages="checkboxErrors"
@@ -67,9 +119,12 @@
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
         ></v-checkbox>
-
-        <div class="btns">
-          <button class="border-m radius-m notice-btn" @click="signup()">
+        <!-- 가입하기 버튼 -->
+        <div class="btns mb-5">
+          <button 
+          class="border-m radius-m notice-btn" 
+          @click="signup()"
+          v-bind:disabled="check1 == false | check1 == false">
             가입하기
           </button>
           <button @click="clear" class="border-m radius-m notice-btn clear">
@@ -93,6 +148,7 @@ export default {
   validations: {
     email: { required, email },
     password: { required, minLength: minLength(8) },
+    passwordConfirm: { required, minLength: minLength(8) },
     name: { required, maxLength: maxLength(10) },
     nickname: { required, maxLength: maxLength(10) },
     checkbox: {
@@ -106,9 +162,16 @@ export default {
     name: "",
     email: "",
     password: "",
+    passwordConfirm: "",
     nickname: "",
     role: "USER",
     checkbox: false,
+    sendMail: false,
+    checkmsg: "메일 인증하기",
+    nicknameDuple: false,
+    authNum: "",
+    check1: false,
+    check2: false,
   }),
 
   computed: {
@@ -133,6 +196,12 @@ export default {
       !this.$v.password.required && errors.push(" ");
       return errors;
     },
+    passwordConfirmErrors() {
+      const errors = [];
+      if (this.password == this.passwordConfirm) return errors;
+      errors.push("비밀번호가 일치하지 않습니다.");
+      return errors;
+    },
     nicknameErrors() {
       const errors = [];
       if (!this.$v.nickname.$dirty) return errors;
@@ -150,6 +219,53 @@ export default {
     },
   },
   methods: {
+    // 이메일 중복 확인 및 인증번호 전송
+    isCheck() {
+      http
+        .post("/user/email", {
+          email: this.email
+        })
+        .then((response) => {
+        if (response.status == 200) {
+          alert("인증번호를 확인해주세요");
+          this.sendMail = true;
+          this.checkmsg = "재전송하기";
+        } else {
+          alert("이미 가입된 이메일입니다");
+        }
+      });
+    },
+    // 인증번호 확인
+    checkMail() {
+      http
+        .post("/user/emailAuthNumber", {
+          email: this.email,
+          authNum: this.authNum,
+        })
+        .then((response) => {
+        if ((response.status) == 200) {
+          alert("인증번호 확인이 되었습니다.");
+          this.check1 = true;
+        } else {
+          alert("인증번호 확인에 실패했습니다");
+        }
+      });
+    },
+    // 닉네임 중복 확인
+    nicknameCheck() {
+      http
+        .post("/user/nickname", {
+          nickname: this.nickname
+        })
+        .then((response) => {
+        if (response.status == 200) {
+          this.nicknameDuple = !this.nicknameDuple;
+          this.check2 =true;
+        } else {
+          alert("중복된 닉네임이 있습니다");
+        }
+      });
+    },
     tempgo() {
       this.$router.push("/signup/complete");
     },
@@ -187,6 +303,23 @@ export default {
 </script>
 
 <style scoped>
+.el-case {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+.mailconfim-case {
+  margin: 3% 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  color: black;
+}
+.mailconfirm-btn {
+  color: black;
+  width: 70px;
+}
 .ment-box {
   text-align: start;
 }
@@ -201,7 +334,6 @@ export default {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 450px;
 }
 .select-btn {
   width: 100px;
@@ -218,7 +350,43 @@ export default {
 .notice-btn {
   width: 80px;
 }
+.btn-case {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.mail-input {
+  position: relative;
+}
+.confrim-btn {
+  right: 0px;
+  top: 32px;
+  position: absolute;
+  width: 90px;
+  font-size: 13px;
+  color: black;
+}
+.name-confrim-btn {
+  right: 0px;
+  top: 15px;
+  position: absolute;
+  width: 90px;
+  font-size: 13px;
+  color: black;
+}
 .clear {
   color: rgb(255, 82, 82);
+}
+.mail-box {
+  display: flex;
+  flex-direction: row;
+}
+.mail-confirm {
+  color: black;
+  border-bottom: 1px solid rgba(0, 0, 0, 30%);
+}
+.input-box {
+  min-width: 266px;
 }
 </style>

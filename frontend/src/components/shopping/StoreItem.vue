@@ -21,11 +21,7 @@
           등록물품 :
           <span class="product-count"> {{ saleItemDtoList.length }}</span> 개
         </p>
-        <router-link
-          class="store-moving"
-          :to="{ name: 'storeView', params: { storeId: this.storeId } }"
-          >가게보기</router-link
-        >
+        <button class="store-moving" @click="storeDetail()">가게보기</button>
       </div>
       <hr style="border: 1px solid #222; margin: 3px" />
     </div>
@@ -34,6 +30,7 @@
 
 <script>
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
 export default {
   name: "StoreItem",
 
@@ -55,6 +52,15 @@ export default {
     return {
       saleItemDtoList: [],
     };
+  },
+  methods: {
+    ...mapActions("storeStore", ["getStoreId"]),
+    storeDetail() {
+      this.getStoreId(this.storeId);
+      this.$router.push({
+        name: "storeView",
+      });
+    },
   },
   created() {
     http.get(`/sale/list/${this.storeId}`).then((response) => {

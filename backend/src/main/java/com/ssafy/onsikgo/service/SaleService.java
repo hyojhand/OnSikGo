@@ -11,6 +11,8 @@ import com.ssafy.onsikgo.repository.SaleRepository;
 import com.ssafy.onsikgo.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -148,7 +150,17 @@ public class SaleService {
             return new ResponseEntity<>("등록된 판매상품이 없습니다.", HttpStatus.NO_CONTENT);
         }
 
-        findSaleItem.get().update(map.get("stock"));
+        Integer stock = findSaleItem.get().getStock();
+        if(map.get("stock") != null) {
+            stock = map.get("stock");
+        }
+
+        Integer salePrice = findSaleItem.get().getSalePrice();
+        if(map.get("salePrice") != null) {
+            salePrice = map.get("salePrice");
+        }
+
+        findSaleItem.get().update(stock, salePrice);
         saleItemRepository.save(findSaleItem.get());
         return new ResponseEntity<>("재고 수정완료" ,HttpStatus.OK);
     }
@@ -162,11 +174,33 @@ public class SaleService {
     }
 
     public ResponseEntity<SaleItemDto> getSaleItemInfo(Long item_id) {
-        Optional<Item> findItem = itemRepository.findById(item_id);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
 
-        Optional<SaleItem> findSaleItem = saleItemRepository.findByItem(findItem.get());
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
+
+        Optional<Item> findItem = itemRepository.findById(item_id);
+        Store store = findItem.get().getStore();
+        Optional<Sale> findSale = saleRepository.findByStoreAndDate(store, date);
+
+        if(!findSale.isPresent()) {
+            SaleItemDto saleItemDto = new SaleItemDto();
+            saleItemDto.setItemDto(findItem.get().toDto());
+
+            saleItemDto.setStock(0);
+            return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
+        }
+
+        Optional<SaleItem> findSaleItem = saleItemRepository.findBySaleAndItem(findSale.get(), findItem.get());
         if(!findSaleItem.isPresent()) {
             SaleItemDto saleItemDto = new SaleItemDto();
+            saleItemDto.setItemDto(findItem.get().toDto());
+
             saleItemDto.setStock(0);
             return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
         }
@@ -174,4 +208,54 @@ public class SaleService {
         SaleItemDto saleItemDto = findSaleItem.get().toSaleItemDto();
         return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
     }
+
+    public ResponseEntity<List<SaleItemDto>> getSaleItemKeyword(SelectDto selectDto) {
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
+
+        List<SaleItem> saleItemKeywordList = saleItemRepository.findSaleItemKeyword(selectDto.getKeyword(),date);
+        List<SaleItemDto> saleItemDtoList = new ArrayList<>();
+        for(int i = 0; i < saleItemKeywordList.size(); i++) {
+            SaleItem saleItem = saleItemKeywordList.get(i);
+            Sale sale = saleItem.getSale();
+            Store store = sale.getStore();
+            ItemDto itemDto = saleItem.getItem().toDto();
+            SaleItemDto saleItemDto = saleItemKeywordList.get(i).toDto(itemDto,sale.toDto(store.toDto()));
+            saleItemDtoList.add(saleItemDto);
+        }
+
+        return new ResponseEntity<>(saleItemDtoList, HttpStatus.OK);
+    }
+
+//    public ResponseEntity<Page<SaleDto>> getSaleListPage(PageDto pageDto, Long store_id) {
+//        LocalDateTime now = LocalDateTime.now();
+//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+//        String time = now.format(timeFormatter);
+//        if(Integer.parseInt(time) < 6) {
+//            now = now.minusDays(1);
+//        }
+//
+//        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//        String date = now.format(dayFormatter);
+//
+//        Optional<Store> findStore = storeRepository.findById(store_id);
+//
+//        PageRequest page = PageRequest.of(pageDto.getPage(), pageDto.getSize());
+//        Page<Sale> salePage = saleRepository.findByStoreAndDate(findStore.get(), date, page);
+//
+//        Page<SaleDto> map = page.map(sale -> new SaleDto(sale.get))
+//
+//        Page<ItemDto> map = page.map(item -> new ItemDto(item.getItemId(),item.getItemName(),item.getPrice(),
+//                item.getItemImgUrl(), item.getComment()));
+//
+//        return new ResponseEntity<>(map, HttpStatus.OK);
+//    }
 }

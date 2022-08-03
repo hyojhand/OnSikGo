@@ -8,10 +8,10 @@
           <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>
           <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
         </svg>
-        <span> 서구 임시수도기념로 37, 구덕로 119길</span>
+        <span> {{ currentAddress }}</span>
       </div>
       <!-- Tab 기능 -->
-
+      
       <ul class="tabs">
         <li v-for="tab in tabs" 
           v-bind:class="{active : tab === selectedTab}" 
@@ -23,13 +23,13 @@
 <!-- test용 -->
       <!-- 지도 or Category Store -->
       <div class="tab-content">
-        <kakao-map class="tab-link currnet" v-if="selectedTab === tabs[0]"></kakao-map>
+        <kakao-map
+          class="tab-link currnet" 
+          v-if="selectedTab === tabs[0]"
+        ></kakao-map>
         <category-store class="tab-link" v-else></category-store>
       </div>
 
-      
-      
-      
       <!-- 상품 설명란 -->
       <div class="product" v-if="selectedTab === tabs[0]">
         <product-item></product-item>
@@ -42,6 +42,7 @@
 import KakaoMap from '@/components/shopping/KakaoMap';
 import CategoryStore from '@/components/shopping/CategoryStore';
 import ProductItem from '@/components/shopping/ProductItem';
+import { mapGetters } from "vuex";
 
 export default {
   name: "ShopView",
@@ -51,19 +52,25 @@ export default {
     CategoryStore,
     ProductItem,
   },
-  data: function() {
+  data() {
       return{
           tabs: ['지도보기', '가게보기'],
           selectedTab: '',
       };
     },
+  // vuex에서 현재주소 가져오기
+  computed: {
+  ...mapGetters("store",[
+    "currentAddress"
+  ]),
+  },
   // 디볼트는 지도보기
   created() {
       this.selectedTab = this.tabs[0]
   },
   methods:{
     onClickTab(tab) {
-            this.selectedTab = tab
+      this.selectedTab = tab
 
     },
   },
@@ -122,8 +129,14 @@ ul.tabs li{
 }
 
 .location {
-  text-align: left;
   padding-bottom: 10px;
 }
-
+.location span {
+  color: #333;
+  font-weight: 500;
+  font-size : 16px;
+  margin-left: 5px;
+  /* 밑줄 */
+  border-bottom:2px solid #8cb883;
+}
 </style>
