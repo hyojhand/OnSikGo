@@ -255,6 +255,7 @@ import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
 import minLength from "vuelidate/lib/validators/minLength";
 import http from "@/util/http-common";
+import axios from 'axios';
 
 export default {
   mixins: [validationMixin],
@@ -278,8 +279,8 @@ export default {
       checkmsg: "메일 인증하기",
       sendMail: false,
       authNum: "",
-      check1: false,
-      check2: false,
+      // check1: false,
+      // check2: false,
       items: [
         {value: 'KOREA', text: '한식'},
         {value: 'JAPAN', text: '일식'},
@@ -414,24 +415,21 @@ export default {
       }).open();
     },
 
-    // tempAlert() {
-    //   alert("인증 확인");
-    // },
-
     // 사업자 등록번호 인증
     checkOwner() {
       // const url = "https://api.odcloud.kr/api/nts-businessman/v1/status"
-      // console.log(url);
-        // .post(BASE_URL, {
-        //   b_no: this.identify
-        // })
-        // .then((response) => {
-        //   if (response.status == 200) {
-        //     alert("사업자 번호가 확인되었습니다.");
-        //   } else {
-        //     alert("다시 확인해주시길 바랍니다.");
-        //   }
-        // });
+        axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status', {
+          b_no: this.identify
+        })
+        .then((response) => {
+          console.log(response.match_cnt);
+          if (response.status == 200) {
+            alert("사업자 번호가 확인되었습니다.");
+            console.log(this.identify);
+          } else {
+            alert("다시 확인해주시길 바랍니다.");
+          }
+        });
     },
 
     // 이메일 중복 확인 및 인증 번호 전송
@@ -446,7 +444,7 @@ export default {
           this.sendMail = true;
           this.checkmsg = "재전송하기";
         } else {
-          alert("이메일을 입력해주세요.");
+          alert("이미 등록한 이메일 입니다.");
         }
       });
     },
@@ -461,7 +459,7 @@ export default {
         if ((response.status) == 200) {
           console.log(response.data);
           alert("인증번호 확인이 되었습니다.");
-          this.check1 = true;
+          // this.check1 = true;
         } else {
           alert("인증번호 확인에 실패했습니다.");
         }
