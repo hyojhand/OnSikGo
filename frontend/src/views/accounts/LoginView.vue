@@ -28,16 +28,50 @@
       </button>
       <button class="radius-m error" @click="signup()">회원 가입</button>
     </div>
-    <div class="find-box">
-      <div>아이디를 잊으셨나요?</div>
-      <button>아이디 찾기</button>
-    </div>
-
-    <!--제발 커밋,, -->
 
     <div class="find-box">
       <div>비밀번호를 잊으셨나요?</div>
-      <button>비밀번호 찾기</button>
+      <v-dialog 
+      v-model="dialog"
+      persistent>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          v-bind="attrs"
+          v-on="on">
+          비밀번호 찾기</v-btn>
+      </template>
+      <v-card>
+        <v-card-title><span class="text-h5">비밀번호 찾기</span></v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <div>
+              <v-text-field
+                v-model="userName"
+                label="이름을 입력해주세요."
+                required
+                @input="$v.userName.$touch()"
+                @blur="$v.userName.$touch()"
+                ></v-text-field>
+              </div>
+              <v-text-field
+                v-model="emailCheck"
+                label="이메일을 입력해주세요."
+                required
+                @input="$v.emailCheck.$touch()"
+                @blur="$v.emailCheck.$touch()"
+                ></v-text-field>
+              <button class="border-m radius-m mailconfirm-btn" @click="checkName()">
+                임시비밀번호 보내기
+              </button>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="blue" @click="dialog = false">완료</v-btn>
+        </v-card-actions>
+      </v-card>
+      </v-dialog>
     </div>
 
     <!--소셜 로그인을 위한 아이콘 넣기-->
@@ -56,6 +90,9 @@ export default {
   data: () => ({
     email: "",
     password: "",
+    userName: "",
+    emailCheck:"",
+    modalShow: false,
   }),
 
   methods: {
@@ -74,6 +111,25 @@ export default {
             this.$router.push("/");
           } else {
             alert("로그인에 실패했습니다");
+          }
+        });
+    },
+    checkName() {
+      http
+        .post("/user/pw-find", {
+          email: this.emailCheck,
+          userName: this.userName,
+        },()=>{
+        console.log(this.emailCheck);
+        console.log(this.userName);
+        })
+
+        .then((response) => {
+          console.log(response);
+          if (response.status == 200) {
+            alert("임시 비밀번호를 발송하였습니다");
+          } else {
+            alert("가입된 이름 혹은 이메일이 아닙니다.");
           }
         });
     },
