@@ -3,7 +3,9 @@
     <!--이미지 변경 & 수정-->
     <br />
     <img :src="`${storeDto.storeImgUrl}`" />
-    <p>이미지 변경하는 아이콘</p>
+    <p class="d-flex justify-content-end">
+      <input v-on:change="fileSelect()" type="file" ref="imgFile" />
+    </p>
     <br />
     <div>
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
@@ -16,7 +18,7 @@
         >
           <b-form-input
             id="input-1"
-            v-model="this.storeDto.storeName"
+            v-model="storeDto.storeName"
             type="text"
             placeholder="매장명"
             required
@@ -32,7 +34,7 @@
         >
           <b-form-input
             id="input-2"
-            v-model="this.storeDto.tel"
+            v-model="storeDto.tel"
             type="tel"
             placeholder="매장 전화번호"
             required
@@ -48,14 +50,17 @@
         >
           <b-form-input
             id="input-3"
-            v-model="this.storeDto.location"
+            v-model="storeDto.location"
             type="text"
             placeholder="매장위치"
             required
           ></b-form-input>
-        <button class="border-m radius-m address-btn" @click="execDaumPostcode()">
-              주소 검색
-        </button>
+          <button
+            class="border-m radius-m address-btn"
+            @click="execDaumPostcode()"
+          >
+            주소 검색
+          </button>
         </b-form-group>
         <br />
         <!--사업자등록번호 -->
@@ -67,8 +72,9 @@
         >
           <b-form-input
             id="input-4"
-            v-model="this.storeDto.storeNum"
+            v-model="storeDto.storeNum"
             type="text"
+            readonly
             placeholder="사업자 등록번호"
             required
           ></b-form-input>
@@ -84,7 +90,7 @@
         >
           <b-form-input
             id="input-4"
-            v-model="this.storeDto.closingTime"
+            v-model="storeDto.closingTime"
             type="time"
             placeholder="매장 종료시간"
             required
@@ -94,7 +100,7 @@
         <br />
 
         <!--매장 휴무일-->
-        <b-form-group
+        <!-- <b-form-group
           class="d-flex justify-content-between"
           id="input-group-5"
           label="매장 휴무일"
@@ -107,21 +113,21 @@
             placeholder="매장 휴무일"
             required
           ></b-form-input>
-        </b-form-group>
+        </b-form-group> -->
 
-          <!-- -------------휴무일 입력---------------- -->
-          <v-select
-            :items="days"
-            v-model="off"
-            label="휴무일을 입력해주세요."
-            multiple
-            chips
-            @input = "$v.off.$touch()"
-            @blur= "$v.off.$touch()"
-          ></v-select>
+        <!-- -------------휴무일 입력---------------- -->
+        <v-select
+          :items="days"
+          v-model="storeDto.offDay"
+          label="휴무일을 입력해주세요."
+          multiple
+          chips
+          @input="$v.storeDto.offDay.$touch()"
+          @blur="$v.storeDto.offDay.$touch()"
+        ></v-select>
 
         <!-- 카테고리 -->
-        <b-form-group
+        <!-- <b-form-group
           class="d-flex justify-content-between"
           id="input-group-5"
           label="카테고리"
@@ -134,41 +140,19 @@
             placeholder="카테고리"
             required
           ></b-form-input>
-        </b-form-group>
+        </b-form-group> -->
 
+        <!-- ------------카테고리셀렉트 박스----------- -->
+        <v-select
+          :items="items"
+          v-model="storeDto.category"
+          label="카테고리를 선택해주세요."
+          required
+          color="black"
+          @input="$v.storeDto.category.$touch()"
+          @blur="$v.storeDto.category.$touch()"
+        ></v-select>
 
-          <!-- ------------카테고리셀렉트 박스----------- -->
-          <v-select
-            :items="items"
-            v-model = "category"
-            label="카테고리를 선택해주세요."
-            required
-            color="black"
-            @input = "$v.category.$touch()"
-            @blur= "$v.category.$touch()"
-          ></v-select>
-
-
-
-        <!--매장 휴무일 INPUT BOX -->
-        <!-- <v-app id="inspire">
-          <v-card>
-            <v-container>
-              <v-row>
-                <v-col cols="12">
-                  <v-select
-                    v-model="this.storeDto.offDay"
-                    :items="items"
-                    attach
-                    chips
-                    label="매장 휴무일"
-                    multiple
-                  ></v-select>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card>
-        </v-app>  -->
         <br />
         <!--form 끝-->
         <div class="d-flex justify-content-between">
@@ -210,27 +194,26 @@ export default {
       address: "",
       extraAddress: "",
       items: [
-        {value: 'KOREA', text: '한식'},
-        {value: 'JAPAN', text: '일식'},
-        {value: 'WESTERN', text: '양식'},
-        {value: 'SNACK', text: '분식'},
-        {value: 'DESSERT', text: '디저트'},
-        {value: 'INGREDIENT', text: '식자재'},
+        { value: "KOREA", text: "한식" },
+        { value: "JAPAN", text: "일식" },
+        { value: "WESTERN", text: "양식" },
+        { value: "SNACK", text: "분식" },
+        { value: "DESSERT", text: "디저트" },
+        { value: "INGREDIENT", text: "식자재" },
       ],
       days: [
-        {value: '월', text: '월요일'},
-        {value: '화', text: '화요일'},
-        {value: '수', text: '수요일'},
-        {value: '목', text: '목요일'},
-        {value: '금', text: '금요일'},
-        {value: '토', text: '토요일'},
-        {value: '일', text: '일요일'},
+        { value: "월", text: "월요일" },
+        { value: "화", text: "화요일" },
+        { value: "수", text: "수요일" },
+        { value: "목", text: "목요일" },
+        { value: "금", text: "금요일" },
+        { value: "토", text: "토요일" },
+        { value: "일", text: "일요일" },
       ],
     };
   },
   created() {
     http.get(`/store/${this.$route.params.storeId}`).then((response) => {
-      console.log(this.$route.params.storeId)
       this.storeDto = response.data;
       console.log(this.storeDto);
     });
@@ -253,7 +236,7 @@ export default {
             // 사용자가 지번 주소를 선택했을 경우(J)
             this.address = data.jibunAddress;
           }
-  
+
           // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
           if (data.userSelectedType === "R") {
             // 법정동명이 있을 경우 추가한다. (법정리는 제외)
@@ -280,7 +263,7 @@ export default {
     },
 
     modifyStore() {
-      console.log(this.storeDto.offday)
+      console.log(this.storeDto.offday);
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
 
