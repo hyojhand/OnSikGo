@@ -42,11 +42,9 @@ export default {
         console.log(response);
       });
     },
-    // noClose() {
-    //   this.$route.push(
-    //     name:
-    //   )
-    // }
+    noClose() {
+      this.$router.push("/mypage/owner");
+    },
   },
 };
 </script>
