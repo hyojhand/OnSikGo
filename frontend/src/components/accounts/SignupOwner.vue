@@ -34,7 +34,7 @@
                 v-model="authNum"
                 placeholder="인증번호를 입력하세요."
               />
-              <button class="border-m radius-m mailconfirm-btn">
+              <button class="border-m radius-m mailconfirm-btn" @click="checkMail()">
                 확인하기
               </button>
             </div>
@@ -78,7 +78,11 @@
           ></v-text-field>
         </form>
         <div class="next-btn">
-          <button class="border-m radius-m" @click="e1 = 2">다음으로</button>
+          <button 
+          class="border-m radius-m" 
+          @click="e1 = 2" 
+          v-bind:disabled="check1 == false">
+          다음으로</button>
         </div>
       </v-stepper-content>
 
@@ -161,7 +165,10 @@
 
         <div class="sign-btn">
           <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
-          <button class="border-m radius-m" @click="e1 = 3">다음으로</button>
+          <button 
+          class="border-m radius-m" 
+          @click="e1 = 3" 
+          v-bind:disabled="check2 == false">다음으로</button>
         </div>
       </v-stepper-content>
 
@@ -279,7 +286,9 @@ export default {
       category: "",
       checkmsg: "메일 인증하기",
       sendMail: false,
-      authNum: Number,
+      authNum: "",
+      check1: false,
+      check2: false,
       items: [
         {value: 'KOREA', text: '한식'},
         {value: 'JAPAN', text: '일식'},
@@ -415,6 +424,7 @@ export default {
     tempAlert() {
       alert("인증 확인");
     },
+    // 이메일 중복 확인 및 인증 번호 전송
     isCheck() {
       http
         .post("/user/email", {
@@ -426,10 +436,11 @@ export default {
           this.sendMail = true;
           this.checkmsg = "재전송하기";
         } else {
-          alert("이미 가입된 이메일입니다");
+          alert("이메일을 입력해주세요.");
         }
       });
     },
+    // 인증번호 확인
     checkMail() {
       http
         .post("/user/emailAuthNumber", {
@@ -439,8 +450,10 @@ export default {
         .then((response) => {
         if ((response.status) == 200) {
           console.log(response.data);
+          alert("인증번호 확인이 되었습니다.");
+          this.check1 = true;
         } else {
-          alert("인증번호 확인에 실패했습니다");
+          alert("인증번호 확인에 실패했습니다.");
         }
       });
     },
