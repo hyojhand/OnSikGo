@@ -1,16 +1,22 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.ItemDto;
+import com.ssafy.onsikgo.dto.PageDto;
+import com.ssafy.onsikgo.dto.SelectDto;
+import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Item;
 import com.ssafy.onsikgo.entity.Store;
 import com.ssafy.onsikgo.repository.ItemRepository;
 import com.ssafy.onsikgo.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +30,14 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final StoreRepository storeRepository;
+    private final AwsS3Service awsS3Service;
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
 
     @Transactional
-    public ResponseEntity<String> register(ItemDto itemDto, Long store_id) {
+    public ResponseEntity<String> register(MultipartFile file, ItemDto itemDto, Long store_id) {
 
+        String itemImgUrl = awsS3Service.uploadImge(file);
+        itemDto.setItemImgUrl(itemImgUrl);
         Item item = itemDto.toEntity();
         Store findStore = storeRepository.findById(store_id).get();
         item.addStore(findStore);
@@ -50,20 +60,58 @@ public class ItemService {
     }
 
     @Transactional
-    public ResponseEntity<String> modify(ItemDto itemDto, Long item_id) {
+    public ResponseEntity<String> modify(MultipartFile file, ItemDto itemDto, Long item_id) {
+
         Item findItem = itemRepository.findById(item_id).get();
-        findItem.update(itemDto);
+
+        if(file == null) {
+            itemDto.setItemImgUrl(findItem.getItemImgUrl());
+            findItem.update(itemDto);
+        } else {
+            if (!findItem.getItemImgUrl().equals(defaultImg)) {
+                awsS3Service.delete(findItem.getItemImgUrl());
+            }
+            String itemImgUrl = awsS3Service.uploadImge(file);
+            itemDto.setItemImgUrl(itemImgUrl);
+            findItem.update(itemDto);
+        }
+
+        Store store = findItem.getStore();
+        findItem.addStore(store);
         itemRepository.save(findItem);
+
         return new ResponseEntity<>("상품 수정이 완료되었습니다.",HttpStatus.OK);
     }
 
     public ResponseEntity<List<ItemDto>> getList(Long store_id) {
         Store findStore = storeRepository.findById(store_id).get();
-        List<Item> items = findStore.getItems();
-        List<ItemDto> itemDtos = new ArrayList<>();
-        for(int i = 0; i < items.size(); i++) {
-            itemDtos.add(items.get(i).toDto());
+        List<Item> itemList = findStore.getItems();
+        List<ItemDto> itemDtoList = new ArrayList<>();
+        for(int i = 0; i < itemList.size(); i++) {
+            itemDtoList.add(itemList.get(i).toDto());
         }
-        return new ResponseEntity<>(itemDtos, HttpStatus.OK);
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<ItemDto>> getKeyword(Long store_id, SelectDto selectDto) {
+        Optional<Store> findStore = storeRepository.findById(store_id);
+        List<Item> itemList = itemRepository.findByStoreAndItemNameContaining(findStore.get(), selectDto.getKeyword());
+        List<ItemDto> itemDtoList = new ArrayList<>();
+        for(int i = 0; i < itemList.size(); i++) {
+            itemDtoList.add(itemList.get(i).toDto());
+        }
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Page<ItemDto>> getListPage(PageDto pageDto, Long store_id) {
+
+        Optional<Store> findStore = storeRepository.findById(store_id);
+
+        PageRequest pageRequest = PageRequest.of(pageDto.getPage(), pageDto.getSize());
+        Page<Item> page = itemRepository.findByStore(findStore.get(), pageRequest);
+        Page<ItemDto> map = page.map(item -> new ItemDto(item.getItemId(),item.getItemName(),item.getPrice(),
+                item.getItemImgUrl(), item.getComment()));
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

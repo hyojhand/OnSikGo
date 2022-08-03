@@ -29,7 +29,7 @@ public class SaleItemDto {
                 .stock(this.stock)
                 .totalStock(this.totalStock)
                 .salePrice(this.salePrice)
-                .saleItemId(this.saleItemId)
+//                .saleItemId(this.saleItemId)
                 .sale(sale)
                 .item(item)
                 .build();

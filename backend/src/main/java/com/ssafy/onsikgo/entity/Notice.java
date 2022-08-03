@@ -1,5 +1,8 @@
 package com.ssafy.onsikgo.entity;
 
+import com.ssafy.onsikgo.dto.NoticeDto;
+import com.ssafy.onsikgo.dto.OrderDto;
+import com.ssafy.onsikgo.dto.UserDto;
 import lombok.*;
 import org.aspectj.weaver.ast.Not;
 
@@ -25,21 +28,33 @@ public class Notice {
     private String location; // 알림 클릭시 이동할 위치
 
     @Column(nullable = false)
-    private Long orderId;
-
-    @Column(nullable = false)
     private Long receivedId;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "orderId")
+    private Order order;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
-    public Notice(String content, Boolean state, User user,Long receivedId, Long orderId) {
+    public Notice(String content, User user, Order order, Long receivedId) {
         this.content = content;
-        this.state = state;
+        this.state = false;
         this.user = user;
+        this.order = order;
         this.receivedId = receivedId;
-        this.orderId = orderId;
+    }
+
+    public NoticeDto toDto(UserDto userDto, OrderDto orderDto) {
+        return NoticeDto.builder()
+                .content(this.content)
+                .state(this.state)
+                .location(this.location)
+                .receivedId(this.receivedId)
+                .userDto(userDto)
+                .orderDto(orderDto)
+                .build();
     }
 
 }

@@ -3,6 +3,11 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+//css reset
+import "@/assets/css/reset.css";
+
+import "@/assets/css/style.css";
+
 // 뷰티파이
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
@@ -18,7 +23,6 @@ Vue.use(Vuetify);
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
-
 // vuetify 사용
 new Vue({
   vuetify: new Vuetify(),
@@ -26,3 +30,5 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+
+window.Kakao.init("dbd3360c2a3a37fb0ad6c06395351c2f");

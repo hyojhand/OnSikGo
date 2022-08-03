@@ -22,8 +22,10 @@ public class AwsS3Service {
     private final AmazonS3 amazonS3;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+    private final String defaultImg="https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
 
     public String uploadImge(MultipartFile file){
+        if(file==null)return defaultImg;
         String fileName = createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
@@ -51,5 +53,10 @@ public class AwsS3Service {
     }
     private String getFileUrl(String fileName){
         return amazonS3.getUrl(bucket,fileName).toString();
+    }
+    public void delete(String url){
+        String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
+        log.info(fileName+" 삭제");
+        amazonS3.deleteObject(bucket,fileName);
     }
 }
