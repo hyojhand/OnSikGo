@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -148,19 +149,23 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<String> modify(UserDto userDto, HttpServletRequest request) {
+    public ResponseEntity<String> modify(UserDto userDto, MultipartFile file, HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
             return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
         }
-
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
-
         User findUser = userRepository.findByEmail(userEmail).get();
-        if (!findUser.getImgUrl().equals(defaultImg)) {
-            awsS3Service.delete(findUser.getImgUrl());
+
+        if(file == null) {
+            findUser.update(userDto.getNickname(), findUser.getImgUrl());
+        } else {
+            if (!findUser.getImgUrl().equals(defaultImg)) {
+                awsS3Service.delete(findUser.getImgUrl());
+            }
+            userDto.setFile(file);
+            findUser.update(userDto.getNickname(), awsS3Service.uploadImge(userDto.getFile()));
         }
-        findUser.update(userDto.getNickname(), awsS3Service.uploadImge(userDto.getFile()));
 
         userRepository.save(findUser);
         return new ResponseEntity<>("수정완료", HttpStatus.OK);

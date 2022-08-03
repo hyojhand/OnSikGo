@@ -63,13 +63,12 @@ public class UserController {
         return userService.login(loginDto);
     }
 
-    @PatchMapping
+    @PutMapping
     public ResponseEntity<String> modify(
-            @Valid @RequestPart UserDto userDto,
-            @RequestPart(required = false) MultipartFile file,
+            @RequestPart(value = "file",required = false) MultipartFile file,
+            @RequestPart(value = "userDto",required = false) UserDto userDto,
             HttpServletRequest request) {
-        userDto.setFile(file);
-        return userService.modify(userDto, request);
+        return userService.modify(userDto,file, request);
     }
 
     @DeleteMapping
