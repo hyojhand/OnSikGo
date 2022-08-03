@@ -1,8 +1,8 @@
 <template>
-  <div class="text-center">
+<div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="success" dark v-bind="attrs" v-on="on"> 회원탈퇴 </v-btn>
+        <v-btn color="success" dark v-bind="attrs" v-on="on"> 제발 되어주세요 </v-btn>
       </template>
 
       <v-card>
@@ -48,54 +48,11 @@
 </template>
 
 <script>
-import noQuitModal from "@/components/profile/noQuitModal.vue";
-import http from "@/util/http-common";
 export default {
-  name: "NoticeModal",
-  components: {
-    noQuitModal,
-  },
-  data() {
-    return {
-      dialog: false,
-      userDto: [],
-    };
-  },
-  created() {
-    if (localStorage.getItem("access-token") == null) return;
-    http.defaults.headers["access-token"] =
-      localStorage.getItem("access-token");
-    http.get("/user").then((response) => {
-      this.userDto = response.data;
-    });
-  },
-  methods: {
-    backToMypage() {
-      this.dialog = false;
-    },
-  },
-};
+
+}
 </script>
 
-<style scoped>
-.order-box {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-.msg-box {
-  display: flex;
-  text-align: start;
-  font-size: 0.7rem;
-}
-.img-box {
-  margin: 0 auto;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-}
-.btn-box {
-  display: flex;
-  justify-content: space-evenly;
-}
+<style>
+
 </style>
