@@ -20,66 +20,107 @@
         </p>
       </div>
 
+      <!-- ------상호명 입력--------------- -->
       <v-text-field
         v-model="store"
+        :error-messages="storeErrors"
         label="상호명을 입력해주세요."
         required
         class="input-box"
         color="black"
+        @input="$v.store.$touch()"
+        @blur="$v.store.$touch()"
       ></v-text-field>
 
-      <v-text-field
-        v-model="address"
-        label="가게 주소를 입력해주세요."
-        required
-        class="input-box"
-        color="black"
-        type="address"
-      ></v-text-field>
-      <button class="border-m radius-m address-btn">주소 검색하기</button>
+      <!-- -----------가게 주소 입력-------------- -->
+      <div class="position-box">
+        <v-text-field
+          v-model="address"
+          label="가게 주소를 입력해주세요."
+          required
+          class="input-box"
+          color="black"
+          type="address"
+          @input="$v.address.$touch()"
+          @blur="$v.address.$touch()"
+        ></v-text-field>
+        <button class="border-m radius-m address-btn" @click="execDaumPostcode()">
+          주소 검색
+        </button>
+      </div>
+        <v-text-field
+          v-model="extraAddress"
+          label="상세 주소를 입력해주세요."
+          required
+          class="input-box"
+          color="black"
+          type="address"
+          @input="$v.address.$touch()"
+          @blur="$v.address.$touch()"
+        ></v-text-field>
+
+      <!-- --------------사업자 등록번호 입력------------ -->
+      <div class="position-box">
+        <v-text-field
+          v-model="identify"
+          :error-messages="identifyErrors"
+          label="사업자번호를 입력해주세요."
+          required
+          class="input-box"
+          color="black"
+          @input="$v.identify.$touch()"
+          @blur="$v.identify.$touch()"
+        ></v-text-field>
+        <button class="border-m radius-m address-btn" @click="checkOwner()">
+          등록하기
+        </button>
+      </div>
 
       <!-- -------------전화번호 입력----------- -->
       <v-text-field
         v-model="tel"
+        :error-messages="telErrors"
+        type="tel"
         label="가게 전화번호를 입력해주세요."
         required
         class="input-box"
         color="black"
+        @input="$v.tel.$touch()"
+        @blur="$v.tel.$touch()"
       ></v-text-field>
 
-      <!-- --------------사업자 등록번호 입력------------ -->
-
-      <v-text-field
-        v-model="identify"
-        label="사업자번호를 입력해주세요."
-        required
-        class="input-box"
-        color="black"
-      ></v-text-field>
-      <button class="border-m radius-m address-btn">등록하기</button>
       <!-- -----------마감시간 입력----------- -->
       <v-text-field
         v-model="end"
+        type="time"
         label="마감시간을 입력해주세요."
         required
         class="input-box"
         color="black"
+        @input="$v.end.$touch()"
+        @blur="$v.end.$touch()"
       ></v-text-field>
 
       <!-- -------------휴무일 입력---------------- -->
-      <v-text-field
+      <v-select
+        :items="days"
         v-model="off"
         label="휴무일을 입력해주세요."
-        color="black"
-      ></v-text-field>
+        multiple
+        chips
+        @input = "$v.off.$touch()"
+        @blur= "$v.off.$touch()"
+      ></v-select>
 
       <!-- ------------카테고리셀렉트 박스----------- -->
       <v-select
         :items="items"
-        v-model="category"
+        v-model = "category"
         label="카테고리를 선택해주세요."
         required
         color="black"
+        @input = "$v.category.$touch()"
+        @blur= "$v.category.$touch()"
       ></v-select>
     </form>
 
@@ -112,15 +153,90 @@ export default {
         { value: "DESSERT", text: "디저트" },
         { value: "INGREDIENT", text: "식자재" },
       ],
+      days: [
+        {value: '월', text: '월요일'},
+        {value: '화', text: '화요일'},
+        {value: '수', text: '수요일'},
+        {value: '목', text: '목요일'},
+        {value: '금', text: '금요일'},
+        {value: '토', text: '토요일'},
+        {value: '일', text: '일요일'},
+      ],
       storeDto: [],
     };
   },
+
+  // computed: {
+  //   storeErrors() {
+  //     const errors = [];
+  //     if (!this.$v.store.$dirty) return errors;
+  //     !this.$v.store.required && errors.push(" ");
+  //     return errors;
+  //   },
+
+  //   telErrors() {
+  //     const errors = [];
+  //     if (!this.$v.tel.$dirty) return errors;
+  //     !this.$v.tel.required && errors.push(" ");
+  //     return errors;
+  //   },
+  //   identifyErrors() {
+  //     const errors = [];
+  //     if (!this.$v.identify.$dirty) return errors;
+  //     !this.$v.identify.required && errors.push(" ");
+  //     return errors;
+  //   },
+  // },
+
   methods: {
     fileSelect() {
       console.log(this.$refs);
       this.imgFile = this.$refs.imgFile.files[0];
       console.log(this.imgFile);
     },
+    execDaumPostcode() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          if (this.extraAddress !== "") {
+            this.extraAddress = "";
+          }
+          if (data.userSelectedType === "R") {
+            // 사용자가 도로명 주소를 선택했을 경우
+            this.address = data.roadAddress;
+          } else {
+            // 사용자가 지번 주소를 선택했을 경우(J)
+            this.address = data.jibunAddress;
+          }
+  
+          // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+          if (data.userSelectedType === "R") {
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+              this.extraAddress += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if (data.buildingName !== "" && data.apartment === "Y") {
+              this.extraAddress +=
+                this.extraAddress !== ""
+                  ? `, ${data.buildingName}`
+                  : data.buildingName;
+            }
+            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if (this.extraAddress !== "") {
+              this.extraAddress = `(${this.extraAddress})`;
+            }
+          } else {
+            this.extraAddress = "";
+          }
+        },
+      }).open();
+    },
+
+    checkOwner() {
+      alert("사업자 번호 등록");
+    },
+
     registerStore() {
       // 이미지 파일도 추가하게 넣어야함
       this.storeDto = {

@@ -9,7 +9,7 @@
 
 <script >
 
-import {mapActions} from "vuex";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "KakaoMap",
@@ -18,22 +18,29 @@ export default {
       currentxLatitude: 33.452278,
       currentLongitude: 126.567803,
       markerPositions1: [
-        [33.452278, 126.567803],
-        [33.452671, 126.574792],
-        [33.451744, 126.572441],
+        [35.230016, 129.076428],
+        [35.200016, 129.056428],
+        [35.160016, 129.036428],
       ],
       markers: [],
       infowindow: null,
     };
   },
+  computed: {
+    ...mapGetters("store", [
+      "aroundSaleStore",
+    ])
+  },
 
   created() {
-  if (navigator.geolocation) {
+    console.log(this.aroundSaleStore)
+    if (navigator.geolocation) {
     // 현재 위치
       navigator.geolocation.getCurrentPosition((position) => {
       this.currentxLatitude = position.coords.latitude, // 위도
       this.currentLongitude = position.coords.longitude; // 경도
-
+      // 현재위치
+      // console.log(this.currentLongitude, this.currentxLatitude)
       this.curruntLocation();
       
     });
@@ -44,7 +51,9 @@ export default {
   methods: {
     // 현재 위치 주소 vuex에 넣기
     ...mapActions("store", [
-      "getAddress"
+      "getAddress",
+      "getCurrentX",
+      "getCurrentY",
     ]),
     // 카카오맵 생성
     createMap(){
@@ -65,52 +74,61 @@ export default {
         center: new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude),
         level: 3,
       };
-      console.log(options)
+
       //지도 객체를 등록합니다.
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
+
+      this.nowMarker()
     },
+    // 
+    nowMarker(){
 
+      this.aroundSaleStore.forEach((store) =>{
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+        // 마커 이미지의 이미지 크기 입니다
+        var imageSize = new kakao.maps.Size(24, 35); 
+        console.log("가게 하나의 위도 경도",store)
+        
+        // 마커 이미지를 생성합니다    
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
 
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
+        var marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(store.saleDto.storeDto.lat, store.saleDto.storeDto.lng), // 마커를 표시할 위치
+            // title : positions[i].title, 
+            image : markerImage, // 마커 이미지
+            clickable: true,
+          });
+        var infowindow = new kakao.maps.InfoWindow({
+            content: 
+              `<div>${store.saleDto.storeDto.storeName}</div>
+  
+              <div>${store.saleDto.storeDto.tel}</div>
+              <div>공휴일 : ${store.saleDto.storeDto.offDay}</div>
+              <div>마감시간 : ${store.saleDto.storeDto.closingTime}</div>` // 인포윈도우에 표시할 내용
+        });
+          // console.log(this.map)
+        
 
-      const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
-      );
+        kakao.maps.event.addListener(marker, 'mouseover', this.makeOverListener(this.map, marker, infowindow));
+        kakao.maps.event.addListener(marker, 'mouseout', this.makeOutListener(infowindow));
 
-      if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: this.map,
-              position,
-            })
-        );
-
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
-        );
-
-        this.map.setBounds(bounds);
-      }
+        marker.setMap(this.map);
+      })
     },
-
+      
     // 현재 위치 찾기
     async curruntLocation() {
       this.changeaddress()
       this.createMap()
-
     },
 
     // 도로명 주소 변환
     changeaddress() {
       var geocoder = new kakao.maps.services.Geocoder();
 
-      console.log(this.currentxLatitude, this.currentLongitude);
+      this.getCurrentX(this.currentxLatitude)
+      this.getCurrentY(this.currentLongitude)
       var coord = new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude);
       var callback = (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
@@ -123,7 +141,19 @@ export default {
       };
       geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
     },
+    // 인포원도우를 표시하는 클로지를 만드는 함수
+    makeOverListener(map, marker, infowindow) {
+        return function() {
+            infowindow.open(map, marker);
+        };
+    },
 
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+    makeOutListener(infowindow) {
+        return function() {
+            infowindow.close();
+        };
+    }
   },
 };
 </script>

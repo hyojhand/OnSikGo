@@ -6,6 +6,8 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Iterator;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +32,18 @@ public class RedisUtil {
     // key를 통해 value 삭제
     public void deleteData(String key){
         redisTemplate.delete(key);
+    }
+
+    public void print(){
+        Set<byte[]> keys = redisTemplate.getConnectionFactory().getConnection().keys("*".getBytes());
+
+        Iterator<byte[]> it = keys.iterator();
+
+        while(it.hasNext()){
+
+            byte[] data = (byte[])it.next();
+
+            System.out.println(new String(data, 0, data.length));
+        }
     }
 }

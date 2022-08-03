@@ -74,7 +74,7 @@ public class KakaoUserService implements SocialUserService {
         }
         return userDto;
     }
-
+    @Override
     public HttpEntity<? extends Object> login(UserDto userDto) {
         User user = userRepository.findByEmail(userDto.getEmail()).orElse(null);
         // 이미 가입된 이메일

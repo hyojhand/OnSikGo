@@ -37,7 +37,7 @@
         />
       </svg> -->
       <p class="d-flex justify-content-end">
-        <input type="file" class="" />
+        <input v-on:change="fileSelect()" type="file" ref="imgFile" />
       </p>
     </div>
 
@@ -52,7 +52,7 @@
       <!--정보입력칸-->
       <div class="col-8">
         <p>{{ userDto.email }}</p>
-        <div class ="container">
+        <div class="container">
           <div class="row">
             <div class="col-7">
               <input
@@ -69,7 +69,7 @@
                 class="border-m radius-m name-confrim-btn"
                 @click="nicknameCheck"
               >
-              중복확인
+                중복확인
               </button>
             </div>
             <!--닉네임 중복확인 끝-->
@@ -100,32 +100,34 @@ export default {
   name: "UserInfoChangeView",
   data() {
     return {
+      imgFile: null,
       userDto: {},
       nicknameDuple: false,
     };
   },
 
-  created() {
+  async created() {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
 
-    http.get("/user").then((response) => {
+    await http.get("/user").then((response) => {
       this.userDto = response.data;
-      console.log(response.data);
+      this.role = response.data.role;
     });
   },
   methods: {
     changeUser() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
+
       const formData = new FormData();
-      formData.append("file", this.userDto.imgUrl);
+      formData.append("file", this.imgFile);
       formData.append(
         "userDto",
-        new Blob([JSON.stringify(this.userDto), { type: "application/json" }])
+        new Blob([JSON.stringify(this.userDto)], { type: "application/json" })
       );
       http
-        .patch("/user", formData, {
+        .put("/user", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -133,7 +135,11 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             alert("유저정보 수정완료");
-            this.$router.push("mypageUser");
+            if (this.userDto.role === "USER") {
+              this.$router.push({ name: "mypageUser" });
+            } else {
+              this.$router.push({ name: "mypageOwner" });
+            }
           }
         });
     },
@@ -143,16 +149,19 @@ export default {
     nicknameCheck() {
       http
         .post("/user/nickname", {
-          nickname: this.userDto.nickname
+          nickname: this.userDto.nickname,
         })
-      .then((response) => {
-        if (response.status == 200) {
-          this.nicknameDuple = !this.nicknameDuple;
-          alert("중복된 닉네임이 없어 수정 완료되었습니다");
-        } else {
-          alert("중복된 닉네임이 있습니다");
-        }
-      });
+        .then((response) => {
+          if (response.status == 200) {
+            this.nicknameDuple = !this.nicknameDuple;
+            alert("중복된 닉네임이 없어 수정 완료되었습니다");
+          } else {
+            alert("중복된 닉네임이 있습니다");
+          }
+        });
+    },
+    fileSelect() {
+      this.imgFile = this.$refs.imgFile.files[0];
     },
   },
 };
@@ -165,4 +174,5 @@ export default {
   width: 90px;
   font-size: 13px;
   color: black;
-}</style>
+}
+</style>

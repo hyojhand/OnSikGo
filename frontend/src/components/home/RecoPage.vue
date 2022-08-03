@@ -19,7 +19,7 @@
             height="180px"
             src="@/assets/images/recommend_1.jpg"
             alt="image slot"
-            style="border-radius: 7px;"
+            style="border-radius: 7px"
           />
         </template>
       </b-carousel-slide>
@@ -30,11 +30,10 @@
             height="180px"
             src="@/assets/images/recommend_2.jpg"
             alt="image slot"
-            style="border-radius: 7px;"
+            style="border-radius: 7px"
           />
         </template>
       </b-carousel-slide>
-
     </b-carousel>
   </div>
 </template>

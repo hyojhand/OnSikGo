@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.HashMap;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -63,13 +62,12 @@ public class UserController {
         return userService.login(loginDto);
     }
 
-    @PatchMapping
+    @PutMapping
     public ResponseEntity<String> modify(
-            @Valid @RequestPart UserDto userDto,
-            @RequestPart(required = false) MultipartFile file,
+            @RequestPart(value = "file",required = false) MultipartFile file,
+            @RequestPart(value = "userDto",required = false) UserDto userDto,
             HttpServletRequest request) {
-        userDto.setFile(file);
-        return userService.modify(userDto, request);
+        return userService.modify(userDto,file, request);
     }
 
     @DeleteMapping
@@ -100,7 +98,13 @@ public class UserController {
     }
 
     @PostMapping("/naver")
-    public UserDto naverLogin(@RequestBody HashMap<String, String> param) {
-        return naverUserService.getUserInfoByAccessToken(param.get("access_token"));
+    public HttpEntity<?> naverLogin(@RequestBody HashMap<String, String> param) {
+        naverUserService.getUserInfoByAccessToken(param.get("access_token"));
+        UserDto userDto = naverUserService.getUserInfoByAccessToken(param.get("access_token"));
+        return naverUserService.login(userDto);
+    }
+    @PostMapping("/pw-find")
+    public ResponseEntity<String> findPw(@RequestBody HashMap<String, String> map) {
+        return userService.findPw(map);
     }
 }

@@ -1,60 +1,35 @@
 <template>
   <div>
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-center">
       <select
         id="dropdown1"
         style="border-color: #63bf68"
         @change="selectStore($event)"
       >
-        <option :key="index" :value="store" v-for="(store, index) in stores">
+        <option
+          :key="index"
+          :value="store.storeId"
+          v-for="(store, index) in stores"
+        >
           {{ store.storeName }}
         </option>
       </select>
     </div>
-    <br />
-    <!--이미지 가져오기-->
-    <b-card>
-      <b-row>
-        <b-col md="3">
-          <img fluid :src="`${store.storeImgUrl}`" height="90" width="100" />
-        </b-col>
-        <b-col md="9">
-          <div class="text-align-center" id="cardInText">
-            <br />
-            <span>안녕하세요, {{ store.storeName }}입니다.</span>
-            <p>{{ store.location }}</p>
-          </div>
-          <div class="d-flex justify-content-end"></div>
-        </b-col>
-      </b-row>
-    </b-card>
 
     <br />
-    <div id="space-even">
-      <b-button size="sm" @click="dataAnalysis()" pill variant="outline-success"
-        >데이터 분석</b-button
-      >
-      <b-button size="sm" @click="storechange()" pill variant="outline-success"
-        >정보수정</b-button
-      >
+    <div class="item-container">
+      <mypage-owner-component :store="this.store"></mypage-owner-component>
     </div>
-    <div class="font-l sales">오늘 할인 판매 상품</div>
-    <discountList
-      v-for="(saleItem, index) in saleItemList"
-      :key="index"
-      v-bind="saleItem"
-      :storeId="storeId"
-    />
   </div>
 </template>
 
 <script>
-import discountList from "@/components/profile/discountList.vue";
+import mypageOwnerComponent from "@/components/profile/mypageOwnerComponent.vue";
 import http from "@/util/http-common";
 export default {
   name: "MypageOwnerView",
   components: {
-    discountList,
+    mypageOwnerComponent,
   },
   data() {
     return {
@@ -63,6 +38,7 @@ export default {
       storeId: Number,
       saleItemList: [],
       itemList: [],
+      storeName: "",
     };
   },
   async created() {
@@ -72,38 +48,35 @@ export default {
       this.stores = response.data;
       this.store = response.data[0];
       this.storeId = response.data[0].storeId;
+      console.log(this.store.storeName);
     });
 
-    await http.get(`/sale/list/${this.storeId}`, {}).then((response) => {
+    await http.get(`/sale/list/${this.storeId}`).then((response) => {
       this.saleItemList = response.data;
     });
 
-    await http.get(`item/list/${this.storeId}`).then((response) => {
-      this.itemList = response.data;
-    });
+    // await http.get(`/item/list/${this.storeId}`).then((response) => {
+    //   this.itemList = response.data;
+    // });
   },
   methods: {
-    dataAnalysis() {
-      this.$router.push("/mypage/owner/analysis");
+    async selectStore(event) {
+      this.storeId = event.target.value;
+      await this.changeStore();
+      // await this.changeSaleItem();
     },
-    storechange() {
-      this.$router.push({
-        name: "storeInfoChange",
-        params: { storeId: this.storeId },
+    changeStore() {
+      http.get(`/store/${this.storeId}`).then((response) => {
+        this.store = response.data;
+        this.storeName = response.data.storeName;
+        console.log(response.data);
       });
     },
-    selectStore(event) {
-      this.store(event.target.value);
-    },
-    storeClose() {
-      http.put(`/store/close/${this.storeId}`).then((response) => {
-        if (response.status == 200) {
-          alert("가게 결산이 완료되었습니다.");
-        } else {
-          alert("해당 날짜의 판매정보가 없습니다.");
-        }
-      });
-    },
+    // changeSaleItem() {
+    //   http.get(`/sale/list/${this.storeId}`).then((response) => {
+    //     this.saleItemList = response.data;
+    //   });
+    // },
   },
 };
 </script>
