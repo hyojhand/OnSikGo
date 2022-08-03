@@ -50,20 +50,16 @@
                 v-model="userName"
                 label="이름을 입력해주세요."
                 required
-                @input="$v.userName.$touch()"
-                @blur="$v.userName.$touch()"
                 ></v-text-field>
               </div>
               <v-text-field
                 v-model="emailCheck"
                 label="이메일을 입력해주세요."
                 required
-                @input="$v.emailCheck.$touch()"
-                @blur="$v.emailCheck.$touch()"
                 ></v-text-field>
-              <button class="border-m radius-m mailconfirm-btn" @click="checkName()">
+              <v-button class="border-m radius-m mailconfirm-btn" @click="checkName()">
                 임시비밀번호 보내기
-              </button>
+              </v-button>
             </v-row>
           </v-container>
         </v-card-text>
@@ -92,7 +88,7 @@ export default {
     password: "",
     userName: "",
     emailCheck:"",
-    modalShow: false,
+    dialog: false,
   }),
 
   methods: {
