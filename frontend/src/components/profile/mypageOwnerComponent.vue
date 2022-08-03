@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ this.storeId }}</h1>
+    <h1>{{ store.storeId }}</h1>
     <b-card>
       <b-row>
         <b-col md="3">
@@ -40,12 +40,11 @@
 
 <script>
 import discountList from "@/components/profile/discountList.vue";
-// import http from "@/util/http-common";
+import http from "@/util/http-common";
 export default {
   name: "mypageOwnerComponent",
   data() {
     return {
-      store: {},
       storeName: "",
     };
   },
@@ -55,14 +54,28 @@ export default {
   components: {
     discountList,
   },
-  // created() {
-  //   console.log(this.storeId);
-  //   http.get(`/store/${this.storeId}`).then((response) => {
-  //     // this.store = response.data;
-  //     // this.storeName = response.data.storeName;
-  //     console.log(response.data);
-  //   });
-  // },
+  methods: {
+    dataAnalysis() {
+      this.$router.push("/mypage/owner/analysis");
+    },
+    storechange() {
+      this.$router.push({
+        name: "storeInfoChange",
+        params: { storeId: this.storeId },
+      });
+    },
+    movetoClose() {
+      this.$router.push({
+        name: "closeCheck",
+        params: { storeId: this.storeId },
+      });
+    },
+  },
+  created() {
+    http.get(`/store/${this.storeId}`).then((response) => {
+      console.log(response.data);
+    });
+  },
 };
 </script>
 
