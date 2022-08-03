@@ -56,15 +56,16 @@
                 v-model="emailCheck"
                 label="이메일을 입력해주세요."
                 required
+                @keyup.enter="checkName()"
                 ></v-text-field>
-              <v-button class="border-m radius-m mailconfirm-btn" @click="checkName()">
-                임시비밀번호 보내기
-              </v-button>
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="blue" @click="dialog = false">완료</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn class="find-button1" color="success" depressed @click="checkName()">
+              임시비밀번호 전송</v-btn>
+          <v-btn class="find-button2" color="error" depressed  @click="dialog = false">닫기</v-btn>
         </v-card-actions>
       </v-card>
       </v-dialog>
@@ -104,7 +105,7 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             localStorage.setItem("access-token", response.data.token);
-            this.$router.push("/");
+            this.$router.push("/login");
           } else {
             alert("로그인에 실패했습니다");
           }
@@ -115,15 +116,11 @@ export default {
         .post("/user/pw-find", {
           email: this.emailCheck,
           userName: this.userName,
-        },()=>{
-        console.log(this.emailCheck);
-        console.log(this.userName);
         })
-
         .then((response) => {
-          console.log(response);
           if (response.status == 200) {
             alert("임시 비밀번호를 발송하였습니다");
+            this.dialog = false;
           } else {
             alert("가입된 이름 혹은 이메일이 아닙니다.");
           }
@@ -185,5 +182,14 @@ button {
   width: 50%;
   text-align: end;
   background-color: rgb(240, 240, 240);
+}
+
+.find-button1 {
+  display: flex;
+  width: 50%;
+}
+.find-button2 {
+  display: flex;
+  width: 30%;
 }
 </style>
