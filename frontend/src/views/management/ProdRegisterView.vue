@@ -2,16 +2,7 @@
   <div>
     <!--매장선택-->
     <div class="mt-5">
-      <select id="dropdown1" class="store-name" @change="selectStore($event)">
-        <option
-          class="option-store"
-          :key="index"
-          :value="store.storeId"
-          v-for="(store, index) in stores"
-        >
-          {{ store.storeName }}
-        </option>
-      </select>
+      {{ this.store.storeName }}
     </div>
 
     <!--상품 이미지 업로드-->
@@ -66,28 +57,30 @@
 
 <script>
 import http from "@/util/http-common";
-
+import { mapGetters } from "vuex";
 export default {
   name: "ProdRegisterView",
 
   data() {
     return {
       imgFile: "",
-      stores: [],
-      storeId: "",
       itemName: "",
       itemPrice: "",
       itemComment: "",
       itemDto: [],
+      itemId: "",
+
+      store: {},
     };
+  },
+  computed: {
+    ...mapGetters("itemStore", ["getItemId"]),
+    ...mapGetters("storeStore", ["getStoreId"]),
   },
 
   created() {
-    http.defaults.headers["access-token"] =
-      localStorage.getItem("access-token");
-    http.get("/store/list").then((response) => {
-      this.stores = response.data;
-      this.storeId = response.data[0].storeId;
+    http.get(`/store/${this.getStoreId}`).then((response) => {
+      this.store = response.data;
     });
   },
 
@@ -109,7 +102,7 @@ export default {
         new Blob([JSON.stringify(this.itemDto)], { type: "application/json" })
       );
       http
-        .post(`/item/register/${this.storeId}`, formData, {
+        .post(`/item/register/${this.getStoreId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -121,10 +114,6 @@ export default {
             alert("상품 등록에 실패했습니다.");
           }
         });
-    },
-    selectStore(event) {
-      this.storeId = event.target.value;
-      this.selectPage(1);
     },
   },
 };

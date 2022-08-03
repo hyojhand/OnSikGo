@@ -57,6 +57,7 @@
 <script>
 import ProductDeleteModal from "@/components/management/ProductDeleteModal.vue";
 import http from "@/util/http-common";
+import { mapGetters } from "vuex";
 export default {
   name: "ProdChangeView",
 
@@ -66,16 +67,19 @@ export default {
       imgFile: null,
       itemDto: {},
       storeDto: {},
-      storeId: Number,
     };
+  },
+  computed: {
+    ...mapGetters("itemStore", ["getItemId"]),
+    ...mapGetters("storeStore", ["getStoreId"]),
   },
 
   async created() {
-    await http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+    await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
     });
 
-    await http.get(`/item/${this.$route.params.itemId}`).then((response) => {
+    await http.get(`/item/${this.getItemId}`).then((response) => {
       this.itemDto = response.data;
     });
   },
