@@ -273,8 +273,8 @@ public class UserService {
             e.printStackTrace();
             return new ResponseEntity<>("이메일 전송에 실패했습니다. 다시 시도해주세요.", HttpStatus.NO_CONTENT);
         }
-        UserDto usrDto = user.get().toDto();
-        usrDto.setPassword(temp_pw);
+        user.get().changePw(temp_pw);
+        userRepository.save(user.get());
         return new ResponseEntity<>("임시 비밀번호를 이메일로 보내드렸습니다.",HttpStatus.OK);
     }
 }
