@@ -66,7 +66,7 @@ export default {
         document.head.appendChild(script);
       }
     },
-    initMap() {
+    async initMap() {
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude),
@@ -76,42 +76,33 @@ export default {
       //지도 객체를 등록합니다.
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
+
+      await this.nowMarker()
     },
     // 
+    nowMarker(){
+    
+      this.aroundSaleStore.forEach((store) =>{
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+        // 마커 이미지의 이미지 크기 입니다
+        var imageSize = new kakao.maps.Size(24, 35); 
+        console.log(store)
+        
+        // 마커 이미지를 생성합니다    
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
 
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
-
-      const positions = markerPositions.map(
-          (position) => new kakao.maps.LatLng(...position)
-      );
-
-      if (positions.length > 0) {
-        this.markers = positions.map(
-            (position) =>
-                new kakao.maps.Marker({
-                  map: this.map,
-                  position,
-                })
-        );
-
-        const bounds = positions.reduce(
-            (bounds, latlng) => bounds.extend(latlng),
-            new kakao.maps.LatLngBounds()
-        );
-
-        this.map.setBounds(bounds);
-      }
+        var marker = new kakao.maps.Marker({
+            position: store, // 마커를 표시할 위치
+            // title : positions[i].title, 
+            image : markerImage // 마커 이미지 
+          });
+          marker.setMap(this.map);
+      })
     },
-  
-
+      
     // 현재 위치 찾기
     async curruntLocation() {
       this.changeaddress()
-      console.log(this.aroundSaleStore)
-      this.displayMarker(this.aroundSaleStore)
     },
 
     // 도로명 주소 변환

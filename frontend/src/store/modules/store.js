@@ -55,14 +55,14 @@ const store = {
       GET_ITEMID: (state, itemId) => {
         state.currentItemId = itemId;
       },
-      GET_CURRENTX: (state, storeId) => {
-        state.orderStore = storeId;
-      },
-      GET_CURRENTY: (state, currentX) => {
+      GET_CURRENTX: (state, currentX) => {
         state.currentX = currentX;
       },
-      GET_ORDERSTORE: (state, currentY) => {
+      GET_CURRENTY: (state, currentY) => {
         state.currentY = currentY;
+      },
+      GET_ORDERSTORE: (state, storeId) => {
+        state.storeId = storeId;
       },
       GET_AROUNDSALESTORE: (state, aroundSaleStore) => {
         state.aroundSaleStore = aroundSaleStore;
