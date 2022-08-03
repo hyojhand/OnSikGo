@@ -10,6 +10,7 @@ const store = {
       currentItemId:"",
       // 주문 가게 PK
       orderStore:"",
+      aroundSaleStore:[],
 
     },
     getters: {
@@ -18,6 +19,7 @@ const store = {
       currentX: state => state.currentX,
       currentY: state => state.currentY,
       orderStore: state => state.orderStore,
+      aroundSaleStore: state => state.aroundSaleStore,
 
     },
     actions: {
@@ -41,6 +43,10 @@ const store = {
         commit("GET_ORDERSTORE", storeId)
         console.log("storeId 등록 완료")
       },
+      getAroundSaleStore : ({commit}, aroundSaleStore) => {
+        commit("GET_AROUNDSALESTORE", aroundSaleStore)
+        console.log("근처 가게 등록 완료")
+      },
     },
     mutations: {
       GET_ADDRESS: (state, address) => {
@@ -57,6 +63,9 @@ const store = {
       },
       GET_ORDERSTORE: (state, currentY) => {
         state.currentY = currentY;
+      },
+      GET_AROUNDSALESTORE: (state, aroundSaleStore) => {
+        state.aroundSaleStore = aroundSaleStore;
       },
     },
   };

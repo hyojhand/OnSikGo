@@ -9,7 +9,7 @@
 
 <script >
 
-import {mapActions} from "vuex";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "KakaoMap",
@@ -25,6 +25,11 @@ export default {
       markers: [],
       infowindow: null,
     };
+  },
+  computed: {
+    ...mapGetters("store", [
+      "aroundSaleStore",
+    ])
   },
 
   created() {
@@ -73,62 +78,40 @@ export default {
       this.map = new kakao.maps.Map(container, options);
     },
     // 
-    nowMarker(){
-      var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-      mapOption = { 
-          center: new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude), // 지도의 중심좌표
-          level: 3 // 지도의 확대 레벨
-      };
-
-      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-      // 마커가 표시될 위치입니다 
-      var markerPosition  = new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude); 
-
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({
-          position: markerPosition
-      });
-
-      // 마커가 지도 위에 표시되도록 설정합니다
-      marker.setMap(map);
-
-    },
 
     displayMarker(markerPositions) {
-
-      console.log(markerPositions)
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
 
       const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
+          (position) => new kakao.maps.LatLng(...position)
       );
 
       if (positions.length > 0) {
         this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: this.map,
-              position,
-            })
+            (position) =>
+                new kakao.maps.Marker({
+                  map: this.map,
+                  position,
+                })
         );
 
-        // const bounds = positions.reduce(
-        //   (bounds, latlng) => bounds.extend(latlng),
-        //   new kakao.maps.LatLngBounds()
-        // );
+        const bounds = positions.reduce(
+            (bounds, latlng) => bounds.extend(latlng),
+            new kakao.maps.LatLngBounds()
+        );
 
-        // this.map.setBounds(bounds);
+        this.map.setBounds(bounds);
       }
     },
+  
 
     // 현재 위치 찾기
     async curruntLocation() {
       this.changeaddress()
-      this.nowMarker()
-      this.displayMarker(this.markerPositions1)
+      console.log(this.aroundSaleStore)
+      this.displayMarker(this.aroundSaleStore)
     },
 
     // 도로명 주소 변환
