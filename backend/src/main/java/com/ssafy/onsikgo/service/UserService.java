@@ -93,7 +93,8 @@ public class UserService {
     }
 
     public ResponseEntity<String> checkAuthNumber(String email, String authNum) {
-        if (!redisUtil.getData(email).equals(authNum)) {
+        redisUtil.print();
+        if (redisUtil.getData(email)==null && !redisUtil.getData(email).equals(authNum)) {
             return new ResponseEntity<>("인증 번호가 일치하지 않습니다.", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("이메일 인증에 성공하였습니다.", HttpStatus.OK);
@@ -208,7 +209,7 @@ public class UserService {
 
         return new ResponseEntity<>("비밀번호 확인완료", HttpStatus.OK);
     }
-
+    @Transactional
     public ResponseEntity<String> pwChange(LoginDto loginDto, HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
@@ -237,6 +238,7 @@ public class UserService {
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
+    @Transactional
     public ResponseEntity<String>findPw(HashMap<String,String>map){
         String userName = map.get("userName");
         String email = map.get("email");
@@ -273,7 +275,7 @@ public class UserService {
             e.printStackTrace();
             return new ResponseEntity<>("이메일 전송에 실패했습니다. 다시 시도해주세요.", HttpStatus.NO_CONTENT);
         }
-        user.get().changePw(temp_pw);
+        user.get().changePw(passwordEncoder.encode(temp_pw));
         userRepository.save(user.get());
         return new ResponseEntity<>("임시 비밀번호를 이메일로 보내드렸습니다.",HttpStatus.OK);
     }
