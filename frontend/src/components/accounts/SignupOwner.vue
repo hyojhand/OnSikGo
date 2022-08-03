@@ -146,7 +146,7 @@
               @blur="$v.identify.$touch()"
             ></v-text-field>
             <button class="border-m radius-m address-btn" @click="checkOwner()">
-              등록하기
+              인증하기
             </button>
           </div>
         </form>
@@ -418,17 +418,18 @@ export default {
     // 사업자 등록번호 인증
     checkOwner() {
       // const url = "https://api.odcloud.kr/api/nts-businessman/v1/status"
-        axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status', {
-          b_no: this.identify
+        axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON', {
+          b_no: [this.identify]
         })
         .then((response) => {
-          console.log(response.match_cnt);
-          if (response.status == 200) {
+          if (response.data.match_cnt == 1) {
             alert("사업자 번호가 확인되었습니다.");
-            console.log(this.identify);
           } else {
             alert("다시 확인해주시길 바랍니다.");
           }
+        })
+        .catch(err => {
+          console.log(err);
         });
     },
 
