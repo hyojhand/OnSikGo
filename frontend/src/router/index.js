@@ -32,6 +32,7 @@ import ProdRegisterView from "../views/management/ProdRegisterView.vue";
 import MypageOwnerView from "../views/profile/MypageOwnerView.vue";
 import DataAnalysisView from "../views/profile/DataAnalysisView.vue";
 import StoreInfoChangeView from "../views/profile/StoreInfoChangeView.vue";
+import closeCheck from "../views/profile/closeCheck.vue";
 // 마이페이지(사용자)
 import MypageUserView from "../views/profile/MypageUserView.vue";
 import OrderHistoryView from "../views/profile/OrderHistoryView.vue";
@@ -174,7 +175,7 @@ const routes = [
     meta: {
       title: "주문하기",
     },
-    props: true
+    props: true,
   },
   // 가게보기
   {
@@ -234,6 +235,15 @@ const routes = [
     component: StoreInfoChangeView,
     meta: {
       title: "가게정보변경",
+    },
+    props: true,
+  },
+  {
+    path: "/store/closeCheck",
+    name: "closeCheck",
+    component: closeCheck,
+    meta: {
+      title: "영업종료 확인",
     },
     props: true,
   },

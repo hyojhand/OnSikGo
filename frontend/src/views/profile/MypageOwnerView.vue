@@ -22,9 +22,11 @@
           <div class="text-align-center" id="cardInText">
             <br />
             <span>안녕하세요, {{ store.storeName }}입니다.</span>
-            <p>{{ store.location }}</p>
+            <p>매장 위치: {{ store.location }}</p>
           </div>
-          <div class="d-flex justify-content-end"></div>
+          <div class="d-flex justify-content-end">
+            <button @click="movetoClose">영업 종료</button>
+          </div>
         </b-col>
       </b-row>
     </b-card>
@@ -102,6 +104,12 @@ export default {
         } else {
           alert("해당 날짜의 판매정보가 없습니다.");
         }
+      });
+    },
+    movetoClose() {
+      this.$router.push({
+        name: "closeCheck",
+        params: { storeId: this.storeId },
       });
     },
   },
