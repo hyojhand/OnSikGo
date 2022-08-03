@@ -1,11 +1,10 @@
 package com.ssafy.onsikgo.controller;
 
-import com.ssafy.onsikgo.dto.SaleItemDto;
-import com.ssafy.onsikgo.dto.SaleResultDto;
-import com.ssafy.onsikgo.dto.SelectDto;
+import com.ssafy.onsikgo.dto.*;
 import com.ssafy.onsikgo.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,4 +54,9 @@ public class SaleController {
     public ResponseEntity<List<SaleItemDto>> getSaleItemKeyword(@RequestBody SelectDto selectDto) {
         return saleService.getSaleItemKeyword(selectDto);
     }
+
+//    @PostMapping("/page/{store_id}")
+//    public ResponseEntity<Page<SaleDto>> getSaleListPage(@RequestBody PageDto pageDto, @PathVariable Long store_id) {
+//        return saleService.getSaleListPage(pageDto,store_id);
+//    }
 }

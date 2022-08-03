@@ -5,7 +5,6 @@
     <div class="item-name">
       {{ itemName }}
     </div>
-    <div>{{ this.no }}</div>
     <div class="info-container">
       <div class="item-info">
         <div class="info-box">
@@ -14,11 +13,11 @@
         </div>
         <div class="info-box">
           <div>할인 판매가 :</div>
-          <div class="ml-1">{{ this.saleDto.salePrice }} 원</div>
+          <div class="ml-1">{{ saleDto.salePrice }} 원</div>
         </div>
         <div class="info-box">
           <div>등록 수량 :</div>
-          <div class="ml-1">{{ this.saleDto.stock }} 개</div>
+          <div class="ml-1">{{ saleDto.stock }} 개</div>
         </div>
       </div>
       <button @click="prodmodify()" class="border-m radius-s my-1 edit-btn">
@@ -66,10 +65,11 @@ export default {
     item: Number,
   },
 
-  created() {
+  mounted() {
     http.get(`/sale/${this.itemId}`).then((response) => {
       if (response.status == 200) {
         this.saleDto = response.data;
+        this.$forceUpdate();
       }
     });
   },
