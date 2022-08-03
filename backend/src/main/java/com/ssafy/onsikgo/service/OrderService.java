@@ -3,10 +3,7 @@ package com.ssafy.onsikgo.service;
 import com.ssafy.onsikgo.dto.NoticeDto;
 import com.ssafy.onsikgo.dto.OrderDto;
 import com.ssafy.onsikgo.entity.*;
-import com.ssafy.onsikgo.repository.NoticeRepository;
-import com.ssafy.onsikgo.repository.OrderRepository;
-import com.ssafy.onsikgo.repository.SaleItemRepository;
-import com.ssafy.onsikgo.repository.UserRepository;
+import com.ssafy.onsikgo.repository.*;
 import com.ssafy.onsikgo.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderService {
 
+    private final SaleRepository saleRepository;
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final SaleItemRepository saleItemRepository;
@@ -57,9 +55,15 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 판매상품", HttpStatus.NO_CONTENT);
         }
 
-        LocalDateTime today = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-        String date = today.format(formatter);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
         orderDto.setDate(date);
 
         Order order = orderDto.toEntity(findUser.get(), findSaleItem.get());
@@ -127,10 +131,32 @@ public class OrderService {
         orderRepository.save(findOrder.get());
 
         SaleItem saleItem = findOrder.get().getSaleItem();
-        int count = saleItem.getStock() - findOrder.get().getCount();
-        saleItem.update(count);
+        int stockCount = saleItem.getStock() - findOrder.get().getCount();
+        saleItem.updateStock(stockCount);
         saleItemRepository.save(saleItem);
 
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
+
+        int money = saleItem.getSalePrice() * findOrder.get().getCount();
+        Store store = saleItem.getItem().getStore();
+        Optional<Sale> findSale = saleRepository.findByStoreAndDate(store, date);
+        if(!findSale.isPresent()) {
+            return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        Integer totalPrice = findSale.get().getTotalPrice();
+        totalPrice += money;
+        findSale.get().updateTotalPrice(totalPrice);
+        saleRepository.save(findSale.get());
 
         String content = findUser.get().getNickname() + "님의 상품이 준비되었습니다.";
         Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId());

@@ -163,6 +163,10 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <MemberQuitModal></MemberQuitModal>
+        <StoreInfoDiscardModal :no="this.storeId"></StoreInfoDiscardModal>
+        <br /><br /><br />
+        <button @click="addstorepage" class="success">매장추가</button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="25"
@@ -193,6 +197,7 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <MemberQuitModal></MemberQuitModal>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="25"
@@ -221,7 +226,15 @@
 
 <script>
 import http from "@/util/http-common";
+import MemberQuitModal from "@/components/profile/MemberQuitModal.vue";
+import StoreInfoDiscardModal from "@/components/profile/StoreInfoDiscardModal.vue";
+// import storeAddModal from "@/components/accounts/storeAddModal.vue"
 export default {
+  components: {
+    MemberQuitModal,
+    StoreInfoDiscardModal,
+    // storeAddModal,
+  },
   data() {
     return {
       drawer: false,
@@ -231,6 +244,10 @@ export default {
       title: document.title,
       pageType: true,
       logincheck: false,
+      stores: [],
+      store: {},
+      storeId: "",
+      saleItemList: [],
 
       notlogins: [
         { title: "홈", router: "/" },
@@ -271,10 +288,18 @@ export default {
         "가게정보변경",
         "내주문조회",
         "내리뷰조회",
+        "매장추가",
+        "영업종료 확인",
       ],
     };
   },
+
   created() {
+    this.pageType = this.pages.includes(this.title);
+  },
+  updated() {
+    this.title = document.title;
+    // 판단
     this.pageType = this.pages.includes(this.title);
 
     if (localStorage.getItem("access-token") == null) {
@@ -283,18 +308,20 @@ export default {
       this.logincheck = true;
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
+
       http.get("/user").then((response) => {
-        console.log(response.data.role);
         if (response.data.role == "OWNER") {
           this.userState = 1;
+        } else {
+          this.userState = 0;
         }
       });
     }
   },
-  updated() {
-    this.title = document.title;
-    // 판단
-    this.pageType = this.pages.includes(this.title);
+  methods: {
+    addstorepage() {
+      this.$router.push("/addstore");
+    },
   },
 };
 </script>

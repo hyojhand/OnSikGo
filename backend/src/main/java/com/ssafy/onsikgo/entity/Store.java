@@ -57,16 +57,16 @@ public class Store {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Sale> sales = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Item> items = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Follow> follows = new ArrayList<>();
 
     public Store update(StoreDto storeDto, HashMap<String, String> coordinate) {
@@ -91,6 +91,7 @@ public class Store {
     public StoreDto toDto() {
 
         return StoreDto.builder()
+                .storeId(this.storeId)
                 .storeName(this.getStoreName())
                 .location(this.getLocation())
                 .tel(this.getTel())

@@ -26,11 +26,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 @Service
@@ -48,6 +48,8 @@ public class UserService {
     private final StoreService storeService;
 
     private final RedisUtil redisUtil;
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
+
     public ResponseEntity<String> checkEmail(String email) {
         if (userRepository.findByEmail(email).orElse(null) != null) {
             log.info("이미존재하는 이메일");
@@ -55,27 +57,27 @@ public class UserService {
         }
         return sendEmail(email);
     }
+
     public ResponseEntity<String> sendEmail(String email) {
         Random rand = new Random();
         String authNumber = String.valueOf(rand.nextInt(999999));
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,"UTF-8");
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
 
-        String setFrom = "wlgns3914@naver.com";
+        String setFrom = "onsikgoinfo@naver.com";
         String toMail = email;
         String title = "회원 가입 인증 이메일 입니다.";
-        String content =
-                "OnSikGo를 방문해주셔서 감사합니다." +
-                        "<br><br>" +
-                        "인증 번호는 " + authNumber + "입니다." +
-                        "<br>" +
-                        "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+        String content = "OnSikGo를 방문해주셔서 감사합니다." +
+                "<br><br>" +
+                "인증 번호는 " + authNumber + "입니다." +
+                "<br>" +
+                "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
         try {
             mimeMessageHelper.setFrom(setFrom);
             mimeMessageHelper.setTo(toMail);
             mimeMessageHelper.setSubject(title);
-            mimeMessageHelper.setText(content,true);
+            mimeMessageHelper.setText(content, true);
             mailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
@@ -87,12 +89,14 @@ public class UserService {
 
         return new ResponseEntity<>("인증번호를 전송했습니다. 메일을 확인해주세요.", HttpStatus.OK);
     }
-    public ResponseEntity<String> checkAuthNumber(String email,String authNum) {
-        if(!redisUtil.getData(email).equals(authNum)){
+
+    public ResponseEntity<String> checkAuthNumber(String email, String authNum) {
+        if (!redisUtil.getData(email).equals(authNum)) {
             return new ResponseEntity<>("인증 번호가 일치하지 않습니다.", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("이메일 인증에 성공하였습니다.", HttpStatus.OK);
     }
+
     public ResponseEntity<String> checkNickname(String nickname) {
         if (userRepository.findByNickname(nickname).orElse(null) != null) {
             log.info("이미존재하는 닉네임");
@@ -102,20 +106,18 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<String> signup(UserDto userDto) {
-
+    public ResponseEntity<String> signup(UserDto userDto, LoginType loginType) {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        User user = userDto.toEntity(LoginType.ONSIKGO);
-
+        if(loginType.toString().equals(LoginType.ONSIKGO.toString()))userDto.setImgUrl(defaultImg);
+        User user = userDto.toEntity(loginType);
         userRepository.save(user);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
-
     @Transactional
     public ResponseEntity<String> signupOwner(OwnerDto ownerDto) {
         ownerDto.setPassword(passwordEncoder.encode(ownerDto.getPassword()));
+        ownerDto.setImgUrl(defaultImg);
 
         String storeName = ownerDto.getStoreName();
         User user = ownerDto.toUserEntity(LoginType.ONSIKGO, storeName);
@@ -125,11 +127,12 @@ public class UserService {
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
-    public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
+
+    public ResponseEntity<TokenDto> login(LoginDto loginDto) {
         //  LoginDto의 userName,Password를 받아서 UsernamePasswordAuthenticationToken 객체를 생성한다
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
-
+        log.info(authenticationToken.toString());
         // authenticationToken 을 이용해서 Authentication 객체를 생성하려고 authenticate메서드가 실행될때
         // CustomUserDetailsService 의 loadUserByUsername 메서드가 실행된다.
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -137,7 +140,6 @@ public class UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // 그 인증정보를 기반으로 토큰을 생성한다
         String jwt = tokenProvider.createToken(authentication);
-
         HttpHeaders httpHeaders = new HttpHeaders();
         // 생성한 토큰을 Response 헤더에 넣어주고,
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
@@ -147,16 +149,23 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<String> modify(UserDto userDto, HttpServletRequest request) {
+    public ResponseEntity<String> modify(UserDto userDto, MultipartFile file, HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
             return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
         }
-
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
-
         User findUser = userRepository.findByEmail(userEmail).get();
-        findUser.update(userDto.getNickname(), awsS3Service.uploadImge(userDto.getFile()));
+
+        if(file == null) {
+            findUser.update(userDto.getNickname(), findUser.getImgUrl());
+        } else {
+            if (!findUser.getImgUrl().equals(defaultImg)) {
+                awsS3Service.delete(findUser.getImgUrl());
+            }
+            userDto.setFile(file);
+            findUser.update(userDto.getNickname(), awsS3Service.uploadImge(userDto.getFile()));
+        }
 
         userRepository.save(findUser);
         return new ResponseEntity<>("수정완료", HttpStatus.OK);
@@ -174,7 +183,7 @@ public class UserService {
 
         userRepository.delete(findUser);
 
-        if(userRepository.findByEmail(userEmail).orElse(null) != null) {
+        if (userRepository.findByEmail(userEmail).orElse(null) != null) {
             return new ResponseEntity<>("삭제실패", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("삭제완료", HttpStatus.OK);
@@ -190,7 +199,7 @@ public class UserService {
         User findUser = userRepository.findByEmail(userEmail).get();
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if(!encoder.matches(loginDto.getPassword(), findUser.getPassword())) {
+        if (!encoder.matches(loginDto.getPassword(), findUser.getPassword())) {
             log.info("비밀번호가 틀렸습니다");
             return new ResponseEntity<>("비밀번호가 틀렸습니다", HttpStatus.NO_CONTENT);
         }

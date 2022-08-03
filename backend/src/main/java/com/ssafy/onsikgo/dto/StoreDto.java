@@ -14,6 +14,7 @@ import java.util.HashMap;
 @NoArgsConstructor
 public class StoreDto {
 
+    private Long storeId;
     private String storeName;
     private String location;
     private String tel;
