@@ -105,18 +105,6 @@
             @input="$v.store.$touch()"
             @blur="$v.store.$touch()"
           ></v-text-field>
-          <!-- -----------가게 주소 에러 생략----------------- -->
-          <!-- <v-text-field
-            v-model="address"
-            :error-messages="adressErrors"
-            label="가게 주소를 입력해주세요."
-            required
-            class="input-box"
-            color="black"
-            type="address"
-            @input="$v.address.$touch()"
-            @blur="$v.address.$touch()"
-          ></v-text-field> -->
 
           <!-- -----------가게 주소 입력-------------- -->
           <div class="position-box">
@@ -300,8 +288,6 @@ export default {
         {value: 'DESSERT', text: '디저트'},
         {value: 'INGREDIENT', text: '식자재'},
       ],
-      // days: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
-      // offDay: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
       days: [
         {value: '월', text: '월요일'},
         {value: '화', text: '화요일'},
@@ -362,12 +348,7 @@ export default {
       !this.$v.store.required && errors.push(" ");
       return errors;
     },
-    // addressErrors() {
-    //   const errors = [];
-    //   if (!this.$v.address.$dirty) return errors;
-    //   !this.$v.address.required && errors.push(" ");
-    //   return errors;
-    // },
+
     telErrors() {
       const errors = [];
       if (!this.$v.tel.$dirty) return errors;
