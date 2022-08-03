@@ -6,7 +6,7 @@
         <option
           class="option-store"
           :key="index"
-          :value="store"
+          :value="store.storeId"
           v-for="(store, index) in stores"
         >
           {{ store.storeName }}
@@ -100,7 +100,7 @@ export default {
       this.itemDto = {
         itemName: this.itemName,
         price: this.itemPrice,
-        comment: this.comment,
+        comment: this.itemComment,
       };
       const formData = new FormData();
       formData.append("file", this.imgFile);
@@ -121,6 +121,10 @@ export default {
             alert("상품 등록에 실패했습니다.");
           }
         });
+    },
+    selectStore(event) {
+      this.storeId = event.target.value;
+      this.selectPage(1);
     },
   },
 };
