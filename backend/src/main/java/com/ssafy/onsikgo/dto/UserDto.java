@@ -37,7 +37,7 @@ public class UserDto {
                 .imgUrl(this.getImgUrl())
                 .nickname(this.getNickname())
                 .authorities(Collections.singleton(authority))
-                .role(Role.USER)
+                .role(this.role)
                 .loginType(loginType)
                 .build();
     }
