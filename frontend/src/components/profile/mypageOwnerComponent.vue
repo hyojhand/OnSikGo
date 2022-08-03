@@ -1,16 +1,15 @@
 <template>
   <div>
-    <h1>왜 아무것도 안뜨지</h1>
-    <h1>{{ this.storeId }}</h1>
+    <h1>{{ store.storeId }}</h1>
     <b-card>
       <b-row>
         <b-col md="3">
-          <!-- <img fluid :src="`${store.storeImgUrl}`" height="90" width="100" /> -->
+          <img fluid :src="`${store.storeImgUrl}`" height="90" width="100" />
         </b-col>
         <b-col md="9">
           <div class="text-align-center" id="cardInText">
             <br />
-            <span>안녕하세요, {{ this.store.storeName }}입니다.</span>
+            <span>안녕하세요, {{ store.storeName }}입니다.</span>
             <p>매장 위치: {{ store.location }}</p>
           </div>
           <div class="d-flex justify-content-end">
@@ -47,10 +46,11 @@ export default {
   data() {
     return {
       storeName: "",
+      saleItemList: [],
     };
   },
   props: {
-    storeId: Number,
+    store: Object,
   },
   components: {
     discountList,
@@ -62,20 +62,20 @@ export default {
     storechange() {
       this.$router.push({
         name: "storeInfoChange",
-        params: { storeId: this.storeId },
+        params: { storeId: this.store.storeId },
       });
     },
     movetoClose() {
       this.$router.push({
         name: "closeCheck",
-        params: { storeId: this.storeId },
+        params: { storeId: this.store.storeId },
       });
     },
   },
   created() {
-    console.log(this.storeId);
-    http.get(`/store/${this.storeId}`).then((response) => {
-      console.log(response.data);
+    console.log(this.store);
+    http.get(`/sale/list/${this.store.storeId}`).then((response) => {
+      this.saleItemList = response.data;
     });
   },
 };

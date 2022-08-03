@@ -18,7 +18,7 @@
 
     <br />
     <div class="item-container">
-      <mypageOwnerComponent :storeId="this.storeId"></mypageOwnerComponent>
+      <mypage-owner-component :store="this.store"></mypage-owner-component>
     </div>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default {
     return {
       stores: [],
       store: {},
-      storeId: "",
+      storeId: Number,
       saleItemList: [],
       itemList: [],
       storeName: "",
@@ -51,34 +51,30 @@ export default {
       console.log(this.store.storeName);
     });
 
-    await http.get(`/sale/list/${this.storeId}`, {}).then((response) => {
+    await http.get(`/sale/list/${this.storeId}`).then((response) => {
       this.saleItemList = response.data;
     });
 
-    await http.get(`/item/list/${this.storeId}`).then((response) => {
-      this.itemList = response.data;
-    });
+    // await http.get(`/item/list/${this.storeId}`).then((response) => {
+    //   this.itemList = response.data;
+    // });
   },
   methods: {
-    selectStore(event) {
+    async selectStore(event) {
       this.storeId = event.target.value;
-      this.changeStore();
+      await this.changeStore();
+      // await this.changeSaleItem();
     },
     changeStore() {
       http.get(`/store/${this.storeId}`).then((response) => {
         this.store = response.data;
         this.storeName = response.data.storeName;
-        // console.log(this.storeName);
-        // console.log(response.data);
+        console.log(response.data);
       });
     },
-    // storeClose() {
-    //   http.put(`/store/close/${this.storeId}`).then((response) => {
-    //     if (response.status == 200) {
-    //       alert("가게 결산이 완료되었습니다.");
-    //     } else {
-    //       alert("해당 날짜의 판매정보가 없습니다.");
-    //     }
+    // changeSaleItem() {
+    //   http.get(`/sale/list/${this.storeId}`).then((response) => {
+    //     this.saleItemList = response.data;
     //   });
     // },
   },
