@@ -113,7 +113,7 @@ import KakaoMap from "@/components/shopping/KakaoMap";
 import StoreProductItem from "@/components/shopping/StoreProductItem.vue";
 import StoreReview from "@/components/shopping/StoreReview.vue";
 import http from "@/util/http-common";
-// import axios from 'axios'
+import { mapGetters } from "vuex";
 export default {
   name: "StoreView",
 
@@ -127,7 +127,6 @@ export default {
     return {
       tabs: ["상품", "입소문"],
       selectedTab: "",
-      storeId: Number,
       storeDto: {},
       saleItemList: [],
       reviewContent: "",
@@ -135,16 +134,18 @@ export default {
       isliking: false,
     };
   },
+  computed: {
+    ...mapGetters("storeStore", ["getStoreId"]),
+  },
 
   async created() {
     this.selectedTab = this.tabs[0];
-    this.storeId = this.$route.params.storeId;
 
-    await http.get(`/store/${this.storeId}`).then((response) => {
+    await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
     });
 
-    await http.get(`/sale/list/${this.storeId}`).then((response) => {
+    await http.get(`/sale/list/${this.getStoreId}`).then((response) => {
       this.saleItemList = response.data;
       console.log(response.data);
     });
@@ -152,7 +153,7 @@ export default {
     await this.selectReview();
     await this.likecheck();
   },
-  updated(){
+  updated() {
     this.likecheck();
   },
   methods: {
@@ -160,7 +161,7 @@ export default {
       this.selectedTab = tab;
     },
     selectReview() {
-      http.get(`/review/store/${this.storeId}`).then((response) => {
+      http.get(`/review/store/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
           this.reviewList = response.data;
         }
@@ -171,7 +172,7 @@ export default {
         localStorage.getItem("access-token");
       http
         .post("/review", {
-          storeId: this.storeId,
+          storeId: this.getStoreId,
           content: this.reviewContent,
         })
         .then((response) => {
@@ -182,33 +183,31 @@ export default {
           }
         });
     },
-    likecheck(){
+    likecheck() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-      http
-        .get(`/follow/find/${this.storeId}`)
-        .then((res) => {
-          this.isliking = res.data
-        })
+      http.get(`/follow/find/${this.getStoreId}`).then((res) => {
+        this.isliking = res.data;
+      });
     },
-    like () {
-        http.defaults.headers["access-token"] =
+    like() {
+      http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-        http.get(`/follow/${this.storeId}`).then((response) => {
-          if(response.status == 200) {
-            alert("좋아요 눌렀음");
-          }
-        })
+      http.get(`/follow/${this.getStoreId}`).then((response) => {
+        if (response.status == 200) {
+          alert("좋아요 눌렀음");
+        }
+      });
     },
-    unlike () {
-        http.defaults.headers["access-token"] =
+    unlike() {
+      http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-        http.delete(`/follow/${this.storeId}`).then((response) => {
-          if(response.status == 200) {
-            alert("좋아요 취소");
-          }
-        })
-    }
+      http.delete(`/follow/${this.getStoreId}`).then((response) => {
+        if (response.status == 200) {
+          alert("좋아요 취소");
+        }
+      });
+    },
   },
 };
 </script>

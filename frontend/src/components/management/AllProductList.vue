@@ -42,6 +42,7 @@
 import http from "@/util/http-common";
 import EditStockModal from "@/components/management/EditStockModal.vue";
 import AddStockModal from "@/components/management/AddStockModal.vue";
+import { mapActions } from "vuex";
 export default {
   name: "AllProductList",
   components: {
@@ -74,10 +75,13 @@ export default {
   },
 
   methods: {
+    ...mapActions("itemStore", ["getItemId"]),
+    ...mapActions("storeStore", ["getStoreId"]),
     prodmodify() {
+      this.getItemId(this.itemId);
+      this.getStoreId(this.storeId);
       this.$router.push({
         name: "prodChange",
-        params: { itemId: this.itemId, storeId: this.storeId },
       });
     },
   },
