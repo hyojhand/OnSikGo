@@ -18,7 +18,7 @@
 
     <br />
     <div class="item-container">
-      <mypage-owner-component :storeId="this.storeId"></mypage-owner-component>
+      <mypageOwnerComponent :storeId="this.storeId"></mypageOwnerComponent>
     </div>
   </div>
 </template>
@@ -35,9 +35,10 @@ export default {
     return {
       stores: [],
       store: {},
-      storeId: Number,
+      storeId: "",
       saleItemList: [],
       itemList: [],
+      storeName: "",
     };
   },
   async created() {
@@ -67,18 +68,19 @@ export default {
       http.get(`/store/${this.storeId}`).then((response) => {
         this.store = response.data;
         this.storeName = response.data.storeName;
+        // console.log(this.storeName);
         // console.log(response.data);
       });
     },
-    storeClose() {
-      http.put(`/store/close/${this.storeId}`).then((response) => {
-        if (response.status == 200) {
-          alert("가게 결산이 완료되었습니다.");
-        } else {
-          alert("해당 날짜의 판매정보가 없습니다.");
-        }
-      });
-    },
+    // storeClose() {
+    //   http.put(`/store/close/${this.storeId}`).then((response) => {
+    //     if (response.status == 200) {
+    //       alert("가게 결산이 완료되었습니다.");
+    //     } else {
+    //       alert("해당 날짜의 판매정보가 없습니다.");
+    //     }
+    //   });
+    // },
   },
 };
 </script>
