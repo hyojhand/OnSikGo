@@ -119,9 +119,12 @@
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
         ></v-checkbox>
-
+        <!-- 가입하기 버튼 -->
         <div class="btns mb-5">
-          <button class="border-m radius-m notice-btn" @click="signup()">
+          <button 
+          class="border-m radius-m notice-btn" 
+          @click="signup()"
+          v-bind:disabled="check1 == false | check1 == false">
             가입하기
           </button>
           <button @click="clear" class="border-m radius-m notice-btn clear">
@@ -166,7 +169,9 @@ export default {
     sendMail: false,
     checkmsg: "메일 인증하기",
     nicknameDuple: false,
-    authNum: Number,
+    authNum: "",
+    check1: false,
+    check2: false,
   }),
 
   computed: {
@@ -214,6 +219,7 @@ export default {
     },
   },
   methods: {
+    // 이메일 중복 확인 및 인증번호 전송
     isCheck() {
       http
         .post("/user/email", {
@@ -229,6 +235,7 @@ export default {
         }
       });
     },
+    // 인증번호 확인
     checkMail() {
       http
         .post("/user/emailAuthNumber", {
@@ -237,12 +244,14 @@ export default {
         })
         .then((response) => {
         if ((response.status) == 200) {
-          console.log(response.data);
+          alert("인증번호 확인이 되었습니다.");
+          this.check1 = true;
         } else {
           alert("인증번호 확인에 실패했습니다");
         }
       });
     },
+    // 닉네임 중복 확인
     nicknameCheck() {
       http
         .post("/user/nickname", {
@@ -251,6 +260,7 @@ export default {
         .then((response) => {
         if (response.status == 200) {
           this.nicknameDuple = !this.nicknameDuple;
+          this.check2 =true;
         } else {
           alert("중복된 닉네임이 있습니다");
         }

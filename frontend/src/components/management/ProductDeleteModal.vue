@@ -74,7 +74,7 @@ export default {
       if (this.boxTwo == true) {
         await http.delete(`/item/${this.no}`).then((response) => {
           if (response.status == 200) {
-            this.$router.push("ProdChangeView");
+            this.$router.push({ name: "allProduct" });
           }
         });
       }

@@ -34,7 +34,7 @@
                 v-model="authNum"
                 placeholder="인증번호를 입력하세요."
               />
-              <button class="border-m radius-m mailconfirm-btn">
+              <button class="border-m radius-m mailconfirm-btn" @click="checkMail()">
                 확인하기
               </button>
             </div>
@@ -78,7 +78,11 @@
           ></v-text-field>
         </form>
         <div class="next-btn">
-          <button class="border-m radius-m" @click="e1 = 2">다음으로</button>
+          <button 
+          class="border-m radius-m" 
+          @click="e1 = 2"
+          >
+          다음으로</button>
         </div>
       </v-stepper-content>
 
@@ -101,18 +105,6 @@
             @input="$v.store.$touch()"
             @blur="$v.store.$touch()"
           ></v-text-field>
-          <!-- -----------가게 주소 에러 생략----------------- -->
-          <!-- <v-text-field
-            v-model="address"
-            :error-messages="adressErrors"
-            label="가게 주소를 입력해주세요."
-            required
-            class="input-box"
-            color="black"
-            type="address"
-            @input="$v.address.$touch()"
-            @blur="$v.address.$touch()"
-          ></v-text-field> -->
 
           <!-- -----------가게 주소 입력-------------- -->
           <div class="position-box">
@@ -153,15 +145,19 @@
               @input="$v.identify.$touch()"
               @blur="$v.identify.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="tempAlert">
-              등록하기
+            <button class="border-m radius-m address-btn" @click="checkOwner()">
+              인증하기
             </button>
           </div>
         </form>
 
         <div class="sign-btn">
           <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
-          <button class="border-m radius-m" @click="e1 = 3">다음으로</button>
+          <button 
+          class="border-m radius-m" 
+          @click="e1 = 3"
+          v-bind:disabled="check2 == false"  
+          >다음으로</button>
         </div>
       </v-stepper-content>
 
@@ -201,11 +197,13 @@
 
           <!-- -------------휴무일 입력---------------- -->
           <v-select
-            v-model="offDay"
             :items="days"
+            v-model="off"
             label="휴무일을 입력해주세요."
             multiple
             chips
+            @input = "$v.off.$touch()"
+            @blur= "$v.off.$touch()"
           ></v-select>
 
           <!-- ------------카테고리셀렉트 박스----------- -->
@@ -222,7 +220,10 @@
 
         <div class="sign-btn">
           <button class="border-m radius-m" @click="e1 = 2">이전으로</button>
-          <button class="border-m radius-m" @click="signup()">가입하기</button>
+          <button 
+          v-if="category != defined"
+          class="border-m radius-m" 
+          @click="signup()">가입하기</button>
         </div>
       </v-stepper-content>
 
@@ -258,6 +259,7 @@ import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
 import minLength from "vuelidate/lib/validators/minLength";
 import http from "@/util/http-common";
+import axios from 'axios';
 
 export default {
   mixins: [validationMixin],
@@ -277,9 +279,13 @@ export default {
       identify: "",
       end: "",
       category: "",
+      off: "",
       checkmsg: "메일 인증하기",
       sendMail: false,
-      authNum: Number,
+      authNum: "",
+      check1: false,
+      check2: false,
+      check3: false,
       items: [
         {value: 'KOREA', text: '한식'},
         {value: 'JAPAN', text: '일식'},
@@ -288,8 +294,15 @@ export default {
         {value: 'DESSERT', text: '디저트'},
         {value: 'INGREDIENT', text: '식자재'},
       ],
-      days: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
-      offDay: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+      days: [
+        {value: '월', text: '월요일'},
+        {value: '화', text: '화요일'},
+        {value: '수', text: '수요일'},
+        {value: '목', text: '목요일'},
+        {value: '금', text: '금요일'},
+        {value: '토', text: '토요일'},
+        {value: '일', text: '일요일'},
+      ],
     };
   },
 
@@ -341,12 +354,7 @@ export default {
       !this.$v.store.required && errors.push(" ");
       return errors;
     },
-    // addressErrors() {
-    //   const errors = [];
-    //   if (!this.$v.address.$dirty) return errors;
-    //   !this.$v.address.required && errors.push(" ");
-    //   return errors;
-    // },
+
     telErrors() {
       const errors = [];
       if (!this.$v.tel.$dirty) return errors;
@@ -412,9 +420,25 @@ export default {
       }).open();
     },
 
-    tempAlert() {
-      alert("인증 확인");
+    // 사업자 등록번호 인증
+    checkOwner() {
+        axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON', {
+          b_no: [this.identify]
+        })
+        .then((response) => {
+          if (response.data.match_cnt == 1) {
+            alert("사업자 번호가 확인되었습니다.");
+            this.check2 = true;
+          } else {
+            alert("다시 확인해주시길 바랍니다.");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
+
+    // 이메일 중복 확인 및 인증 번호 전송
     isCheck() {
       http
         .post("/user/email", {
@@ -422,14 +446,15 @@ export default {
         })
         .then((response) => {
         if (response.status == 200) {
-          alert("인증번호를 확인해주세요");
+          alert("인증번호를 확인해주세요.");
           this.sendMail = true;
           this.checkmsg = "재전송하기";
         } else {
-          alert("이미 가입된 이메일입니다");
+          alert("이미 등록한 이메일 입니다.");
         }
       });
     },
+    // 인증번호 확인
     checkMail() {
       http
         .post("/user/emailAuthNumber", {
@@ -439,8 +464,10 @@ export default {
         .then((response) => {
         if ((response.status) == 200) {
           console.log(response.data);
+          alert("인증번호 확인이 되었습니다.");
+          this.check1 = true;
         } else {
-          alert("인증번호 확인에 실패했습니다");
+          alert("인증번호 확인에 실패했습니다.");
         }
       });
     },
@@ -455,7 +482,7 @@ export default {
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
-        offDay: this.offDay,
+        offDay: this.off.join(),
         category: this.category,
       });
       this.$router.push("/signup/complete");

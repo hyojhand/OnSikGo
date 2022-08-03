@@ -61,13 +61,13 @@
       <div class="col-4">
         <div class="product-name">{{ item.itemDto.itemName }}</div>
         <div class="product-location">매장위치 : {{ item.saleDto.storeDto.storeName }}</div>
-        <div class="product-prediction">300m, 도보로 3분</div>
-        <div class="product-discount">30%</div>
+        <div class="product-prediction">현재 위치로부터 {{ item.distance }} m</div>
+        <div class="product-discount">{{ ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(0) }}%</div>
         <span class="price">{{ item.itemDto.price }}원</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
         </svg>
-        <span class="discount-price">{{ item.itemDto.price - item.salePrice }}원</span>
+        <span class="discount-price">{{ item.salePrice }}원</span>
       </div>
       <div class="col-3">
 
@@ -81,7 +81,7 @@
 
 <script>
 import http from "@/util/http-common";
-import {mapActions} from "vuex";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
     name:'ProductItem',
@@ -89,11 +89,16 @@ export default {
     data() {
       return {
         items: [],
-        storeId : "3",
         keyword: "",
+        storeKeyword: "",
       }
     },
-
+    computed: {
+    ...mapGetters("store", [
+      "currentX",
+      "currentY"
+    ])
+  },
     created () {
       this.productFind();
     },
@@ -102,27 +107,37 @@ export default {
       ...mapActions("store", [
         "getItemId",
         "getOrderStore",
+        "getAroundSaleStore",
       ]),
-      // 판매중인 가게 조회
-      storeFind() {
-        http
-          .get('/store/list')
-          .then((response) => {
-            console.log(response)
-            this.storeId = response.data
-          })
-      },
       // 상품 조회
       productFind() {
+        this.keyword = "";
         http
-          .get(`/sale/list/${this.storeId}`)
+          .post("/sale/keyword/", {
+            keyword: this.keyword,
+          })
           .then((response) => {
-            // console.log(response.data)
-            this.items = response.data
-            // console.log(this.items)/
-            
+            // var saleStore = []
+            response.data.forEach((item) => {
+              var distance
+              // console.log(item.saleDto.storeDto.lat, item.saleDto.storeDto.lng)
+              // if (saleStore.includes([item.saleDto.storeDto.lat, item.saleDto.storeDto.lng])){
+              //   console.log("안에 있음")
+              // } else {
+              //   saleStore.push([item.saleDto.storeDto.lat, item.saleDto.storeDto.lng])
+              // }
+              
+              distance = this.getdistance(this.currentX, this.currentY, item.saleDto.storeDto.lat, item.saleDto.storeDto.lng)
+              item.distance = distance
+              // 초기에 근방에 위치한 가게만 보여주기
+              if (distance < 100000000){
+                this.items.push(item)
+              }
+            })
+            this.getAroundSaleStore(response.data)
           })
       },
+      // 
       productOrder(item) {
         console.log(item)
         this.getItemId(item.itemId),
@@ -131,25 +146,61 @@ export default {
           name: "orderView",
         })
       },
+      // 키워드 검색
       keywordSelect() {
-        console.log(this.keyword)
         http
-        .get(`/item/list/keyword/${this.storeId}`, {
+        .post("/sale/keyword/", {
           keyword: this.keyword,
         })
         .then((response) => {
           console.log(response)
           this.items = response.data;
+          this.items.forEach((item) => {
+              var distance
+              distance = this.getdistance(this.currentX, this.currentY, item.saleDto.storeDto.lat, item.saleDto.storeDto.lng)
+              item.distance = distance
+          })
         });
       },
+      // 초기화
       resetLitemList() {
         this.keyword = "";
-        http.get(`/item/list/${this.storeId}`).then((response) => {
+        http
+        .post("/sale/keyword/", {
+          keyword: this.keyword,
+        })
+        .then((response) => {
           this.items = response.data;
+          this.items.forEach((item) => {
+              var distance
+              distance = this.getdistance(this.currentX, this.currentY, item.saleDto.storeDto.lat, item.saleDto.storeDto.lng)
+              item.distance = distance
+          })
         });
       },
+      // 거리 구하기
+      getdistance(lat1, lon1, lat2, lon2) {
+        if ((lat1 == lat2) && (lon1 == lon2)){
+          return 0;
+        }
+        var radLat1 = Math.PI * lat1 / 180;
+        var radLat2 = Math.PI * lat2 / 180;
+        var theta = lon1 - lon2;
+        var radTheta = Math.PI * theta / 180;
+        var dist = Math.sin(radLat1) * Math.sin(radLat2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+        if (dist > 1)
+            dist = 1;
 
+        dist = Math.acos(dist);
+        dist = dist * 180 / Math.PI;
+        dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+        if (dist < 100) dist = Math.round(dist / 10) * 10;
+        else dist = Math.round(dist / 100) * 100;
+
+        return dist;
+      }
     }
+    
 }
 </script>
 
