@@ -2,9 +2,11 @@
   <div>
     <a id="kakao-login" @click="kakaoLogin()">
       <img id="kakao-login-img" src="@/assets/images/kakao.png" />
+      <span>카카오 계정으로 로그인하기</span>
     </a>
     <a id="naver-login" @click="naverLogin()">
       <img id="naver-login-img" src="@/assets/images/naver.png" />
+      <span>네이버 계정으로 로그인하기</span>
     </a>
   </div>
 </template>
@@ -70,5 +72,23 @@ export default {
 #naver-login-img {
   width: 45px;
   height: 45px;
+}
+div {
+  display: flex;
+  margin-top: 5%;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+span {
+  margin-top: 7%;
+  color: black;
+  font-size: 14px;
 }
 </style>
