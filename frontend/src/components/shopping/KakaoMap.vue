@@ -18,9 +18,9 @@ export default {
       currentxLatitude: 33.452278,
       currentLongitude: 126.567803,
       markerPositions1: [
-        [33.452278, 126.567803],
-        [33.452671, 126.574792],
-        [33.451744, 126.572441],
+        [35.230016, 129.076428],
+        [35.200016, 129.056428],
+        [35.160016, 129.036428],
       ],
       markers: [],
       infowindow: null,
@@ -33,7 +33,7 @@ export default {
       navigator.geolocation.getCurrentPosition((position) => {
       this.currentxLatitude = position.coords.latitude, // 위도
       this.currentLongitude = position.coords.longitude; // 경도
-
+      console.log(this.currentLongitude, this.currentxLatitude)
       this.curruntLocation();
       
     });
@@ -44,7 +44,9 @@ export default {
   methods: {
     // 현재 위치 주소 vuex에 넣기
     ...mapActions("store", [
-      "getAddress"
+      "getAddress",
+      "getCurrentX",
+      "getCurrentY",
     ]),
     // 카카오맵 생성
     createMap(){
@@ -65,14 +67,37 @@ export default {
         center: new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude),
         level: 3,
       };
-      console.log(options)
+
       //지도 객체를 등록합니다.
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
     },
+    // 
+    nowMarker(){
+      var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+      mapOption = { 
+          center: new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude), // 지도의 중심좌표
+          level: 3 // 지도의 확대 레벨
+      };
 
+      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+      // 마커가 표시될 위치입니다 
+      var markerPosition  = new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude); 
+
+      // 마커를 생성합니다
+      var marker = new kakao.maps.Marker({
+          position: markerPosition
+      });
+
+      // 마커가 지도 위에 표시되도록 설정합니다
+      marker.setMap(map);
+
+    },
 
     displayMarker(markerPositions) {
+
+      console.log(markerPositions)
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
@@ -90,27 +115,28 @@ export default {
             })
         );
 
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
-        );
+        // const bounds = positions.reduce(
+        //   (bounds, latlng) => bounds.extend(latlng),
+        //   new kakao.maps.LatLngBounds()
+        // );
 
-        this.map.setBounds(bounds);
+        // this.map.setBounds(bounds);
       }
     },
 
     // 현재 위치 찾기
     async curruntLocation() {
       this.changeaddress()
-      this.createMap()
-
+      this.nowMarker()
+      this.displayMarker(this.markerPositions1)
     },
 
     // 도로명 주소 변환
     changeaddress() {
       var geocoder = new kakao.maps.services.Geocoder();
 
-      console.log(this.currentxLatitude, this.currentLongitude);
+      this.getCurrentX(this.currentxLatitude)
+      this.getCurrentY(this.currentLongitude)
       var coord = new kakao.maps.LatLng(this.currentxLatitude, this.currentLongitude);
       var callback = (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
