@@ -1,19 +1,35 @@
 <template>
   <div>
-    <h3>영업종료 확인 페이지입니다</h3>
-    <p>{{ storeName }}매장의 영업을</p>
-    <p>정말로 종료하시겠습니까?</p>
+    <div class="mt-10">
+      <h3>♥오늘 영업 끝!!♥</h3>
+      <span>오늘 하루 수고하셨습니다!</span>
+    </div>
+    <div class="mt-10">
+      <p>
+        <strong>{{ storeName }}매장</strong>의 영업을 정말로 종료하시겠습니까?
+      </p>
+      <!--글자 사이즈 줄이고 빨간색으로 표시할부분!-->
+      <span
+        >💥영업을 종료하시면 <br />오늘 등록하신 마감할인 상품이 전부
+        <strong id="redColor">초기화</strong>됩니다💥</span
+      >
+    </div>
     <br />
     <br />
-    <span
-      >영업을 종료하시면 <br />오늘 등록하신 마감할인 상품이 <br />전부
-      <strong id="redColor">초기화</strong>됩니다</span
-    >
+
     <div>
-      <button @click="realClose" class="border-m radius-m">
-        예 영업을 종료합니다
-      </button>
-      <button @click="noClose" class="border-m radius-m">아니오</button>
+      <b-container class="bv-example-row">
+        <b-row align-h="around">
+          <b-col cols="4">
+            <button @click="noClose" class="border-l radius-m">아니오</button>
+          </b-col>
+          <b-col cols="4">
+            <button @click="realClose" class="border-l radius-m">
+              영업종료
+            </button>
+          </b-col>
+        </b-row>
+      </b-container>
     </div>
   </div>
 </template>
