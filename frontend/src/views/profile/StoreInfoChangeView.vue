@@ -41,6 +41,7 @@
           ></b-form-input>
         </b-form-group>
         <br />
+
         <!--매장위치 -->
         <b-form-group
           class="d-flex justify-content-between"
@@ -55,6 +56,30 @@
             placeholder="매장위치"
             required
           ></b-form-input>
+          
+          <!-- -----------가게 주소 입력-------------- -->
+          <div class="position-box">
+            <v-text-field
+              v-model="address"
+              label="가게 주소를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              type="address"
+              @input="$v.address.$touch()"
+              @blur="$v.address.$touch()"
+            ></v-text-field>
+          </div>
+            <v-text-field
+              v-model="extraAddress"
+              label="상세 주소를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              type="address"
+              @input="$v.address.$touch()"
+              @blur="$v.address.$touch()"
+            ></v-text-field>
           <button
             class="border-m radius-m address-btn"
             @click="execDaumPostcode()"
