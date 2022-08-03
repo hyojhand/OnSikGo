@@ -243,7 +243,6 @@ export default {
         })
         .then((response) => {
         if ((response.status) == 200) {
-          console.log(response.data);
           alert("인증번호 확인이 되었습니다.");
           this.check1 = true;
         } else {
