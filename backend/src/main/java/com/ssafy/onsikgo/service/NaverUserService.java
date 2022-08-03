@@ -1,17 +1,19 @@
 package com.ssafy.onsikgo.service;
 
+import com.ssafy.onsikgo.dto.LoginDto;
 import com.ssafy.onsikgo.dto.UserDto;
 import com.ssafy.onsikgo.entity.LoginType;
+import com.ssafy.onsikgo.entity.Role;
 import com.ssafy.onsikgo.entity.User;
 import com.ssafy.onsikgo.repository.UserRepository;
-import com.ssafy.onsikgo.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,20 +22,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class NaverUserService implements SocialUserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserService userService;
 
     @Override
     @Transactional
     public UserDto getUserInfoByAccessToken(String access_token) {
-        String reqURL = "https://kapi.kakao.com/v2/user/me";
+        String reqURL = "https://openapi.naver.com/v1/nid/me";
         String result = "";
         try {
 
@@ -62,36 +63,27 @@ public class NaverUserService implements SocialUserService {
             e.printStackTrace();
         }
         UserDto userDto = StringToDto(result);
-        User user = userRepository.findByEmail(userDto.getEmail()).orElse(null);
+
+        Optional<User> user = userRepository.findByEmail(userDto.getEmail());
         // 일치하는 회원 X -> 가입
-        if (user == null) {
-            userRepository.save(userDto.toEntity(LoginType.NAVER));
-            log.info("회원가입 완료");
+        if (!user.isPresent()) {
+            userService.signup(userDto, LoginType.NAVER);
         }
         return userDto;
-        // // 이미 가입된 이메일
-        // if(!user.getLoginType().equals(LoginType.NAVER)){
-        // return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        // }
-        // else{
-        // UsernamePasswordAuthenticationToken authenticationToken =
-        // new UsernamePasswordAuthenticationToken(userDto.getEmail(),
-        // userDto.getPassword());
-        //
-        // Authentication authentication =
-        // authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        // SecurityContextHolder.getContext().setAuthentication(authentication);
-        // String jwt = tokenProvider.createToken(authentication);
-        //
-        // HttpHeaders httpHeaders = new HttpHeaders();
-        // httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        //
-        //
-        // // TokenDto에도 넣어서 RequestBody로 리턴해준다
-        // return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
-        // }
     }
+    @Override
+    public HttpEntity<? extends Object> login(UserDto userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail()).orElse(null);
+        // 이미 가입된 이메일
+        if (!user.getLoginType().toString().equals(LoginType.NAVER.toString())) {
+            return new ResponseEntity<>("이미 가입된 메일입니다.", HttpStatus.NO_CONTENT);
+        }
+        LoginDto loginDto = new LoginDto();
+        loginDto.setEmail(userDto.getEmail());
+        loginDto.setPassword(userDto.getPassword());
 
+        return userService.login(loginDto);
+    }
     @Override
     public UserDto StringToDto(String userInfo) {
         UserDto userDto = new UserDto();
@@ -101,12 +93,12 @@ public class NaverUserService implements SocialUserService {
             JSONObject jsonObj = (JSONObject) parser.parse(userInfo);
             JSONObject account = (JSONObject) jsonObj.get("response");
 
+            userDto.setRole(Role.USER);
+            userDto.setUserName(account.get("name").toString());
             userDto.setEmail(account.get("email").toString());
             userDto.setNickname(account.get("nickname").toString());
             userDto.setImgUrl(account.get("profile_image").toString());
-            userDto.setPassword(passwordEncoder.encode(account.get("id").toString()));
-
-            log.debug(userDto.toString());
+            userDto.setPassword(account.get("id").toString());
 
         } catch (ParseException e) {
             e.printStackTrace();

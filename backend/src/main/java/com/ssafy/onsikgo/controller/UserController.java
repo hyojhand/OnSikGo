@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.HashMap;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -99,7 +98,9 @@ public class UserController {
     }
 
     @PostMapping("/naver")
-    public UserDto naverLogin(@RequestBody HashMap<String, String> param) {
-        return naverUserService.getUserInfoByAccessToken(param.get("access_token"));
+    public HttpEntity<?> naverLogin(@RequestBody HashMap<String, String> param) {
+        naverUserService.getUserInfoByAccessToken(param.get("access_token"));
+        UserDto userDto = naverUserService.getUserInfoByAccessToken(param.get("access_token"));
+        return naverUserService.login(userDto);
     }
 }
