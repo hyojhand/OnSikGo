@@ -81,7 +81,7 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 2" 
-          v-bind:disabled="check1 == false">
+          >
           다음으로</button>
         </div>
       </v-stepper-content>
@@ -157,7 +157,7 @@
               @input="$v.identify.$touch()"
               @blur="$v.identify.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="tempAlert">
+            <button class="border-m radius-m address-btn" @click="checkOwner()">
               등록하기
             </button>
           </div>
@@ -168,7 +168,7 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 3" 
-          v-bind:disabled="check2 == false">다음으로</button>
+          >다음으로</button>
         </div>
       </v-stepper-content>
 
@@ -208,11 +208,13 @@
 
           <!-- -------------휴무일 입력---------------- -->
           <v-select
-            v-model="offDay"
             :items="days"
+            v-model="off"
             label="휴무일을 입력해주세요."
             multiple
             chips
+            @input = "$v.off.$touch()"
+            @blur= "$v.off.$touch()"
           ></v-select>
 
           <!-- ------------카테고리셀렉트 박스----------- -->
@@ -284,6 +286,7 @@ export default {
       identify: "",
       end: "",
       category: "",
+      off: "",
       checkmsg: "메일 인증하기",
       sendMail: false,
       authNum: "",
@@ -297,8 +300,17 @@ export default {
         {value: 'DESSERT', text: '디저트'},
         {value: 'INGREDIENT', text: '식자재'},
       ],
-      days: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
-      offDay: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+      // days: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
+      // offDay: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+      days: [
+        {value: '월', text: '월요일'},
+        {value: '화', text: '화요일'},
+        {value: '수', text: '수요일'},
+        {value: '목', text: '목요일'},
+        {value: '금', text: '금요일'},
+        {value: '토', text: '토요일'},
+        {value: '일', text: '일요일'},
+      ],
     };
   },
 
@@ -421,9 +433,26 @@ export default {
       }).open();
     },
 
-    tempAlert() {
-      alert("인증 확인");
+    // tempAlert() {
+    //   alert("인증 확인");
+    // },
+
+    // 사업자 등록번호 인증
+    checkOwner() {
+      // const url = "https://api.odcloud.kr/api/nts-businessman/v1/status"
+      // console.log(url);
+        // .post(BASE_URL, {
+        //   b_no: this.identify
+        // })
+        // .then((response) => {
+        //   if (response.status == 200) {
+        //     alert("사업자 번호가 확인되었습니다.");
+        //   } else {
+        //     alert("다시 확인해주시길 바랍니다.");
+        //   }
+        // });
     },
+
     // 이메일 중복 확인 및 인증 번호 전송
     isCheck() {
       http
@@ -432,7 +461,7 @@ export default {
         })
         .then((response) => {
         if (response.status == 200) {
-          alert("인증번호를 확인해주세요");
+          alert("인증번호를 확인해주세요.");
           this.sendMail = true;
           this.checkmsg = "재전송하기";
         } else {
@@ -458,6 +487,8 @@ export default {
       });
     },
     signup() {
+      console.log(this.off);
+      console.log(this.off.join());
       http.post("/user/signup/owner", {
         email: this.email,
         password: this.password,
@@ -468,7 +499,7 @@ export default {
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
-        offDay: this.offDay,
+        offDay: this.off.join(),
         category: this.category,
       });
       this.$router.push("/signup/complete");
