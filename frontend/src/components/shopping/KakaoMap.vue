@@ -94,12 +94,26 @@ export default {
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
 
         var marker = new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(store[0], store[1]), // 마커를 표시할 위치
+            position: new kakao.maps.LatLng(store.saleDto.storeDto.lat, store.saleDto.storeDto.lng), // 마커를 표시할 위치
             // title : positions[i].title, 
-            image : markerImage // 마커 이미지 
+            image : markerImage, // 마커 이미지
+            clickable: true,
           });
+        var infowindow = new kakao.maps.InfoWindow({
+            content: 
+              `<div>${store.saleDto.storeDto.storeName}</div>
+  
+              <div>${store.saleDto.storeDto.tel}</div>
+              <div>공휴일 : ${store.saleDto.storeDto.offDay}</div>
+              <div>마감시간 : ${store.saleDto.storeDto.closingTime}</div>` // 인포윈도우에 표시할 내용
+        });
           // console.log(this.map)
-          marker.setMap(this.map);
+        
+
+        kakao.maps.event.addListener(marker, 'mouseover', this.makeOverListener(this.map, marker, infowindow));
+        kakao.maps.event.addListener(marker, 'mouseout', this.makeOutListener(infowindow));
+
+        marker.setMap(this.map);
       })
     },
       
@@ -127,7 +141,19 @@ export default {
       };
       geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
     },
+    // 인포원도우를 표시하는 클로지를 만드는 함수
+    makeOverListener(map, marker, infowindow) {
+        return function() {
+            infowindow.open(map, marker);
+        };
+    },
 
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+    makeOutListener(infowindow) {
+        return function() {
+            infowindow.close();
+        };
+    }
   },
 };
 </script>
