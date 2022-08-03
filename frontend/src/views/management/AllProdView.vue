@@ -175,7 +175,6 @@ export default {
 
   methods: {
     selectPage(index) {
-      console.log(index);
       this.page = index - 1;
       http
         .post(`/item/page/${this.storeId}`, {
@@ -202,10 +201,10 @@ export default {
       }
     },
     prodregister() {
-      this.$router.push("/allprod/register");
-    },
-    selectStore() {
-      this.storeId = event.target.value;
+      this.$router.push({
+        name: "prodRegister",
+        // params: { storeId: this.storeId },
+      });
     },
     keywordSelect() {
       http
@@ -221,6 +220,10 @@ export default {
       http.get(`/item/list/${this.storeId}`).then((response) => {
         this.items = response.data;
       });
+    },
+    selectStore(event) {
+      this.storeId = event.target.value;
+      this.selectPage(1);
     },
   },
 };
