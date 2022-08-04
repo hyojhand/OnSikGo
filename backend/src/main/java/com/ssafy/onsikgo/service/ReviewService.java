@@ -123,4 +123,13 @@ public class ReviewService {
         return new ResponseEntity<>("리뷰가 신고되었습니다.", HttpStatus.OK);
     }
 
+    public ResponseEntity<List<ReviewDto>> getTotal() {
+        List<Review> allReview = reviewRepository.findAll();
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+        for(Review review : allReview) {
+            reviewDtoList.add(review.toDto());
+        }
+
+        return new ResponseEntity<>(reviewDtoList, HttpStatus.OK);
+    }
 }

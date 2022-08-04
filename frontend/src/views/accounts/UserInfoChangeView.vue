@@ -2,12 +2,10 @@
   <div>
     <!--프로필 이미지 업로드-->
     <div class="mt-5">
-      <img :src="`${userDto.imgUrl}`" height="200" width="200" />
-      <div class="mt-5">
-        <p class="d-flex justify-content-end">
-          <input v-on:change="fileSelect()" type="file" ref="imgFile" />
-        </p>
-      </div>
+      <b-img :src="previewImg" height="150px" width="150px" />
+      <p class="d-flex justify-content-end">
+        <input @change="fileSelect" type="file" />
+      </p>
     </div>
 
     <div class="ml-4 mr-16 mt-10">
@@ -80,6 +78,7 @@ export default {
       imgFile: null,
       userDto: {},
       nicknameDuple: false,
+      previewImg: null,
     };
   },
 
@@ -89,6 +88,7 @@ export default {
 
     await http.get("/user").then((response) => {
       this.userDto = response.data;
+      this.previewImg = this.userDto.imgUrl;
       this.role = response.data.role;
     });
   },
@@ -137,8 +137,19 @@ export default {
           }
         });
     },
-    fileSelect() {
-      this.imgFile = this.$refs.imgFile.files[0];
+    fileSelect(event) {
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+      this.imgFile = input.files[0];
     },
   },
 };
@@ -160,7 +171,6 @@ export default {
   border: none;
   display: inline-block;
   border-radius: 5px;
-  text-decoration: none;
   margin: 5 10;
   padding: 10 10;
   box-sizing: border-box;

@@ -2,10 +2,10 @@
   <div>
     <!--이미지 변경 & 수정-->
     <br />
-    <img :src="`${storeDto.storeImgUrl}`" width="200" height="150" />
+      <b-img :src="previewImg" height="150px" width="200px" />
     <div class="mt-5">
       <p class="d-flex justify-content-end">
-        <input v-on:change="fileSelect()" type="file" ref="imgFile" />
+        <input @change="fileSelect" type="file" />
       </p>
     </div>
     <br />
@@ -213,6 +213,7 @@ export default {
         registernum: "",
         value: "",
       },
+      previewImg:null,
       show: true,
       address: "",
       extraAddress: "",
@@ -238,11 +239,23 @@ export default {
   created() {
     http.get(`/store/${this.$route.params.storeId}`).then((response) => {
       this.storeDto = response.data;
+      this.previewImg = this.storeDto.storeImgUrl;
       console.log(this.storeDto);
     });
   },
   methods: {
-    fileSelect() {
+    fileSelect(event) {
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = e => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
       this.imgFile = this.$refs.imgFile.files[0];
     },
     resetStoreDto() {

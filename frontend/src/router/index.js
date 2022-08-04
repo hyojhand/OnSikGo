@@ -16,6 +16,8 @@ import OwnerInfoChangeView from "../views/accounts/OwnerInfoChangeView.vue";
 import UserInfoChangeView from "../views/accounts/UserInfoChangeView.vue";
 import PasswordChangeView from "../views/accounts/PasswordChangeView.vue";
 import storeAddView from "../views/accounts/storeAddView.vue";
+// 관리자 페이지
+import AdminView from "../views/admin/AdminView.vue";
 // 알림+
 import NoticeView from "../views/notice/NoticeView.vue";
 import NoticeUserView from "../views/notice/NoticeUserView.vue";
@@ -140,6 +142,15 @@ const routes = [
     component: PasswordChangeView,
     meta: {
       title: "비밀번호변경",
+    },
+  },
+  // 관리자 페이지
+  {
+    path: "/admin",
+    name: "admin",
+    component: AdminView,
+    meta: {
+      title: "관리자 페이지",
     },
   },
   // 알림
