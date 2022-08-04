@@ -16,7 +16,6 @@
               </div>
             </div>
             <div class="col-6 mt-5">
-              <span>{{}}</span>
               <span id="text"> {{ content }}</span>
             </div>
             <div class="col-3 mt-5">
@@ -32,7 +31,7 @@
 </template>
 
 <script>
-// import http from "@/util/http-common";
+import http from "@/util/http-common";
 export default {
   name: "reviewList",
   props: {
@@ -42,9 +41,15 @@ export default {
     reported: Boolean,
     storeDto: [],
     userImgUrl: String,
+    reviewId: Number,
   },
   methods: {
-    reviewdelete() {},
+    reviewdelete() {
+      http.delete(`/review/${this.reviewId}`).then((response) => {
+        console.log(response.data);
+        alert("리뷰가 삭제되었습니다.");
+      });
+    },
   },
 };
 </script>
