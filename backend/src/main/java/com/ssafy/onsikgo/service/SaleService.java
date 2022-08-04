@@ -249,12 +249,10 @@ public class SaleService {
 //        Optional<Store> findStore = storeRepository.findById(store_id);
 //
 //        PageRequest page = PageRequest.of(pageDto.getPage(), pageDto.getSize());
-//        Page<Sale> salePage = saleRepository.findByStoreAndDate(findStore.get(), date, page);
+//        Page<Sale> salePage = saleRepository.findByStoreAndDateAndClosedFalse(findStore.get(), date, page);
 //
-//        Page<SaleDto> map = page.map(sale -> new SaleDto(sale.get))
-//
-//        Page<ItemDto> map = page.map(item -> new ItemDto(item.getItemId(),item.getItemName(),item.getPrice(),
-//                item.getItemImgUrl(), item.getComment()));
+//        Page<SaleDto> map = salePage.map(sale -> new SaleDto(sale.getSaleId(), sale.getStore().toDto(),
+//                sale.getTotalPrice(),sale.getDate(),sale.getClosed()));
 //
 //        return new ResponseEntity<>(map, HttpStatus.OK);
 //    }
