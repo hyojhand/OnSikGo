@@ -1,13 +1,11 @@
 <template>
   <div>
-    <b-card>
+    <card id="regular-card">
       <b-row>
-        <b-col md="3">
-          <div id="tobecenter">
-            <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
-          </div>
+        <b-col md="3" class="ml-4 mt-6">
+          <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
         </b-col>
-        <b-col class="ml-2" md="7">
+        <b-col class="ml-2 mt-3" md="8">
           <div class="text-align-center" id="cardInText">
             <br />
             <span>{{ storeName }}</span>
@@ -19,16 +17,15 @@
             <span>오늘 매장 할인 물품 개수: {{ saleItemDtoList.length }}</span>
             <br />
           </div>
-          <div class="d-flex justify-content-end">
+          <div class="d-flex justify-content-end mr-4">
             <router-link
-              class="store-moving"
               :to="{ name: 'storeView', params: { storeId: this.storeId } }"
-              >가게보기</router-link
+              ><button class="store-moving">가게보기</button></router-link
             >
           </div>
         </b-col>
       </b-row>
-    </b-card>
+    </card>
   </div>
 </template>
 
@@ -75,5 +72,26 @@ export default {
 #cardInText {
   text-align: left;
   font-size: 10px;
+}
+#regular-card {
+  height: 150px;
+  width: 400px;
+  border-radius: 15px;
+  display: inline-block;
+  margin-top: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  overflow: hidden;
+}
+.store-moving {
+  height: 25px;
+  border-width: 1px;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  color: #368f3d;
+  width: 70px;
+  border-color: #368f3d;
 }
 </style>

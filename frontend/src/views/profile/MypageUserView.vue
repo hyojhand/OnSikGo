@@ -14,12 +14,8 @@
     </div>
     <br /><br />
     <div id="space-even">
-      <b-button @click="orderlist()" pill variant="outline-success"
-        >주문내역</b-button
-      >
-      <b-button @click="reviewlist()" pill variant="outline-success"
-        >리뷰내역</b-button
-      >
+      <button @click="orderlist()" id="mypage-btn">주문내역</button>
+      <button @click="reviewlist()" id="mypage-btn">리뷰내역</button>
     </div>
     <br />
     <hr />
@@ -86,5 +82,18 @@ export default {
 #space-even {
   display: flex;
   justify-content: space-evenly;
+}
+#mypage-btn {
+  height: 40px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #368f3d;
+  color: #ffffff;
+  width: 100px;
 }
 </style>
