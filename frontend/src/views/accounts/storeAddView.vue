@@ -2,21 +2,9 @@
   <div>
     <form>
       <div class="mt-5">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="250"
-          height="250"
-          fill="currentColor"
-          class="bi bi-image"
-          viewBox="0 0 16 16"
-        >
-          <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-          <path
-            d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"
-          />
-        </svg>
+      <b-img :src="previewImg" height="200px" width="200px" />
         <p class="d-flex justify-content-end">
-          <input v-on:change="fileSelect()" type="file" ref="imgFile" />
+          <input @change="fileSelect" type="file" />        
         </p>
       </div>
 
@@ -168,6 +156,7 @@ export default {
   data() {
     return {
       imgFile: null,
+      previewImg:null,
       store: "",
       address: "",
       tel: "",
@@ -184,13 +173,13 @@ export default {
         { value: "INGREDIENT", text: "식자재" },
       ],
       days: [
-        { value: "월", text: "월요일" },
-        { value: "화", text: "화요일" },
-        { value: "수", text: "수요일" },
-        { value: "목", text: "목요일" },
-        { value: "금", text: "금요일" },
-        { value: "토", text: "토요일" },
-        { value: "일", text: "일요일" },
+        { value: "월요일", text: "월요일" },
+        { value: "화요일", text: "화요일" },
+        { value: "수요일", text: "수요일" },
+        { value: "목요일", text: "목요일" },
+        { value: "금요일", text: "금요일" },
+        { value: "토요일", text: "토요일" },
+        { value: "일요일", text: "일요일" },
       ],
       storeDto: [],
     };
@@ -219,11 +208,22 @@ export default {
   // },
 
   methods: {
-    fileSelect() {
-      console.log(this.$refs);
-      this.imgFile = this.$refs.imgFile.files[0];
-      console.log(this.imgFile);
-    },
+    fileSelect(event) {
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = e => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+
+      this.imgFile = input.files[0];
+
+},
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
@@ -275,7 +275,7 @@ export default {
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
-        offDay: this.off,
+        offDay: this.off.join(),
         category: this.category,
       };
       console.log(this.storeDto);
@@ -297,7 +297,7 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             alert("매장이 추가 완료되었습니다");
-            this.$router.push("/mypageOwner");
+            this.$router.push("/mypage/owner");
           } else {
             alert("매장 추가가 완료되지 않았습니다.");
           }

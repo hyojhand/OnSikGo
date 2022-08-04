@@ -28,24 +28,21 @@ export default {
   created() {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
-    // http
-    //   .post("/review/user", {
-    //     nickname: this.$route.params.nickname,
-    //   })
-    //   .then((response) => {
-    //     console.log(this.reviewList);
-    //     if (response.status == 200) {
-    //       if (response.data != null) {
-    //         this.reviewList = response.data;
-    //         console.log(this.reviewList);
-    //       } else {
-    //         alert("리뷰가 없습니다.");
-    //       }
-    //     }
-    //   });
-    http.get("/review/user").then((response) => {
-      console.log(response.data);
-    });
+    http
+      .post("/review/user", {
+        nickname: this.$route.params.nickname,
+      })
+      .then((response) => {
+        console.log(this.reviewList);
+        if (response.status == 200) {
+          if (response.data != null) {
+            this.reviewList = response.data;
+            console.log(this.reviewList);
+          } else {
+            alert("리뷰가 없습니다.");
+          }
+        }
+      });
   },
 };
 </script>
