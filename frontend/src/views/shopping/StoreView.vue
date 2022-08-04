@@ -32,7 +32,7 @@
     <div>
       <!--지도표시부분-->
       <div>
-        <kakao-map></kakao-map>
+        <store-kakao-map></store-kakao-map>
       </div>
       <div class="mt-2">
         <ul class="content">
@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import KakaoMap from "@/components/shopping/KakaoMap";
+import StoreKakaoMap from "@/components/shopping/StoreKakaoMap";
 import StoreProductItem from "@/components/shopping/StoreProductItem.vue";
 import StoreReview from "@/components/shopping/StoreReview.vue";
 import http from "@/util/http-common";
@@ -118,7 +118,7 @@ export default {
   name: "StoreView",
 
   components: {
-    KakaoMap,
+    StoreKakaoMap,
     StoreProductItem,
     StoreReview,
   },
@@ -143,6 +143,7 @@ export default {
 
     await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
+      console.log(this.storeDto)
     });
 
     await http.get(`/sale/list/${this.getStoreId}`).then((response) => {
@@ -158,7 +159,7 @@ export default {
   },
   methods: {
     onClickTab(tab) {
-      this.selectedTab = tab;
+        this.selectedTab = tab;
     },
     selectReview() {
       http.get(`/review/store/${this.getStoreId}`).then((response) => {
