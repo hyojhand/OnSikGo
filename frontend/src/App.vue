@@ -276,7 +276,7 @@ export default {
     return {
       drawer: false,
       setting: false,
-      // 일반 유저 0, 업주 1
+      // 일반 유저 0, 업주 1, 관리자 3
       userState: 0,
       title: document.title,
       pageType: true,
