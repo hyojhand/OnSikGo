@@ -1,49 +1,30 @@
 <template>
   <div>
-    <p>지금 내 매장 이름</p>
-    <br />
-    <h3>이번 주 매장 남은 재고량</h3>
-    <h5>상위 5개의 제품</h5>
-
     <!--현재 내 날짜로부터 7일전날짜부터 ~ 현재 날짜 -->
-    <div id="date">
-      <p>22.07.18-22.07.24</p>
-    </div>
-    <doughnut-chart></doughnut-chart>
-    <br />
-    <br />
+    <p>지금 내 매장 이름</p>
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
-    <h1>상위 5개의 제품</h1>
-    <div class="d-flex justify-content-center">
-      <ul>
-        <li>첫번째 많이 버려진 상품</li>
-        <li>두번째 많이 버려진 상품</li>
-        <li>세번째 많이 버려진 상품</li>
-        <li>네번째 많이 버려진 상품</li>
-        <li>다섯번째 많이 버려진 상품</li>
-      </ul>
-    </div>
-    <br />
-    <br />
-    <br />
-    <br />
+    <word-cloud></word-cloud>
+    <h1>차트 보이기</h1>
+    <bar-chart></bar-chart>
+
     <!--판매한 금액의 총금액을 넣음-->
     <div>
       <span
-        >점주님은, 이번주 <strong id="green">온식고</strong>를 통해
-        <br /><strong id="green">얼마원</strong> 가치의 세상을 구하셨어요!</span
+        >점주님은, 이번주 온식고를 통해 얼마원 가치의 세상을 구하셨어요!</span
       >
     </div>
   </div>
 </template>
 
 <script>
-import doughnutChart from "@/components/profile/doughnutChart.vue";
+import barChart from "@/components/profile/barChart.vue";
+import wordCloud from "@/components/profile/wordCloud.vue";
 
 export default {
   name: "dataAnalysisView",
   components: {
-    doughnutChart,
+    barChart,
+    wordCloud,
   },
   data() {
     return {

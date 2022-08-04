@@ -14,7 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/sale")
+@RequestMapping("/api/sale")
 @RequiredArgsConstructor
 public class SaleController {
 
@@ -55,8 +55,4 @@ public class SaleController {
         return saleService.getSaleItemKeyword(selectDto);
     }
 
-//    @PostMapping("/page/{store_id}")
-//    public ResponseEntity<Page<SaleDto>> getSaleListPage(@RequestBody PageDto pageDto, @PathVariable Long store_id) {
-//        return saleService.getSaleListPage(pageDto,store_id);
-//    }
 }

@@ -2,74 +2,87 @@
   <div>
     <!--이미지 변경 & 수정-->
     <br />
-    <img :src="`${storeDto.storeImgUrl}`" />
-    <p class="d-flex justify-content-end">
-      <input v-on:change="fileSelect()" type="file" ref="imgFile" />
-    </p>
+      <b-img :src="previewImg" height="150px" width="200px" />
+    <div class="mt-5">
+      <p class="d-flex justify-content-end">
+        <input @change="fileSelect" type="file" />
+      </p>
+    </div>
     <br />
     <div>
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
         <!--매장명 -->
-        <b-form-group
-          class="d-flex justify-content-between"
-          id="input-group-1"
-          label="매장명"
-          label-for="input-1"
-        >
-          <b-form-input
-            id="input-1"
-            v-model="storeDto.storeName"
-            type="text"
-            placeholder="매장명"
-            required
-          ></b-form-input>
-        </b-form-group>
-        <br />
+        <div class="ml-5 mr-4 mt-3">
+          <b-form-group
+            class="d-flex justify-content-between"
+            id="input-group-1"
+            label="매장명"
+            label-for="input-1"
+          >
+            <b-form-input
+              id="input-1"
+              v-model="storeDto.storeName"
+              type="text"
+              placeholder="매장명"
+              required
+            ></b-form-input>
+          </b-form-group>
+          <br />
+        </div>
         <!--매장전화번호-->
-        <b-form-group
-          class="d-flex justify-content-between"
-          id="input-group-2"
-          label="매장전화번호"
-          label-for="input-2"
-        >
-          <b-form-input
-            id="input-2"
-            v-model="storeDto.tel"
-            type="tel"
-            placeholder="매장 전화번호"
-            required
-          ></b-form-input>
-        </b-form-group>
+        <div class="ml-5 mr-4 mt-3">
+          <b-form-group
+            class="d-flex justify-content-between"
+            id="input-group-2"
+            label="매장전화번호"
+            label-for="input-2"
+          >
+            <b-form-input
+              id="input-2"
+              v-model="storeDto.tel"
+              type="tel"
+              placeholder="매장 전화번호"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
         <br />
 
         <!--매장위치 -->
-        <b-form-group
-          class="d-flex justify-content-between"
-          id="input-group-3"
-          label="매장위치"
-          label-for="input-3"
-        >
-          <b-form-input
-            id="input-3"
-            v-model="storeDto.location"
-            type="text"
-            placeholder="매장위치"
-            required
-          ></b-form-input>
-          
-          <!-- -----------가게 주소 입력-------------- -->
-          <div class="position-box">
-            <v-text-field
-              v-model="address"
-              label="가게 주소를 입력해주세요."
+        <div class="ml-5 mr-4 mt-3">
+          <b-form-group
+            class="d-flex justify-content-between"
+            id="input-group-3"
+            label="매장위치"
+            label-for="input-3"
+          >
+            <b-form-input
+              id="input-3"
+              v-model="storeDto.location"
+              type="text"
+              placeholder="매장위치"
               required
-              class="input-box"
-              color="black"
-              type="address"
-              @input="$v.address.$touch()"
-              @blur="$v.address.$touch()"
-            ></v-text-field>
-          </div>
+            ></b-form-input
+            ><br />
+            <span id="red-small"
+              >가게 주소를 변경하기 위해서는 <br />아래의 "주소 검색" 버튼을
+              눌러주세요</span
+            >
+
+            <!-- -----------가게 주소 입력-------------- -->
+            <div class="position-box">
+              <v-text-field
+                v-model="address"
+                label="가게 주소를 입력해주세요."
+                required
+                class="input-box"
+                color="black"
+                type="address"
+                @input="$v.address.$touch()"
+                @blur="$v.address.$touch()"
+              ></v-text-field>
+            </div>
+
             <v-text-field
               v-model="extraAddress"
               label="상세 주소를 입력해주세요."
@@ -80,121 +93,104 @@
               @input="$v.address.$touch()"
               @blur="$v.address.$touch()"
             ></v-text-field>
-          <button
-            class="border-m radius-m address-btn"
-            @click="execDaumPostcode()"
-          >
-            주소 검색
-          </button>
-        </b-form-group>
+            <div class="d-flex justify-content-end">
+              <button
+                class="border-m radius-m address-btn"
+                @click="execDaumPostcode()"
+              >
+                주소 검색
+              </button>
+            </div>
+          </b-form-group>
+        </div>
         <br />
         <!--사업자등록번호 -->
-        <b-form-group
-          class="d-flex justify-content-between"
-          id="input-group-4"
-          label="사업자등록번호"
-          label-for="input-4"
-        >
-          <b-form-input
-            id="input-4"
-            v-model="storeDto.storeNum"
-            type="text"
-            readonly
-            placeholder="사업자 등록번호"
-            required
-          ></b-form-input>
-          <br />
-        </b-form-group>
+        <div class="ml-5 mr-4 mt-3">
+          <b-form-group
+            class="d-flex justify-content-between"
+            id="input-group-4"
+            label="사업자등록번호"
+            label-for="input-4"
+          >
+            <b-form-input
+              id="input-4"
+              v-model="storeDto.storeNum"
+              type="text"
+              readonly
+              placeholder="사업자 등록번호"
+              required
+            ></b-form-input>
+            <br />
+          </b-form-group>
+        </div>
         <br />
         <!--매장 종료시간-->
-        <b-form-group
-          class="d-flex justify-content-between"
-          id="input-group-5"
-          label="매장 종료 시간"
-          label-for="input-5"
-        >
-          <b-form-input
-            id="input-4"
-            v-model="storeDto.closingTime"
-            type="time"
-            placeholder="매장 종료시간"
-            required
-          ></b-form-input>
-          <!-- <b-form-timepicker v-model="value" locale="ko"></b-form-timepicker> -->
-        </b-form-group>
+        <div class="ml-5 mr-4 mt-3">
+          <b-form-group
+            class="d-flex justify-content-between"
+            id="input-group-5"
+            label="매장 종료 시간"
+            label-for="input-5"
+          >
+            <b-form-input
+              id="input-5"
+              v-model="storeDto.closingTime"
+              type="time"
+              placeholder="매장 종료시간"
+              required
+            ></b-form-input>
+            <!-- <b-form-timepicker v-model="value" locale="ko"></b-form-timepicker> -->
+          </b-form-group>
+        </div>
         <br />
-
-        <!--매장 휴무일-->
-        <!-- <b-form-group
-          class="d-flex justify-content-between"
-          id="input-group-5"
-          label="매장 휴무일"
-          label-for="input-5"
-        >
-          <b-form-input
-            id="input-4"
-            v-model="storeDto.offDay"
-            type="text"
-            placeholder="매장 휴무일"
-            required
-          ></b-form-input>
-        </b-form-group> -->
 
         <!-- -------------휴무일 입력---------------- -->
-        <v-select
-          :items="days"
-          v-model="storeDto.offDay"
-          label="휴무일을 입력해주세요."
-          multiple
-          chips
-          @input="$v.storeDto.offDay.$touch()"
-          @blur="$v.storeDto.offDay.$touch()"
-        ></v-select>
-
-        <!-- 카테고리 -->
-        <!-- <b-form-group
-          class="d-flex justify-content-between"
-          id="input-group-5"
-          label="카테고리"
-          label-for="input-5"
-        >
-          <b-form-input
-            id="input-4"
-            v-model="storeDto.category"
-            type="text"
-            placeholder="카테고리"
+        <div class="ml-5 mr-4 mt-3">
+          <v-select
+            :items="days"
+            v-model="off"
+            label="휴무일을 입력해주세요."
+            multiple
+            chips
             required
-          ></b-form-input>
-        </b-form-group> -->
-
+            @input="$v.off.$touch()"
+            @blur="$v.off.$touch()"
+          ></v-select>
+          <span id="red-small"
+            >변경하지 않는다면 그대로 휴무일이 유지됩니다</span
+          >
+        </div>
         <!-- ------------카테고리셀렉트 박스----------- -->
-        <v-select
-          :items="items"
-          v-model="storeDto.category"
-          label="카테고리를 선택해주세요."
-          required
-          color="black"
-          @input="$v.storeDto.category.$touch()"
-          @blur="$v.storeDto.category.$touch()"
-        ></v-select>
-
+        <div class="ml-5 mr-4 mt-3">
+          <v-select
+            :items="items"
+            v-model="storeDto.category"
+            label="카테고리를 선택해주세요."
+            required
+            color="black"
+            @input="$v.storeDto.category.$touch()"
+            @blur="$v.storeDto.category.$touch()"
+          ></v-select>
+        </div>
         <br />
         <!--form 끝-->
-        <div class="d-flex justify-content-between">
-          <b-button
-            type="reset"
-            pill
-            variant="outline-danger"
-            @click="resetStoreDto()"
-            >초기화</b-button
-          >
-          <b-button
-            type="submit"
-            pill
-            variant="outline-success"
-            @click="modifyStore()"
-            >수정완료</b-button
-          >
+        <div class="ml-5 mr-4 mt-3 mb-16">
+          <div class="d-flex justify-content-between">
+            <b-button
+              type="reset"
+              pill
+              variant="outline-danger"
+              @click="resetStoreDto()"
+              >초기화</b-button
+            >
+            <b-button
+              type="submit"
+              pill
+              variant="outline-success"
+              @click="modifyStore()"
+              >수정완료</b-button
+            >
+          </div>
         </div>
       </b-form>
     </div>
@@ -207,7 +203,9 @@ export default {
   name: "StoreInfoChangeView",
   data() {
     return {
+      imgFile: null,
       storeDto: {},
+      off: "",
       form: {
         store: "",
         phone: "",
@@ -215,9 +213,19 @@ export default {
         registernum: "",
         value: "",
       },
+      previewImg:null,
       show: true,
       address: "",
       extraAddress: "",
+      days: [
+        { value: "월요일", text: "월요일" },
+        { value: "화요일", text: "화요일" },
+        { value: "수요일", text: "수요일" },
+        { value: "목요일", text: "목요일" },
+        { value: "금요일", text: "금요일" },
+        { value: "토요일", text: "토요일" },
+        { value: "일요일", text: "일요일" },
+      ],
       items: [
         { value: "KOREA", text: "한식" },
         { value: "JAPAN", text: "일식" },
@@ -226,24 +234,30 @@ export default {
         { value: "DESSERT", text: "디저트" },
         { value: "INGREDIENT", text: "식자재" },
       ],
-      days: [
-        { value: "월", text: "월요일" },
-        { value: "화", text: "화요일" },
-        { value: "수", text: "수요일" },
-        { value: "목", text: "목요일" },
-        { value: "금", text: "금요일" },
-        { value: "토", text: "토요일" },
-        { value: "일", text: "일요일" },
-      ],
     };
   },
   created() {
     http.get(`/store/${this.$route.params.storeId}`).then((response) => {
       this.storeDto = response.data;
+      this.previewImg = this.storeDto.storeImgUrl;
       console.log(this.storeDto);
     });
   },
   methods: {
+    fileSelect(event) {
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = e => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+      this.imgFile = this.$refs.imgFile.files[0];
+    },
     resetStoreDto() {
       this.storeDto = {};
     },
@@ -288,15 +302,15 @@ export default {
     },
 
     modifyStore() {
-      console.log(this.storeDto.offday);
+      this.storeDto.offDay = this.off.join();
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
 
       const formData = new FormData();
-      formData.append("file", this.storeDto.storeImgUrl);
+      formData.append("file", this.imgFile);
       formData.append(
         "storeDto",
-        new Blob([JSON.stringify(this.storeDto), { type: "application/json" }])
+        new Blob([JSON.stringify(this.storeDto)], { type: "application/json" })
       );
       http
         .put(`/store/${this.storeDto.storeId}`, formData, {
@@ -307,7 +321,7 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             alert("가게정보 수정완료");
-            this.$router.push("mypageOwner");
+            this.$router.push({ name: "mypageOwner" });
           }
         });
     },
@@ -333,4 +347,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#red-small {
+  color: rgb(222, 124, 39);
+  font-size: 0.75rem;
+}
+</style>

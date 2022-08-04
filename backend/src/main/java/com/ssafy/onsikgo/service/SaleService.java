@@ -214,48 +214,24 @@ public class SaleService {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
         String time = now.format(timeFormatter);
-        if(Integer.parseInt(time) < 6) {
+        if (Integer.parseInt(time) < 6) {
             now = now.minusDays(1);
         }
 
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = now.format(dayFormatter);
 
-        List<SaleItem> saleItemKeywordList = saleItemRepository.findSaleItemKeyword(selectDto.getKeyword(),date);
+        List<SaleItem> saleItemKeywordList = saleItemRepository.findSaleItemKeyword(selectDto.getKeyword(), date);
         List<SaleItemDto> saleItemDtoList = new ArrayList<>();
-        for(int i = 0; i < saleItemKeywordList.size(); i++) {
+        for (int i = 0; i < saleItemKeywordList.size(); i++) {
             SaleItem saleItem = saleItemKeywordList.get(i);
             Sale sale = saleItem.getSale();
             Store store = sale.getStore();
             ItemDto itemDto = saleItem.getItem().toDto();
-            SaleItemDto saleItemDto = saleItemKeywordList.get(i).toDto(itemDto,sale.toDto(store.toDto()));
+            SaleItemDto saleItemDto = saleItemKeywordList.get(i).toDto(itemDto, sale.toDto(store.toDto()));
             saleItemDtoList.add(saleItemDto);
         }
 
         return new ResponseEntity<>(saleItemDtoList, HttpStatus.OK);
     }
-
-//    public ResponseEntity<Page<SaleDto>> getSaleListPage(PageDto pageDto, Long store_id) {
-//        LocalDateTime now = LocalDateTime.now();
-//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
-//        String time = now.format(timeFormatter);
-//        if(Integer.parseInt(time) < 6) {
-//            now = now.minusDays(1);
-//        }
-//
-//        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-//        String date = now.format(dayFormatter);
-//
-//        Optional<Store> findStore = storeRepository.findById(store_id);
-//
-//        PageRequest page = PageRequest.of(pageDto.getPage(), pageDto.getSize());
-//        Page<Sale> salePage = saleRepository.findByStoreAndDate(findStore.get(), date, page);
-//
-//        Page<SaleDto> map = page.map(sale -> new SaleDto(sale.get))
-//
-//        Page<ItemDto> map = page.map(item -> new ItemDto(item.getItemId(),item.getItemName(),item.getPrice(),
-//                item.getItemImgUrl(), item.getComment()));
-//
-//        return new ResponseEntity<>(map, HttpStatus.OK);
-//    }
 }

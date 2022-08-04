@@ -15,10 +15,19 @@
       </div>
       <v-spacer></v-spacer>
       <div class="icon-box">
-        <router-link :to="{ name: 'notice' }">
-          <i class="fa-solid fa-bell" width="24px" height="16"></i>
-        </router-link>
-        <v-spacer></v-spacer>
+        <div v-if="logincheck === false">
+          <router-link :to="{ name: 'login' }">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          </router-link>
+        </div>
+        <div v-else>
+          <router-link :to="{ name: 'notice' }" v-if="userState === 1">
+            <i class="fa-solid fa-bell" width="24px" height="16"></i>
+          </router-link>
+          <router-link :to="{ name: 'noticeUser' }" v-else>
+            <i class="fa-solid fa-bell" width="24px" height="16"></i>
+          </router-link>
+        </div>
         <!-- 마이페이지 일 경우에 톱니바퀴도 보이기 -->
         <button v-if="title === '마이페이지'" @click.stop="setting = !setting">
           <svg
@@ -111,12 +120,40 @@
           </svg>
         </v-list>
         <!-- 토글바 일반 유저 로그인 경우 -->
-        <v-list v-else nav>
+        <v-list v-else-if="userState === 0" nav>
           <v-list-item
             v-for="item in users"
             :key="item.title"
             :to="item.router"
           >
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="25"
+            height="25"
+            fill="currentColor"
+            class="bi bi-box-arrow-in-right"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
+            />
+            <path
+              fill-rule="evenodd"
+              d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+            />
+          </svg>
+        </v-list>
+        <!-- 토글바 관리자 로그인 경우 -->
+        <v-list v-else nav>
+          <v-list-item
+            v-for="item in admins"
+            :key="item.title"
+            :to="item.router">
             <v-list-item-content>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
@@ -239,7 +276,7 @@ export default {
     return {
       drawer: false,
       setting: false,
-      // 일반 유저 0, 업주 1
+      // 일반 유저 0, 업주 1, 관리자 3
       userState: 0,
       title: document.title,
       pageType: true,
@@ -270,8 +307,14 @@ export default {
         { title: "전체상품", router: "/allprod" },
         { title: "기부", router: "/donation" },
       ],
+      admins: [
+        { title: "홈", router: "/" },
+        { title: "로그아웃", router: "/logout" },
+        { title: "관리자 페이지", router: "/admin" },
+      ],
+
       settingUsers: [{ title: "회원정보수정", router: "/userinfochange" }],
-      settingOwners: [{ title: "회원정보수정", router: "/ownerinfochange" }],
+      settingOwners: [{ title: "회원정보수정", router: "/userinfochange" }],
       pages: [
         "온식고",
         "기부 페이지",
@@ -312,8 +355,10 @@ export default {
       http.get("/user").then((response) => {
         if (response.data.role == "OWNER") {
           this.userState = 1;
-        } else {
+        } else if (response.data.role == "USER") {
           this.userState = 0;
+        } else {
+          this.userState = 3;
         }
       });
     }
