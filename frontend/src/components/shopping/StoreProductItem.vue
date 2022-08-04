@@ -16,9 +16,9 @@
         <div class="product-location">
           매장위치 : {{ saleDto.storeDto.location }}
         </div>
-        <div class="product-prediction">300m, 도보로 3분</div>
+        <div class="product-prediction">현재 위치로 부터 {{distance}}m</div>
         <div class="product-discount">
-          {{ (1 - salePrice / itemDto.price) * 100 }} %
+          {{ ((1 - salePrice / itemDto.price) * 100).toFixed(0) }} %
         </div>
         <span class="price">{{ itemDto.price }} 원 </span>
         <svg
@@ -41,9 +41,7 @@
         <p class="product-quantity">
           재고 : <span class="product-number"> {{ stock }}</span> 개
         </p>
-        <router-link class="product-order" :to="{ name: 'orderView' }"
-          >주문하기</router-link
-        >
+        <button class="border-m radius-s" @click="productOrder(itemId, saleDto.storeDto.storeId)">주문하기</button>
       </div>
     </div>
 
@@ -52,7 +50,9 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from "vuex";
 export default {
+  
   name: "StoreProductItem",
   props: {
     no: Number,
@@ -63,7 +63,61 @@ export default {
     salePrice: Number,
     itemId: Number,
   },
-  created() {},
+  data() {
+    return {
+      distance : ""
+    }
+  },
+  computed: {
+    ...mapGetters("store", [
+      "currentX",
+      "currentY"
+    ]),
+  },
+  created() {
+    this.distance = this.getdistance(this.currentX, this.currentY, this.saleDto.storeDto.lat, this.saleDto.storeDto.lng)
+  },
+  methods: {
+    // 현재 위치 주소 vuex에 넣기
+      ...mapActions("store", [
+        "getItemId",
+        "getOrderStore",
+      ]),
+    getdistance(lat1, lon1, lat2, lon2) {
+      if ((lat1 == lat2) && (lon1 == lon2)){
+        return 0;
+      }
+      var radLat1 = Math.PI * lat1 / 180;
+      var radLat2 = Math.PI * lat2 / 180;
+      var theta = lon1 - lon2;
+      var radTheta = Math.PI * theta / 180;
+      var dist = Math.sin(radLat1) * Math.sin(radLat2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+      if (dist > 1)
+          dist = 1;
+
+      dist = Math.acos(dist);
+      dist = dist * 180 / Math.PI;
+      dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+      if (dist < 100) dist = Math.round(dist / 10) * 10;
+      else dist = Math.round(dist / 100) * 100;
+
+      return dist;
+    },
+    productOrder(itemId,storeId) {
+      if (localStorage.getItem("access-token") == null){
+        this.$router.push({
+          name: "login",
+        })
+      }
+      else {
+        this.getItemId(itemId),
+        this.getOrderStore(storeId)
+        this.$router.push({
+          name: "orderView",
+        })
+      }
+    },
+  }
 };
 </script>
 

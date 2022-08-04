@@ -1,9 +1,6 @@
 <template>
   <div>
     <div id="map"></div>
-    <div class="button-group">
-
-    </div>
   </div>
 </template>
 
@@ -17,11 +14,6 @@ export default {
     return {
       currentxLatitude: 33.452278,
       currentLongitude: 126.567803,
-      markerPositions1: [
-        [35.230016, 129.076428],
-        [35.200016, 129.056428],
-        [35.160016, 129.036428],
-      ],
       markers: [],
       infowindow: null,
     };

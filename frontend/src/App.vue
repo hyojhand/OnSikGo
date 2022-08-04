@@ -15,10 +15,19 @@
       </div>
       <v-spacer></v-spacer>
       <div class="icon-box">
-        <router-link :to="{ name: 'notice' }">
-          <i class="fa-solid fa-bell" width="24px" height="16"></i>
-        </router-link>
-        <v-spacer></v-spacer>
+        <div v-if="logincheck === false">
+          <router-link :to="{ name: 'login' }">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          </router-link>
+        </div>
+        <div v-else>
+          <router-link :to="{ name: 'notice' }" v-if="userState === 1">
+            <i class="fa-solid fa-bell" width="24px" height="16"></i>
+          </router-link>
+          <router-link :to="{ name: 'noticeUser' }" v-else>
+            <i class="fa-solid fa-bell" width="24px" height="16"></i>
+          </router-link>
+        </div>
         <!-- 마이페이지 일 경우에 톱니바퀴도 보이기 -->
         <button v-if="title === '마이페이지'" @click.stop="setting = !setting">
           <svg
