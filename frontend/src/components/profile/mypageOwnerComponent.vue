@@ -93,6 +93,10 @@ export default {
     http.get(`/sale/list/${this.store.storeId}`).then((response) => {
       this.saleItemList = response.data;
     });
+
+    http.get(`/store/close/${this.store.storeId}`).then((response) => {
+      console.log(response.data);
+    });
   },
 };
 </script>

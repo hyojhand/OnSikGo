@@ -30,10 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -277,5 +274,15 @@ public class UserService {
         user.get().changePw(passwordEncoder.encode(temp_pw));
         userRepository.save(user.get());
         return new ResponseEntity<>("임시 비밀번호를 이메일로 보내드렸습니다.",HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<UserDto>> getTotal() {
+        List<User> userList = userRepository.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for(User user : userList) {
+            userDtoList.add(user.toDto());
+        }
+
+        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 }
