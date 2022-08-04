@@ -62,7 +62,7 @@ const store = {
         state.currentY = currentY;
       },
       GET_ORDERSTORE: (state, storeId) => {
-        state.storeId = storeId;
+        state.orderStore = storeId;
       },
       GET_AROUNDSALESTORE: (state, aroundSaleStore) => {
         state.aroundSaleStore = aroundSaleStore;
