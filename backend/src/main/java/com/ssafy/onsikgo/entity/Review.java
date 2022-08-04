@@ -42,6 +42,7 @@ public class Review {
 
     public ReviewDto toDto(){
         return ReviewDto.builder()
+                .reviewId(this.reviewId)
                 .userImgUrl(this.user.getImgUrl())
                 .content(this.content)
                 .createdDate(this.createdDate)
