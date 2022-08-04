@@ -231,6 +231,7 @@ const routes = [
     meta: {
       title: "마이페이지",
     },
+    props: true,
   },
   {
     path: "/mypage/owner/analysis",

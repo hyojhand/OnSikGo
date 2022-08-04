@@ -51,7 +51,7 @@ export default {
       this.stores = response.data;
       this.store = response.data[0];
       this.storeId = response.data[0].storeId;
-      console.log(this.store.storeName);
+      console.log(this.store);
     });
 
     await http.get(`/sale/list/${this.storeId}`).then((response) => {

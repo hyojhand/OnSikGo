@@ -184,13 +184,13 @@ export default {
         { value: "INGREDIENT", text: "식자재" },
       ],
       days: [
-        { value: "월", text: "월요일" },
-        { value: "화", text: "화요일" },
-        { value: "수", text: "수요일" },
-        { value: "목", text: "목요일" },
-        { value: "금", text: "금요일" },
-        { value: "토", text: "토요일" },
-        { value: "일", text: "일요일" },
+        { value: "월요일", text: "월요일" },
+        { value: "화요일", text: "화요일" },
+        { value: "수요일", text: "수요일" },
+        { value: "목요일", text: "목요일" },
+        { value: "금요일", text: "금요일" },
+        { value: "토요일", text: "토요일" },
+        { value: "일요일", text: "일요일" },
       ],
       storeDto: [],
     };
@@ -275,7 +275,7 @@ export default {
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
-        offDay: this.off,
+        offDay: this.off.join(),
         category: this.category,
       };
       console.log(this.storeDto);
@@ -297,7 +297,7 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             alert("매장이 추가 완료되었습니다");
-            this.$router.push("/mypageOwner");
+            this.$router.push("/mypage/owner");
           } else {
             alert("매장 추가가 완료되지 않았습니다.");
           }
