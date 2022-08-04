@@ -2,11 +2,9 @@
   <div>
     <wordcloud
       :data="defaultWords"
-      nameKey="name"
-      valueKey="value"
       :color="myColors"
-      :showTooltip="true"
-      :wordClick="wordClickHandler"
+      :showTooltip="false"
+      class="word-cloud"
     >
     </wordcloud>
   </div>
@@ -20,53 +18,54 @@ export default {
   components: {
     wordcloud,
   },
-  methods: {
-    wordClickHandler(name, value, vm) {
-      console.log("wordClickHandler", name, value, vm);
-    },
-  },
   data() {
     return {
-      myColors: ["#1f77b4", "#629fc9", "#94bedb", "#c9e0ef"],
+      myColors: ["#FE2E2E", "#8904B1", "#FE9A2E", "#08088A", "#088A4B"],
       defaultWords: [
         {
-          name: "Cat",
-          value: 26,
+          name: "창완김밥",
+          value: 102,
         },
         {
-          name: "fish",
-          value: 19,
-        },
-        {
-          name: "things",
-          value: 18,
-        },
-        {
-          name: "look",
-          value: 16,
-        },
-        {
-          name: "two",
+          name: "지훈파스타",
           value: 15,
         },
         {
-          name: "fun",
-          value: 9,
-        },
-        {
-          name: "know",
-          value: 9,
-        },
-        {
-          name: "good",
-          value: 9,
-        },
-        {
-          name: "play",
+          name: "식중독걸림",
           value: 6,
+        },
+        {
+          name: "그게메뉴?",
+          value: 5,
+        },
+        {
+          name: "할인마감초밥",
+          value: 4,
+        },
+        {
+          name: "뷰엑스시렁",
+          value: 20,
+        },
+        {
+          name: "이제쓸말없다",
+          value: 2,
+        },
+        {
+          name: "양곱창",
+          value: 30,
+        },
+        {
+          name: "오늘쌀국수맛났음",
+          value: 1,
         },
       ],
     };
   },
 };
 </script>
+<style scoped>
+.word-cloud {
+  opacity: 60%;
+  background-color: whitesmoke;
+}
+</style>
