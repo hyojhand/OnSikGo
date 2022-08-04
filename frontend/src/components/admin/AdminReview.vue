@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>관리자페이지</h1>
+    <h1>AdminReview</h1>
   </div>
 </template>
 
 <script>
 export default {
-    name: "AdminView",
+  name : "AdminReview",
 }
 </script>
 
