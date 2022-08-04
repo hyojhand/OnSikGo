@@ -111,7 +111,7 @@ export default {
 
   created() {
     this.productFind();
-    console.log(this.aroundSaleStore)
+    // console.log(this.aroundSaleStore)
     if (navigator.geolocation) {
     // 현재 위치
       navigator.geolocation.getCurrentPosition((position) => {
@@ -167,10 +167,10 @@ export default {
     // 
     nowMarker(){
       this.aroundSaleStore.forEach((store) =>{
-        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+        var imageSrc = "https://cdn4.iconfinder.com/data/icons/food-delivery-service-3/100/food_delivery_gps_mark_service_boy_online-256.png"; 
         // 마커 이미지의 이미지 크기 입니다
-        var imageSize = new kakao.maps.Size(24, 35); 
-        console.log("가게 하나의 위도 경도",store)
+        var imageSize = new kakao.maps.Size(40, 45); 
+        // console.log("가게 하나의 위도 경도",store)
         
         // 마커 이미지를 생성합니다    
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
@@ -183,11 +183,20 @@ export default {
           });
         var infowindow = new kakao.maps.InfoWindow({
             content: 
-              `<div>${store.saleDto.storeDto.storeName}</div>
-  
-              <div>${store.saleDto.storeDto.tel}</div>
-              <div>공휴일 : ${store.saleDto.storeDto.offDay}</div>
-              <div>마감시간 : ${store.saleDto.storeDto.closingTime}</div>` // 인포윈도우에 표시할 내용
+              '<div class="wrap">' + 
+            '    <div class="info">' + 
+            '        <div class="title" >' + 
+            `            ${store.saleDto.storeDto.storeName}` + 
+            '        </div>' + 
+            '        <div class="body">' + 
+            '            <div class="desc">' + 
+            `               <div class="jibun ellipsis">전화번호 : ${store.saleDto.storeDto.tel}</div>` + 
+            `               <div class="jibun ellipsis">휴일 : ${store.saleDto.storeDto.offDay}</div>` + 
+            `               <div class="jibun ellipsis">마감시간 : ${store.saleDto.storeDto.closingTime}</div>` + 
+            '            </div>' + 
+            '        </div>' + 
+            '    </div>' +    
+            '</div>'
         });
           // console.log(this.map)
         
@@ -347,9 +356,9 @@ export default {
       // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
       map.panTo(moveLatLon);
 
-      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+      var imageSrc = "https://cdn4.iconfinder.com/data/icons/food-delivery-service-3/100/food_delivery_gps_mark_service_boy_online-256.png"; 
       // 마커 이미지의 이미지 크기 입니다
-      var imageSize = new kakao.maps.Size(24, 35); 
+      var imageSize = new kakao.maps.Size(40, 45); 
       
       // 마커 이미지를 생성합니다    
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)   
@@ -370,6 +379,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+
 #map {
   width: 330px;
   height: 280px;

@@ -1,44 +1,42 @@
 <template>
   <div>
-    <b-card>
-      <b-row>
-        <b-col md="4">
-          <div class="align-center">
-            <img fluid :src="`${store.storeImgUrl}`" height="120" width="100" />
+    <card id="mypage-card">
+      <div class="row">
+        <div class="col-3">
+          <div class="mt-7 ml-4">
+            <img fluid :src="`${store.storeImgUrl}`" height="80" width="100" />
           </div>
-        </b-col>
-        <b-col md="8" class="ml-auto p-3">
-          <div class="text-align-center" id="cardInText">
+        </div>
+        <div class="col-7 ml-5">
+          <div style="text-align: start">
             <br />
-            <h3>👨‍🍳안녕하세요,<br />{{ store.storeName }}입니다.</h3>
-            <span>매장 위치: {{ store.location }}</span
+            <span id="color-black">
+              안녕하세요,👨‍🍳<br />{{ store.storeName }}입니다. </span
             ><br />
-            <span>매장 휴무일: {{ store.offDay }}</span>
+            <span style="color: gray; font-size: 0.7rem"
+              >매장 위치: {{ store.location }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem"
+              >매장 휴무일: {{ store.offDay }}</span
+            >
           </div>
+
           <div class="d-flex justify-content-end">
             <!--영업종료 버튼은 빨간색으로 하기-->
-            <button @click="movetoClose">영업 종료</button>
+            <button id="mypage-button" @click="movetoClose">영업 종료</button>
           </div>
-        </b-col>
-      </b-row>
-    </b-card>
+        </div>
+      </div>
+    </card>
 
     <br />
     <div>
-      <b-container class="bv-example-row">
-        <b-row align-h="around">
-          <b-col cols="4">
-            <b-button @click="dataAnalysis()" pill variant="outline-success"
-              >데이터 분석</b-button
-            ></b-col
-          >
-          <b-col cols="4">
-            <b-button @click="storechange()" pill variant="outline-success"
-              >정보수정</b-button
-            ></b-col
-          >
-        </b-row>
-      </b-container>
+      <div class="container mt-10">
+        <div class="d-flex justify-content-around">
+          <button @click="dataAnalysis()" id="mypage-btn">데이터 분석</button>
+          <button @click="storechange()" id="mypage-btn">정보수정</button>
+        </div>
+      </div>
     </div>
     <br />
 
@@ -101,4 +99,43 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#mypage-card {
+  height: 170px;
+  width: 400px;
+  border-radius: 15px;
+  display: inline-block;
+  margin-top: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  overflow: hidden;
+}
+#color-black {
+  color: black;
+}
+#mypage-button {
+  height: 25px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #d07127;
+  color: #ffffff;
+  width: 80px;
+}
+#mypage-btn {
+  height: 40px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #37a62f;
+  color: #ffffff;
+  width: 100px;
+}
+</style>
