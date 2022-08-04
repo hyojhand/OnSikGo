@@ -47,4 +47,9 @@ public class ReviewController {
     public ResponseEntity<String> report(@PathVariable Long review_id){
         return reviewService.report(review_id);
     }
+
+    @GetMapping("/review/alllist")
+    public ResponseEntity<List<ReviewDto>> getAllList() {
+        return reviewService.getAllList();
+    }
 }

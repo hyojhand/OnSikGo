@@ -68,5 +68,8 @@ public class StoreController {
         return storeService.getSaleInfo(store_id);
     }
 
-
+    @GetMapping("/alllist")
+    public ResponseEntity<List<StoreDto>> getAllList() {
+        return storeService.getAllList();
+    }
 }

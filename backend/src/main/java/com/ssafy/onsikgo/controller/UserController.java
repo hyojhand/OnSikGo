@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
@@ -106,5 +107,10 @@ public class UserController {
     @PostMapping("/pw-find")
     public ResponseEntity<String> findPw(@RequestBody HashMap<String, String> map) {
         return userService.findPw(map);
+    }
+
+    @GetMapping("/alllist")
+    public ResponseEntity<List<UserDto>> getAllList() {
+        return userService.getAllList();
     }
 }
