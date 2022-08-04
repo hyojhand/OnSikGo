@@ -68,5 +68,8 @@ public class StoreController {
         return storeService.getSaleInfo(store_id);
     }
 
-
+    @GetMapping("/total")
+    public ResponseEntity<List<StoreDto>> getTotal() {
+        return storeService.getTotal();
+    }
 }

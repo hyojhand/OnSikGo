@@ -281,4 +281,13 @@ public class StoreService {
 
         return map;
     }
+
+    public ResponseEntity<List<StoreDto>> getTotal() {
+        List<Store> storeList = storeRepository.findAll();
+        List<StoreDto> storeDtoList = new ArrayList<>();
+        for(Store store : storeList) {
+            storeDtoList.add(store.toDto());
+        }
+        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+    }
 }
