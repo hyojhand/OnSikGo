@@ -4,9 +4,11 @@
     <div
       v-for="(stores, index) in storeList"
       :key="index"
-      class="row fs-5 text-start">
-        가게명: {{ stores.storeName }} <br>
-        가게주소: {{ stores.location }}
+      class="row fs-5 text-start mt-3">
+      <div>
+        <p class="text-primary">가게명: {{ stores.storeName }} <br></p> 
+        <p>가게주소: {{ stores.location }}</p> 
+      </div>
         <br>
         <v-btn color="error" samll depressed>삭제</v-btn>
         <hr>
