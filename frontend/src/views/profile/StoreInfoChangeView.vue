@@ -2,10 +2,12 @@
   <div>
     <!--이미지 변경 & 수정-->
     <br />
-    <img :src="`${storeDto.storeImgUrl}`" />
-    <p class="d-flex justify-content-end">
-      <input v-on:change="fileSelect()" type="file" ref="imgFile" />
-    </p>
+    <img :src="`${storeDto.storeImgUrl}`" width="200" height="150" />
+    <div class="mt-5">
+      <p class="d-flex justify-content-end">
+        <input v-on:change="fileSelect()" type="file" ref="imgFile" />
+      </p>
+    </div>
     <br />
     <div>
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
@@ -56,7 +58,7 @@
             placeholder="매장위치"
             required
           ></b-form-input>
-          
+
           <!-- -----------가게 주소 입력-------------- -->
           <div class="position-box">
             <v-text-field
@@ -70,16 +72,16 @@
               @blur="$v.address.$touch()"
             ></v-text-field>
           </div>
-            <v-text-field
-              v-model="extraAddress"
-              label="상세 주소를 입력해주세요."
-              required
-              class="input-box"
-              color="black"
-              type="address"
-              @input="$v.address.$touch()"
-              @blur="$v.address.$touch()"
-            ></v-text-field>
+          <v-text-field
+            v-model="extraAddress"
+            label="상세 주소를 입력해주세요."
+            required
+            class="input-box"
+            color="black"
+            type="address"
+            @input="$v.address.$touch()"
+            @blur="$v.address.$touch()"
+          ></v-text-field>
           <button
             class="border-m radius-m address-btn"
             @click="execDaumPostcode()"
@@ -114,7 +116,7 @@
           label-for="input-5"
         >
           <b-form-input
-            id="input-4"
+            id="input-5"
             v-model="storeDto.closingTime"
             type="time"
             placeholder="매장 종료시간"
@@ -147,25 +149,10 @@
           label="휴무일을 입력해주세요."
           multiple
           chips
+          required
           @input="$v.storeDto.offDay.$touch()"
           @blur="$v.storeDto.offDay.$touch()"
         ></v-select>
-
-        <!-- 카테고리 -->
-        <!-- <b-form-group
-          class="d-flex justify-content-between"
-          id="input-group-5"
-          label="카테고리"
-          label-for="input-5"
-        >
-          <b-form-input
-            id="input-4"
-            v-model="storeDto.category"
-            type="text"
-            placeholder="카테고리"
-            required
-          ></b-form-input>
-        </b-form-group> -->
 
         <!-- ------------카테고리셀렉트 박스----------- -->
         <v-select
@@ -207,6 +194,7 @@ export default {
   name: "StoreInfoChangeView",
   data() {
     return {
+      imgFile: null,
       storeDto: {},
       form: {
         store: "",
@@ -218,14 +206,6 @@ export default {
       show: true,
       address: "",
       extraAddress: "",
-      items: [
-        { value: "KOREA", text: "한식" },
-        { value: "JAPAN", text: "일식" },
-        { value: "WESTERN", text: "양식" },
-        { value: "SNACK", text: "분식" },
-        { value: "DESSERT", text: "디저트" },
-        { value: "INGREDIENT", text: "식자재" },
-      ],
       days: [
         { value: "월", text: "월요일" },
         { value: "화", text: "화요일" },
@@ -234,6 +214,14 @@ export default {
         { value: "금", text: "금요일" },
         { value: "토", text: "토요일" },
         { value: "일", text: "일요일" },
+      ],
+      items: [
+        { value: "KOREA", text: "한식" },
+        { value: "JAPAN", text: "일식" },
+        { value: "WESTERN", text: "양식" },
+        { value: "SNACK", text: "분식" },
+        { value: "DESSERT", text: "디저트" },
+        { value: "INGREDIENT", text: "식자재" },
       ],
     };
   },
@@ -244,6 +232,9 @@ export default {
     });
   },
   methods: {
+    fileSelect() {
+      this.imgFile = this.$refs.imgFile.files[0];
+    },
     resetStoreDto() {
       this.storeDto = {};
     },
@@ -293,10 +284,10 @@ export default {
         localStorage.getItem("access-token");
 
       const formData = new FormData();
-      formData.append("file", this.storeDto.storeImgUrl);
+      formData.append("file", this.imgFile);
       formData.append(
         "storeDto",
-        new Blob([JSON.stringify(this.storeDto), { type: "application/json" }])
+        new Blob([JSON.stringify(this.storeDto)], { type: "application/json" })
       );
       http
         .put(`/store/${this.storeDto.storeId}`, formData, {
@@ -307,7 +298,7 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             alert("가게정보 수정완료");
-            this.$router.push("mypageOwner");
+            this.$router.push({ name: "mypageOwner" });
           }
         });
     },

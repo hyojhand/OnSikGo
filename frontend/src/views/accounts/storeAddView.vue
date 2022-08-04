@@ -21,33 +21,45 @@
       </div>
 
       <!-- ------상호명 입력--------------- -->
-      <v-text-field
-        v-model="store"
-        :error-messages="storeErrors"
-        label="상호명을 입력해주세요."
-        required
-        class="input-box"
-        color="black"
-        @input="$v.store.$touch()"
-        @blur="$v.store.$touch()"
-      ></v-text-field>
-
-      <!-- -----------가게 주소 입력-------------- -->
-      <div class="position-box">
+      <div class="ml-3 mr-4 mt-10">
         <v-text-field
-          v-model="address"
-          label="가게 주소를 입력해주세요."
+          v-model="store"
+          :error-messages="storeErrors"
+          label="상호명을 입력해주세요."
           required
           class="input-box"
           color="black"
-          type="address"
-          @input="$v.address.$touch()"
-          @blur="$v.address.$touch()"
+          @input="$v.store.$touch()"
+          @blur="$v.store.$touch()"
         ></v-text-field>
-        <button class="border-m radius-m address-btn" @click="execDaumPostcode()">
-          주소 검색
-        </button>
       </div>
+
+      <!-- -----------가게 주소 입력-------------- -->
+      <div class="container">
+        <div class="row">
+          <div class="col-9">
+            <v-text-field
+              v-model="address"
+              label="가게 주소를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              type="address"
+              @input="$v.address.$touch()"
+              @blur="$v.address.$touch()"
+            ></v-text-field>
+          </div>
+          <div class="col-3">
+            <button
+              class="border-l radius-m address-btn"
+              @click="execDaumPostcode()"
+            >
+              주소 검색
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="ml-3 mr-4 mt-3">
         <v-text-field
           v-model="extraAddress"
           label="상세 주소를 입력해주세요."
@@ -58,75 +70,93 @@
           @input="$v.address.$touch()"
           @blur="$v.address.$touch()"
         ></v-text-field>
+      </div>
 
       <!-- --------------사업자 등록번호 입력------------ -->
-      <div class="position-box">
-        <v-text-field
-          v-model="identify"
-          :error-messages="identifyErrors"
-          label="사업자번호를 입력해주세요."
-          required
-          class="input-box"
-          color="black"
-          @input="$v.identify.$touch()"
-          @blur="$v.identify.$touch()"
-        ></v-text-field>
-        <button class="border-m radius-m address-btn" @click="checkOwner()">
-          등록하기
-        </button>
+      <div class="container">
+        <div class="row">
+          <div class="col-9">
+            <v-text-field
+              v-model="identify"
+              :error-messages="identifyErrors"
+              label="사업자번호를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              @input="$v.identify.$touch()"
+              @blur="$v.identify.$touch()"
+            ></v-text-field>
+          </div>
+          <div class="col-3">
+            <button class="border-l radius-m address-btn" @click="checkOwner()">
+              번호 인증
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- -------------전화번호 입력----------- -->
-      <v-text-field
-        v-model="tel"
-        :error-messages="telErrors"
-        type="tel"
-        label="가게 전화번호를 입력해주세요."
-        required
-        class="input-box"
-        color="black"
-        @input="$v.tel.$touch()"
-        @blur="$v.tel.$touch()"
-      ></v-text-field>
+      <div class="ml-3 mr-4 mt-3">
+        <v-text-field
+          v-model="tel"
+          :error-messages="telErrors"
+          type="tel"
+          label="가게 전화번호를 입력해주세요."
+          required
+          class="input-box"
+          color="black"
+          @input="$v.tel.$touch()"
+          @blur="$v.tel.$touch()"
+        ></v-text-field>
+      </div>
 
       <!-- -----------마감시간 입력----------- -->
-      <v-text-field
-        v-model="end"
-        type="time"
-        label="마감시간을 입력해주세요."
-        required
-        class="input-box"
-        color="black"
-        @input="$v.end.$touch()"
-        @blur="$v.end.$touch()"
-      ></v-text-field>
+      <div class="ml-3 mr-4 mt-3">
+        <v-text-field
+          v-model="end"
+          type="time"
+          label="마감시간을 입력해주세요."
+          required
+          class="input-box"
+          color="black"
+          @input="$v.end.$touch()"
+          @blur="$v.end.$touch()"
+        ></v-text-field>
+      </div>
 
       <!-- -------------휴무일 입력---------------- -->
-      <v-select
-        :items="days"
-        v-model="off"
-        label="휴무일을 입력해주세요."
-        multiple
-        chips
-        @input = "$v.off.$touch()"
-        @blur= "$v.off.$touch()"
-      ></v-select>
+      <div class="ml-3 mr-4 mt-3">
+        <v-select
+          :items="days"
+          v-model="off"
+          label="휴무일을 입력해주세요."
+          multiple
+          chips
+          @input="$v.off.$touch()"
+          @blur="$v.off.$touch()"
+        ></v-select>
+      </div>
 
       <!-- ------------카테고리셀렉트 박스----------- -->
-      <v-select
-        :items="items"
-        v-model = "category"
-        label="카테고리를 선택해주세요."
-        required
-        color="black"
-        @input = "$v.category.$touch()"
-        @blur= "$v.category.$touch()"
-      ></v-select>
+      <div class="ml-3 mr-4 mt-3">
+        <v-select
+          :items="items"
+          v-model="category"
+          label="카테고리를 선택해주세요."
+          required
+          color="black"
+          @input="$v.category.$touch()"
+          @blur="$v.category.$touch()"
+        ></v-select>
+      </div>
     </form>
-
-    <button class="border-m radius-m" @click="registerStore">
-      매장 추가하기
-    </button>
+    <div class="ml-3 mr-4 mt-3 mb-10">
+      <div class="d-flex justify-content-end">
+        <button class="border-m radius-m" @click="registerStore">
+          매장 추가하기
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -137,7 +167,7 @@ export default {
   name: "storeAddView",
   data() {
     return {
-      imgFile: "",
+      imgFile: null,
       store: "",
       address: "",
       tel: "",
@@ -154,13 +184,13 @@ export default {
         { value: "INGREDIENT", text: "식자재" },
       ],
       days: [
-        {value: '월', text: '월요일'},
-        {value: '화', text: '화요일'},
-        {value: '수', text: '수요일'},
-        {value: '목', text: '목요일'},
-        {value: '금', text: '금요일'},
-        {value: '토', text: '토요일'},
-        {value: '일', text: '일요일'},
+        { value: "월", text: "월요일" },
+        { value: "화", text: "화요일" },
+        { value: "수", text: "수요일" },
+        { value: "목", text: "목요일" },
+        { value: "금", text: "금요일" },
+        { value: "토", text: "토요일" },
+        { value: "일", text: "일요일" },
       ],
       storeDto: [],
     };
@@ -207,7 +237,7 @@ export default {
             // 사용자가 지번 주소를 선택했을 경우(J)
             this.address = data.jibunAddress;
           }
-  
+
           // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
           if (data.userSelectedType === "R") {
             // 법정동명이 있을 경우 추가한다. (법정리는 제외)
@@ -267,7 +297,7 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             alert("매장이 추가 완료되었습니다");
-            this.$router.push({ name: "mypageOwner" });
+            this.$router.push("/mypageOwner");
           } else {
             alert("매장 추가가 완료되지 않았습니다.");
           }

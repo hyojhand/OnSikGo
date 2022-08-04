@@ -1,14 +1,17 @@
 <template>
   <div>
-    <img src="@/assets/logo.png" width="60" height="40" />
-    <br /><br />
+    <div class="mt-6">
+      <img :src="`${userDto.imgUrl}`" width="100" height="75" />
+    </div>
 
-    <span
-      >{{ userDto.userName }} 님!, <br />이번 달에
-      <strong id="green">온식고</strong>를 통해 <br /><strong id="green"
-        >주문금액원</strong
-      >의 세상을 구하셨어요!</span
-    >
+    <div class="mt-3">
+      <span
+        >{{ userDto.userName }} 님!, <br />이번 달에
+        <strong id="green">온식고</strong>를 통해 <br /><strong id="green"
+          >주문금액원</strong
+        >의 세상을 구하셨어요!</span
+      >
+    </div>
     <br /><br />
     <div id="space-even">
       <b-button @click="orderlist()" pill variant="outline-success"
@@ -21,12 +24,13 @@
     <br />
     <hr />
     <br />
-     <h5>✨ {{ userDto.userName }} 님의 단골매장</h5>
+    <h5>✨ {{ userDto.userName }} 님의 단골매장</h5>
     <div>
       <regularList
-      v-for="(store, index) in storeregularList"
-      :key="index"
-      v-bind="store">
+        v-for="(store, index) in storeregularList"
+        :key="index"
+        v-bind="store"
+      >
       </regularList>
     </div>
 
@@ -45,7 +49,7 @@ export default {
   data() {
     return {
       userDto: {},
-      storeregularList:[],
+      storeregularList: [],
     };
   },
   created() {
@@ -59,7 +63,7 @@ export default {
     http.get("/follow").then((response) => {
       console.log(response.data);
       this.storeregularList = response.data;
-    })
+    });
   },
   methods: {
     orderlist() {

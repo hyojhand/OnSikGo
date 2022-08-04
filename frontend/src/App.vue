@@ -271,7 +271,7 @@ export default {
         { title: "기부", router: "/donation" },
       ],
       settingUsers: [{ title: "회원정보수정", router: "/userinfochange" }],
-      settingOwners: [{ title: "회원정보수정", router: "/ownerinfochange" }],
+      settingOwners: [{ title: "회원정보수정", router: "/userinfochange" }],
       pages: [
         "온식고",
         "기부 페이지",
