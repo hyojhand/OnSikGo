@@ -1,28 +1,32 @@
 <template>
   <div>
     <card id="mypage-card">
-      <b-row>
-        <b-col md="4">
-          <div class="mt-3 ml-1">
-            <img fluid :src="`${store.storeImgUrl}`" height="120" width="100" />
+      <div class="row">
+        <div class="col-3">
+          <div class="mt-7 ml-4">
+            <img fluid :src="`${store.storeImgUrl}`" height="80" width="100" />
           </div>
-        </b-col>
-        <b-col md="7" class="ml-3 p-3">
-          <div class="text-align-center" id="cardInText">
+        </div>
+        <div class="col-7 ml-5">
+          <div style="text-align: start">
             <br />
-            <h3 id="color-black">
-              안녕하세요,👨‍🍳<br />{{ store.storeName }}입니다.
-            </h3>
-            <span id="color-black">매장 위치: {{ store.location }}</span
+            <span id="color-black">
+              안녕하세요,👨‍🍳<br />{{ store.storeName }}입니다. </span
             ><br />
-            <span id="color-black">매장 휴무일: {{ store.offDay }}</span>
+            <span style="color: gray; font-size: 0.7rem"
+              >매장 위치: {{ store.location }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem"
+              >매장 휴무일: {{ store.offDay }}</span
+            >
           </div>
+
           <div class="d-flex justify-content-end">
             <!--영업종료 버튼은 빨간색으로 하기-->
             <button id="mypage-button" @click="movetoClose">영업 종료</button>
           </div>
-        </b-col>
-      </b-row>
+        </div>
+      </div>
     </card>
 
     <br />

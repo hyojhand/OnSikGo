@@ -1,30 +1,32 @@
 <template>
   <div>
     <card id="regular-card">
-      <b-row>
-        <b-col md="3" class="ml-4 mt-6">
-          <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
-        </b-col>
-        <b-col class="ml-2 mt-3" md="8">
-          <div class="text-align-center" id="cardInText">
-            <br />
-            <span>{{ storeName }}</span>
-            <br />
-            <span>매장 위치: {{ location }}</span>
-            <br />
-            <span>매장 휴무일: {{ offDay }}</span>
-            <br />
-            <span>오늘 매장 할인 물품 개수: {{ saleItemDtoList.length }}</span>
-            <br />
+      <div class="container">
+        <div class="row">
+          <div class="col-3 mt-3">
+            <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
           </div>
-          <div class="d-flex justify-content-end mr-4">
-            <router-link
-              :to="{ name: 'storeView', params: { storeId: this.storeId } }"
-              ><button class="store-moving">가게보기</button></router-link
+          <div class="col-8 ml-3" id="cardText">
+            <span style="color: black">{{ storeName }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem"
+              >매장 위치: {{ location }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem"
+              >매장 휴무일: {{ offDay }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem"
+              >오늘 매장 할인 물품 개수: {{ saleItemDtoList.length }}</span
             >
+            <div class="d-flex justify-content-end">
+              <router-link
+                :to="{ name: 'storeView', params: { storeId: this.storeId } }"
+                ><button class="store-moving">가게보기</button></router-link
+              >
+            </div>
           </div>
-        </b-col>
-      </b-row>
+        </div>
+      </div>
     </card>
   </div>
 </template>
@@ -69,9 +71,8 @@ export default {
   text-decoration: line-through;
 }
 
-#cardInText {
-  text-align: left;
-  font-size: 10px;
+#cardText {
+  text-align: start;
 }
 #regular-card {
   height: 150px;
