@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!--프로필 이미지 업로드-->
     <div class="mt-5">
       <b-img :src="previewImg" height="150px" width="150px" />
@@ -9,56 +8,64 @@
       </p>
     </div>
 
-    <!--입력항목-->
-    <div class="d-flex justify-content-center mt-5">
-      <div class="col-4">
-        <p class="mb-5">이메일</p>
-        <p class="mt-4">닉네임</p>
-        <p class="mt-5">비밀번호</p>
-      </div>
-
-      <!--정보입력칸-->
-      <div class="col-8">
-        <p>{{ userDto.email }}</p>
+    <div class="ml-4 mr-16 mt-10">
+      <div>
         <div class="container">
           <div class="row">
-            <div class="col-7">
-              <input
-                class="form-control form-control-sm mt-2"
-                type="text"
-                placeholder="변경할 닉네임을 입력해주세요"
-                aria-label=".form-control-sm example"
-                v-model="userDto.nickname"
-              />
+            <div class="col-3">
+              <span>이메일</span>
             </div>
-            <!--닉네임 중복확인 시작-->
-            <div class="col-5">
-              <button
-                class="border-m radius-m name-confrim-btn"
-                @click="nicknameCheck"
-              >
-                중복확인
-              </button>
+            <div class="col-8">
+              <span id="black">{{ userDto.email }}</span>
             </div>
-            <!--닉네임 중복확인 끝-->
           </div>
         </div>
-        <b-button
-          @click="changePassword()"
-          pill
-          variant="outline-success"
-          class="d-grid col-4 mt-5"
-          >수정
-        </b-button>
       </div>
     </div>
-    <b-button
-      @click="changeUser()"
-      pill
-      variant="outline-success"
-      class="d-grid col-8 mx-auto mt-5"
-      >수정완료</b-button
-    >
+
+    <div class="ml-2 mt-3">
+      <div class="d-flex justify-content-between">
+        <div class="container">
+          <div class="row">
+            <div class="col-3">
+              <span>닉네임</span>
+            </div>
+            <div class="col-5 d-flex justify-content-start">
+              <input
+                v-model="userDto.nickname"
+                type="text"
+                placeholder="변경할 닉네임을 입력해주세요"
+                required
+                id="input-id"
+              />
+            </div>
+            <div class="ml-1 col-3">
+              <button id="btn-check" @click="nicknameCheck">중복확인</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ml-6 mt-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <div class="d-flex justify-content-start">
+              <span>비밀번호 수정</span>
+            </div>
+          </div>
+          <div class="col-3 ml-16">
+            <button id="btn-check" @click="changePassword()">수정</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ml-10 mr-10 mt-10">
+      <div class="d-flex justify-content-end">
+        <button id="finish-btn" @click="changeUser()">수정완료</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -71,7 +78,7 @@ export default {
       imgFile: null,
       userDto: {},
       nicknameDuple: false,
-      previewImg:null
+      previewImg: null,
     };
   },
 
@@ -135,25 +142,53 @@ export default {
 
       if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (e) => {
           this.previewImg = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
       } else {
         this.previewImg = null;
       }
-        this.imgFile = input.files[0];
+      this.imgFile = input.files[0];
     },
   },
 };
 </script>
 
 <style scoped>
-.name-confrim-btn {
-  right: 0px;
-  top: 15px;
-  width: 90px;
-  font-size: 13px;
+#black {
   color: black;
+}
+#input-id {
+  height: 30px;
+  width: 120px;
+  border: solid 1px black;
+  border-radius: 5px;
+  color: black;
+}
+#btn-check {
+  height: 30px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #45a245;
+  color: #ffffff;
+  width: 70px;
+}
+#finish-btn {
+  height: 30px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #45a245;
+  color: #ffffff;
+  width: 150px;
 }
 </style>
