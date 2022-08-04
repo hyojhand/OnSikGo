@@ -149,7 +149,7 @@ const routes = [
     name: "admin",
     component: AdminView,
     meta: {
-      title: "관리자페이지",
+      title: "관리자 페이지",
     },
   },
   // 알림
