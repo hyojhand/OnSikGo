@@ -81,6 +81,7 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 2"
+          v-bind:disabled="check1 == false" 
           >
           다음으로</button>
         </div>
@@ -94,6 +95,22 @@
         min-height="200"
       >
         <form class="mb-2">
+          <!-- --------------사업자 등록번호 입력------------ -->
+          <div class="position-box">
+            <v-text-field
+              v-model="identify"
+              :error-messages="identifyErrors"
+              label="사업자번호를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              @input="$v.identify.$touch()"
+              @blur="$v.identify.$touch()"
+            ></v-text-field>
+            <button class="border-m radius-m address-btn" @click="checkOwner()">
+              인증하기
+            </button>
+          </div>
           <!-- ------상호명 입력--------------- -->
           <v-text-field
             v-model="store"
@@ -132,23 +149,6 @@
               @input="$v.address.$touch()"
               @blur="$v.address.$touch()"
             ></v-text-field>
-
-          <!-- --------------사업자 등록번호 입력------------ -->
-          <div class="position-box">
-            <v-text-field
-              v-model="identify"
-              :error-messages="identifyErrors"
-              label="사업자번호를 입력해주세요."
-              required
-              class="input-box"
-              color="black"
-              @input="$v.identify.$touch()"
-              @blur="$v.identify.$touch()"
-            ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="checkOwner()">
-              인증하기
-            </button>
-          </div>
         </form>
 
         <div class="sign-btn">
