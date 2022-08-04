@@ -19,7 +19,7 @@
           class="index-btn border-m radius-m text-s"
           @click="open"
         >
-          날짜로 검색하기
+          검색하기
         </button>
       </div>
       <v-date-picker
@@ -33,7 +33,6 @@
     </div>
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
     <word-cloud></word-cloud>
-    <h3>차트 보이기</h3>
     <bar-chart></bar-chart>
 
     <!--판매한 금액의 총금액을 넣음-->
@@ -105,7 +104,7 @@ export default {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  margin-bottom: 5%;
+  margin: 5% 0;
 }
 .index-btn {
   color: white;
