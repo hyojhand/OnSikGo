@@ -109,8 +109,8 @@ public class UserController {
         return userService.findPw(map);
     }
 
-    @GetMapping("/alllist")
-    public ResponseEntity<List<UserDto>> getAllList() {
-        return userService.getAllList();
+    @GetMapping("/total")
+    public ResponseEntity<List<UserDto>> getTotal() {
+        return userService.getTotal();
     }
 }

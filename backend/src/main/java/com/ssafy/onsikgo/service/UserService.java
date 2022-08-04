@@ -276,7 +276,7 @@ public class UserService {
         return new ResponseEntity<>("임시 비밀번호를 이메일로 보내드렸습니다.",HttpStatus.OK);
     }
 
-    public ResponseEntity<List<UserDto>> getAllList() {
+    public ResponseEntity<List<UserDto>> getTotal() {
         List<User> userList = userRepository.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
         for(User user : userList) {

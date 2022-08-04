@@ -48,8 +48,8 @@ public class ReviewController {
         return reviewService.report(review_id);
     }
 
-    @GetMapping("/review/alllist")
-    public ResponseEntity<List<ReviewDto>> getAllList() {
-        return reviewService.getAllList();
+    @GetMapping("/total")
+    public ResponseEntity<List<ReviewDto>> getTotal() {
+        return reviewService.getTotal();
     }
 }
