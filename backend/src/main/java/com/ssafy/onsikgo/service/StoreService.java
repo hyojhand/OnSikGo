@@ -1,5 +1,6 @@
 package com.ssafy.onsikgo.service;
 
+import com.ssafy.onsikgo.dto.SaleDto;
 import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.StoreDto;
@@ -192,6 +193,32 @@ public class StoreService {
         saleRepository.save(findSale.get());
 
         return new ResponseEntity<>("가게 결산이 완료되었습니다.", HttpStatus.OK);
+    }
+
+    public ResponseEntity<SaleDto> getSaleInfo(Long store_id) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
+
+        Optional<Store> findStore = storeRepository.findById(store_id);
+        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
+
+        if(!findSale.isPresent()) {
+            SaleDto saleDto = new SaleDto();
+            saleDto.setClosed(false);
+            saleDto.setStoreDto(findStore.get().toDto());
+            return new ResponseEntity<>(saleDto, HttpStatus.OK);
+        }
+
+        SaleDto saleDto = findSale.get().toDto(findStore.get().toDto());
+
+        return new ResponseEntity<>(saleDto, HttpStatus.OK);
     }
 
     // 좌표 가져오는 메서드
