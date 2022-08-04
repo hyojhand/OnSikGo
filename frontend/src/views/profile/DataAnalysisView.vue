@@ -3,6 +3,8 @@
     <!--현재 내 날짜로부터 7일전날짜부터 ~ 현재 날짜 -->
     <p>지금 내 매장 이름</p>
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
+    <word-cloud></word-cloud>
+    <h1>차트 보이기</h1>
     <bar-chart></bar-chart>
 
     <!--판매한 금액의 총금액을 넣음-->
@@ -16,11 +18,13 @@
 
 <script>
 import barChart from "@/components/profile/barChart.vue";
+import wordCloud from "@/components/profile/wordCloud.vue";
 
 export default {
   name: "dataAnalysisView",
   components: {
     barChart,
+    wordCloud,
   },
   data() {
     return {
