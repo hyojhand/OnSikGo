@@ -93,8 +93,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> checkAuthNumber(String email, String authNum) {
-        redisUtil.print();
-        if (redisUtil.getData(email)==null && !redisUtil.getData(email).equals(authNum)) {
+        if (!redisUtil.getData(email).equals(authNum)) {
             return new ResponseEntity<>("인증 번호가 일치하지 않습니다.", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("이메일 인증에 성공하였습니다.", HttpStatus.OK);

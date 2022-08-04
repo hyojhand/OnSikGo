@@ -13,7 +13,7 @@ import java.util.List;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/follow")
+@RequestMapping("/api/follow")
 @RequiredArgsConstructor
 public class FollowController {
 

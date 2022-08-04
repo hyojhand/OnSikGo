@@ -19,7 +19,7 @@ import java.util.List;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/item")
+@RequestMapping("/api/item")
 @RequiredArgsConstructor
 public class ItemController {
 

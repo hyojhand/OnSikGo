@@ -53,7 +53,12 @@ public class ReviewService {
 
         String content = map.get("content");
 
-        ReviewDto reviewDto = new ReviewDto(content,createdDate,false,findUser.getNickname(),null, findUser.getImgUrl());
+        ReviewDto reviewDto = new ReviewDto();
+        reviewDto.setContent(content);
+        reviewDto.setCreatedDate(createdDate);
+        reviewDto.setReported(false);
+        reviewDto.setNickname(findUser.getNickname());
+        reviewDto.setUserImgUrl(findUser.getImgUrl());
 
         Review review = reviewDto.toEntity(findUser,findStore);
         reviewRepository.save(review);

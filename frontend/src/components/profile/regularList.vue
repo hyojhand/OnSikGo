@@ -4,10 +4,10 @@
       <b-row>
         <b-col md="3">
           <div id="tobecenter">
-            <img fluid src="`${storeImgUrl}`" height="50" width="50" />
+            <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
           </div>
         </b-col>
-        <b-col md="9">
+        <b-col class="ml-2" md="7">
           <div class="text-align-center" id="cardInText">
             <br />
             <span>{{ storeName }}</span>
