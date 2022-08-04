@@ -303,7 +303,7 @@ export default {
             item.distance = distance
         })
       });
-      this.curruntLocation();
+      this.createMap()
     },
     // 거리 구하기
     getdistance(lat1, lon1, lat2, lon2) {
