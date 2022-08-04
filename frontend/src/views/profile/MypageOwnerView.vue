@@ -1,19 +1,22 @@
 <template>
   <div>
-    <div class="d-flex justify-content-center">
-      <select
-        id="dropdown1"
-        style="border-color: #63bf68"
-        @change="selectStore($event)"
-      >
-        <option
-          :key="index"
-          :value="store.storeId"
-          v-for="(store, index) in stores"
+    <div class="mt-5">
+      <div class="d-flex justify-content-center">
+        <select
+          id="dropdown1"
+          class="store-name"
+          style="border-color: #63bf68"
+          @change="selectStore($event)"
         >
-          {{ store.storeName }}
-        </option>
-      </select>
+          <option
+            :key="index"
+            :value="store.storeId"
+            v-for="(store, index) in stores"
+          >
+            {{ store.storeName }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <br />
@@ -97,5 +100,11 @@ export default {
   background-color: white;
   border-top: 2px solid rgba(0, 0, 0, 20%);
   border-bottom: 2px solid rgba(0, 0, 0, 20%);
+}
+.store-name {
+  width: 40%;
+  font-size: 30px;
+  text-align: center;
+  padding: 2% 0;
 }
 </style>

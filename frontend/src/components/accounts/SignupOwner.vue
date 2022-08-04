@@ -25,6 +25,9 @@
               {{ checkmsg }}
             </button>
           </div>
+          <div v-if="emailDuple">이미 동록한 이메일 입니다.</div>
+          <div v-if="emailfailDuple">인증에 실패하였습니다.</div>
+
           <!-- ---------인증 메일 보내기------------ -->
           <div v-if="sendMail">
             <div class="mailconfim-case">
@@ -35,9 +38,10 @@
                 placeholder="인증번호를 입력하세요."
               />
               <button class="border-m radius-m mailconfirm-btn" @click="checkMail()">
-                확인하기
+                확인
               </button>
             </div>
+            <div v-if="mailconfirmDuple">인증완료 되었습니다.</div>
           </div>
           <!-- -------------비밀번호 입력------------------------------------ -->
           <v-text-field
@@ -81,6 +85,7 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 2"
+          v-bind:disabled="check1 == false" 
           >
           다음으로</button>
         </div>
@@ -94,6 +99,24 @@
         min-height="200"
       >
         <form class="mb-2">
+          <!-- --------------사업자 등록번호 입력------------ -->
+          <div class="position-box">
+            <v-text-field
+              v-model="identify"
+              :error-messages="identifyErrors"
+              label="사업자번호를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              @input="$v.identify.$touch()"
+              @blur="$v.identify.$touch()"
+            ></v-text-field>
+            <button class="border-m radius-m address-btn" @click="checkOwner()">
+              인증
+            </button>
+          <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
+          <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
+          </div>
           <!-- ------상호명 입력--------------- -->
           <v-text-field
             v-model="store"
@@ -132,23 +155,6 @@
               @input="$v.address.$touch()"
               @blur="$v.address.$touch()"
             ></v-text-field>
-
-          <!-- --------------사업자 등록번호 입력------------ -->
-          <div class="position-box">
-            <v-text-field
-              v-model="identify"
-              :error-messages="identifyErrors"
-              label="사업자번호를 입력해주세요."
-              required
-              class="input-box"
-              color="black"
-              @input="$v.identify.$touch()"
-              @blur="$v.identify.$touch()"
-            ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="checkOwner()">
-              인증하기
-            </button>
-          </div>
         </form>
 
         <div class="sign-btn">
@@ -280,12 +286,17 @@ export default {
       end: "",
       category: "",
       off: "",
-      checkmsg: "메일 인증하기",
+      checkmsg: "메일 인증",
       sendMail: false,
       authNum: "",
       check1: false,
       check2: false,
       check3: false,
+      emailDuple: false,
+      mailconfirmDuple: false,
+      emailfailDuple: false,
+      ownercheckDuple: false,
+      ownerfailDuple: false,
       items: [
         {value: 'KOREA', text: '한식'},
         {value: 'JAPAN', text: '일식'},
@@ -381,6 +392,56 @@ export default {
     },
   },
   methods: {
+    // 이메일 중복 확인 및 인증 번호 전송
+    isCheck() {
+      http
+        .post("/user/email", {
+          email: this.email
+        })
+        .then((response) => {
+        if (response.status == 200) {
+          this.sendMail = true;
+          this.checkmsg = "재전송";
+        } else {
+          this.emailDuple = true;
+        }
+      });
+    },
+    // 인증번호 확인
+    checkMail() {
+      http
+        .post("/user/emailAuthNumber", {
+          email: this.email,
+          authNum: this.authNum,
+        })
+        .then((response) => {
+        if ((response.status) == 200) {
+          this.mailconfirmDuple = true;
+          this.check1 = true;
+        } else {
+          this.emailfailDuple = true;
+        }
+      });
+    },
+
+    // 사업자 등록번호 인증
+    checkOwner() {
+      axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON', {
+        b_no: [this.identify]
+      })
+      .then((response) => {
+        if (response.data.match_cnt == 1) {
+          this.ownercheckDuple = true;
+          this.check2 = true;
+        } else {
+          this.ownerfailDuple = true;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    },
+
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
@@ -418,59 +479,8 @@ export default {
           }
         },
       }).open();
-    },
+    },    
 
-    // 사업자 등록번호 인증
-    checkOwner() {
-        axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON', {
-          b_no: [this.identify]
-        })
-        .then((response) => {
-          if (response.data.match_cnt == 1) {
-            alert("사업자 번호가 확인되었습니다.");
-            this.check2 = true;
-          } else {
-            alert("다시 확인해주시길 바랍니다.");
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-
-    // 이메일 중복 확인 및 인증 번호 전송
-    isCheck() {
-      http
-        .post("/user/email", {
-          email: this.email
-        })
-        .then((response) => {
-        if (response.status == 200) {
-          alert("인증번호를 확인해주세요.");
-          this.sendMail = true;
-          this.checkmsg = "재전송하기";
-        } else {
-          alert("이미 등록한 이메일 입니다.");
-        }
-      });
-    },
-    // 인증번호 확인
-    checkMail() {
-      http
-        .post("/user/emailAuthNumber", {
-          email: this.email,
-          authNum: this.authNum,
-        })
-        .then((response) => {
-        if ((response.status) == 200) {
-          console.log(response.data);
-          alert("인증번호 확인이 되었습니다.");
-          this.check1 = true;
-        } else {
-          alert("인증번호 확인에 실패했습니다.");
-        }
-      });
-    },
     signup() {
       http.post("/user/signup/owner", {
         email: this.email,
