@@ -59,4 +59,13 @@ public class Order {
                 .orderId(this.orderId)
                 .build();
     }
+
+    public Order updateNotice(String date, SaleItem saleItem,User user) {
+        this.date = date;
+        this.count = 0;
+        this.state = State.CANCEL;
+        this.saleItem = saleItem;
+        this.user = user;
+        return this;
+    }
 }
