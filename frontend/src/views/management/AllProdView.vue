@@ -11,22 +11,6 @@
           {{ store.storeName }}
         </option>
       </select>
-
-      <!-- <b-dropdown
-          id="dropdown-1"
-          style="border-color: #63bf68"
-          text="this.stores[0].storeName"
-        >
-          <b-dropdown-item>
-            <option
-              :key="index"
-              :value="store"
-              v-for="(store, index) in stores"
-            >
-              {{ store.storeName }}
-            </option>
-          </b-dropdown-item>
-        </b-dropdown> -->
     </div>
     <!-- 상품 등록 & 검색 탭 -->
 
@@ -142,7 +126,8 @@ export default {
   data() {
     return {
       stores: [],
-      storeId: "",
+      store: {},
+      storeId: Number,
       items: [],
       keyword: "",
       saleList: [],
@@ -159,15 +144,7 @@ export default {
       this.storeId = response.data[0].storeId;
     });
 
-    await http
-      .post(`/item/page/${this.storeId}`, {
-        page: 0,
-        size: 4,
-      })
-      .then((response) => {
-        this.items = response.data.content;
-        this.totalPage = response.data.totalPages;
-      });
+    await this.selectPage(1);
   },
 
   components: {
@@ -186,6 +163,21 @@ export default {
         })
         .then((response) => {
           this.items = response.data.content;
+          this.totalPage = response.data.totalPages;
+          this.items.map(async (item, i) => {
+            await http
+              .get(`/sale/${item.itemId}`)
+              //
+              .then((response) => {
+                if (response.status == 200) {
+                  this.items[i] = {
+                    ...this.items[i],
+                    sale: response.data,
+                  };
+                }
+              });
+            this.$forceUpdate();
+          });
         });
     },
     nextPage() {
