@@ -118,11 +118,20 @@ export default {
       keyword: "",
     };
   },
+  props: ["to", "keyw"],
   components: {
     StoreItem,
   },
   created() {
-    this.selectStoreList();
+    if (this.to) {
+      this.category = this.to;
+      this.selectStoreList();
+    } else if (this.keyw) {
+      this.keyword = this.keyw;
+      this.selectKeyword();
+    } else {
+      this.selectStoreList();
+    }
   },
   methods: {
     selectStoreList() {
