@@ -486,6 +486,7 @@ img {
 /* 재고 수량 글자 */
 .product-quantity {
   padding-top: 20px;
+  font-size: 13px;
 }
 /* 재고 수량 */
 .product-number {

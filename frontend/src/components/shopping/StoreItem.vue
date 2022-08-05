@@ -8,7 +8,7 @@
     <img :src="`${storeImgUrl}`" class="col-3" />
 
     <!-- 가게 설명 -->
-    <div class="col-6 store-case">
+    <div class="col-5 store-case">
       <div class="store-name" :class="{ none: saleItemDtoList.length == 0 }">
         {{ storeName }}
       </div>
@@ -27,7 +27,7 @@
       </div>
     </div>
     <!-- 물품수량 & 버튼 -->
-    <div class="col-3 product-case">
+    <div class="col-4 product-case">
       <p class="store-product" :class="{ none: saleItemDtoList.length == 0 }">
         등록물품 :
         <sapn
@@ -103,18 +103,25 @@ export default {
   height: 120px;
   margin: 0;
 }
+.store-product {
+  font-size: 13px;
+}
 .product-case {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   padding: 0;
-  padding-right: 3%;
+}
+.product-count {
+  color: red;
 }
 .store-case {
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: left;
 }
 .store-name {
   font-size: 20px;
@@ -128,5 +135,8 @@ export default {
 }
 img {
   padding: 0;
+}
+.ment {
+  font-size: 13px;
 }
 </style>

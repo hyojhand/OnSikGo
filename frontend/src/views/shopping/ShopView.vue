@@ -126,8 +126,7 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: row;
-  padding: 0;
-  margin-left: 5%;
+  padding-left: 5%;
 }
 .tab {
   font-size: 18px;
