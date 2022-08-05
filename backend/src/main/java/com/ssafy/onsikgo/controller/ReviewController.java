@@ -43,6 +43,7 @@ public class ReviewController {
     public ResponseEntity<String> delete(@PathVariable Long review_id){
         return reviewService.delete(review_id);
     }
+
     @PatchMapping("/{review_id}")
     public ResponseEntity<String> report(@PathVariable Long review_id){
         return reviewService.report(review_id);
