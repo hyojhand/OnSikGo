@@ -16,7 +16,9 @@
               <span>이메일</span>
             </div>
             <div class="col-8">
-              <span id="black">{{ userDto.email }}</span>
+              <div class="d-flex justify-content-start ml-5">
+                <span id="black">{{ userDto.email }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -160,11 +162,15 @@ export default {
   color: black;
 }
 #input-id {
-  height: 30px;
-  width: 120px;
-  border: solid 1px black;
-  border-radius: 5px;
   color: black;
+  width: 150px;
+  height: 30px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
 }
 #btn-check {
   height: 30px;

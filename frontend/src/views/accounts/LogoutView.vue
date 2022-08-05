@@ -9,6 +9,7 @@ export default {
   created() {
     localStorage.removeItem("access-token");
     this.$router.push("/");
+    this.$router.go();
   },
 };
 </script>
