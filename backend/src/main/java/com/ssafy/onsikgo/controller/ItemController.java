@@ -62,6 +62,11 @@ public class ItemController {
         return itemService.getListPage(pageDto,store_id);
     }
 
+    @PostMapping("/page/keyword/{store_id}")
+    public ResponseEntity<Page<ItemDto>> getKeywordPage(@RequestBody PageDto pageDto, @PathVariable Long store_id) {
+        return itemService.getKeywordPage(pageDto,store_id);
+    }
+
 
 
 }

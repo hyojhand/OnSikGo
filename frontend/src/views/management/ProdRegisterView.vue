@@ -57,7 +57,7 @@ export default {
       itemComment: "",
       itemDto: [],
       itemId: "",
-      previewImg:"https://kare.ee/images/no-image.jpg",
+      previewImg: "https://kare.ee/images/no-image.jpg",
       store: {},
     };
   },
@@ -104,14 +104,14 @@ export default {
 
       if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (e) => {
           this.previewImg = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
       } else {
         this.previewImg = null;
       }
-        this.imgFile = input.files[0];
+      this.imgFile = input.files[0];
     },
   },
 };
