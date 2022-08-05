@@ -5,7 +5,7 @@
       <div class="col-7 order-box">
         <v-list-item-content>
           <v-list-item-title class="text mb-3 msg-box">
-            <span> {{ content }} </span>
+            <span v-html="`${content}`"></span>
             <!-- <span class="notice">님의</span> -->
           </v-list-item-title>
         </v-list-item-content>
