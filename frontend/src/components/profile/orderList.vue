@@ -1,31 +1,35 @@
 <template>
   <div>
-    <card id="ordercard">
+    <card 
+      id="ordercard" 
+      v-for="(order, index) in orderList"
+      :key="index"
+    >
       <div class="container">
         <div class="row">
           <div class="col-3 ml-3 mt-2">
             <img
               fluid
-              src="@/assets/images/hambuger.jpg"
-              width="50"
-              height="50"
+              :src="`${order.saleItemDto.itemDto.itemImgUrl}`"
+              width="70"
+              height="70"
             />
           </div>
-          <div class="col-4">
+          <div class="col-5">
             <div style="text-align: start">
-              <h5 style="color: black">제품명</h5>
+              <h5 style="color: black">{{ order.saleItemDto.itemDto.itemName }}</h5>
               <span style="color: gray; font-size: 0.1rem"
-                >매장위치: 매장위치</span
+                >매장이름: {{ order.saleItemDto.saleDto.storeDto.storeName}}</span
               ><br />
               <span style="color: gray; font-size: 0.1rem"
-                >주문시각: 주문시각</span
+                >주문시각: {{order.date.slice(0,4)}}.{{order.date.slice(5,6)}}.{{order.date.slice(7,8)}}</span
               ><br />
-              <span style="color: gray; font-size: 0.1rem">수량: 개수</span>
+              <span style="color: gray; font-size: 0.1rem">수량: {{ order.count }} 개</span>
             </div>
           </div>
-          <div class="col-4 ml-3 mt-2">
-            <button id="btn-order" type="button">주문취소</button><br /><br />
-            <button id="btn-order" @click="goStore()" type="button">
+          <div class="col-3 ml-3 mt-2">
+            <button v-show="`${order.state}` === 'ORDER'" id="btn-order" type="button" @click="orderCancel(order)">주문취소</button><br /><br />
+            <button id="btn-order" @click="goStore(order.saleItemDto.saleDto.storeDto.storeId)" type="button">
               가게보기
             </button>
           </div>
@@ -36,12 +40,51 @@
 </template>
 
 <script>
+import http from '@/util/http-common.js';
+import { mapActions } from "vuex";
+
 export default {
   name: "orderList",
+  data(){
+    return{
+      orderList : [],
+    }
+  },
+  created(){
+    this.getOrderList()
+  },
   methods: {
-    goStore() {
+    ...mapActions("storeStore", ["getStoreId"]),
+    orderCancel(order) {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .patch(`/order/cancel/${order.orderId}`)
+        .then((response) =>{
+          if (response.status === 200) {
+            console.log(response)
+          } else {
+            console.log(response)
+            alert("취소 실패")
+          }
+      })
+          
+    },
+    goStore(sotreId) {
+      this.getStoreId(sotreId);
       this.$router.push("/store");
     },
+    getOrderList() {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .get('/order')
+        .then((response) =>{
+          console.log(response.data)
+          this.orderList = response.data
+        })
+    }
+    
   },
 };
 </script>
