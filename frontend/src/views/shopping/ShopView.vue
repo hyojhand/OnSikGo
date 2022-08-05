@@ -8,7 +8,7 @@
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
-          fill="currentColor"
+          fill="black"
           class="bi bi-pin-map"
           viewBox="0 0 16 16"
         >
@@ -28,9 +28,13 @@
       <ul class="tabs">
         <li
           v-for="tab in tabs"
-          v-bind:class="{ active: tab === selectedTab }"
+          v-bind:class="{
+            active: tab === selectedTab,
+            select: tab === selectedTab,
+          }"
           :key="tab"
           v-on:click="onClickTab(tab)"
+          class="tab"
         >
           <span>{{ tab }}</span>
         </li>
@@ -106,64 +110,50 @@ export default {
 </script>
 
 <style scoped>
-/* 모든 폰트사이즈는 기본값이 15px */
-* {
-  font-size: 15px;
+.mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-/* 각 블럭마다 빈공간 부여 */
-div {
-  padding-bottom: 5px;
-  padding-top: 5px;
-}
-
 .tab-content {
-  padding-top: 25px;
+  width: 100%;
 }
 .main_container {
   width: 100%;
-  height: 100%;
 }
-
+.tabs {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-left: 5%;
+}
+.tab {
+  font-size: 18px;
+  margin-right: 5%;
+}
+.select > span {
+  color: black;
+}
 .main_container .mobile {
-  width: 350px;
+  width: 100%;
   margin: 0 auto;
 }
-
-.main_container .mobile .location .bi-pin-map {
-  margin-left: 0.5rem;
-}
-/* 점없애고 가로정렬 */
-
-ul.tabs {
-  margin: 0px;
-  padding: 0px;
-  list-style: none;
-}
-ul.tabs li {
-  list-style-type: none;
-  float: left;
-  background: none;
-  color: #222;
-  padding: 10px 15px;
-  cursor: pointer;
-  border: 1px solid #b9b9b9;
-  border-radius: 16px;
-  width: 78px;
-  height: 21px;
-  font-size: 12px;
-  padding: 0;
-  margin-left: 5px;
-}
-
 .location {
-  padding-bottom: 10px;
+  text-align: start;
+  padding: 8% 0 5% 3%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
 }
 .location span {
+  margin-left: 2%;
   color: #333;
   font-weight: 500;
   font-size: 16px;
-  margin-left: 5px;
-  /* 밑줄 */
-  border-bottom: 2px solid #8cb883;
+  padding: 0 2%;
+  text-align: start;
+  border-bottom: 2px solid rgba(0, 0, 0, 20%);
 }
 </style>

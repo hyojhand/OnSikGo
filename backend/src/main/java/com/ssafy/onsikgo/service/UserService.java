@@ -282,7 +282,6 @@ public class UserService {
         for(User user : userList) {
             userDtoList.add(user.toDto());
         }
-
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 }
