@@ -29,6 +29,7 @@
 <script>
 import mypageOwnerComponent from "@/components/profile/mypageOwnerComponent.vue";
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
 export default {
   name: "MypageOwnerView",
   components: {
@@ -42,6 +43,7 @@ export default {
       saleItemList: [],
       itemList: [],
       storeName: "",
+      storeImg: "",
     };
   },
   async created() {
@@ -63,8 +65,24 @@ export default {
     // });
   },
   methods: {
+    ...mapActions("discardStore", [
+      "discardStoreId",
+      "discardStoreName",
+      "discardStoreImg",
+    ]),
     async selectStore(event) {
       this.storeId = event.target.value;
+
+      http.get(`/store/${this.storeId}`).then((response) => {
+        this.storeName = response.data.storeName;
+        this.storeImg = response.data.storeImgUrl;
+      });
+      console.log(this.storeId);
+      console.log(this.storeName);
+      console.log(this.storeImg);
+      this.discardStoreId(this.storeId);
+      this.discardStoreName(this.storeName);
+      this.discardStoreImg(this.storeImg);
       await this.changeStore();
       // await this.changeSaleItem();
     },
