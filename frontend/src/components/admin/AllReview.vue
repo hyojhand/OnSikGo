@@ -40,15 +40,11 @@ export default {
         .delete(`/review/${review.reviewId}`)
         .then((response) => {
           if (response.status == 200) {
-            // this.$router.go();
+            this.allReview();
           }
         });
     },
   },
-
-  // updated () {
-  //   this.allReview();
-  // },
 
   created () {
     this.allReview();
