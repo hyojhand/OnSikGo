@@ -13,11 +13,11 @@
         </div>
         <div class="info-box">
           <div>할인 판매가 :</div>
-          <div class="ml-1">{{ saleDto.salePrice }} 원</div>
+          <div class="ml-1">{{ sale.salePrice }} 원</div>
         </div>
         <div class="info-box">
           <div>등록 수량 :</div>
-          <div class="ml-1">{{ saleDto.stock }} 개</div>
+          <div class="ml-1">{{ sale.stock }} 개</div>
         </div>
       </div>
       <button @click="prodmodify()" class="border-m radius-s my-1 edit-btn">
@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import http from "@/util/http-common";
 import EditStockModal from "@/components/management/EditStockModal.vue";
 import AddStockModal from "@/components/management/AddStockModal.vue";
 import { mapActions } from "vuex";
@@ -49,10 +48,7 @@ export default {
     EditStockModal,
   },
   data() {
-    return {
-      saleDto: {},
-      stock: Number,
-    };
+    return {};
   },
   props: {
     storeId: Number,
@@ -63,15 +59,7 @@ export default {
     comment: String,
     no: Number,
     item: Number,
-  },
-
-  mounted() {
-    http.get(`/sale/${this.itemId}`).then((response) => {
-      if (response.status == 200) {
-        this.saleDto = response.data;
-        this.$forceUpdate();
-      }
-    });
+    sale: Object,
   },
 
   methods: {
