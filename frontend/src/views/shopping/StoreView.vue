@@ -12,7 +12,7 @@
       <span class="col-4 mt-2 fw-bold">{{ storeDto.storeName }}</span>
       <div class="col-4 mt-2">
         <!--좋아요 버튼-->
-        <button @click="like" v-if="isliking === 'fail'" style="color: red">
+        <button @click="like" v-if="isliking === 'fail'">
           <i class="fa-light fa-heart"></i>좋아요</button>
         <button v-else @click="unlike"><i class="fa-solid fa-heart red"></i>좋아요 취소</button>
       </div>
@@ -131,11 +131,6 @@ export default {
   },
   updated() {
     this.likecheck();
-    http.get(`/store/${this.getStoreId}`).then((response) => {
-      this.storeDto = response.data;
-      console.log(this.storeDto)
-    });
-    this.selectReview();
   },
   methods: {
     onClickTab(tab) {
@@ -176,7 +171,7 @@ export default {
         localStorage.getItem("access-token");
       http.get(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
-          alert("좋아요 눌렀음");
+          // alert("좋아요 눌렀음");
         }
       });
     },
@@ -185,7 +180,7 @@ export default {
         localStorage.getItem("access-token");
       http.delete(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
-          alert("좋아요 취소");
+          // alert("좋아요 취소");
         }
       });
     },
