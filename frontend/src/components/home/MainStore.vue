@@ -2,50 +2,76 @@
   <div class="container">
     <!-- 상위 가게 카테고리 -->
     <div class="row">
-      <div class="col" id="category-img" @click="selectKorea()">
+      <div class="col" id="category-img">
         <a>
-          <img src="@/assets/images/koreanfood.png" alt="koreanfood" />
+          <img
+            src="@/assets/images/koreanfood.png"
+            alt="koreanfood"
+            @click="selectKorea()"
+          />
         </a>
         <p>한식</p>
       </div>
 
-      <div class="col" id="category-img" @click="selectJapan()">
+      <div class="col" id="category-img">
         <a>
-          <img src="@/assets/images/japanesefood.png" alt="japanesefood" />
+          <img
+            src="@/assets/images/japanesefood.png"
+            alt="japanesefood"
+            @click="selectJapan()"
+          />
         </a>
         <p>일식</p>
       </div>
-      <div class="col" id="category-img" @click="selectWestern()">
+      <div class="col" id="category-img">
         <a>
-          <img src="@/assets/images/snackbar.png" alt="westernfood" />
+          <img
+            src="@/assets/images/snackbar.png"
+            alt="westernfood"
+            @click="selectWestern()"
+          />
         </a>
         <p>양식</p>
       </div>
     </div>
     <!-- 하위 가게 카테고리 -->
     <div class="row">
-      <div class="col" id="category-img" @click="selectSnack()">
+      <div class="col" id="category-img">
         <a>
-          <img src="@/assets/images/chinesefood.png" alt="snackbar" />
+          <img
+            src="@/assets/images/chinesefood.png"
+            alt="snackbar"
+            @click="selectSnack()"
+          />
         </a>
         <p>분식</p>
       </div>
-      <div class="col" id="category-img" @click="selectDesssert()">
+      <div class="col" id="category-img">
         <a>
-          <img src="@/assets/images/dessert.png" alt="dessert" />
+          <img
+            src="@/assets/images/dessert.png"
+            alt="dessert"
+            @click="selectDesssert()"
+          />
         </a>
         <p>디저트</p>
       </div>
 
-      <div class="col" id="category-img" @click="selectIngredient()">
-        <a><img src="@/assets/images/westernfood.png" alt="ingredient" /> </a>
+      <div class="col" id="category-img">
+        <a
+          ><img
+            src="@/assets/images/westernfood.png"
+            alt="ingredient"
+            @click="selectIngredient()"
+          />
+        </a>
         <p>식자재</p>
       </div>
     </div>
     <!-- 검색 서칭 -->
     <div class="search-container">
       <div class="row">
-        <div class="col">
+        <div class="col index-box">
           <input
             v-model="keyword"
             class="search-box"
@@ -59,7 +85,7 @@
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
-              fill="currentColor"
+              fill="black"
               class="bi bi-search"
               viewBox="0 0 16 16"
             >
@@ -74,7 +100,7 @@
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
-              fill="currentColor"
+              fill="black"
               class="bi bi-arrow-clockwise"
               viewBox="0 0 16 16"
             >
@@ -175,17 +201,13 @@ export default {
   background-color: #fff;
 }
 
-.search-box::-webkit-input-placeholder {
-  background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
-  background-size: contain;
-  background-position: 1px center;
-  background-repeat: no-repeat;
-  text-indent: 0;
-}
-
 .container .row #category-img:hover {
   width: 50px; /* 사진크기 조절 */
   transform: scale(1.3, 1.3); /* 가로2배 새로 1.5배 로 커짐 */
   transition: transform.5s; /* 커지는 시간 */
+}
+.index-box {
+  display: flex;
+  flex-direction: row;
 }
 </style>
