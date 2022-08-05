@@ -12,8 +12,8 @@
             <span>{{ userDto.userName }} </span>
             <span class="notice">님의</span>
           </v-list-item-title> -->
-          <v-list-item-title class="text mb-3 msg-box notice"
-            >{{ content }}</v-list-item-title
+          <v-list-item-title class="text mb-3 msg-box notice"  v-html="`${content}`"
+            ></v-list-item-title
           >
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
@@ -37,8 +37,8 @@
             <!-- <span> {{ userDto.nickname }} </span>
             <span class="notice">매장이</span> -->
           </v-list-item-title>
-          <v-list-item-title class="text mb-3 msg-box notice">
-            {{ content }}</v-list-item-title
+          <v-list-item-title class="text mb-3 msg-box notice"  v-html="`${content}`">
+            </v-list-item-title
           >
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
