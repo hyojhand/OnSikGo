@@ -8,13 +8,10 @@
             <span> {{ content }} </span>
             <!-- <span class="notice">님의</span> -->
           </v-list-item-title>
-          <v-list-item-title class="text mb-3 msg-box notice"
-            >주문이 도착했습니다.</v-list-item-title
-          >
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
           <p class="time-text">{{ createdDate }}</p>
-          <notice-modal></notice-modal>
+          <notice-modal :value="items"></notice-modal>
         </v-card-actions>
       </div>
     </div>
@@ -27,6 +24,11 @@ import NoticeModal from "@/components/notice/NoticeModal.vue";
 export default {
   name: "NoticeCard",
   components: { NoticeModal },
+  data() {
+    return{
+      items: [],
+    }
+  },
   props: {
     content: String,
     location: String,
@@ -36,7 +38,22 @@ export default {
     userDto: [],
     createdDate: String,
   },
+  created(){
+    this.getData()
+  },
   methods: {
+    getData(){
+      var temp = {
+        content : this.content,
+        location : this.location,
+        orderDto: this.orderDto,
+        receivedId: this.receivedId,
+        state: this.state,
+        userDto: this.userDto,
+        createdDate: this.createdDate,
+      }
+      this.items = temp
+    },
     goDetail() {
       this.$router.push("/notice/detail");
     },

@@ -1,19 +1,19 @@
 <template>
   <v-card class="mx-auto card-box" max-width="344">
-    <div class="row card-box" v-if="user">
+    <div class="row card-box" v-if="`${userDto.role}` == 'USER'">
       <img
         class="img-box col-5"
-        :src="`${orderDto.saleItemDto.saleDto.storeDto.storeImgUrl}`"
-        alt="사진이었던것.."
+        :src="`${orderDto.saleItemDto.itemDto.itemImgUrl}`"
+        :alt="`${orderDto.saleItemDto.itemDto.itemName}`"
       />
       <div class="col-7 order-box">
         <v-list-item-content>
-          <v-list-item-title class="text mb-3 msg-box">
-            <span>{ 최지은 } </span>
+          <!-- <v-list-item-title class="text mb-3 msg-box">
+            <span>{{ userDto.userName }} </span>
             <span class="notice">님의</span>
-          </v-list-item-title>
+          </v-list-item-title> -->
           <v-list-item-title class="text mb-3 msg-box notice"
-            >주문이 준비되었습니다.</v-list-item-title
+            >{{ content }}</v-list-item-title
           >
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
@@ -29,7 +29,7 @@
       <img
         class="img-box col-5"
         :src="`${orderDto.saleItemDto.saleDto.storeDto.storeImgUrl}`"
-        alt="사진이었던것...jpg"
+        :alt="`${orderDto.saleItemDto.saleDto.storeDto.storeName}`"
       />
       <div class="col-7 order-box">
         <v-list-item-content>
@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "NoticeCard",
   props: {
@@ -65,11 +67,15 @@ export default {
     createdDate: String,
   },
   methods: {
+    ...mapActions("storeStore", ["getStoreId"]),
     gohistory() {
       this.$router.push("/mypage/user/history");
     },
     gostore() {
-      this.$router.push("/store");
+      this.getStoreId(this.orderDto.saleItemDto.saleDto.storeDto.storeId);
+      this.$router.push({
+        name: "storeView",
+      });
     },
   },
   data() {

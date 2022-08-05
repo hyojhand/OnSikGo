@@ -26,10 +26,10 @@ export default {
   created() {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
-
     http.get("/notice").then((response) => {
-      console.log(response.data);
-      this.noticeList = response.data;
+      console.log("notice",response.data);
+      this.noticeList = response.data.reverse()
+      // this.noticeList = response.data;
     });
   },
 };

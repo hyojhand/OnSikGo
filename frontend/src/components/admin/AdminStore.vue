@@ -10,7 +10,7 @@
         <p>가게주소: {{ stores.location }}</p> 
       </div>
         <br>
-        <v-btn color="error" samll depressed>삭제</v-btn>
+        <v-btn @click="deleteStore(stores)" color="error" samll depressed>삭제</v-btn>
         <hr>
     </div>
   </div>
@@ -34,8 +34,19 @@ export default {
         .get('/store/total')
         .then((response) => {
           this.storeList = response.data;
+          console.log(response.data);
         })
-    }
+    },
+    deleteStore(stores) {
+      console.log(stores);
+      http
+        .delete(`/store/${stores.storeId}`)
+        .then((response) => {
+          if (response.status == 200) {
+            this.$router.go();
+          }
+        });
+    },
   },
 
   created () {

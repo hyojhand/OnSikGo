@@ -41,6 +41,7 @@
               v-model="authNum"
               placeholder="인증번호를 입력하세요."
             />
+            <CountTimer v-if="time" :time="time" :key="rederKey"/>
             <button
               class="border-m radius-m mailconfirm-btn"
               @click="checkMail()"
@@ -146,8 +147,12 @@ import http from "@/util/http-common";
 import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
 import minLength from "vuelidate/lib/validators/minLength";
+import CountTimer from "@/components/accounts/Timer.vue";
 
 export default {
+  components: {
+    CountTimer
+  },
   mixins: [validationMixin],
   name: "UserView",
   validations: {
@@ -182,6 +187,8 @@ export default {
     signupfailDuple: false,
     check1: false,
     check2: false,
+    time:null,
+    rederKey:0
   }),
 
   computed: {
@@ -239,6 +246,8 @@ export default {
         if (response.status == 200) {
           this.sendMail = true;
           this.checkmsg = "재전송";
+          this.time=300;
+          this.rederKey+=1;
         } else {
           this.emailfailDuple = !this.emailfailDuple;
         }
@@ -255,6 +264,7 @@ export default {
         if ((response.status) == 200) {
           this.mailconfirmDuple = !this.mailconfirmDuple;
           this.check1 = true;
+          this.time=null;
         } else {
           this.mailfailDuple = !this.mialfailDuple;
         }
@@ -336,7 +346,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 .btn-box {

@@ -27,7 +27,6 @@
           </div>
           <div v-if="emailDuple">이미 동록한 이메일 입니다.</div>
           <div v-if="emailfailDuple">인증에 실패하였습니다.</div>
-
           <!-- ---------인증 메일 보내기------------ -->
           <div v-if="sendMail">
             <div class="mailconfim-case">
@@ -37,6 +36,7 @@
                 v-model="authNum"
                 placeholder="인증번호를 입력하세요."
               />
+              <CountTimer v-if="time" :time="time" :key="rederKey"/>
               <button class="border-m radius-m mailconfirm-btn" @click="checkMail()">
                 확인
               </button>
@@ -266,8 +266,11 @@ import { required, maxLength, email } from "vuelidate/lib/validators";
 import minLength from "vuelidate/lib/validators/minLength";
 import http from "@/util/http-common";
 import axios from 'axios';
-
+import CountTimer from "@/components/accounts/Timer.vue";
 export default {
+    components: {
+    CountTimer
+  },
   mixins: [validationMixin],
   name: "SignupOwner",
   data() {
@@ -314,6 +317,8 @@ export default {
         {value: '토', text: '토요일'},
         {value: '일', text: '일요일'},
       ],
+      time:null,
+      rederKey:0
     };
   },
 
@@ -402,6 +407,8 @@ export default {
         if (response.status == 200) {
           this.sendMail = true;
           this.checkmsg = "재전송";
+          this.time=300;
+          this.rederKey+=1;
         } else {
           this.emailDuple = true;
         }
@@ -418,6 +425,7 @@ export default {
         if ((response.status) == 200) {
           this.mailconfirmDuple = true;
           this.check1 = true;
+          this.time=null;
         } else {
           this.emailfailDuple = true;
         }

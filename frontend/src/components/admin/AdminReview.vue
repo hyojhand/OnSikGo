@@ -9,7 +9,7 @@
         <p class="text-primary">{{ review.nickname }} : {{ review.content }}</p>
         <p>작성한 가게명: {{ review.storeDto.storeName }}</p>
       </div>
-        <v-btn @click="deleteReview()" color="error" samll depressed>삭제</v-btn>
+        <v-btn @click="deleteReview(review)" color="error" samll depressed>삭제</v-btn>
         <hr>
     </div>
   </div>
@@ -37,12 +37,16 @@ export default {
         })
     },
 
-    deleteReview() {
-      console.log(this.reviewList);
-      console.log(this.reviewList.data.reviewId);
+    deleteReview(review) {
+      console.log(review.reviewId);
       http
-        .delete('/review/{review_id}')
-    }
+        .delete(`/review/${review.reviewId}`)
+        .then((response) => {
+          if (response.status == 200) {
+            this.$router.go();
+          }
+        });
+    },
   },
 
   created () {
