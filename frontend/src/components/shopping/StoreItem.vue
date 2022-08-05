@@ -1,27 +1,49 @@
 <template>
   <div
-    class="store-container row"
+    class="store-container"
     :class="{ zerostock: saleItemDtoList.length == 0 }"
   >
     <!-- 가게 이미지 -->
 
-    <img :src="`${storeImgUrl}`" height="50" width="50" class="col-4" />
+    <img :src="`${storeImgUrl}`" class="col-3" />
 
     <!-- 가게 설명 -->
-    <div class="col-3">
-      <div class="store-name">{{ storeName }}</div>
-      <div class="store-prediction">300m, 도보로 3분</div>
+    <div class="col-6 store-case">
+      <div class="store-name" :class="{ none: saleItemDtoList.length == 0 }">
+        {{ storeName }}
+      </div>
+      <div
+        class="store-prediction"
+        :class="{ none: saleItemDtoList.length == 0 }"
+      >
+        300m, 도보로 3분
+      </div>
+      <div
+        class="ment"
+        :class="{ none: saleItemDtoList.length == 0 }"
+        v-if="saleItemDtoList.length == 0"
+      >
+        오늘 등록된 물품이 없어요ㅠ
+      </div>
     </div>
     <!-- 물품수량 & 버튼 -->
-    <div class="col-6">
-      <div class="product-case">
-        <div class="store-product">
-          등록물품 :
-          <div class="product-count">{{ saleItemDtoList.length }}</div>
-          개
-        </div>
-      </div>
-      <button @click="storeDetail()">가게보기</button>
+    <div class="col-3 product-case">
+      <p class="store-product" :class="{ none: saleItemDtoList.length == 0 }">
+        등록물품 :
+        <sapn
+          class="product-count"
+          :class="{ none: saleItemDtoList.length == 0 }"
+          >{{ saleItemDtoList.length }}</sapn
+        >
+        개
+      </p>
+      <button
+        class="border-m radius-s"
+        :class="{ none: saleItemDtoList.length == 0 }"
+        @click="storeDetail()"
+      >
+        가게보기
+      </button>
     </div>
   </div>
 </template>
@@ -83,9 +105,28 @@ export default {
 }
 .product-case {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 0;
+  padding-right: 3%;
+}
+.store-case {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.store-name {
+  font-size: 20px;
+  margin-bottom: 5px;
 }
 .zerostock {
   background-color: rgba(0, 0, 0, 0.05);
+}
+.none {
+  color: rgba(0, 0, 0, 0.7);
+}
+img {
+  padding: 0;
 }
 </style>
