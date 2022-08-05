@@ -129,7 +129,7 @@
           <button 
           class="border-m radius-m notice-btn" 
           @click="signup()"
-          v-bind:disabled="check1 == false | check1 == false">
+          v-if="check1 && check2">
             가입하기
           </button>
           <button @click="clear" class="border-m radius-m notice-btn clear">
@@ -187,7 +187,7 @@ export default {
     signupfailDuple: false,
     check1: false,
     check2: false,
-    time:null,
+    time: false,
     rederKey:0
   }),
 
@@ -264,7 +264,7 @@ export default {
         if ((response.status) == 200) {
           this.mailconfirmDuple = !this.mailconfirmDuple;
           this.check1 = true;
-          this.time=null;
+          this.time = false;
         } else {
           this.mailfailDuple = !this.mialfailDuple;
         }
