@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <div class="item-container">
+    <div class="item-container" v-if="this.items.length">
       <all-product-list
         class="item-card"
         v-for="(item, index) in items"
@@ -90,6 +90,10 @@
         v-bind="item"
         :storeId="storeId"
       />
+    </div>
+    <div v-else class="non-msg">
+      <div>상품을 등록하여</div>
+      <div>Onsikgo를 시작해주세요!</div>
     </div>
     <!--페이지네이션-->
     <nav aria-label="Page navigation example">
@@ -264,5 +268,17 @@ export default {
 }
 .nav-box {
   padding: 0;
+}
+.non-msg {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.non-msg > div {
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
 }
 </style>
