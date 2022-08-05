@@ -2,41 +2,45 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 // 메인뷰
-import MainView from "../views/MainView.vue";
+import MainView from "../views/home/MainView.vue";
 // 기부
-import DonationView from "../views/DonationView.vue";
+import DonationView from "../views/donation/DonationView.vue";
 // 회원관리
-import LoginView from "../views/LoginView.vue";
-import SignupView from "../views/SignupView.vue";
-import UserView from "../views/UserView.vue";
-import OwnerView from "../views/OwnerView.vue";
-import CompleteView from "../views/CompleteView.vue";
-import OwnerInfoChangeView from "../views/OwnerInfoChangeView.vue";
-import UserInfoChangeView from "../views/UserInfoChangeView.vue";
-import PasswordChangeView from "../views/PasswordChangeView.vue";
+import LoginView from "../views/accounts/LoginView.vue";
+import LogoutView from "../views/accounts/LogoutView.vue";
+import SignupView from "../views/accounts/SignupView.vue";
+import UserView from "../views/accounts/UserView.vue";
+import OwnerView from "../views/accounts/OwnerView.vue";
+import CompleteView from "../views/accounts/CompleteView.vue";
+import OwnerInfoChangeView from "../views/accounts/OwnerInfoChangeView.vue";
+import UserInfoChangeView from "../views/accounts/UserInfoChangeView.vue";
+import PasswordChangeView from "../views/accounts/PasswordChangeView.vue";
+import storeAddView from "../views/accounts/storeAddView.vue";
+// 관리자 페이지
+import AdminView from "../views/admin/AdminView.vue";
 // 알림+
-import NoticeView from "../views/NoticeView.vue";
-import NoticeUserView from "../views/NoticeUserView.vue";
+import NoticeView from "../views/notice/NoticeView.vue";
+import NoticeUserView from "../views/notice/NoticeUserView.vue";
 // 메인기능
-import ShopView from "../views/ShopView.vue";
-import OrderView from "../views/OrderView.vue";
+import ShopView from "../views/shopping/ShopView.vue";
+import OrderView from "../views/shopping/OrderView.vue";
 // 가게보기
-import StoreView from "../views/StoreView.vue";
+import StoreView from "../views/shopping/StoreView.vue";
 // 전체상품보기
-import AllProdView from "../views/AllProdView.vue";
-import ProdChangeView from "../views/ProdChangeView.vue";
-import ProdRegisterView from "../views/ProdRegisterView.vue";
+import AllProdView from "../views/management/AllProdView.vue";
+import ProdChangeView from "../views/management/ProdChangeView.vue";
+import ProdRegisterView from "../views/management/ProdRegisterView.vue";
 // 마이페이지(점주)
-import MypageOwnerView from "../views/MypageOwnerView.vue";
-import DataAnalysisView from "../views/DataAnalysisView.vue";
-import StoreInfoChangeView from "../views/StoreInfoChangeView.vue";
+import MypageOwnerView from "../views/profile/MypageOwnerView.vue";
+import DataAnalysisView from "../views/profile/DataAnalysisView.vue";
+import StoreInfoChangeView from "../views/profile/StoreInfoChangeView.vue";
+import closeCheck from "../views/profile/closeCheck.vue";
 // 마이페이지(사용자)
-import MypageUserView from "../views/MypageUserView.vue";
-import OrderHistoryView from "../views/OrderHistoryView.vue";
-import MyreviewView from "../views/MyreviewView.vue";
+import MypageUserView from "../views/profile/MypageUserView.vue";
+import OrderHistoryView from "../views/profile/OrderHistoryView.vue";
+import MyreviewView from "../views/profile/MyreviewView.vue";
 // 오류
-import NotFoundView from "../views/NotFoundView.vue"
-
+import NotFoundView from "../views/error/NotFoundView.vue";
 
 Vue.use(VueRouter);
 
@@ -66,7 +70,23 @@ const routes = [
     component: LoginView,
     meta: {
       title: "로그인",
-    }
+    },
+  },
+  {
+    path: "/addstore",
+    name: "addstore",
+    component: storeAddView,
+    meta: {
+      title: "매장추가",
+    },
+  },
+  {
+    path: "/logout",
+    name: "logout",
+    component: LogoutView,
+    meta: {
+      title: "로그아웃",
+    },
   },
   {
     path: "/signup",
@@ -124,6 +144,15 @@ const routes = [
       title: "비밀번호변경",
     },
   },
+  // 관리자 페이지
+  {
+    path: "/admin",
+    name: "admin",
+    component: AdminView,
+    meta: {
+      title: "관리자 페이지",
+    },
+  },
   // 알림
   {
     path: "/notice",
@@ -157,6 +186,7 @@ const routes = [
     meta: {
       title: "주문하기",
     },
+    props: true,
   },
   // 가게보기
   {
@@ -166,6 +196,7 @@ const routes = [
     meta: {
       title: "가게조회",
     },
+    props: true,
   },
   // 전체상품보기
   {
@@ -173,7 +204,7 @@ const routes = [
     name: "allProduct",
     component: AllProdView,
     meta: {
-      title: "전상품조회",
+      title: "전체상품조회",
     },
   },
   {
@@ -200,6 +231,7 @@ const routes = [
     meta: {
       title: "마이페이지",
     },
+    props: true,
   },
   {
     path: "/mypage/owner/analysis",
@@ -216,6 +248,16 @@ const routes = [
     meta: {
       title: "가게정보변경",
     },
+    props: true,
+  },
+  {
+    path: "/store/closeCheck",
+    name: "closeCheck",
+    component: closeCheck,
+    meta: {
+      title: "영업종료 확인",
+    },
+    props: true,
   },
   // 마이페이지(사용자)
   {
@@ -241,6 +283,7 @@ const routes = [
     meta: {
       title: "내리뷰조회",
     },
+    props: true,
   },
   {
     path: "/404",
@@ -254,7 +297,6 @@ const routes = [
     path: "*",
     redirect: "/404",
   },
-
 ];
 
 const router = new VueRouter({
@@ -264,8 +306,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title
-  next()
-})
+  document.title = to.meta.title;
+  next();
+});
 
 export default router;
