@@ -37,6 +37,7 @@
         </div>
         <v-spacer></v-spacer>
         <div class="icon-box">
+          <button @click="stateCheck(userState)">상태체크</button>
           <div v-if="logincheck === false">
             <router-link :to="{ name: 'login' }">
               <i class="fa-solid fa-arrow-right-to-bracket"></i>
@@ -392,6 +393,9 @@ export default {
     }
   },
   methods: {
+    stateCheck(userState) {
+      console.log(userState);
+    },
     addstorepage() {
       this.$router.push("/addstore");
     },
