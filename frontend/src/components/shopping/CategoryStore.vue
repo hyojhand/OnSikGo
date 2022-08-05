@@ -93,11 +93,17 @@
     </div>
     <!-- 검색 결과 -->
 
-    <store-item
-      v-for="(store, index) in storeList"
-      :key="index"
-      v-bind="store"
-    />
+    <div v-if="this.storeList.length">
+      <store-item
+        v-for="(store, index) in storeList"
+        :key="index"
+        v-bind="store"
+      />
+    </div>
+    <div v-else class="none-msg">
+      <div>찾을 수 있는</div>
+      <div>가게가 없습니다 ㅠ</div>
+    </div>
   </div>
 </template>
 
@@ -228,5 +234,16 @@ img {
   width: 50px; /* 사진크기 조절 */
   transform: scale(1.3, 1.3); /* 가로2배 새로 1.5배 로 커짐 */
   transition: transform.5s; /* 커지는 시간 */
+}
+.none-msg {
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
+  margin-top: 1%;
+  width: 100%;
+  padding-top: 15%;
+}
+.none-msg > div {
+  margin-top: 3%;
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 30px;
 }
 </style>
