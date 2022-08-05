@@ -267,7 +267,7 @@ public class UserService {
             mimeMessageHelper.setText(content, true);
             mailSender.send(mimeMessage);
 
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("이메일 전송에 실패했습니다. 다시 시도해주세요.", HttpStatus.NO_CONTENT);
         }
