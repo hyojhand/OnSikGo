@@ -131,6 +131,11 @@ export default {
   },
   updated() {
     this.likecheck();
+    http.get(`/store/${this.getStoreId}`).then((response) => {
+      this.storeDto = response.data;
+      console.log(this.storeDto)
+    });
+    this.selectReview();
   },
   methods: {
     onClickTab(tab) {
