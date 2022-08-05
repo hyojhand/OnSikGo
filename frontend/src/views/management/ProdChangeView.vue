@@ -7,14 +7,14 @@
     <!--수정정보나타내기-->
     <div>
       <div class="img-box">
-        <img :src="`${itemDto.itemImgUrl}`" alt="IMG-PRODUCT" />
+        <b-img :src="previewImg" height="150px" width="150px" />
         <div class="img-input">
-          <input v-on:change="fileSelect()" type="file" ref="imgFile" />
-        </div>
+        <input @change="fileSelect" type="file" />     
+      </div>
       </div>
       <input
         class="item-name"
-        v-model="this.itemDto.itemName"
+        v-model="itemDto.itemName"
         type="text"
         placeholder="상품명을 입력해주세요."
       />
@@ -26,7 +26,7 @@
           <div class="col-4">정상 판매가</div>
           <input
             class="col-4 price-input"
-            v-model="this.itemDto.price"
+            v-model="itemDto.price"
             type="text"
             placeholder="정상 판매가를 입력해주세요."
           />
@@ -37,7 +37,7 @@
           <div class="col-4">특이사항</div>
           <input
             class="col-7 comment-input"
-            v-model="this.itemDto.comment"
+            v-model="itemDto.comment"
             type="text"
             placeholder="특이사항을 입력해주세요"
           />
@@ -57,56 +57,69 @@
 <script>
 import ProductDeleteModal from "@/components/management/ProductDeleteModal.vue";
 import http from "@/util/http-common";
+import { mapGetters } from "vuex";
 export default {
   name: "ProdChangeView",
 
   components: { ProductDeleteModal },
   data() {
     return {
-      imgFile: "",
+      imgFile: null,
       itemDto: {},
       storeDto: {},
-      storeId: Number,
+      previewImg:null
     };
+  },
+  computed: {
+    ...mapGetters("itemStore", ["getItemId"]),
+    ...mapGetters("storeStore", ["getStoreId"]),
   },
 
   async created() {
-    await http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+    await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
     });
 
-    await http.get(`/item/${this.$route.params.itemId}`).then((response) => {
+    await http.get(`/item/${this.getItemId}`).then((response) => {
       this.itemDto = response.data;
+      this.previewImg = this.itemDto.itemImgUrl
     });
-    this.imgFile = this.itemDto.itemImgUrl;
   },
 
   methods: {
-    fileSelect() {
-      console.log(this.$refs);
-      this.imgFile = this.$refs.imgFile.files[0];
+    fileSelect(event) {
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = e => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+        this.imgFile = input.files[0];
     },
     prodchange() {
-      this.itemDto = {
-        itemName: this.itemDto.itemName,
-        price: this.itemDto.price,
-        comment: this.itemDto.comment,
-      };
       const formData = new FormData();
       formData.append("file", this.imgFile);
       formData.append(
         "itemDto",
         new Blob([JSON.stringify(this.itemDto)], { type: "application/json" })
       );
-      http.put(`/item/${this.itemDto.itemId}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      this.$router.push("/allprod/");
-      this.$router.go();
-      console.log(this.itemDto);
+      http
+        .put(`/item/${this.itemDto.itemId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            alert("상품정보 수정완료");
+            this.$router.push("/allprod/");
+          }
+        });
     },
   },
 };

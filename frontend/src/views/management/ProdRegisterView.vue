@@ -2,35 +2,14 @@
   <div>
     <!--매장선택-->
     <div class="mt-5">
-      <select id="dropdown1" class="store-name" @change="selectStore($event)">
-        <option
-          class="option-store"
-          :key="index"
-          :value="store"
-          v-for="(store, index) in stores"
-        >
-          {{ store.storeName }}
-        </option>
-      </select>
+      {{ this.store.storeName }}
     </div>
 
     <!--상품 이미지 업로드-->
     <div class="mt-5">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="250"
-        height="250"
-        fill="currentColor"
-        class="bi bi-image"
-        viewBox="0 0 16 16"
-      >
-        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-        <path
-          d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"
-        />
-      </svg>
+      <b-img :src="previewImg" height="200px" width="200px" />
       <p class="d-flex justify-content-end">
-        <input v-on:change="fileSelect()" type="file" ref="imgFile" />
+        <input @change="fileSelect" type="file" />
       </p>
     </div>
 
@@ -66,41 +45,39 @@
 
 <script>
 import http from "@/util/http-common";
-
+import { mapGetters } from "vuex";
 export default {
   name: "ProdRegisterView",
 
   data() {
     return {
       imgFile: "",
-      stores: [],
-      storeId: "",
       itemName: "",
       itemPrice: "",
       itemComment: "",
       itemDto: [],
+      itemId: "",
+      previewImg:"https://kare.ee/images/no-image.jpg",
+      store: {},
     };
+  },
+  computed: {
+    ...mapGetters("itemStore", ["getItemId"]),
+    ...mapGetters("storeStore", ["getStoreId"]),
   },
 
   created() {
-    http.defaults.headers["access-token"] =
-      localStorage.getItem("access-token");
-    http.get("/store/list").then((response) => {
-      this.stores = response.data;
-      this.storeId = response.data[0].storeId;
+    http.get(`/store/${this.getStoreId}`).then((response) => {
+      this.store = response.data;
     });
   },
 
   methods: {
-    fileSelect() {
-      console.log(this.$refs);
-      this.imgFile = this.$refs.imgFile.files[0];
-    },
     register() {
       this.itemDto = {
         itemName: this.itemName,
         price: this.itemPrice,
-        comment: this.comment,
+        comment: this.itemComment,
       };
       const formData = new FormData();
       formData.append("file", this.imgFile);
@@ -109,7 +86,7 @@ export default {
         new Blob([JSON.stringify(this.itemDto)], { type: "application/json" })
       );
       http
-        .post(`/item/register/${this.storeId}`, formData, {
+        .post(`/item/register/${this.getStoreId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -121,6 +98,20 @@ export default {
             alert("상품 등록에 실패했습니다.");
           }
         });
+    },
+    fileSelect(event) {
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = e => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+        this.imgFile = input.files[0];
     },
   },
 };

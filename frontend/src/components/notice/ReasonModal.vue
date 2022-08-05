@@ -21,6 +21,7 @@
             :rules="rules"
             placeholder="사유를 입력하세요."
             class="mx-5"
+            v-model="reason"
           ></v-text-field>
         </div>
 
@@ -37,16 +38,38 @@
 </template>
 
 <script>
+import http from "@/util/http-common"
 export default {
   name: "ReasonModal",
   methods: {
     twoCheckIt: function () {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .patch(`/order/refuse/${this.value.orderDto.orderId}`,{
+          reason: this.reason
+        })
+        .then((response) =>{
+          if (response.status === 200) {
+            console.log(response)
+            this.$router.push({
+              name: "notice"
+            })
+          } else {
+            console.log(response)
+            alert("거절 실패")
+          }
+        })
       this.dialog = false;
       this.$emit("two-check-it");
     },
   },
+  props: {
+    value: null,
+  },
   data() {
     return {
+      reason: "",
       dialog: false,
     };
   },

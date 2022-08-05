@@ -11,6 +11,7 @@ public class SaleDto {
 
     private Long saleId;
     private StoreDto storeDto;
+    private SaleItemDto saleItemDto;
     private Integer totalPrice;
     private String date;
     private Boolean closed;

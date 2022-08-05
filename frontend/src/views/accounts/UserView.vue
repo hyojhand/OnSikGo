@@ -30,6 +30,7 @@
           <button class="border-m radius-m confrim-btn" @click="isCheck()" >
             {{ checkmsg }}
           </button>
+          <div v-if="emailfailDuple">이미 가입된 메일입니다.</div>
         </div>
         <!-- ------------인증 메일 보내기-------------------- -->
         <div v-if="sendMail">
@@ -40,13 +41,16 @@
               v-model="authNum"
               placeholder="인증번호를 입력하세요."
             />
+            <CountTimer v-if="time" :time="time" :key="rederKey"/>
             <button
               class="border-m radius-m mailconfirm-btn"
               @click="checkMail()"
             >
-              확인하기
+              인증
             </button>
           </div>
+          <div v-if="mailconfirmDuple">인증번호 확인이 되었습니다.</div>
+          <div v-if="mailfailDuple">인증번호 확인에 실패했습니다.</div>
         </div>
 
         <!-- --------비밀번호 입력------------ -->
@@ -104,9 +108,10 @@
             class="border-m radius-m name-confrim-btn"
             @click="nicknameCheck()"
           >
-            중복확인하기
+            중복확인
           </button>
           <div v-if="nicknameDuple">사용가능한 닉네임입니다.</div>
+          <div v-if="nicknamefailDuple">중복된 닉네임이 있습니다.</div>
         </div>
 
         <!-- ----------회원가입 동의 체크------------ -->
@@ -118,7 +123,6 @@
           color="black"
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
-          v-bind:disabled="check1 == false | check1 == false"
         ></v-checkbox>
         <!-- 가입하기 버튼 -->
         <div class="btns mb-5">
@@ -132,6 +136,7 @@
             초기화
           </button>
         </div>
+        <div v-if="signupfailDuple">회원가입에 실패했습니다.</div>
       </form>
     </v-card>
   </div>
@@ -142,8 +147,12 @@ import http from "@/util/http-common";
 import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
 import minLength from "vuelidate/lib/validators/minLength";
+import CountTimer from "@/components/accounts/Timer.vue";
 
 export default {
+  components: {
+    CountTimer
+  },
   mixins: [validationMixin],
   name: "UserView",
   validations: {
@@ -168,11 +177,18 @@ export default {
     role: "USER",
     checkbox: false,
     sendMail: false,
-    checkmsg: "메일 인증하기",
+    checkmsg: "메일 인증",
     nicknameDuple: false,
     authNum: "",
+    emailfailDuple: false,
+    mailconfirmDuple: false,
+    mialfailDuple: false,
+    nicknamefailDuple: false,
+    signupfailDuple: false,
     check1: false,
     check2: false,
+    time:null,
+    rederKey:0
   }),
 
   computed: {
@@ -228,11 +244,12 @@ export default {
         })
         .then((response) => {
         if (response.status == 200) {
-          alert("인증번호를 확인해주세요");
           this.sendMail = true;
-          this.checkmsg = "재전송하기";
+          this.checkmsg = "재전송";
+          this.time=300;
+          this.rederKey+=1;
         } else {
-          alert("이미 가입된 이메일입니다");
+          this.emailfailDuple = !this.emailfailDuple;
         }
       });
     },
@@ -245,10 +262,11 @@ export default {
         })
         .then((response) => {
         if ((response.status) == 200) {
-          alert("인증번호 확인이 되었습니다.");
+          this.mailconfirmDuple = !this.mailconfirmDuple;
           this.check1 = true;
+          this.time=null;
         } else {
-          alert("인증번호 확인에 실패했습니다");
+          this.mailfailDuple = !this.mialfailDuple;
         }
       });
     },
@@ -263,7 +281,7 @@ export default {
           this.nicknameDuple = !this.nicknameDuple;
           this.check2 =true;
         } else {
-          alert("중복된 닉네임이 있습니다");
+          this.nicknamefailDuple = !this.nicknamefailDuple;
         }
       });
     },
@@ -295,7 +313,7 @@ export default {
             this.$router.push("/signup/complete");
             console.log(response.data);
           } else {
-            alert("회원가입에 실패했습니다");
+            this.signupfailDuple = !this.signupfailDuple;
           }
         });
     },
@@ -328,7 +346,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 .btn-box {

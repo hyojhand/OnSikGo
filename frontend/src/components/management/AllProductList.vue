@@ -5,7 +5,6 @@
     <div class="item-name">
       {{ itemName }}
     </div>
-    <div>{{ this.no }}</div>
     <div class="info-container">
       <div class="item-info">
         <div class="info-box">
@@ -14,11 +13,11 @@
         </div>
         <div class="info-box">
           <div>할인 판매가 :</div>
-          <div class="ml-1">{{ this.saleDto.salePrice }} 원</div>
+          <div class="ml-1">{{ sale.salePrice }} 원</div>
         </div>
         <div class="info-box">
           <div>등록 수량 :</div>
-          <div class="ml-1">{{ this.saleDto.stock }} 개</div>
+          <div class="ml-1">{{ sale.stock }} 개</div>
         </div>
       </div>
       <button @click="prodmodify()" class="border-m radius-s my-1 edit-btn">
@@ -39,9 +38,9 @@
 </template>
 
 <script>
-import http from "@/util/http-common";
 import EditStockModal from "@/components/management/EditStockModal.vue";
 import AddStockModal from "@/components/management/AddStockModal.vue";
+import { mapActions } from "vuex";
 export default {
   name: "AllProductList",
   components: {
@@ -49,10 +48,7 @@ export default {
     EditStockModal,
   },
   data() {
-    return {
-      saleDto: {},
-      stock: Number,
-    };
+    return {};
   },
   props: {
     storeId: Number,
@@ -63,21 +59,17 @@ export default {
     comment: String,
     no: Number,
     item: Number,
-  },
-
-  created() {
-    http.get(`/sale/${this.itemId}`).then((response) => {
-      if (response.status == 200) {
-        this.saleDto = response.data;
-      }
-    });
+    sale: Object,
   },
 
   methods: {
+    ...mapActions("itemStore", ["getItemId"]),
+    ...mapActions("storeStore", ["getStoreId"]),
     prodmodify() {
+      this.getItemId(this.itemId);
+      this.getStoreId(this.storeId);
       this.$router.push({
         name: "prodChange",
-        params: { itemId: this.itemId, storeId: this.storeId },
       });
     },
   },

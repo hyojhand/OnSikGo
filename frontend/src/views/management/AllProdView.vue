@@ -11,22 +11,6 @@
           {{ store.storeName }}
         </option>
       </select>
-
-      <!-- <b-dropdown
-          id="dropdown-1"
-          style="border-color: #63bf68"
-          text="this.stores[0].storeName"
-        >
-          <b-dropdown-item>
-            <option
-              :key="index"
-              :value="store"
-              v-for="(store, index) in stores"
-            >
-              {{ store.storeName }}
-            </option>
-          </b-dropdown-item>
-        </b-dropdown> -->
     </div>
     <!-- 상품 등록 & 검색 탭 -->
 
@@ -135,13 +119,15 @@
 <script>
 import AllProductList from "@/components/management/AllProductList.vue";
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
 export default {
   name: "AllProdView",
 
   data() {
     return {
       stores: [],
-      storeId: "",
+      store: {},
+      storeId: Number,
       items: [],
       keyword: "",
       saleList: [],
@@ -158,15 +144,7 @@ export default {
       this.storeId = response.data[0].storeId;
     });
 
-    await http
-      .post(`/item/page/${this.storeId}`, {
-        page: 0,
-        size: 4,
-      })
-      .then((response) => {
-        this.items = response.data.content;
-        this.totalPage = response.data.totalPages;
-      });
+    await this.selectPage(1);
   },
 
   components: {
@@ -174,8 +152,9 @@ export default {
   },
 
   methods: {
+    ...mapActions("itemStore", ["getItemId"]),
+    ...mapActions("storeStore", ["getStoreId"]),
     selectPage(index) {
-      console.log(index);
       this.page = index - 1;
       http
         .post(`/item/page/${this.storeId}`, {
@@ -184,6 +163,21 @@ export default {
         })
         .then((response) => {
           this.items = response.data.content;
+          this.totalPage = response.data.totalPages;
+          this.items.map(async (item, i) => {
+            await http
+              .get(`/sale/${item.itemId}`)
+              //
+              .then((response) => {
+                if (response.status == 200) {
+                  this.items[i] = {
+                    ...this.items[i],
+                    sale: response.data,
+                  };
+                }
+              });
+            this.$forceUpdate();
+          });
         });
     },
     nextPage() {
@@ -202,10 +196,11 @@ export default {
       }
     },
     prodregister() {
-      this.$router.push("/allprod/register");
-    },
-    selectStore() {
-      this.storeId = event.target.value;
+      this.getItemId(this.itemId);
+      this.getStoreId(this.storeId);
+      this.$router.push({
+        name: "prodRegister",
+      });
     },
     keywordSelect() {
       http
@@ -221,6 +216,10 @@ export default {
       http.get(`/item/list/${this.storeId}`).then((response) => {
         this.items = response.data;
       });
+    },
+    selectStore(event) {
+      this.storeId = event.target.value;
+      this.selectPage(1);
     },
   },
 };

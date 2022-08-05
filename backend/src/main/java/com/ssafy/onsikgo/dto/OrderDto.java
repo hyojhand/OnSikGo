@@ -15,6 +15,7 @@ public class OrderDto {
     private String date;
     private Integer count;
     private State state;
+    private Long orderId;
 
     public Order toEntity(User user, SaleItem saleItem) {
         return Order.builder()

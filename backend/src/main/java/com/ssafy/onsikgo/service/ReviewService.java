@@ -53,7 +53,12 @@ public class ReviewService {
 
         String content = map.get("content");
 
-        ReviewDto reviewDto = new ReviewDto(content,createdDate,false,findUser.getNickname(),null, findUser.getImgUrl());
+        ReviewDto reviewDto = new ReviewDto();
+        reviewDto.setContent(content);
+        reviewDto.setCreatedDate(createdDate);
+        reviewDto.setReported(false);
+        reviewDto.setNickname(findUser.getNickname());
+        reviewDto.setUserImgUrl(findUser.getImgUrl());
 
         Review review = reviewDto.toEntity(findUser,findStore);
         reviewRepository.save(review);
@@ -118,4 +123,13 @@ public class ReviewService {
         return new ResponseEntity<>("리뷰가 신고되었습니다.", HttpStatus.OK);
     }
 
+    public ResponseEntity<List<ReviewDto>> getTotal() {
+        List<Review> allReview = reviewRepository.findAll();
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+        for(Review review : allReview) {
+            reviewDtoList.add(review.toDto());
+        }
+
+        return new ResponseEntity<>(reviewDtoList, HttpStatus.OK);
+    }
 }

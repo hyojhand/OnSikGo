@@ -64,16 +64,9 @@
               <v-text-field
                 v-model="count"
                 label="수량을 입력해주세요."
+                :error-messages="countErrors"
                 required
                 class="input-box mt-5"
-                color="black"
-              >
-              </v-text-field>
-              <v-text-field
-                v-model="count"
-                label="소요시간을 입력해주세요."
-                required
-                class="input-box mt-1"
                 color="black"
               >
               </v-text-field>
@@ -81,7 +74,10 @@
             <p class="order-text">* 매장에서 '승인 완료'시 고객님에게 알림이 갑니다</p>
             <p class="order-text">반드시 알림을 확인하고 출발해주세요.</p>
             <p class="order-text">상품은 금일 취식 부탁드립니다</p>
-            <button class="order-button border-m radius-m" @click="productOrder()">신청하기</button>
+            <button 
+              class="order-button border-m radius-m" 
+              @click="productOrder()"
+            >신청하기</button>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -91,7 +87,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import http from "@/util/http-common";
 
 export default {
@@ -109,6 +105,9 @@ export default {
       storeName : "",
       storeLocation : "",
       count : "",
+      storeId : "",
+      saleItemId: "",
+      check: false,
     }
   },
   computed: {
@@ -116,7 +115,15 @@ export default {
       "currentAddress",
       "currentItemId",
       "orderStore",
-    ])
+    ]),
+    countErrors() {
+      const errors = [];
+      if (this.count <= this.stock) {
+        return errors;
+      }
+      errors.push("수량을 다시 입력해주세요.")
+      return errors
+    }, 
   },
   created (){
     this.findProduct()
@@ -124,31 +131,36 @@ export default {
     this.findStock()
   },
   methods: {
+    ...mapActions("storeStore", ["getStoreId"]),
     // 상품 정보 조회
     findProduct() {
       http
         .get(`/item/${this.currentItemId}`)
         .then((response) => {
+          // console.log(response.data)
           this.productName = response.data.itemName
           this.price = response.data.price
           this.itemImgUrl = response.data.itemImgUrl
           this.comment = response.data.comment
-          console.log(response.data)
+          // console.log(response.data)
         }),
       http
         .get(`/sale/${this.currentItemId}`)
         .then((response) => {
           this.stock = response.data.stock
-          this.salePrice = response.data.salePrice 
-          console.log(response.data)
+          this.salePrice = response.data.salePrice
+          this.saleItemId = response.data.saleItemId
+          // console.log(response.data)
         })
     },
     // 가게정보 조회
     findStock() {
+      console.log(this.orderStore)
       http
         .get(`/store/${this.orderStore}`)
         .then((response) => {
           this.storeName = response.data.storeName
+          this.storeId = response.data.storeId
           this.storeLocation = response.data.location
           // console.log(response.data)
         })
@@ -167,23 +179,27 @@ export default {
     },
     //  주문하기
     productOrder() {
-      http.defaults.headers["access-token"] =
-      localStorage.getItem("access-token");
-      http
-        .post('/order', {
-          saleItemId : this.currentItemId,
-          count : this.count
-        })
-        .then((response) => {
-          console.log(response)
-        })
-      this.$router.push("/shop")
-
-      
+      if (this.count <= this.stock){
+        http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+        http
+          .post('/order', {
+            saleItemId : this.saleItemId,
+            count : this.count
+          })
+          .then((response) => {
+            console.log(response)
+          })
+        this.$router.push("/shop")
+      }
     },
     // 할때 가게정보도 추가 할 것
     detailStore() {
-        this.$router.push("/store")
+      this.getStoreId(this.storeId);
+      console.log(this.storeId)
+      this.$router.push({
+        name: "storeView",
+      });
     }
   }
 };
