@@ -37,7 +37,6 @@
                 v-model="userDto.nickname"
                 type="text"
                 placeholder="변경할 닉네임을 입력해주세요"
-                required
                 id="input-id"
               />
             </div>
