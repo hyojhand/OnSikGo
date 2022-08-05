@@ -51,12 +51,18 @@
 
     <div class="container">
       <div class="font-l sales">오늘 할인 판매 상품</div>
-      <discountList
-        v-for="(saleItem, index) in saleItemList"
-        :key="index"
-        v-bind="saleItem"
-        :storeId="storeId"
-      />
+      <div v-if="this.saleItemList.length">
+        <discountList
+          v-for="(saleItem, index) in saleItemList"
+          :key="index"
+          v-bind="saleItem"
+          :storeId="storeId"
+        />
+      </div>
+      <div v-else class="non-msg">
+        <div>오늘은 등록한</div>
+        <div>상품이 없어요 ㅠ</div>
+      </div>
     </div>
   </div>
 </template>
@@ -146,5 +152,21 @@ export default {
   background-color: #37a62f;
   color: #ffffff;
   width: 100px;
+}
+.non-msg {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.non-msg > div {
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
+}
+.sales {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 3%;
 }
 </style>

@@ -49,20 +49,32 @@
     <!-- 상품 설명란 -->
     <div class="product mt-3" v-if="selectedTab === tabs[0]">
       <p class="head">📃 해당 매장에서 오늘 등록된 상품</p>
-      <store-product-item
-        v-for="(saleItem, index) in saleItemList"
-        :key="index"
-        v-bind="saleItem"
-        :no="storeId"
-      />
+      <div v-if="this.saleItemList.length">
+        <store-product-item
+          v-for="(saleItem, index) in saleItemList"
+          :key="index"
+          v-bind="saleItem"
+          :no="storeId"
+        />
+      </div>
+      <div v-else class="non-msg">
+        <div>오늘은 등록된</div>
+        <div>상품이 없어요 ㅠ</div>
+      </div>
     </div>
     <div class="product mt-3" v-else>
       <p class="head">🥨 온식고 식구들의 입소문</p>
-      <store-review
-        v-for="(reviewDto, index) in reviewList"
-        :key="index"
-        v-bind="reviewDto"
-      />
+      <div v-if="this.reviewList.length">
+        <store-review
+          v-for="(reviewDto, index) in reviewList"
+          :key="index"
+          v-bind="reviewDto"
+        />
+      </div>
+      <div v-else class="non-msg">
+        <div>오늘은 등록된</div>
+        <div>상품이 없어요 ㅠ</div>
+      </div>
       <!--리뷰입력창-->
       <div class="input-group comment">
         <input
@@ -118,7 +130,7 @@ export default {
 
     await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
-      console.log(this.storeDto)
+      console.log(this.storeDto);
     });
 
     await http.get(`/sale/list/${this.getStoreId}`).then((response) => {
@@ -134,7 +146,7 @@ export default {
   },
   methods: {
     onClickTab(tab) {
-        this.selectedTab = tab;
+      this.selectedTab = tab;
     },
     selectReview() {
       http.get(`/review/store/${this.getStoreId}`).then((response) => {
@@ -233,5 +245,17 @@ ul.tabs li {
 
 .comment {
   width: 100%;
+}
+.non-msg {
+  width: 100%;
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.non-msg > div {
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
 }
 </style>
