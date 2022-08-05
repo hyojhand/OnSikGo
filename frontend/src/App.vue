@@ -153,7 +153,8 @@
           <v-list-item
             v-for="item in admins"
             :key="item.title"
-            :to="item.router">
+            :to="item.router"
+          >
             <v-list-item-content>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
@@ -333,6 +334,7 @@ export default {
         "내리뷰조회",
         "매장추가",
         "영업종료 확인",
+        "비밀번호변경",
       ],
     };
   },
