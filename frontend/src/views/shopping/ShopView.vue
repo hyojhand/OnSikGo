@@ -28,9 +28,13 @@
       <ul class="tabs">
         <li
           v-for="tab in tabs"
-          v-bind:class="{ active: tab === selectedTab }"
+          v-bind:class="{
+            active: tab === selectedTab,
+            select: tab === selectedTab,
+          }"
           :key="tab"
           v-on:click="onClickTab(tab)"
+          class="tab"
         >
           <span>{{ tab }}</span>
         </li>
@@ -106,61 +110,42 @@ export default {
 </script>
 
 <style scoped>
-/* 모든 폰트사이즈는 기본값이 15px */
-* {
-  font-size: 15px;
+.mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-/* 각 블럭마다 빈공간 부여 */
-div {
-  padding-bottom: 5px;
-  padding-top: 5px;
-}
-
 .tab-content {
-  padding-top: 25px;
+  width: 100%;
 }
 .main_container {
   width: 100%;
-  height: 100%;
 }
-
+.tabs {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-left: 5%;
+}
+.tab {
+  font-size: 18px;
+  margin-right: 5%;
+}
+.select > span {
+  color: black;
+}
 .main_container .mobile {
-  width: 350px;
+  width: 100%;
   margin: 0 auto;
 }
-
-.main_container .mobile .location .bi-pin-map {
-  margin-left: 0.5rem;
-}
-/* 점없애고 가로정렬 */
-
-ul.tabs {
-  margin: 0px;
-  padding: 0px;
-  list-style: none;
-}
-ul.tabs li {
-  list-style-type: none;
-  float: left;
-  background: none;
-  color: #222;
-  padding: 10px 15px;
-  cursor: pointer;
-  border: 1px solid #b9b9b9;
-  border-radius: 16px;
-  width: 78px;
-  height: 21px;
-  font-size: 12px;
-  padding: 0;
-  margin-left: 5px;
-}
-
 .location {
   text-align: start;
-  margin: 3% 0;
+  padding: 8% 0 5% 3%;
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
 }
 .location span {
   margin-left: 2%;

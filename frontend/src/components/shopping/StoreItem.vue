@@ -1,29 +1,49 @@
 <template>
-  <div class="store-container">
-    <div class="row">
-      <!-- 가게 이미지 -->
-      <div class="col-2">
-        <img
-          class="store-image"
-          :src="`${storeImgUrl}`"
-          height="50"
-          width="50"
-        />
+  <div
+    class="store-container"
+    :class="{ zerostock: saleItemDtoList.length == 0 }"
+  >
+    <!-- 가게 이미지 -->
+
+    <img :src="`${storeImgUrl}`" class="col-3" />
+
+    <!-- 가게 설명 -->
+    <div class="col-5 store-case">
+      <div class="store-name" :class="{ none: saleItemDtoList.length == 0 }">
+        {{ storeName }}
       </div>
-      <!-- 가게 설명 -->
-      <div class="store col">
-        <p class="store-name">{{ storeName }}</p>
-        <p class="store-prediction">300m, 도보로 3분</p>
+      <div
+        class="store-prediction"
+        :class="{ none: saleItemDtoList.length == 0 }"
+      >
+        300m, 도보로 3분
       </div>
-      <!-- 물품수량 & 버튼 -->
-      <div class="col">
-        <p class="store-product">
-          등록물품 :
-          <span class="product-count"> {{ saleItemDtoList.length }}</span> 개
-        </p>
-        <button class="store-moving" @click="storeDetail()">가게보기</button>
+      <div
+        class="ment"
+        :class="{ none: saleItemDtoList.length == 0 }"
+        v-if="saleItemDtoList.length == 0"
+      >
+        오늘 등록된 물품이 없어요ㅠ
       </div>
-      <hr style="border: 1px solid #222; margin: 3px" />
+    </div>
+    <!-- 물품수량 & 버튼 -->
+    <div class="col-4 product-case">
+      <p class="store-product" :class="{ none: saleItemDtoList.length == 0 }">
+        등록물품 :
+        <sapn
+          class="product-count"
+          :class="{ none: saleItemDtoList.length == 0 }"
+          >{{ saleItemDtoList.length }}</sapn
+        >
+        개
+      </p>
+      <button
+        class="border-m radius-s"
+        :class="{ none: saleItemDtoList.length == 0 }"
+        @click="storeDetail()"
+      >
+        가게보기
+      </button>
     </div>
   </div>
 </template>
@@ -66,47 +86,57 @@ export default {
     http.get(`/sale/list/${this.storeId}`).then((response) => {
       if (response.status == 200) {
         this.saleItemDtoList = response.data;
+        console.log(response);
       }
     });
+    console.log(this.saleItemDtoList);
   },
 };
 </script>
 
 <style scoped>
 .store-container {
-  padding: 6px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  height: 120px;
+  margin: 0;
 }
-
-.store-container .row .store-image {
-  width: 50px;
+.store-product {
+  font-size: 13px;
 }
-
-.store-container .row .store {
-  text-align: left;
+.product-case {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0;
 }
-.store-container .row .store .store-name {
-  font-size: 12px;
-  font-weight: bolder;
-}
-.store-container .row .store .store-prediction {
-  font-size: 6px !important;
-  color: #b9b9b9;
-}
-
-.store-container .row .store-product {
-  font-size: 12px;
-}
-.store-container .row .product-count {
+.product-count {
   color: red;
-  font-weight: bolder;
 }
-
-.store-container .row .store-moving {
-  border: 1px solid;
-  text-decoration-line: none;
-  border-radius: 15px;
-  font-size: 12px;
-  padding: 3px;
-  color: #222;
+.store-case {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: left;
+}
+.store-name {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+.zerostock {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.none {
+  color: rgba(0, 0, 0, 0.7);
+}
+img {
+  padding: 0;
+}
+.ment {
+  font-size: 13px;
 }
 </style>
