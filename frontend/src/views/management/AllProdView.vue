@@ -46,7 +46,7 @@
         <!-- 검색 아이콘 -->
         <button>
           <svg
-            @click="keywordSelect()"
+            @click="keywordSelect(1)"
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
@@ -87,7 +87,7 @@
         class="item-card"
         v-for="(item, index) in items"
         :key="index"
-        v-bind="item"
+        v-bind:item="item"
         :storeId="storeId"
       />
     </div>
@@ -108,9 +108,7 @@
           :key="index"
           v-bind="page"
         >
-          <a class="page-link" href="#" @click="selectPage(index)">{{
-            index
-          }}</a>
+          <a class="page-link" href="#" @click="movePage(index)">{{ index }}</a>
         </li>
         <li class="page-item">
           <a class="page-link" href="#" @click="nextPage()">Next</a>
@@ -131,12 +129,13 @@ export default {
     return {
       stores: [],
       store: {},
-      storeId: Number,
-      items: [],
+      storeId: null,
+      items: {},
       keyword: "",
       saleList: [],
       totalPage: Number,
       page: Number,
+      isKeyword: false,
     };
   },
 
@@ -187,16 +186,33 @@ export default {
     nextPage() {
       if (this.page + 1 >= this.totalPage) {
         this.page = this.totalPage;
-        this.selectPage(this.page);
+        if (this.isKeyword === false) {
+          this.selectPage(this.page);
+        } else {
+          this.keywordSelect(this.page);
+        }
       } else {
         this.page = this.page + 2;
-        this.selectPage(this.page);
+        if (this.isKeyword === false) {
+          this.selectPage(this.page);
+        } else {
+          this.keywordSelect(this.page);
+        }
       }
     },
     previousPage() {
-      if (this.page - 1 < 0) this.selectPage(1);
-      else {
-        this.selectPage(this.page);
+      if (this.page - 1 < 0) {
+        if (this.isKeyword === false) {
+          this.selectPage(1);
+        } else {
+          this.keywordSelect(1);
+        }
+      } else {
+        if (this.isKeyword === false) {
+          this.selectPage(this.page);
+        } else {
+          this.keywordSelect(this.page);
+        }
       }
     },
     prodregister() {
@@ -206,20 +222,42 @@ export default {
         name: "prodRegister",
       });
     },
-    keywordSelect() {
+    keywordSelect(index) {
+      this.page = index - 1;
+      this.isKeyword = true;
       http
-        .post(`/item/list/keyword/${this.storeId}`, {
+        .post(`/item/page/keyword/${this.storeId}`, {
           keyword: this.keyword,
+          page: this.page,
+          size: 4,
         })
         .then((response) => {
-          this.items = response.data;
+          this.items = response.data.content;
+          this.totalPage = response.data.totalPages;
+          this.items.map(async (item, i) => {
+            await http.get(`/sale/${item.itemId}`).then((response) => {
+              if (response.status == 200) {
+                this.items[i] = {
+                  ...this.items[i],
+                  sale: response.data,
+                };
+              }
+            });
+            this.$forceUpdate();
+          });
         });
     },
+    movePage(index) {
+      this.page = index;
+      if (this.isKeyword == false) {
+        this.selectPage(this.page);
+      } else {
+        this.keywordSelect(this.page);
+      }
+    },
     resetItemList() {
-      this.keyword = "";
-      http.get(`/item/list/${this.storeId}`).then((response) => {
-        this.items = response.data;
-      });
+      this.isKeyword = false;
+      this.selectPage(1);
     },
     selectStore(event) {
       this.storeId = event.target.value;
