@@ -1,5 +1,19 @@
 <template>
   <div class="all">
+    <div class="web">
+      <div class="on-box">
+        <img src="@/assets/jjab.png" alt="짭로고" />
+        <button class="on-btn">온식고 식구에게 문의하기</button>
+        <button class="on-btn">온식고 널리 알리기</button>
+      </div>
+      <div class="mt-5">
+        <div class="logo-text">
+          <h1 class="text-l">Onsikgo</h1>
+          <h3>에서</h3>
+        </div>
+        <h3>지구를 함께 지켜보아요</h3>
+      </div>
+    </div>
     <v-app id="app">
       <!-- nav -->
       <v-app-bar
@@ -391,7 +405,49 @@ export default {
 }
 .all {
   width: 100%;
-  background-color: rgba(140, 184, 131, 30%);
+  background-color: rgba(140, 184, 131, 40%);
+  display: flex;
+  margin: 0;
+  flex-direction: row;
+  align-items: center;
+}
+.web {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-left: 130px;
+  height: 100vh;
+}
+.on-box > img {
+  width: 300px;
+  height: 300px;
+}
+.on-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 0 0 0 20px;
+}
+.on-btn {
+  height: 60px;
+  background-color: white;
+  font-size: 20px;
+  font-weight: 800;
+  color: black;
+  border-radius: 20px;
+  margin: 3% 0;
+  padding: 3%;
+  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.2);
+}
+.logo-text {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+.web > h1 {
+  color: black;
 }
 #app {
   background-color: rgb(240, 240, 240);
@@ -414,6 +470,11 @@ export default {
   align-items: center;
 }
 // mobile
+@media screen and (max-width: 1200px) {
+  .web {
+    display: none;
+  }
+}
 @media screen and (max-width: 414px) {
   #app {
     width: 100%;
