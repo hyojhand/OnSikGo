@@ -95,7 +95,7 @@
             </svg>
           </button>
           <!-- 초기화 -->
-          <button class="search-reset">
+          <button class="search-reset" @click="reset()">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -164,6 +164,9 @@ export default {
     selectWestern() {
       this.category = "WESTERN";
       this.sendParams();
+    },
+    reset() {
+      this.keyword = "";
     },
   },
 };
