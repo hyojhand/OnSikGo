@@ -29,7 +29,7 @@ export default {
 
     http.get("/notice").then((response) => {
       console.log(response.data);
-      this.noticeList = response.data;
+      this.noticeList = response.data.reverse()
     });
   },
 };

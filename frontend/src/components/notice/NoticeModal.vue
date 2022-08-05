@@ -2,7 +2,11 @@
   <div class="text-center">
     <v-dialog v-model="parents" width="344">
       <template v-slot:activator="{ on, attrs }">
-        <button class="border-m radius-m notice-btn" v-bind="attrs" v-on="on">
+        <button 
+          class="border-m radius-m notice-btn" 
+          v-bind="attrs" 
+          v-on="on"
+          :disabled="value.orderDto.state=='ORDER' || value.orderDto.state=='CANCEL'">
           주문확인하기
         </button>
       </template>
@@ -45,12 +49,13 @@
             </div>
             <div class="btn-box mt-2">
               <v-card-actions>
-                <refuse-modal @check-it="checkIt"></refuse-modal>
+                <refuse-modal @check-it="checkIt" :value=value ></refuse-modal>
               </v-card-actions>
               <v-card-actions>
                 <button
                   class="border-m radius-l text-m btn-accept"
                   @click="orderOk()"
+                  
                 >
                   수락
                 </button>
@@ -92,19 +97,17 @@ export default {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http
-        .patch(`/order/sign/${this.value.receivedId}`)
+        .patch(`/order/sign/${this.value.orderDto.orderId}`)
         .then((response) =>{
           if (response.status === 200) {
             console.log(response)
-            this.$router.push({
-              name: "notice"
-            })
           } else {
             console.log(response)
             alert("주문 실패")
           }
           
         })
+        this.parents = false;
 
     }
   },
