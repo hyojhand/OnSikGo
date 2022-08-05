@@ -1,14 +1,8 @@
 package com.ssafy.onsikgo.service;
 
 import com.ssafy.onsikgo.dto.*;
-import com.ssafy.onsikgo.entity.Item;
-import com.ssafy.onsikgo.entity.Sale;
-import com.ssafy.onsikgo.entity.SaleItem;
-import com.ssafy.onsikgo.entity.Store;
-import com.ssafy.onsikgo.repository.ItemRepository;
-import com.ssafy.onsikgo.repository.SaleItemRepository;
-import com.ssafy.onsikgo.repository.SaleRepository;
-import com.ssafy.onsikgo.repository.StoreRepository;
+import com.ssafy.onsikgo.entity.*;
+import com.ssafy.onsikgo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,6 +29,9 @@ public class SaleService {
     private final SaleItemRepository saleItemRepository;
     private final StoreRepository storeRepository;
     private final ItemRepository itemRepository;
+    private final NoticeRepository noticeRepository;
+    private final FollowRepository followRepository;
+    private final OrderRepository orderRepository;
 
     @Transactional
     public ResponseEntity<String> register(SaleItemDto saleItemDto, Long store_id) {
@@ -47,10 +44,12 @@ public class SaleService {
         }
 
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter noticeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         String date = now.format(dayFormatter);
 
         Store findStore = storeRepository.findById(store_id).get();
         List<Sale> saleList = saleRepository.findByStoreOrderByDateDesc(findStore);
+        boolean firstOrder = false;
         if(saleList.size() == 0 || !saleList.get(0).getDate().equals(date)) {
             Sale sale = Sale.builder()
                     .date(date)
@@ -60,6 +59,9 @@ public class SaleService {
                     .build();
 
             saleRepository.save(sale);
+
+
+            firstOrder = true;
         }
 
         saleItemDto.setTotalStock(saleItemDto.getStock());
@@ -68,6 +70,23 @@ public class SaleService {
 
         SaleItem saleItem = saleItemDto.toEntity(findItem,sale);
         saleItemRepository.save(saleItem);
+
+        if(firstOrder) {
+            String storeName = findStore.getStoreName();
+            String content = storeName + " 에서<br/> 할인상품이 등록되었습니다.";
+            Order order = new Order();
+            order.updateNotice(now.format(noticeFormatter), saleItem, findStore.getUser());
+            orderRepository.save(order);
+
+            List<Follow> storeFollowList = followRepository.findByStore(findStore);
+
+            for(Follow follow : storeFollowList) {
+                User user = follow.getUser();
+                Notice notice = new Notice(content,findStore.getUser(), order, user.getUserId(), NoticeState.STORE);
+                noticeRepository.save(notice);
+            }
+        }
+
         return new ResponseEntity<>("세일상품 등록완료", HttpStatus.OK);
     }
 
@@ -191,7 +210,7 @@ public class SaleService {
         if(!findSale.isPresent()) {
             SaleItemDto saleItemDto = new SaleItemDto();
             saleItemDto.setItemDto(findItem.get().toDto());
-
+            saleItemDto.setSalePrice(0);
             saleItemDto.setStock(0);
             return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
         }
@@ -201,6 +220,7 @@ public class SaleService {
             SaleItemDto saleItemDto = new SaleItemDto();
             saleItemDto.setItemDto(findItem.get().toDto());
 
+            saleItemDto.setSalePrice(0);
             saleItemDto.setStock(0);
             return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
         }
@@ -234,4 +254,51 @@ public class SaleService {
 
         return new ResponseEntity<>(saleItemDtoList, HttpStatus.OK);
     }
+
+//    public ResponseEntity<Page<SaleItemDto>> getSaleItemPage(PageDto pageDto, Long store_id) {
+//        LocalDateTime now = LocalDateTime.now();
+//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+//        String time = now.format(timeFormatter);
+//        if(Integer.parseInt(time) < 6) {
+//            now = now.minusDays(1);
+//        }
+//
+//        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//        String date = now.format(dayFormatter);
+//
+//        Store findStore = storeRepository.findById(store_id).get();
+//        PageRequest pageRequest = PageRequest.of(pageDto.getPage(), pageDto.getSize());
+//
+//        Page<Item> page = itemRepository.findByStore(findStore, pageRequest);
+//        Page<ItemDto> map = page.map(item -> new ItemDto(item.getItemId(),item.getItemName(),item.getPrice(),
+//                item.getItemImgUrl(), item.getComment()));
+//
+//        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore, date);
+//
+//        if(!findSale.isPresent()) {
+//
+//            Page<SaleItemDto> saleItemDto = map.map(item -> new SaleItemDto(item))
+//            saleItemDto.setItemDto(findItem.get().toDto());
+//            saleItemDto.setSalePrice(0);
+//            saleItemDto.setStock(0);
+//            return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
+//        }
+//
+//        Optional<SaleItem> findSaleItem = saleItemRepository.findBySaleAndItem(findSale.get(), findItem.get());
+//        if(!findSaleItem.isPresent()) {
+//            SaleItemDto saleItemDto = new SaleItemDto();
+//            saleItemDto.setItemDto(findItem.get().toDto());
+//            saleItemDto.setSalePrice(0);
+//            saleItemDto.setStock(0);
+//            return new ResponseEntity<>(saleItemDto, HttpStatus.OK);
+//        }
+//
+//
+//        Page<SaleItemDto> map = page.map(item -> new ItemDto(item.getItemId(),item.getItemName(),item.getPrice(),
+//                item.getItemImgUrl(), item.getComment()));
+//
+//        return new ResponseEntity<>(map, HttpStatus.OK);
+//
+//
+//    }
 }

@@ -55,4 +55,9 @@ public class SaleController {
         return saleService.getSaleItemKeyword(selectDto);
     }
 
+//    @PostMapping("/page/{store_id}")
+//    public ResponseEntity<Page<SaleItemDto>> getSaleItemPage(@RequestBody PageDto pageDto, @PathVariable Long store_id) {
+//        return saleService.getSaleItemPage(pageDto,store_id);
+//    }
+
 }

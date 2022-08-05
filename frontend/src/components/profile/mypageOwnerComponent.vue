@@ -17,6 +17,15 @@
               >매장 위치: {{ store.location }}</span
             ><br />
             <span style="color: gray; font-size: 0.7rem"
+              >문 닫는 시간: {{ store.closingTime }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem"
+              >사업자등록번호: {{ store.storeNum }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem"
+              >전화번호: {{ store.tel }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem"
               >매장 휴무일: {{ store.offDay }}</span
             >
           </div>
@@ -107,7 +116,7 @@ export default {
 
 <style>
 #mypage-card {
-  height: 170px;
+  height: 300px;
   width: 400px;
   border-radius: 15px;
   display: inline-block;

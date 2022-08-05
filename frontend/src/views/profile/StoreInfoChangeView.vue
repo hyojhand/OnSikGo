@@ -2,7 +2,7 @@
   <div>
     <!--이미지 변경 & 수정-->
     <br />
-      <b-img :src="previewImg" height="150px" width="200px" />
+    <b-img :src="previewImg" height="150px" width="200px" />
     <div class="mt-5">
       <p class="d-flex justify-content-end">
         <input @change="fileSelect" type="file" />
@@ -10,7 +10,7 @@
     </div>
     <br />
     <div>
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-form @submit="onSubmit" v-if="show">
         <!--매장명 -->
         <div class="ml-5 mr-4 mt-3">
           <b-form-group
@@ -56,14 +56,10 @@
             label="매장위치"
             label-for="input-3"
           >
-            <b-form-input
-              id="input-3"
-              v-model="storeDto.location"
-              type="text"
-              placeholder="매장위치"
-              required
-            ></b-form-input
-            ><br />
+            <span style="color: black" class="text-start">{{
+              this.storeDto.location
+            }}</span>
+            <br />
             <span id="red-small"
               >가게 주소를 변경하기 위해서는 <br />아래의 "주소 검색" 버튼을
               눌러주세요</span
@@ -74,7 +70,6 @@
               <v-text-field
                 v-model="address"
                 label="가게 주소를 입력해주세요."
-                required
                 class="input-box"
                 color="black"
                 type="address"
@@ -86,7 +81,6 @@
             <v-text-field
               v-model="extraAddress"
               label="상세 주소를 입력해주세요."
-              required
               class="input-box"
               color="black"
               type="address"
@@ -116,12 +110,12 @@
               id="input-4"
               v-model="storeDto.storeNum"
               type="text"
-              readonly
               placeholder="사업자 등록번호"
               required
             ></b-form-input>
             <br />
           </b-form-group>
+          <button>사업자 등록번호 확인</button>
         </div>
         <br />
         <!--매장 종료시간-->
@@ -176,20 +170,7 @@
         <!--form 끝-->
         <div class="ml-5 mr-4 mt-3 mb-16">
           <div class="d-flex justify-content-between">
-            <b-button
-              type="reset"
-              pill
-              variant="outline-danger"
-              @click="resetStoreDto()"
-              >초기화</b-button
-            >
-            <b-button
-              type="submit"
-              pill
-              variant="outline-success"
-              @click="modifyStore()"
-              >수정완료</b-button
-            >
+            <button type="submit" @click="modifyStore()">수정완료</button>
           </div>
         </div>
       </b-form>
@@ -206,14 +187,7 @@ export default {
       imgFile: null,
       storeDto: {},
       off: "",
-      form: {
-        store: "",
-        phone: "",
-        location: "",
-        registernum: "",
-        value: "",
-      },
-      previewImg:null,
+      previewImg: null,
       show: true,
       address: "",
       extraAddress: "",
@@ -249,19 +223,15 @@ export default {
 
       if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (e) => {
           this.previewImg = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
       } else {
         this.previewImg = null;
       }
-      this.imgFile = this.$refs.imgFile.files[0];
+      this.imgFile = input.files[0];
     },
-    resetStoreDto() {
-      this.storeDto = {};
-    },
-
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
@@ -302,7 +272,8 @@ export default {
     },
 
     modifyStore() {
-      this.storeDto.offDay = this.off.join();
+      // this.storeDto.offDay = this.off.join;
+      // console.log(this.storeDto.offDay);
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
 
@@ -312,6 +283,7 @@ export default {
         "storeDto",
         new Blob([JSON.stringify(this.storeDto)], { type: "application/json" })
       );
+      console.log(formData);
       http
         .put(`/store/${this.storeDto.storeId}`, formData, {
           headers: {
@@ -327,21 +299,6 @@ export default {
     },
     onSubmit(event) {
       event.preventDefault();
-    },
-    onReset(event) {
-      event.preventDefault();
-      // Reset our form values
-      this.form.store = "";
-      this.form.phone = "";
-      this.form.location = "";
-      this.form.registernum = "";
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.value = "";
-      this.holiday = "";
-      this.$nextTick(() => {
-        this.show = true;
-      });
     },
   },
 };

@@ -1,6 +1,7 @@
 package com.ssafy.onsikgo.dto;
 
 import com.ssafy.onsikgo.entity.Notice;
+import com.ssafy.onsikgo.entity.NoticeState;
 import com.ssafy.onsikgo.entity.Order;
 import com.ssafy.onsikgo.entity.User;
 import lombok.*;
@@ -18,6 +19,7 @@ public class NoticeDto {
     private UserDto userDto;
     private OrderDto orderDto;
     private Long receivedId;
+    private NoticeState noticeState;
 
 
     public Notice toEntity(User user, Order order) {
@@ -28,6 +30,7 @@ public class NoticeDto {
                 .receivedId(this.receivedId)
                 .user(user)
                 .order(order)
+                .noticeState(this.noticeState)
                 .build();
     }
 

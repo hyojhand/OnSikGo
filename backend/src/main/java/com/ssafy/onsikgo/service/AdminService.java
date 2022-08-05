@@ -47,7 +47,7 @@ public class AdminService {
         if (!tokenProvider.validateToken(token)) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
-        List<Review> reviews = reviewRepository.findByReportedIsTrue();
+        List<Review> reviews = reviewRepository.findByReportedTrue();
         List<ReviewDto> result = new ArrayList<>();
         for(Review review:reviews){
             result.add(review.toDto());
