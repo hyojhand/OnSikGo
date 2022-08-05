@@ -9,7 +9,7 @@
         <p>사용자명: {{ users.userName }}</p>
         <p class="text-primary">닉네임: {{ users.nickname }}</p> 
       </div>
-      <v-btn color="error" samll depressed>삭제</v-btn>
+      <v-btn @click="deleteUser(users)" color="error" samll depressed>삭제</v-btn>
       <hr>
     </div>
   </div>
@@ -33,8 +33,20 @@ export default {
         .get('/user/total')
         .then((response) => {
           this.userList = response.data;
+          console.log(response.data);
         })
-    }
+    },
+    
+    deleteUser(users) {
+      console.log(users);
+      http
+        .delete(`/user/${users.userId}`) 
+        .then((response) => {
+          if (response.status == 200) {
+            this.$router.go();
+          }
+        });
+    },
   },
 
   created () {
