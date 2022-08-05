@@ -1,17 +1,30 @@
 <template>
   <div>
     <div class="ti-box row">
-      <div class="ti col-6">
-        <div></div>
-        다음 상품들이 <br />
-        가장 많은 사랑을 받았어요!
+      <div class="col-6 imo-box likes">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          fill="#464fa6"
+          class="bi bi-emoji-smile-fill"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"
+          />
+        </svg>
+        <span
+          >저희가 가장 많은 <br />
+          사랑을 받았어요!!</span
+        >
       </div>
       <div class="col-6 imo-box">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"
           height="30"
-          fill="black"
+          fill="tomato"
           class="bi bi-emoji-frown-fill"
           viewBox="0 0 16 16"
         >
@@ -93,11 +106,6 @@ export default {
   opacity: 60%;
   background-color: whitesmoke;
 }
-.ti {
-  text-align: start;
-  color: #464fa6;
-  padding: 0;
-}
 .ti-box {
   display: flex;
   flex-direction: row;
@@ -109,12 +117,16 @@ export default {
 .imo-box {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   padding: 0;
 }
 .imo-box > span {
   text-align: start;
   margin-left: 7%;
+  color: tomato;
+}
+.likes > span {
+  color: #464fa6;
 }
 </style>

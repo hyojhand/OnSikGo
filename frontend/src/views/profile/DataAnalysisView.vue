@@ -3,6 +3,11 @@
     <!--현재 내 날짜로부터 7일전날짜부터 ~ 현재 날짜 -->
     <div class="store font-l">지금 내 매장 이름</div>
 
+    <div class="mt-5 mb-5">
+      <h3>점주님은, 이번주 온식고를 통해</h3>
+      <br />
+      <h4>얼마원 가치의 세상을 구하셨어요!</h4>
+    </div>
     <div v-if="!once" @click="opento" class="date font-m">
       날짜를 선택하세요
     </div>
@@ -36,10 +41,6 @@
     <bar-chart></bar-chart>
 
     <!--판매한 금액의 총금액을 넣음-->
-    <div>
-      <span>점주님은, 이번주 온식고를 통해 </span><br />
-      <span>얼마원 가치의 세상을 구하셨어요!</span>
-    </div>
   </div>
 </template>
 
