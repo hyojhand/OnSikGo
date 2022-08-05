@@ -1,10 +1,6 @@
 <template>
   <div>
-    <card 
-      id="ordercard" 
-      v-for="(order, index) in orderList"
-      :key="index"
-    >
+    <card >
       <div class="container">
         <div class="row">
           <div class="col-3 ml-3 mt-2">
@@ -28,7 +24,7 @@
             </div>
           </div>
           <div class="col-3 ml-3 mt-2">
-            <button v-show="`${order.state}` === 'ORDER'" id="btn-order" type="button" @click="orderCancel(order)">주문취소</button><br /><br />
+            <button v-show="`${order.state}` === 'ORDER' && `${elapsedTime}` < 30" id="btn-order" type="button" @click="orderCancel(order)">주문취소</button><br /><br />
             <button id="btn-order" @click="goStore(order.saleItemDto.saleDto.storeDto.storeId)" type="button">
               가게보기
             </button>
@@ -41,20 +37,21 @@
 
 <script>
 import http from '@/util/http-common.js';
-import { mapActions } from "vuex";
 
 export default {
   name: "orderList",
   data(){
     return{
-      orderList : [],
+      elapsedTime : "",
     }
   },
+  props: {
+    order: null
+  },
   created(){
-    this.getOrderList()
+    this.nowDate()
   },
   methods: {
-    ...mapActions("storeStore", ["getStoreId"]),
     orderCancel(order) {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
@@ -74,16 +71,30 @@ export default {
       this.getStoreId(sotreId);
       this.$router.push("/store");
     },
-    getOrderList() {
-      http.defaults.headers["access-token"] =
-        localStorage.getItem("access-token");
-      http
-        .get('/order')
-        .then((response) =>{
-          console.log(response.data)
-          this.orderList = response.data
-        })
-    }
+    
+    nowDate() {
+      var today = new Date()
+
+      var year = today.getFullYear();
+      var month = ('0' + (today.getMonth() + 1)).slice(-2);
+      var day = ('0' + today.getDate()).slice(-2);
+      var hours = ('0' + today.getHours()).slice(-2); 
+      var minutes = ('0' + today.getMinutes()).slice(-2); 
+
+      
+      var orderyear= this.order.date.slice(0,4)
+      var ordermonth = this.order.date.slice(4,6)
+      var orderday = this.order.date.slice(6,8)
+      var orderhours = this.order.date.slice(8,10)
+      var orderminutes = this.order.date.slice(10,12)
+
+      const nowdate = new Date(year, month, day, hours, minutes,0)
+      const orderdate = new Date(orderyear, ordermonth, orderday, orderhours, orderminutes,0)
+      const elapsedTime = (nowdate.getTime() - orderdate.getTime()) / 60000
+      this.elapsedTime = elapsedTime
+    
+
+    },
     
   },
 };
