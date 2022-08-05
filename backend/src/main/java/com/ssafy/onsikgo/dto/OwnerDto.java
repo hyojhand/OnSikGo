@@ -16,6 +16,7 @@ public class OwnerDto {
     private String email;
     private String password;
     private String userName;
+    private String imgUrl;
     private Role role;
     private String storeName;
     private String location;
@@ -35,6 +36,7 @@ public class OwnerDto {
                 .userName(this.getUserName())
                 .password(this.getPassword())
                 .email(this.getEmail())
+                .imgUrl(this.getImgUrl())
                 .nickname(nickname)
                 .authorities(Collections.singleton(authority))
                 .role(this.role)

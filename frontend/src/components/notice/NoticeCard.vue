@@ -1,24 +1,17 @@
 <template>
   <v-card class="mx-auto card-box" max-width="344">
     <div class="row card-box">
-      <img
-        class="img-box col-5"
-        src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4gqX/image/wIXZfUhOPGGGZxaZ0Nsmigd1paU.jpeg"
-        alt="사진이었던것.."
-      />
+      <img class="img-box col-5" :src="`${userDto.imgUrl}`" alt="유저 프로필" />
       <div class="col-7 order-box">
         <v-list-item-content>
           <v-list-item-title class="text mb-3 msg-box">
-            <span>{ 최지은 } </span>
-            <span class="notice">님의</span>
+            <span v-html="`${content}`"></span>
+            <!-- <span class="notice">님의</span> -->
           </v-list-item-title>
-          <v-list-item-title class="text mb-3 msg-box notice"
-            >주문이 도착했습니다.</v-list-item-title
-          >
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
-          <p class="time-text">10분전</p>
-          <notice-modal></notice-modal>
+          <p class="time-text">{{ createdDate }}</p>
+          <notice-modal :value="items"></notice-modal>
         </v-card-actions>
       </div>
     </div>
@@ -31,7 +24,36 @@ import NoticeModal from "@/components/notice/NoticeModal.vue";
 export default {
   name: "NoticeCard",
   components: { NoticeModal },
+  data() {
+    return{
+      items: [],
+    }
+  },
+  props: {
+    content: String,
+    location: String,
+    orderDto: [],
+    receivedId: Number,
+    state: Boolean,
+    userDto: [],
+    createdDate: String,
+  },
+  created(){
+    this.getData()
+  },
   methods: {
+    getData(){
+      var temp = {
+        content : this.content,
+        location : this.location,
+        orderDto: this.orderDto,
+        receivedId: this.receivedId,
+        state: this.state,
+        userDto: this.userDto,
+        createdDate: this.createdDate,
+      }
+      this.items = temp
+    },
     goDetail() {
       this.$router.push("/notice/detail");
     },

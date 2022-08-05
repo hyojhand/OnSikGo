@@ -2,9 +2,7 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <b-button pill variant="outline-danger" v-bind="attrs" v-on="on">
-          예 탈퇴하겠습니다
-        </b-button>
+        <button v-bind="attrs" v-on="on">예 탈퇴하겠습니다</button>
       </template>
       <v-card>
         <v-card-title class="d-flex justify-content-center">
@@ -37,6 +35,7 @@ export default {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http.delete(`/user`).then(() => {
+        localStorage.removeItem("access-token");
         this.$router.push("/");
       });
     },

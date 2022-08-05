@@ -11,22 +11,6 @@
           {{ store.storeName }}
         </option>
       </select>
-
-      <!-- <b-dropdown
-          id="dropdown-1"
-          style="border-color: #63bf68"
-          text="this.stores[0].storeName"
-        >
-          <b-dropdown-item>
-            <option
-              :key="index"
-              :value="store"
-              v-for="(store, index) in stores"
-            >
-              {{ store.storeName }}
-            </option>
-          </b-dropdown-item>
-        </b-dropdown> -->
     </div>
     <!-- 상품 등록 & 검색 탭 -->
 
@@ -104,20 +88,28 @@
         v-for="(item, index) in items"
         :key="index"
         v-bind="item"
-        :no="storeId"
+        :storeId="storeId"
       />
     </div>
     <!--페이지네이션-->
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center nav-box">
-        <li class="page-item disabled">
-          <a class="page-link">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
         <li class="page-item">
-          <a class="page-link" href="#">Next</a>
+          <a class="page-link" href="#" @click="previousPage()">Previous</a>
+        </li>
+
+        <li
+          class="page-item"
+          v-for="(index, page) in totalPage"
+          :key="index"
+          v-bind="page"
+        >
+          <a class="page-link" href="#" @click="selectPage(index)">{{
+            index
+          }}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" @click="nextPage()">Next</a>
         </li>
       </ul>
     </nav>
@@ -127,15 +119,20 @@
 <script>
 import AllProductList from "@/components/management/AllProductList.vue";
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
 export default {
   name: "AllProdView",
 
   data() {
     return {
       stores: [],
-      storeId: "",
+      store: {},
+      storeId: Number,
       items: [],
       keyword: "",
+      saleList: [],
+      totalPage: Number,
+      page: Number,
     };
   },
 
@@ -147,9 +144,7 @@ export default {
       this.storeId = response.data[0].storeId;
     });
 
-    await http.get(`/item/list/${this.storeId}`).then((response) => {
-      this.items = response.data;
-    });
+    await this.selectPage(1);
   },
 
   components: {
@@ -157,11 +152,55 @@ export default {
   },
 
   methods: {
-    prodregister() {
-      this.$router.push("/allprod/register");
+    ...mapActions("itemStore", ["getItemId"]),
+    ...mapActions("storeStore", ["getStoreId"]),
+    selectPage(index) {
+      this.page = index - 1;
+      http
+        .post(`/item/page/${this.storeId}`, {
+          page: this.page,
+          size: 4,
+        })
+        .then((response) => {
+          this.items = response.data.content;
+          this.totalPage = response.data.totalPages;
+          this.items.map(async (item, i) => {
+            await http
+              .get(`/sale/${item.itemId}`)
+              //
+              .then((response) => {
+                if (response.status == 200) {
+                  this.items[i] = {
+                    ...this.items[i],
+                    sale: response.data,
+                  };
+                }
+              });
+            this.$forceUpdate();
+          });
+        });
     },
-    selectStore() {
-      this.storeId = event.target.value;
+    nextPage() {
+      if (this.page + 1 >= this.totalPage) {
+        this.page = this.totalPage;
+        this.selectPage(this.page);
+      } else {
+        this.page = this.page + 2;
+        this.selectPage(this.page);
+      }
+    },
+    previousPage() {
+      if (this.page - 1 < 0) this.selectPage(1);
+      else {
+        this.selectPage(this.page);
+      }
+    },
+    prodregister() {
+      this.getItemId(this.itemId);
+      this.getStoreId(this.storeId);
+      this.$router.push({
+        name: "prodRegister",
+      });
     },
     keywordSelect() {
       http
@@ -177,6 +216,10 @@ export default {
       http.get(`/item/list/${this.storeId}`).then((response) => {
         this.items = response.data;
       });
+    },
+    selectStore(event) {
+      this.storeId = event.target.value;
+      this.selectPage(1);
     },
   },
 };

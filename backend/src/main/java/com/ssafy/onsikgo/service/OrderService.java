@@ -62,7 +62,7 @@ public class OrderService {
             now = now.minusDays(1);
         }
 
-        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         String date = now.format(dayFormatter);
         orderDto.setDate(date);
 
@@ -71,13 +71,13 @@ public class OrderService {
 
 //        em.flush();
 
-        String content = findUser.get().getNickname() + "님의 주문이 도착했습니다.";
+        String content = findUser.get().getNickname() + " 님의<br/>" + "주문이 도착했습니다.";
         SaleItem saleItem = order.getSaleItem();
         Sale sale = saleItem.getSale();
         Store store = sale.getStore();
         User storeUser = store.getUser();
 
-        Notice notice = new Notice(content, findUser.get(), order, storeUser.getUserId());
+        Notice notice = new Notice(content, findUser.get(), order, storeUser.getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
         return new ResponseEntity<>("주문이 등록되었습니다.", HttpStatus.OK);
@@ -132,7 +132,7 @@ public class OrderService {
 
         SaleItem saleItem = findOrder.get().getSaleItem();
         int stockCount = saleItem.getStock() - findOrder.get().getCount();
-        saleItem.update(stockCount);
+        saleItem.updateStock(stockCount);
         saleItemRepository.save(saleItem);
 
 
@@ -158,8 +158,8 @@ public class OrderService {
         findSale.get().updateTotalPrice(totalPrice);
         saleRepository.save(findSale.get());
 
-        String content = findUser.get().getNickname() + "님의 상품이 준비되었습니다.";
-        Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId());
+        String content = findUser.get().getNickname() + " 님의 " + "<br/>상품이 준비되었습니다.";
+        Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
         return new ResponseEntity<>("주문이 승인되었습니다.", HttpStatus.OK);
@@ -187,8 +187,8 @@ public class OrderService {
         orderRepository.save(findOrder.get());
 
         String reason = map.get("reason");
-        String content = findOrder.get().getUser().getNickname() + "님의 상품이 " + reason + "의 이유로 " + "취소되었습니다.";
-        Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId());
+        String content = findOrder.get().getUser().getNickname() + " 님의 상품이<br/>" + reason + "의 이유로 " + "취소되었습니다.";
+        Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
         return new ResponseEntity<>("가게사정으로 주문이 거절되었습니다.", HttpStatus.OK);
@@ -220,8 +220,8 @@ public class OrderService {
         Store store = sale.getStore();
         User storeUser = store.getUser();
 
-        String content = findUser.get().getNickname() + "님이 주문을 취소했습니다.";
-        Notice notice = new Notice(content, findUser.get(), findOrder.get(), storeUser.getUserId());
+        String content = findUser.get().getNickname() + " 님이<br/>" + "주문을 취소했습니다.";
+        Notice notice = new Notice(content, findUser.get(), findOrder.get(), storeUser.getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
         return new ResponseEntity<>("사용자가 주문을 취소하였습니다.", HttpStatus.OK);

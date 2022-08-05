@@ -1,73 +1,126 @@
 <template>
   <div>
-    <b-card>
-      <b-row>
-        <b-col md="3">
-          <img
-            fluid
-            src="@/assets/images/hambuger.jpg"
-            width="50"
-            height="50"
-          />
-        </b-col>
-        <b-col md="5">
-          <div class="text-align-center" id="cardInText">
-            <h5>제품명</h5>
-            <span id="loca">매장위치: 매장위치</span><br />
-            <span id="time">주문시각: 주문시각</span><br />
-            <span id="count">수량: 개수</span>
+    <card >
+      <div class="container">
+        <div class="row">
+          <div class="col-3 ml-3 mt-2">
+            <img
+              fluid
+              :src="`${order.saleItemDto.itemDto.itemImgUrl}`"
+              width="70"
+              height="70"
+            />
           </div>
-        </b-col>
-        <b-col md="4">
-          <button
-            type="button"
-            class="btn btn-outline-success"
-            style="
-              --bs-btn-padding-y: 0.1rem;
-              --bs-btn-padding-x: 0.5rem;
-              --bs-btn-font-size: 0.75rem;
-            "
-          >
-            주문취소</button
-          ><br />
-          <button
-            @click="goStore()"
-            type="button"
-            class="btn btn-outline-success"
-            style="
-              --bs-btn-padding-y: 0.1rem;
-              --bs-btn-padding-x: 0.5rem;
-              --bs-btn-font-size: 0.75rem;
-            "
-          >
-            가게보기
-          </button>
-        </b-col>
-      </b-row>
-    </b-card>
+          <div class="col-5">
+            <div style="text-align: start">
+              <h5 style="color: black">{{ order.saleItemDto.itemDto.itemName }}</h5>
+              <span style="color: gray; font-size: 0.1rem"
+                >매장이름: {{ order.saleItemDto.saleDto.storeDto.storeName}}</span
+              ><br />
+              <span style="color: gray; font-size: 0.1rem"
+                >주문시각: {{order.date.slice(0,4)}}.{{order.date.slice(5,6)}}.{{order.date.slice(7,8)}}</span
+              ><br />
+              <span style="color: gray; font-size: 0.1rem">수량: {{ order.count }} 개</span>
+            </div>
+          </div>
+          <div class="col-3 ml-3 mt-2">
+            <button v-show="`${order.state}` === 'ORDER' && `${elapsedTime}` < 30" id="btn-order" type="button" @click="orderCancel(order)">주문취소</button><br /><br />
+            <button id="btn-order" @click="goStore(order.saleItemDto.saleDto.storeDto.storeId)" type="button">
+              가게보기
+            </button>
+          </div>
+        </div>
+      </div>
+    </card>
   </div>
 </template>
 
 <script>
+import http from '@/util/http-common.js';
+
 export default {
   name: "orderList",
+  data(){
+    return{
+      elapsedTime : "",
+    }
+  },
+  props: {
+    order: null
+  },
+  created(){
+    this.nowDate()
+  },
   methods: {
-    goStore() {
+    orderCancel(order) {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .patch(`/order/cancel/${order.orderId}`)
+        .then((response) =>{
+          if (response.status === 200) {
+            console.log(response)
+          } else {
+            console.log(response)
+            alert("취소 실패")
+          }
+      })
+          
+    },
+    goStore(sotreId) {
+      this.getStoreId(sotreId);
       this.$router.push("/store");
     },
+    
+    nowDate() {
+      var today = new Date()
+
+      var year = today.getFullYear();
+      var month = ('0' + (today.getMonth() + 1)).slice(-2);
+      var day = ('0' + today.getDate()).slice(-2);
+      var hours = ('0' + today.getHours()).slice(-2); 
+      var minutes = ('0' + today.getMinutes()).slice(-2); 
+
+      
+      var orderyear= this.order.date.slice(0,4)
+      var ordermonth = this.order.date.slice(4,6)
+      var orderday = this.order.date.slice(6,8)
+      var orderhours = this.order.date.slice(8,10)
+      var orderminutes = this.order.date.slice(10,12)
+
+      const nowdate = new Date(year, month, day, hours, minutes,0)
+      const orderdate = new Date(orderyear, ordermonth, orderday, orderhours, orderminutes,0)
+      const elapsedTime = (nowdate.getTime() - orderdate.getTime()) / 60000
+      this.elapsedTime = elapsedTime
+    
+
+    },
+    
   },
 };
 </script>
 
 <style scoped>
-#loca {
-  font-size: 1em;
+#ordercard {
+  height: 130px;
+  width: 350px;
+  border-radius: 15px;
+  display: inline-block;
+  margin-top: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  overflow: hidden;
+  background-color: white;
 }
-#time {
-  font-size: 1em;
-}
-#count {
-  font-size: 0.01em;
-  color: gray;
+#btn-order {
+  height: 25px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  box-sizing: border-box;
+  background-color: #de9712;
+  color: #ffffff;
+  width: 70px;
+  font-size: 0.75rem;
 }
 </style>

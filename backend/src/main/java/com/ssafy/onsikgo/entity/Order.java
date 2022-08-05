@@ -2,14 +2,13 @@ package com.ssafy.onsikgo.entity;
 
 import com.ssafy.onsikgo.dto.OrderDto;
 import com.ssafy.onsikgo.dto.SaleItemDto;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -57,6 +56,16 @@ public class Order {
                 .count(this.count)
                 .state(this.state)
                 .saleItemDto(saleItemDto)
+                .orderId(this.orderId)
                 .build();
+    }
+
+    public Order updateNotice(String date, SaleItem saleItem,User user) {
+        this.date = date;
+        this.count = 0;
+        this.state = State.CANCEL;
+        this.saleItem = saleItem;
+        this.user = user;
+        return this;
     }
 }

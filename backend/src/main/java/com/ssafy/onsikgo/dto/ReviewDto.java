@@ -13,6 +13,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewDto {
+
+    private Long reviewId;
     private String content;
     private String createdDate;
     private Boolean reported;

@@ -2,28 +2,20 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="success" dark v-bind="attrs" v-on="on"> 회원탈퇴 </v-btn>
+        <button v-bind="attrs" v-on="on">회원탈퇴</button>
       </template>
 
       <v-card>
-        <v-card-title class="text-h5 lighten-2"> 회원 탈퇴하기 </v-card-title>
-
-        <v-card class="mx-auto my-auto card-box" max-width="344" outlined>
-          <div mt-5 class="row mt-3">
-            <img
-              class="img-box col-5"
-              src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4gqX/image/wIXZfUhOPGGGZxaZ0Nsmigd1paU.jpeg"
-              alt="사진이었던것.."
-            />
-            <div class="col-7 mt-2 order-box">
-              <v-list-item-content>
-                <v-list-item-title class="text msg-box">
-                  {{ userDto.userName }}님, 정말 탈퇴하시겠습니까?
-                </v-list-item-title>
-                <v-list-item-title class="text msg-box"
-                  >지구를 지키는 용사여,,
-                </v-list-item-title>
-              </v-list-item-content>
+        <div class="d-flex justify-content-center">
+          <v-card-title> 회원 탈퇴하기 </v-card-title>
+        </div>
+        <v-card class="mx-auto my-auto card-box" max-width="400" outlined>
+          <div mt-5 class="mt-3">
+            <div class="d-flex justify-content-center">
+              <span
+                >지구를 지키는 {{ userDto.nickname }}님, <br />정말
+                탈퇴하시겠습니까?</span
+              >
             </div>
           </div>
           <br />
@@ -32,9 +24,7 @@
             <v-card-actions>
               <noQuitModal></noQuitModal>
             </v-card-actions>
-            <b-button pill variant="outline-success" @click="backToMypage()">
-              아니요!
-            </b-button>
+            <button @click="backToMypage()">아니요!</button>
           </div>
         </v-card>
         <v-divider></v-divider>
@@ -62,10 +52,12 @@ export default {
     };
   },
   created() {
+    if (localStorage.getItem("access-token") == null) return;
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     http.get("/user").then((response) => {
       this.userDto = response.data;
+      console.log(this.userDto);
     });
   },
   methods: {
