@@ -24,7 +24,7 @@
             <div class="col-7 mt-2 order-box">
               <v-list-item-content class="notice-box">
                 <v-list-item-title class="msg-box">
-                  <span class="text-l">{{ value.content }}</span>
+                  <span class="text-l" v-html="`${value.content}`"></span>
                 </v-list-item-title>
               </v-list-item-content>
             </div>
