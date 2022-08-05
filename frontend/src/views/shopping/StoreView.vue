@@ -73,7 +73,7 @@
           aria-label="Input Review"
           aria-describedby="basic-addon1"
         />
-        <button @click="registerReview()">
+        <button @click="registerReview()" @keyup.enter="registerReview()">
           <span class="input-group-text" id="basic-addon1">
             <i class="fa-solid fa-comment"></i>
           </span>
@@ -153,7 +153,7 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            alert("리뷰작성이 완료되었습니다.");
+            // alert("리뷰작성이 완료되었습니다.");
             this.reviewContent = "";
             this.selectReview();
           }
