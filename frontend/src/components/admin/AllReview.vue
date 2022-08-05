@@ -32,21 +32,23 @@ export default {
         .get('/review/total')
         .then((response) => {
           this.reviewList = response.data;
-          console.log(response.data);
         })
     },
 
     deleteReview(review) {
-      console.log(review.reviewId);
       http
         .delete(`/review/${review.reviewId}`)
         .then((response) => {
           if (response.status == 200) {
-            this.$router.go();
+            // this.$router.go();
           }
         });
     },
   },
+
+  // updated () {
+  //   this.allReview();
+  // },
 
   created () {
     this.allReview();

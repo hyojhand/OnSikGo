@@ -41,7 +41,7 @@ export default {
     nickname: String,
     userImgUrl: String,
     storeDto: {},
-    reviewId: String,
+    reviewId: null,
   },
 
   created() {},
@@ -55,7 +55,7 @@ export default {
 
     reportReview(reviewId) {
       http
-        .patch(`/review/report/${reviewId}`)
+        .patch(`/review/${reviewId}`)
         .then((response) => {
           if (response.status == 200) {
             console.log(response);
