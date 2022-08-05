@@ -43,7 +43,6 @@
         <button
           @click="checkIt()"
           class="border-m radius-l text-m btn-send"
-          :class="{ send: reason }"
         >
           사유전송하기
         </button>
@@ -54,9 +53,13 @@
 
 <script>
 import ReasonModal from "@/components/notice/ReasonModal.vue";
+import http from "@/util/http-common";
 export default {
   name: "RefuseModal",
   components: { ReasonModal },
+  props: {
+    value : null,
+  },
   methods: {
     reason1() {
       this.reason = "상품 품절";
@@ -77,8 +80,27 @@ export default {
       this.id3 = true;
     },
     checkIt: function () {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .patch(`/order/refuse/${this.value.receivedId}`,{
+          reason: this.reason
+        })
+        .then((response) =>{
+          if (response.status === 200) {
+            console.log(response)
+            this.$router.push({
+              name: "notice"
+            })
+          } else {
+            console.log(response)
+            alert("거절 실패")
+          }
+        })
+
       this.dialog = false;
       this.$emit("check-it");
+
     },
     twoCheckIt: function () {
       this.$emit("check-it");
@@ -88,7 +110,7 @@ export default {
   data() {
     return {
       dialog: false,
-      reason: "",
+      reason: "상품 품절",
       id1: false,
       id2: false,
       id3: false,

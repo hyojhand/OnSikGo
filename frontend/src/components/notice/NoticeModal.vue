@@ -8,24 +8,20 @@
       </template>
 
       <v-card>
-        <v-card-title class="text-h5 lighten-2"> 주문 상세보기 </v-card-title>
-
+        <v-card-title class="text-h5 lighten-2"> 주문 상세보기</v-card-title>
+        
         <v-card class="mx-auto my-auto" max-width="344" outlined>
           <div mt-5 class="row mt-3 ml-2">
             <img
               class="img-box col-6"
-              src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4gqX/image/wIXZfUhOPGGGZxaZ0Nsmigd1paU.jpeg"
-              alt="사진이었던것.."
+              :src="`${value.userDto.imgUrl}`"
+              :alt="`${value.userDto.nickname}`"
             />
             <div class="col-7 mt-2 order-box">
               <v-list-item-content class="notice-box">
                 <v-list-item-title class="msg-box">
-                  <span class="text-l">{ 최지은 } </span>
-                  <span class="notice-msg text-m">님의</span>
+                  <span class="text-l">{{ value.content }}</span>
                 </v-list-item-title>
-                <v-list-item-title class="msg-box notice-msg text-m"
-                  >주문이 도착했습니다.</v-list-item-title
-                >
               </v-list-item-content>
             </div>
           </div>
@@ -33,21 +29,17 @@
             <div>
               <img
                 class="col-5 border-s food-pic"
-                src="@/assets/images/hambuger.jpg"
+                :src="`${value.orderDto.saleItemDto.itemDto.itemImgUrl}`"
                 alt="사진이었던것.."
               />
               <div class="mt-2">
                 <div>
                   <span class="text-m noti-title">제품명 : </span>
-                  <span class="text-m notice-msg">{ 불고기 버거 }</span>
+                  <span class="text-m notice-msg">{{ value.orderDto.saleItemDto.itemDto.itemName }}</span>
                 </div>
                 <div>
                   <span class="text-m noti-title">수량 : </span>
-                  <span class="text-m notice-msg">{ 2개 }</span>
-                </div>
-                <div>
-                  <span class="text-m noti-title">예상 도착 시간 : </span>
-                  <span class="text-m notice-msg">{ 15분 }</span>
+                  <span class="text-m notice-msg">{{value.orderDto.count}} 개</span>
                 </div>
               </div>
             </div>
@@ -58,7 +50,7 @@
               <v-card-actions>
                 <button
                   class="border-m radius-l text-m btn-accept"
-                  @click="accept"
+                  @click="orderOk()"
                 >
                   수락
                 </button>
@@ -79,16 +71,42 @@
 
 <script>
 import RefuseModal from "@/components/notice/RefuseModal.vue";
+import http from "@/util/http-common.js"
 export default {
   name: "NoticeModal",
   components: { RefuseModal },
+  props: {
+    value : null,
+  },
   methods: {
+    getUser() {
+
+    },
     accept() {
       this.parents = false;
     },
     checkIt: function () {
       this.parents = false;
     },
+    orderOk() {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .patch(`/order/sign/${this.value.receivedId}`)
+        .then((response) =>{
+          if (response.status === 200) {
+            console.log(response)
+            this.$router.push({
+              name: "notice"
+            })
+          } else {
+            console.log(response)
+            alert("주문 실패")
+          }
+          
+        })
+
+    }
   },
   data() {
     return {
