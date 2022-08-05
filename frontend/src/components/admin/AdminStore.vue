@@ -43,7 +43,7 @@ export default {
         .delete(`/store/${stores.storeId}`)
         .then((response) => {
           if (response.status == 200) {
-            this.$router.go();
+            this.allStore();
           }
         });
     },
