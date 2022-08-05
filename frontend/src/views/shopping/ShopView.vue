@@ -8,7 +8,7 @@
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
-          fill="currentColor"
+          fill="black"
           class="bi bi-pin-map"
           viewBox="0 0 16 16"
         >
@@ -156,14 +156,19 @@ ul.tabs li {
 }
 
 .location {
-  padding-bottom: 10px;
+  text-align: start;
+  margin: 3% 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .location span {
+  margin-left: 2%;
   color: #333;
   font-weight: 500;
   font-size: 16px;
-  margin-left: 5px;
-  /* 밑줄 */
-  border-bottom: 2px solid #8cb883;
+  padding: 0 2%;
+  text-align: start;
+  border-bottom: 2px solid rgba(0, 0, 0, 20%);
 }
 </style>
