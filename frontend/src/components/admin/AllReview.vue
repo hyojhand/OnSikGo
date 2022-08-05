@@ -1,11 +1,10 @@
 <template>
   <div>
     <h1>전체리뷰</h1>
-
     <div
       v-for="(review, index) in reviewList"
       :key="index"
-      class="row fs-5 tab-link current">
+      class="row">
       <div class="text-start">
         <p class="text-primary">{{ review.nickname }} : {{ review.content }}</p>
         <p>작성한 가게명: {{ review.storeDto.storeName }}</p>
@@ -21,9 +20,9 @@ import http from "@/util/http-common";
 export default {
   name: 'AllReview',
 
-  data: function () {
+  data() {
     return {
-      reviewListL: [],
+      reviewList: [],
     }
   },
 

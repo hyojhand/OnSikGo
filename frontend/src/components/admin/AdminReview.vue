@@ -18,11 +18,10 @@
         v-if="selectedTab === tabs[0]">
       </all-review>
       <!-- 신고된 리뷰 -->
-        <report-review
-          class="tab-link"
-          v-else>
-        </report-review>
-
+      <report-review
+        class="tab-link"
+        v-else>
+      </report-review>
     </div>
   </div>
 </template>
