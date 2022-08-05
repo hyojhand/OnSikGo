@@ -2,7 +2,7 @@
   <div class="all">
     <div class="web">
       <div class="on-box">
-        <img src="@/assets/jjab.png" alt="짭로고" />
+        <img src="@/assets/jjab.png" alt="짭logo.." />
         <button class="on-btn">온식고 식구에게 문의하기</button>
         <button class="on-btn">온식고 널리 알리기</button>
       </div>
@@ -409,15 +409,13 @@ export default {
   display: flex;
   margin: 0;
   flex-direction: row;
-  align-items: center;
 }
 .web {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   align-items: center;
   margin-left: 130px;
-  height: 100vh;
+  margin-top: 150px;
 }
 .on-box > img {
   width: 300px;
