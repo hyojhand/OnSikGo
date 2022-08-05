@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>AdminReview</h1>
       <!-- Tab 기능 -->
       <ul class="tabs row ">
         <li class="col" v-for="tab in tabs" 
@@ -10,7 +11,6 @@
         </li>
       </ul>
 
-    <h1 class="mb-5">AdminReview</h1>
     <div class="tab-content">
       <!-- 전체 리뷰 -->
       <all-review
@@ -18,10 +18,10 @@
         v-if="selectedTab === tabs[0]">
       </all-review>
       <!-- 신고된 리뷰 -->
-        <admin-user 
+        <report-review
           class="tab-link"
           v-else>
-        </admin-user>
+        </report-review>
 
     </div>
   </div>
@@ -29,13 +29,14 @@
 
 <script>
 import AllReview from '@/components/admin/AllReview.vue';
-
+import ReportReview from '@/components/admin/ReportReview.vue';
 
 export default {
   name : "AdminReview",
 
   components: {
     AllReview,
+    ReportReview,
   },
 
   data() {
