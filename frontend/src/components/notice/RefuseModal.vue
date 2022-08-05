@@ -37,7 +37,7 @@
             >
               고객 요청
             </button>
-            <reason-modal @two-check-it="twoCheckIt"></reason-modal>
+            <reason-modal @two-check-it="twoCheckIt" :value=value></reason-modal>
           </v-list-item-content>
         </div>
         <button
@@ -83,7 +83,7 @@ export default {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http
-        .patch(`/order/refuse/${this.value.receivedId}`,{
+        .patch(`/order/refuse/${this.value.orderDto.orderId}`,{
           reason: this.reason
         })
         .then((response) =>{
