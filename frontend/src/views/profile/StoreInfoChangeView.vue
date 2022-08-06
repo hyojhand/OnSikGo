@@ -73,6 +73,8 @@
                 class="input-box"
                 color="black"
                 type="address"
+                @input="$v.address.$touch()"
+                @blur="$v.address.$touch()"
               ></v-text-field>
             </div>
 
@@ -82,6 +84,8 @@
               class="input-box"
               color="black"
               type="address"
+              @input="$v.address.$touch()"
+              @blur="$v.address.$touch()"
             ></v-text-field>
             <div class="d-flex justify-content-end">
               <button
@@ -138,11 +142,13 @@
         <div class="ml-5 mr-4 mt-3">
           <v-select
             :items="days"
-            v-model="this.offDay2"
+            v-model="off"
             label="휴무일을 입력해주세요."
             multiple
             chips
             required
+            @input="$v.off.$touch()"
+            @blur="$v.off.$touch()"
           ></v-select>
           <span id="red-small"
             >변경하지 않는다면 그대로 휴무일이 유지됩니다</span
@@ -185,7 +191,6 @@ export default {
       show: true,
       address: "",
       extraAddress: "",
-      // offDay2: [],
       days: [
         { value: "월요일", text: "월요일" },
         { value: "화요일", text: "화요일" },
@@ -205,35 +210,18 @@ export default {
       ],
     };
   },
-  async created() {
-    await http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+  created() {
+    http.get(`/store/${this.$route.params.storeId}`).then((response) => {
       this.storeDto = response.data;
       this.previewImg = this.storeDto.storeImgUrl;
-      this.storeDto.offDay.split(",").map((day)=>{
-        var temp={
-            value:day,  
-            text:day
-        }
-        this.off.push({...temp})
-      })
+      this.storeDto.offDay.split(",").map((day) => {
+        var temp = {
+          value: day,
+          text: day,
+        };
+        this.off.push({ ...temp });
+      });
     });
-
-    // console.log;
-    // var mystring = this.storeDto.offDay;
-    // var arr = mystring.split(",");
-    // var offDay2 = [];
-    //  for (let off of arr) {
-    //    var offarray = { value: off, text:  off };
-    //   offDay2.push(offarray);
-    //  }
-    // for (let off of arr) {
-    //   offDay2 = {
-    //     ...offDay2,
-    //     value: off,
-    //     text: off,
-    //   };
-    // }
-    // console.log(offDay2);
   },
   methods: {
     fileSelect(event) {
@@ -291,13 +279,11 @@ export default {
 
     modifyStore() {
       // this.storeDto.offDay = this.off.join;
-      console.log(this.storeDto.offDay);
-
-      this.storeDto.location = this.address + " " + this.extraAddress;
+      // console.log(this.storeDto.offDay);
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-        var temp=this.off.join(",")
-      this.storeDto.offDay=temp
+      var temp = this.off.join(",");
+      this.storeDto.offDay = temp;
       const formData = new FormData();
       formData.append("file", this.imgFile);
       formData.append(
