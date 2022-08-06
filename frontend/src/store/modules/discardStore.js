@@ -6,6 +6,7 @@ const discardStore = {
     discardStoreName: "",
     discardStoreClose: "",
     discardStoreList: [],
+    discardStoreCnt: "",
   },
   getters: {
     discardStoreId: (state) => state.discardStoreId,
@@ -13,6 +14,7 @@ const discardStore = {
     discardStoreName: (state) => state.discardStoreName,
     discardStoreClose: (state) => state.discardStoreClose,
     discardStoreList: (state) => state.discardStoreList,
+    discardStoreCnt: (state) => state.discardStoreCnt,
   },
   actions: {
     discardStoreId: ({ commit }, storeId) => {
@@ -27,8 +29,11 @@ const discardStore = {
     getDiscardStoreClose: ({ commit }, storeClose) => {
       commit("GET_DISCARD_STORECLOSE", storeClose);
     },
-    getDsicardStoreList: ({commit}, storeList) => {
-      commit("GET_DISCARD_STORELIST", storeList)
+    getDsicardStoreList: ({ commit }, storeList) => {
+      commit("GET_DISCARD_STORELIST", storeList);
+    },
+    discardStoreCnt: ({ commit }, storeCnt) => {
+      commit("DISCARD_STORE_CNT", storeCnt);
     },
   },
   mutations: {
@@ -45,8 +50,11 @@ const discardStore = {
       state.discardStoreName = storeClose;
     },
     GET_DISCARD_STORELIST: (state, storeList) => {
-      state.discardStoreList = storeList
-    }
+      state.discardStoreList = storeList;
+    },
+    DISCARD_STORE_CNT: (state, storeCnt) => {
+      state.discardStoreCnt = storeCnt;
+    },
   },
 };
 
