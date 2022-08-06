@@ -20,9 +20,6 @@
               >문 닫는 시간: {{ store.closingTime }}</span
             ><br />
             <span style="color: gray; font-size: 0.7rem"
-              >사업자등록번호: {{ store.storeNum }}</span
-            ><br />
-            <span style="color: gray; font-size: 0.7rem"
               >전화번호: {{ store.tel }}</span
             ><br />
             <span style="color: gray; font-size: 0.7rem"
@@ -113,7 +110,9 @@ export default {
     },
   },
   created() {
+    console.log(this.store.storeId);
     console.log(this.store);
+    console.log(this.discardStoreId);
     http.get(`/sale/list/${this.discardStoreId}`).then((response) => {
       this.saleItemList = response.data;
       // console.log("check",response.data);
