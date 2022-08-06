@@ -1,48 +1,87 @@
 <template>
   <div class="container">
-    <div class="category">
-      <!-- 상위 가게 카테고리 -->
-      <div class="menu">
-        <div id="category-img" @click="selectKorea()">
-          <a>
-            <img src="@/assets/images/koreanfood.png" alt="koreanfood" />
-          </a>
-          <p>한식</p>
-        </div>
-
-        <div id="category-img" @click="selectJapan()">
-          <a>
-            <img src="@/assets/images/japanesefood.png" alt="japanesefood" />
-          </a>
-          <p>일식</p>
-        </div>
-        <div id="category-img" @click="selectWestern()">
-          <a>
-            <img src="@/assets/images/snackbar.png" alt="westernfood" />
-          </a>
-          <p>양식</p>
-        </div>
+    <!-- 상위 가게 카테고리 -->
+    <div class="row">
+      <div class="col" id="category-img">
+        <a>
+          <img
+            src="@/assets/images/all.png"
+            alt="all"
+            @click="selectAllList()"
+          />
+        </a>
+        <p>모두 보기</p>
       </div>
-      <!-- 하위 가게 카테고리 -->
-      <div class="menu">
-        <div id="category-img" @click="selectSnack()">
-          <a>
-            <img src="@/assets/images/chinesefood.png" alt="snackbar" />
-          </a>
-          <p>분식</p>
-        </div>
-        <div id="category-img" @click="selectDesssert()">
-          <a>
-            <img src="@/assets/images/dessert.png" alt="dessert" />
-          </a>
-          <p>디저트</p>
-        </div>
 
-        <div id="category-img" @click="selectIngredient()">
-          <a><img src="@/assets/images/westernfood.png" alt="ingredient" /> </a>
-          <p>식자재</p>
-        </div>
+      <div class="col" id="category-img">
+        <a>
+          <img
+            src="@/assets/images/koreanfood.png"
+            alt="koreanfood"
+            @click="selectKorea()"
+          />
+        </a>
+        <p>한식</p>
       </div>
+
+      <div class="col" id="category-img">
+        <a>
+          <img
+            src="@/assets/images/japanesefood.png"
+            alt="japanesefood"
+            @click="selectJapan()"
+          />
+        </a>
+        <p>일식</p>
+      </div>
+    </div>
+    <!-- 하위 가게 카테고리 -->
+    <div class="row">
+      <div class="col" id="category-img">
+        <a>
+          <img
+            src="@/assets/images/snackbar.png"
+            alt="westernfood"
+            @click="selectWestern()"
+          />
+        </a>
+        <p>양식</p>
+      </div>
+      <div class="col" id="category-img">
+        <a>
+          <img
+            src="@/assets/images/chinesefood.png"
+            alt="snackbar"
+            @click="selectSnack()"
+          />
+        </a>
+        <p>분식</p>
+      </div>
+      <div class="col" id="category-img">
+        <a>
+          <img
+            src="@/assets/images/dessert.png"
+            alt="dessert"
+            @click="selectDesssert()"
+          />
+        </a>
+        <p>디저트</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col" id="category-img">
+        <a
+          ><img
+            src="@/assets/images/westernfood.png"
+            alt="ingredient"
+            @click="selectIngredient()"
+          />
+        </a>
+        <p>식자재</p>
+      </div>
+      <!-- 빈 공간 채우기 -->
+      <div class="col" id="category-img"></div>
+      <div class="col" id="category-img"></div>
     </div>
     <!-- 검색 서칭 -->
     <div class="search-container">
@@ -114,7 +153,7 @@ export default {
   name: "CategoryStore",
   data() {
     return {
-      category: "KOREA",
+      category: "",
       storeList: [],
       keyword: "",
     };
@@ -131,10 +170,20 @@ export default {
       this.keyword = this.keyw;
       this.selectKeyword();
     } else {
-      this.selectStoreList();
+      this.selectAllList();
     }
   },
   methods: {
+    selectAllList() {
+      this.category = "";
+      http.get("/store/total").then((response) => {
+        if (response.status == 200) {
+          this.storeList = response.data;
+        }
+      });
+      console.log("뭔데 이거");
+      console.log(this.category);
+    },
     selectStoreList() {
       http
         .post("/store/list", {
@@ -153,6 +202,7 @@ export default {
     selectJapan() {
       this.category = "JAPAN";
       this.selectStoreList();
+      console.log(this.category);
     },
     selectIngredient() {
       this.category = "INGREDIENT";
@@ -171,20 +221,32 @@ export default {
       this.selectStoreList();
     },
     selectKeyword() {
-      http
-        .post("/store/list", {
-          category: this.category,
-          keyword: this.keyword,
-        })
-        .then((response) => {
-          if (response.status == 200) {
-            this.storeList = response.data;
-          }
-        });
+      if (this.category) {
+        http
+          .post("/store/list", {
+            category: this.category,
+            keyword: this.keyword,
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              this.storeList = response.data;
+            }
+          });
+      } else {
+        http
+          .post("/store/keyword", {
+            keyword: this.keyword,
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              this.storeList = response.data;
+            }
+          });
+        console.log("전체로 검색완료");
+      }
     },
     resetList() {
-      this.category = "KOREA";
-      this.selectStoreList();
+      this.selectAllList();
       this.keyword = "";
     },
   },
@@ -230,7 +292,7 @@ img {
   flex-direction: column;
   align-items: center;
 }
-.menu #category-img:hover {
+.container .row #category-img:hover {
   width: 50px; /* 사진크기 조절 */
   transform: scale(1.3, 1.3); /* 가로2배 새로 1.5배 로 커짐 */
   transition: transform.5s; /* 커지는 시간 */
