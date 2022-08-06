@@ -12,9 +12,10 @@
       <span class="col-4 mt-2 fw-bold">{{ storeDto.storeName }}</span>
       <div class="col-4 mt-2">
         <!--좋아요 버튼-->
-        <button @click="like" v-if="isliking === 'fail'">
-          <i class="fa-light fa-heart"></i>좋아요</button>
-        <button v-else @click="unlike"><i class="fa-solid fa-heart red"></i>좋아요 취소</button>
+        <button @click="like" v-if="isliking === 'fail'"><i class="fa-regular fa-heart"></i></button>
+        <!-- 좋아요 된 상태 -->
+        <button v-else @click="unlike"><span class="likeButton"><i class="fa-solid fa-heart"></i></span>좋아요</button>
+
       </div>
     </div>
 
@@ -199,7 +200,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 /* 점없애고 가로정렬 */
 
@@ -257,5 +257,10 @@ ul.tabs li {
 .non-msg > div {
   font-size: 30px;
   color: rgba(0, 0, 0, 0.2);
+}
+
+.likeButton {
+  color: red;
+  background-color: red;
 }
 </style>
