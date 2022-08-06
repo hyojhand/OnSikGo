@@ -313,9 +313,17 @@ export default {
       if (this.numCheck == true) {
         http.defaults.headers["access-token"] =
           localStorage.getItem("access-token");
-        var temp = this.off.join(",");
-        this.storeDto.offDay = temp;
-        console.log(this.storeDto);
+
+        var selected = [];
+        if (this.off.length > 0 && this.off[0].value != undefined) {
+          this.off.map((day) => {
+            selected.push(day.value);
+          });
+          this.storeDto.offDay = selected.join(",");
+        } else {
+          this.storeDto.offDay = Array.from(this.off).join(",");
+        }
+
         const formData = new FormData();
         formData.append("file", this.imgFile);
         formData.append(
