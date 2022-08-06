@@ -187,7 +187,7 @@ export default {
     check1: false,
     check2: false,
     time: false,
-    rederKey:0
+    rederKey:0,
   }),
 
   computed: {
@@ -198,8 +198,11 @@ export default {
       return errors;
     },
     nameErrors() {
+      var pattern_name = /^[가-힣]{2,10}$/
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
+      this.name.search(/\s/) != -1 &&errors.push("이름은 빈 칸을 포함 할 수 없습니다.")
+      !pattern_name.test(this.name)&&errors.push("2글자 이상의 한글 이름을 입력해주세요.");
       !this.$v.name.maxLength &&
         errors.push("이름은 10글자 이내로 입력해야합니다.");
       !this.$v.name.required && errors.push(" ");
@@ -221,6 +224,8 @@ export default {
     nicknameErrors() {
       const errors = [];
       if (!this.$v.nickname.$dirty) return errors;
+      this.nickname.search(/\s/) != -1 &&errors.push("닉네임은 빈 칸을 포함 할 수 없습니다.")
+
       !this.$v.nickname.maxLength &&
         errors.push("닉네임은 10글자 이내로 입력해야합니다.");
       !this.$v.nickname.required && errors.push(" ");
