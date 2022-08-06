@@ -410,6 +410,7 @@ export default {
   methods: {
     // 이메일 중복 확인 및 인증 번호 전송
     isCheck() {
+      this.emailDuple = false;
       http
         .post("/user/email", {
           email: this.email
@@ -421,12 +422,14 @@ export default {
           this.time=300;
           this.rederKey+=1;
         } else {
-          this.emailDuple = true;
+          this.emailDuple = !this.emailDuple;
         }
       });
     },
     // 인증번호 확인
     checkMail() {
+      this.mailconfirmDuple = false;
+      this.emailfailDuple = false;
       http
         .post("/user/emailAuthNumber", {
           email: this.email,
@@ -434,26 +437,28 @@ export default {
         })
         .then((response) => {
         if ((response.status) == 200) {
-          this.mailconfirmDuple = true;
+          this.mailconfirmDuple = !this.mailconfirmDuple;
           this.check1 = true;
           this.time=false;
         } else {
-          this.emailfailDuple = true;
+          this.emailfailDuple = !this.emailfailDuple;
         }
       });
     },
 
     // 사업자 등록번호 인증
     checkOwner() {
+      this.ownercheckDuple = false;
+      this.ownerfailDuple = false;
       axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON', {
         b_no: [this.identify]
       })
       .then((response) => {
         if (response.data.match_cnt == 1) {
-          this.ownercheckDuple = true;
+          this.ownercheckDuple = !this.ownercheckDuple;
           this.check2 = true;
         } else {
-          this.ownerfailDuple = true;
+          this.ownerfailDuple = !this.ownerfailDuple;
         }
       })
       .catch(err => {
@@ -507,7 +512,8 @@ export default {
         userName: this.name,
         role: this.role,
         storeName: this.store,
-        location: this.address,
+        address: this.address,
+        extraAddress: this.extraAddress,
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
