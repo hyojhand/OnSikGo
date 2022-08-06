@@ -4,6 +4,13 @@
     <div class="row">
       <div class="col" id="category-img">
         <a>
+          <img src="@/assets/images/all.png" alt="all" @click="selectAll()" />
+        </a>
+        <p>모두 보기</p>
+      </div>
+
+      <div class="col" id="category-img">
+        <a>
           <img
             src="@/assets/images/koreanfood.png"
             alt="koreanfood"
@@ -23,6 +30,9 @@
         </a>
         <p>일식</p>
       </div>
+    </div>
+    <!-- 하위 가게 카테고리 -->
+    <div class="row">
       <div class="col" id="category-img">
         <a>
           <img
@@ -33,9 +43,6 @@
         </a>
         <p>양식</p>
       </div>
-    </div>
-    <!-- 하위 가게 카테고리 -->
-    <div class="row">
       <div class="col" id="category-img">
         <a>
           <img
@@ -56,7 +63,8 @@
         </a>
         <p>디저트</p>
       </div>
-
+    </div>
+    <div class="row">
       <div class="col" id="category-img">
         <a
           ><img
@@ -67,6 +75,9 @@
         </a>
         <p>식자재</p>
       </div>
+      <!-- 빈 공간 채우기 -->
+      <div class="col" id="category-img"></div>
+      <div class="col" id="category-img"></div>
     </div>
     <!-- 검색 서칭 -->
     <div class="search-container">
@@ -126,6 +137,7 @@ export default {
     return {
       category: "",
       keyword: "",
+      all: 1,
     };
   },
   methods: {
@@ -139,6 +151,12 @@ export default {
       this.$router.push({
         name: "shopView",
         params: { keyword: this.keyword },
+      });
+    },
+    selectAll() {
+      this.$router.push({
+        name: "shopView",
+        params: { all: this.all },
       });
     },
     selectDesssert() {
