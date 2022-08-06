@@ -103,6 +103,7 @@ export default {
       this.$router.push("/signup");
     },
     login() {
+      this.loginCheck = false,
       http
         .post("/user/login", {
           email: this.email,
