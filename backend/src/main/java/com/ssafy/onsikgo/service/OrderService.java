@@ -33,7 +33,6 @@ public class OrderService {
     private final SaleItemRepository saleItemRepository;
     private final NoticeRepository noticeRepository;
     private final TokenProvider tokenProvider;
-
 //    private final EntityManager em;
 
     @Transactional
@@ -148,7 +147,7 @@ public class OrderService {
 
         int money = saleItem.getSalePrice() * findOrder.get().getCount();
         Store store = saleItem.getItem().getStore();
-        Optional<Sale> findSale = saleRepository.findByStoreAndDate(store, date);
+        Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(store, date);
         if(!findSale.isPresent()) {
             return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
         }

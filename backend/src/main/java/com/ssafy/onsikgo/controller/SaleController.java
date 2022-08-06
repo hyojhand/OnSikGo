@@ -25,10 +25,10 @@ public class SaleController {
         return saleService.register(saleItemDto, store_id);
     }
 
-    @PostMapping("/history/{store_id}")
-    public ResponseEntity<SaleResultDto> getSaleResult(@RequestBody HashMap<String, String> map, @PathVariable Long store_id) {
-        return saleService.getSaleResult(map,store_id);
-    }
+//    @PostMapping("/history/{store_id}")
+//    public ResponseEntity<SaleResultDto> getSaleResult(@RequestBody HashMap<String, String> map, @PathVariable Long store_id) {
+//        return saleService.getSaleResult(map,store_id);
+//    }
 
     @GetMapping("/list/{store_id}")
     public ResponseEntity<List<SaleItemDto>> getSaleItemList(@PathVariable Long store_id) {
@@ -54,10 +54,5 @@ public class SaleController {
     public ResponseEntity<List<SaleItemDto>> getSaleItemKeyword(@RequestBody SelectDto selectDto) {
         return saleService.getSaleItemKeyword(selectDto);
     }
-
-//    @PostMapping("/page/{store_id}")
-//    public ResponseEntity<Page<SaleItemDto>> getSaleItemPage(@RequestBody PageDto pageDto, @PathVariable Long store_id) {
-//        return saleService.getSaleItemPage(pageDto,store_id);
-//    }
 
 }
