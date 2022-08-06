@@ -60,6 +60,7 @@ export default {
 
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
       this.saleItemList = response.data;
+      this.getDsicardStoreList(response.data);
     });
 
     // await http.get(`/item/list/${this.storeId}`).then((response) => {
@@ -71,6 +72,7 @@ export default {
       "discardStoreId",
       "discardStoreName",
       "discardStoreImg",
+      "getDsicardStoreList",
     ]),
     async selectStore(event) {
       this.storeId = event.target.value;
@@ -79,7 +81,9 @@ export default {
         this.storeName = response.data.storeName;
         this.storeImg = response.data.storeImgUrl;
       });
-
+      await http.get(`/sale/list/${this.storeId}`).then((response) => {
+        this.getDsicardStoreList(response.data);
+      });
       // console.log(this.storeId);
       // console.log(this.storeName);
       // console.log(this.storeImg);
