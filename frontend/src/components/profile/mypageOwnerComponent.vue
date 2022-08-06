@@ -70,6 +70,7 @@
 <script>
 import discountList from "@/components/profile/discountList.vue";
 import http from "@/util/http-common";
+import { mapGetters } from "vuex";
 export default {
   name: "mypageOwnerComponent",
   data() {
@@ -83,6 +84,11 @@ export default {
   },
   components: {
     discountList,
+  },
+  computed: {
+    ...mapGetters("discardStore",
+      ["discardStoreId",]
+    )
   },
   methods: {
     dataAnalysis() {
@@ -103,11 +109,11 @@ export default {
   },
   created() {
     console.log(this.store);
-    http.get(`/sale/list/${this.store.storeId}`).then((response) => {
+    http.get(`/sale/list/${this.discardStoreId}`).then((response) => {
       this.saleItemList = response.data;
     });
 
-    http.get(`/store/close/${this.store.storeId}`).then((response) => {
+    http.get(`/store/close/${this.discardStoreId}`).then((response) => {
       console.log(response.data);
     });
   },
