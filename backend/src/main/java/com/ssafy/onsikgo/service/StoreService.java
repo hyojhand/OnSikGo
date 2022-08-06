@@ -95,7 +95,7 @@ public class StoreService {
         findStore.update(storeDto, coordinate);
 
         String storeImgUrl = awsS3Service.uploadImge(file);
-        storeDto.setStoreImgUrl(storeImgUrl);
+        findStore.updateImg(storeImgUrl);
 
         storeRepository.save(findStore);
         return new ResponseEntity<>("가게 정보가 수정되었습니다.", HttpStatus.OK);
