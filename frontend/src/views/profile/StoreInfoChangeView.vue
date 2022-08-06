@@ -56,38 +56,17 @@
             label="매장위치"
             label-for="input-3"
           >
-            <span style="color: black" class="text-start">{{
-              this.storeDto.location
-            }}</span>
+            <span style="color: black" class="text-start"
+              >{{ this.storeDto.address }}
+              {{ this.storeDto.extraAddress }}</span
+            >
             <br />
             <span id="red-small"
               >가게 주소를 변경하기 위해서는 <br />아래의 "주소 검색" 버튼을
               눌러주세요</span
             >
 
-            <!-- -----------가게 주소 입력-------------- -->
-            <div class="position-box">
-              <v-text-field
-                v-model="address"
-                label="가게 주소를 입력해주세요."
-                class="input-box"
-                color="black"
-                type="address"
-                @input="$v.address.$touch()"
-                @blur="$v.address.$touch()"
-              ></v-text-field>
-            </div>
-
-            <v-text-field
-              v-model="extraAddress"
-              label="상세 주소를 입력해주세요."
-              class="input-box"
-              color="black"
-              type="address"
-              @input="$v.address.$touch()"
-              @blur="$v.address.$touch()"
-            ></v-text-field>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end mt-3">
               <button
                 class="border-m radius-m address-btn"
                 @click="execDaumPostcode()"
@@ -95,6 +74,24 @@
                 주소 검색
               </button>
             </div>
+            <!-- -----------가게 주소 입력-------------- -->
+            <div class="position-box">
+              <v-text-field
+                v-model="address1"
+                label="가게 주소를 입력해주세요."
+                class="input-box"
+                color="black"
+                type="address"
+              ></v-text-field>
+            </div>
+
+            <v-text-field
+              v-model="extraAddress1"
+              label="상세 주소를 입력해주세요."
+              class="input-box"
+              color="black"
+              type="address"
+            ></v-text-field>
           </b-form-group>
         </div>
         <br />
@@ -147,8 +144,6 @@
             multiple
             chips
             required
-            @input="$v.off.$touch()"
-            @blur="$v.off.$touch()"
           ></v-select>
           <span id="red-small"
             >변경하지 않는다면 그대로 휴무일이 유지됩니다</span
@@ -162,8 +157,6 @@
             label="카테고리를 선택해주세요."
             required
             color="black"
-            @input="$v.storeDto.category.$touch()"
-            @blur="$v.storeDto.category.$touch()"
           ></v-select>
         </div>
         <br />
@@ -187,10 +180,10 @@ export default {
       imgFile: null,
       storeDto: {},
       off: [],
+      address1: "",
+      extraAddress1: "",
       previewImg: null,
       show: true,
-      address: "",
-      extraAddress: "",
       days: [
         { value: "월요일", text: "월요일" },
         { value: "화요일", text: "화요일" },
@@ -214,6 +207,7 @@ export default {
     http.get(`/store/${this.$route.params.storeId}`).then((response) => {
       this.storeDto = response.data;
       this.previewImg = this.storeDto.storeImgUrl;
+      console.log(this.storeDto);
       this.storeDto.offDay.split(",").map((day) => {
         var temp = {
           value: day,
@@ -278,12 +272,19 @@ export default {
     },
 
     modifyStore() {
+      if (this.address1 != "" && this.extraAddress1 != "") {
+        this.storeDto.address = this.address1;
+        this.storeDto.extraAddress = this.extraAddress1;
+      }
+      console.log(this.storeDto.address);
+      console.log(this.storeDto.extraAddress);
       // this.storeDto.offDay = this.off.join;
       // console.log(this.storeDto.offDay);
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       var temp = this.off.join(",");
       this.storeDto.offDay = temp;
+      console.log(this.storeDto);
       const formData = new FormData();
       formData.append("file", this.imgFile);
       formData.append(
