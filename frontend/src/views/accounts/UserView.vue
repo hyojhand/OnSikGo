@@ -134,9 +134,6 @@
           v-if="check1 && check2">
             가입하기
           </button>
-          <button @click="clear" class="border-m radius-m notice-btn clear">
-            초기화
-          </button>
         </div>
         <div v-if="signupfailDuple">회원가입에 실패했습니다.</div>
       </form>
@@ -293,14 +290,6 @@ export default {
     submit() {
       this.$v.$touch();
     },
-    clear() {
-      this.$v.$reset();
-      this.name = "";
-      this.email = "";
-      this.password = "";
-      this.nickname = "";
-      this.checkbox = false;
-    },
     signup() {
       http
         .post("/user/signup", {
@@ -313,7 +302,6 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.$router.push("/signup/complete");
-            console.log(response.data);
           } else {
             this.signupfailDuple = !this.signupfailDuple;
           }

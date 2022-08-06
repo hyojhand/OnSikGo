@@ -377,11 +377,9 @@ export default {
   },
   created() {
     this.pageType = this.pages.includes(this.title);
-
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     http.get("/store/list").then((response) => {
-      console.log(response.data.length);
       if (response.data.length >= 2) {
         this.storecnt = false;
       }

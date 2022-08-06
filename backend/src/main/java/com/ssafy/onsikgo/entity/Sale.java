@@ -34,7 +34,7 @@ public class Sale {
     @JoinColumn(name = "storeId")
     private Store store;
 
-    @OneToMany(mappedBy = "sale")
+    @OneToMany(mappedBy = "sale" , cascade = CascadeType.REMOVE)
     private List<SaleItem> saleItems = new ArrayList<>();
 
     public SaleDto toDto(StoreDto storeDto) {
