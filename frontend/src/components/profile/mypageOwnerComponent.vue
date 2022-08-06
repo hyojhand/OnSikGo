@@ -110,9 +110,9 @@ export default {
     },
   },
   created() {
-    console.log(this.store.storeId);
-    console.log(this.store);
-    console.log(this.discardStoreId);
+    // console.log(this.store.storeId);
+    // console.log(this.store);
+    // console.log(this.discardStoreId);
     http.get(`/sale/list/${this.discardStoreId}`).then((response) => {
       this.saleItemList = response.data;
       // console.log("check",response.data);
