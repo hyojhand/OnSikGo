@@ -41,7 +41,7 @@ public class SaleItem {
     @JoinColumn(name = "itemId")
     private Item item;
 
-    @OneToMany(mappedBy = "saleItem")
+    @OneToMany(mappedBy = "saleItem" , cascade = CascadeType.REMOVE)
     private List<Order> orders = new ArrayList<>();
 
     public SaleItemDto toDto(ItemDto itemDto, SaleDto saleDto) {
