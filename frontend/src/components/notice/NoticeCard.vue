@@ -25,9 +25,9 @@ export default {
   name: "NoticeCard",
   components: { NoticeModal },
   data() {
-    return{
+    return {
       items: [],
-    }
+    };
   },
   props: {
     content: String,
@@ -38,21 +38,21 @@ export default {
     userDto: [],
     createdDate: String,
   },
-  created(){
-    this.getData()
+  created() {
+    this.getData();
   },
   methods: {
-    getData(){
+    getData() {
       var temp = {
-        content : this.content,
-        location : this.location,
+        content: this.content,
+        location: this.location,
         orderDto: this.orderDto,
         receivedId: this.receivedId,
         state: this.state,
         userDto: this.userDto,
         createdDate: this.createdDate,
-      }
-      this.items = temp
+      };
+      this.items = temp;
     },
     goDetail() {
       this.$router.push("/notice/detail");

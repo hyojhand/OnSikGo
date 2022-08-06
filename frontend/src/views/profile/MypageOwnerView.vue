@@ -53,6 +53,7 @@ export default {
       this.stores = response.data;
       this.store = response.data[0];
       this.storeId = response.data[0].storeId;
+      this.discardStoreId(this.storeId);
       console.log(this.store);
     });
 

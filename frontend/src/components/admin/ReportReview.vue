@@ -9,7 +9,7 @@
         <p class="text-primary">{{ report.nickname }} : {{ report.content }}</p>
         <p>작성한 가게명: {{ report.storeDto.storeName }}</p>
       </div>
-        <v-btn @click="deleteReview(review)" color="error" samll depressed>삭제</v-btn>
+        <v-btn @click="deleteReview(report)" color="error" samll depressed>삭제</v-btn>
       <hr>
     </div>
   </div>
@@ -30,7 +30,7 @@ export default {
   methods: {
     reportReview() {
       http
-        .get('/admin/reportedReview')
+        .get('/admin/reportedReviews')
         .then((response) => {
           this.reviewList = response.data;
           console.log(response.data);
@@ -42,7 +42,7 @@ export default {
         .delete(`/review/${review.reviewId}`)
         .then((response) => {
           if (response.status == 200) {
-            this.$router.go();
+            this.reportReview();
           }
         });
     },

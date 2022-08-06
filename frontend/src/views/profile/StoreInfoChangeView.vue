@@ -180,7 +180,7 @@ export default {
     return {
       imgFile: null,
       storeDto: {},
-      offDay2: [],
+      off: [],
       previewImg: null,
       show: true,
       address: "",
@@ -209,7 +209,13 @@ export default {
     await http.get(`/store/${this.$route.params.storeId}`).then((response) => {
       this.storeDto = response.data;
       this.previewImg = this.storeDto.storeImgUrl;
-      console.log(this.storeDto);
+      this.storeDto.offDay.split(",").map((day)=>{
+        var temp={
+            value:day,  
+            text:day
+        }
+        this.off.push({...temp})
+      })
     });
 
     // console.log;
@@ -290,7 +296,8 @@ export default {
       this.storeDto.location = this.address + " " + this.extraAddress;
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-
+        var temp=this.off.join(",")
+      this.storeDto.offDay=temp
       const formData = new FormData();
       formData.append("file", this.imgFile);
       formData.append(

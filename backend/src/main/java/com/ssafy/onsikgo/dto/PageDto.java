@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class PageDto {
 
+    String keyword;
     Integer page;
     Integer size;
 }

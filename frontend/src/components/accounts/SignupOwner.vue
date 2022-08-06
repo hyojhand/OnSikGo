@@ -208,8 +208,7 @@
             label="휴무일을 입력해주세요."
             multiple
             chips
-            @input = "$v.off.$touch()"
-            @blur= "$v.off.$touch()"
+
           ></v-select>
 
           <!-- ------------카테고리셀렉트 박스----------- -->
@@ -227,7 +226,7 @@
         <div class="sign-btn">
           <button class="border-m radius-m" @click="e1 = 2">이전으로</button>
           <button 
-          v-if="category != defined"
+          v-if="category != false"
           class="border-m radius-m" 
           @click="signup()">가입하기</button>
         </div>
@@ -317,7 +316,7 @@ export default {
         {value: '토', text: '토요일'},
         {value: '일', text: '일요일'},
       ],
-      time:null,
+      time:false,
       rederKey:0
     };
   },
@@ -425,7 +424,7 @@ export default {
         if ((response.status) == 200) {
           this.mailconfirmDuple = true;
           this.check1 = true;
-          this.time=null;
+          this.time=false;
         } else {
           this.emailfailDuple = true;
         }

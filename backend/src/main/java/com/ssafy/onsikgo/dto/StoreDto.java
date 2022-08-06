@@ -16,7 +16,8 @@ public class StoreDto {
 
     private Long storeId;
     private String storeName;
-    private String location;
+    private String address;
+    private String extraAddress;
     private String tel;
     private String storeNum;
     private String storeImgUrl;
@@ -31,7 +32,8 @@ public class StoreDto {
 
         return Store.builder()
                 .storeName(this.getStoreName())
-                .location(this.getLocation())
+                .address(this.getAddress())
+                .extraAddress(this.getExtraAddress())
                 .tel(this.getTel())
                 .storeNum(this.getStoreNum())
                 .storeImgUrl(this.getStoreImgUrl())
