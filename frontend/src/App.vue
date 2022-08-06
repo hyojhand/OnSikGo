@@ -37,19 +37,22 @@
         </div>
         <v-spacer></v-spacer>
         <div class="icon-box">
-          <button @click="stateCheck(userState)">상태체크</button>
-          <div v-if="logincheck === false">
+          <div v-if="userCheck === 0">
             <router-link :to="{ name: 'login' }">
               <i class="fa-solid fa-arrow-right-to-bracket"></i>
             </router-link>
           </div>
           <div v-else>
-            <router-link :to="{ name: 'notice' }" v-if="userState === 1">
+            <div v-if="userCheck === 1">
+              <router-link :to="{ name: 'notice' }" >
+                <i class="fa-solid fa-bell" width="24px" height="16"></i>
+              </router-link>
+            </div>
+            <div v-else>
+              <router-link :to="{ name: 'noticeUser' }" >
               <i class="fa-solid fa-bell" width="24px" height="16"></i>
-            </router-link>
-            <router-link :to="{ name: 'noticeUser' }" v-else>
-              <i class="fa-solid fa-bell" width="24px" height="16"></i>
-            </router-link>
+              </router-link>
+            </div>
           </div>
           <!-- 마이페이지 일 경우에 톱니바퀴도 보이기 -->
           <button
@@ -85,7 +88,7 @@
           />
         </router-link>
         <!-- 로그인 안했을 경우 -->
-        <v-list v-if="logincheck === false" nav>
+        <v-list v-if="userCheck === 0" nav>
           <v-list-item
             v-for="item in notlogins"
             :key="item.title"
@@ -117,7 +120,7 @@
         <!-- 로그인 했을 경우 -->
         <div v-else>
           <!-- 토글바 업주 로그인의 경우 -->
-          <v-list v-if="userState === 1" nav>
+          <v-list v-if="userCheck === 1" nav>
             <v-list-item
               v-for="item in owners"
               :key="item.title"
@@ -146,7 +149,7 @@
             </svg>
           </v-list>
           <!-- 토글바 일반 유저 로그인 경우 -->
-          <v-list v-else-if="userState === 0" nav>
+          <v-list v-else-if="userCheck === 2" nav>
             <v-list-item
               v-for="item in users"
               :key="item.title"
@@ -293,6 +296,7 @@
 import http from "@/util/http-common";
 import MemberQuitModal from "@/components/profile/MemberQuitModal.vue";
 import StoreInfoDiscardModal from "@/components/profile/StoreInfoDiscardModal.vue";
+import { mapGetters, mapActions } from "vuex"
 // import storeAddModal from "@/components/accounts/storeAddModal.vue"
 export default {
   components: {
@@ -304,7 +308,7 @@ export default {
     return {
       drawer: false,
       setting: false,
-      // 일반 유저 0, 업주 1, 관리자 3
+      // 비로그인 0, 업주 1, 일반 유저 2, 관리자 3
       userState: 0,
       title: document.title,
       pageType: true,
@@ -365,7 +369,11 @@ export default {
       ],
     };
   },
-
+  computed: {
+    ...mapGetters("accounts",[
+      "userCheck",
+    ]),
+  },
   created() {
     this.pageType = this.pages.includes(this.title);
   },
@@ -373,29 +381,28 @@ export default {
     this.title = document.title;
     // 판단
     this.pageType = this.pages.includes(this.title);
-
+    
     if (localStorage.getItem("access-token") == null) {
-      this.logincheck = false;
+      this.getUserCheck(0)
     } else {
-      this.logincheck = true;
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
 
       http.get("/user").then((response) => {
         if (response.data.role == "OWNER") {
-          this.userState = 1;
+          this.getUserCheck(1)
         } else if (response.data.role == "USER") {
-          this.userState = 0;
+          this.getUserCheck(2)
         } else {
-          this.userState = 3;
+          this.getUserCheck(3)
         }
       });
     }
   },
   methods: {
-    stateCheck(userState) {
-      console.log(userState);
-    },
+    ...mapActions("accounts", [
+      "getUserCheck",
+    ]),
     addstorepage() {
       this.$router.push("/addstore");
     },
