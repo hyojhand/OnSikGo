@@ -47,8 +47,8 @@ public class SaleService {
         DateTimeFormatter noticeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         String date = now.format(dayFormatter);
 
-        saleRepository.findByStoreAndDate()
-        if()
+//        saleRepository.findByStoreAndDate()
+//        if()
 
         Store findStore = storeRepository.findById(store_id).get();
         List<Sale> saleList = saleRepository.findByStoreOrderByDateDesc(findStore);
