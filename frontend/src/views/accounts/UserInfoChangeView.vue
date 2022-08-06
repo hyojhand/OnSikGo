@@ -89,6 +89,7 @@ export default {
 
     await http.get("/user").then((response) => {
       this.userDto = response.data;
+      console.log(this.userDto);
       this.previewImg = this.userDto.imgUrl;
       this.role = response.data.role;
     });

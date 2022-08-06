@@ -7,23 +7,25 @@
 
       <v-card>
         <div class="d-flex justify-content-center">
-          <v-card-title> 회원 탈퇴하기 </v-card-title>
+          <v-card-title> <h1>회원 탈퇴</h1> </v-card-title>
         </div>
         <v-card class="mx-auto my-auto card-box" max-width="400" outlined>
-          <div mt-5 class="mt-3">
-            <div class="d-flex justify-content-center">
-              <span
-                >지구를 지키는 {{ userDto.nickname }}님, <br />정말
-                탈퇴하시겠습니까?</span
-              >
+          <div class="container">
+            <div class="row">
+              <div class="col-3">
+                <img :src="this.userDto.imgUrl" width="80px" height="=80px" />
+              </div>
+              <div class="col-8 mt-6">
+                <span
+                  >{{ userDto.nickname }}님, <br />정말
+                  탈퇴하시겠습니까?😢</span
+                >
+              </div>
             </div>
           </div>
-          <br />
 
-          <div class="btn-box">
-            <v-card-actions>
-              <noQuitModal></noQuitModal>
-            </v-card-actions>
+          <div class="d-flex justify-content-around mt-6">
+            <noQuitModal></noQuitModal>
             <button @click="backToMypage()">아니요!</button>
           </div>
         </v-card>
@@ -58,6 +60,7 @@ export default {
     http.get("/user").then((response) => {
       this.userDto = response.data;
       console.log(this.userDto);
+      console.log("&&");
     });
   },
   methods: {
@@ -84,9 +87,5 @@ export default {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-}
-.btn-box {
-  display: flex;
-  justify-content: space-evenly;
 }
 </style>
