@@ -55,7 +55,7 @@
     <div class="container">
       <div class="font-l sales">오늘 할인 판매 상품</div>
       <div v-if="this.discardStoreList.length">
-        <discount-list/>
+        <discount-list />
       </div>
       <div v-else class="non-msg">
         <div>오늘은 등록한</div>
@@ -85,14 +85,14 @@ export default {
     discountList,
   },
   computed: {
-    ...mapGetters("discardStore", [
-      "discardStoreId",
-      "discardStoreList"
-    ]),
+    ...mapGetters("discardStore", ["discardStoreId", "discardStoreList"]),
   },
   methods: {
     dataAnalysis() {
-      this.$router.push("/mypage/owner/analysis");
+      this.$router.push({
+        name: "dataAnalysis",
+        params: { storeId: this.store.storeId, storeName: this.storeName },
+      });
     },
     storechange() {
       this.$router.push({

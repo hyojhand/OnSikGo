@@ -74,8 +74,8 @@ export default {
 
     const year = date.getFullYear();
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
-    const day = ("0" + date.getDay()).slice(-2) - 1;
-    const day2 = ("0" + date.getDay()).slice(-2) - 6;
+    const day = ("0" + date.getDay()).slice(-2) - 7;
+    const day2 = ("0" + date.getDay()).slice(-2);
     const dateStr = year + "-" + month + "-" + day;
     const dateStr2 = year + "-" + month + "-" + day2;
     this.baseStart = dateStr;
