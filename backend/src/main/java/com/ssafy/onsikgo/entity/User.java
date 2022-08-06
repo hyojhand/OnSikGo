@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class User {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
 
     @Column(nullable = false)

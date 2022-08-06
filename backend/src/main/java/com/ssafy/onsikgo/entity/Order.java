@@ -21,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class Order {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long orderId;
 
     @Column(nullable = false)
