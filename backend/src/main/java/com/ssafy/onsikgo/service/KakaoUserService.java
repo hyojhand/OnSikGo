@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class KakaoUserService implements SocialUserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
 
     @Override
     @Transactional
@@ -99,12 +101,29 @@ public class KakaoUserService implements SocialUserService {
             JSONObject kakao_account = (JSONObject) jsonObj.get("kakao_account");
             JSONObject profile = (JSONObject) kakao_account.get("profile");
             userDto.setRole(Role.USER);
-            // 닉네임이 없음
-            userDto.setUserName(profile.get("nickname").toString());
-            userDto.setEmail(kakao_account.get("email").toString());
-            userDto.setNickname(profile.get("nickname").toString());
-            userDto.setImgUrl(profile.get("profile_image_url").toString());
+
+            String email = jsonObj.get("id").toString()+"KAKAO@onsikgo.com";
+            userDto.setEmail(email);
             userDto.setPassword(jsonObj.get("id").toString());
+
+            Optional user = userRepository.findByEmail(email);
+            if(user.isPresent()){
+                return userDto;
+            }
+            String nickname;
+            while(true){
+                String temp_nickname = UUID.randomUUID().toString().replaceAll("-", "");
+                temp_nickname = "User"+temp_nickname.substring(0, 10);
+                nickname=(String)profile.getOrDefault("nickname",temp_nickname);
+                user = userRepository.findByNickname(nickname);
+                if(!user.isPresent()){
+                    userDto.setNickname(nickname);
+                    break;
+                }
+            }
+            userDto.setUserName(nickname);
+            String profile_image_url= (String)profile.getOrDefault("profile_image_url",defaultImg);
+            userDto.setImgUrl(profile_image_url);
 
         } catch (ParseException e) {
             e.printStackTrace();
