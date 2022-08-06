@@ -77,7 +77,7 @@
             <!-- -----------가게 주소 입력-------------- -->
             <div class="position-box">
               <v-text-field
-                v-model="address1"
+                v-model="this.address1"
                 label="가게 주소를 입력해주세요."
                 class="input-box"
                 color="black"
@@ -86,7 +86,7 @@
             </div>
 
             <v-text-field
-              v-model="extraAddress1"
+              v-model="this.extraAddress1"
               label="상세 주소를 입력해주세요."
               class="input-box"
               color="black"
@@ -235,15 +235,15 @@ export default {
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
-          if (this.extraAddress !== "") {
-            this.extraAddress = "";
+          if (this.extraAddress1 !== "") {
+            this.extraAddress1 = "";
           }
           if (data.userSelectedType === "R") {
             // 사용자가 도로명 주소를 선택했을 경우
-            this.address = data.roadAddress;
+            this.address1 = data.roadAddress;
           } else {
             // 사용자가 지번 주소를 선택했을 경우(J)
-            this.address = data.jibunAddress;
+            this.address1 = data.jibunAddress;
           }
 
           // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
@@ -251,21 +251,21 @@ export default {
             // 법정동명이 있을 경우 추가한다. (법정리는 제외)
             // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
             if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
-              this.extraAddress += data.bname;
+              this.extraAddress1 += data.bname;
             }
             // 건물명이 있고, 공동주택일 경우 추가한다.
             if (data.buildingName !== "" && data.apartment === "Y") {
-              this.extraAddress +=
-                this.extraAddress !== ""
+              this.extraAddress1 +=
+                this.extraAddress1 !== ""
                   ? `, ${data.buildingName}`
                   : data.buildingName;
             }
             // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-            if (this.extraAddress !== "") {
-              this.extraAddress = `(${this.extraAddress})`;
+            if (this.extraAddress1 !== "") {
+              this.extraAddress1 = `(${this.extraAddress1})`;
             }
           } else {
-            this.extraAddress = "";
+            this.extraAddress1 = "";
           }
         },
       }).open();
@@ -278,8 +278,8 @@ export default {
       }
       console.log(this.storeDto.address);
       console.log(this.storeDto.extraAddress);
-      // this.storeDto.offDay = this.off.join;
-      // console.log(this.storeDto.offDay);
+      this.storeDto.offDay = this.off.join;
+      console.log(this.storeDto.offDay);
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       var temp = this.off.join(",");
