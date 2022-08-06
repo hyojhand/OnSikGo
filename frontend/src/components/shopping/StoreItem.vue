@@ -13,10 +13,17 @@
         {{ storeName }}
       </div>
       <div
+        v-if="this.distance < 3000"
         class="store-prediction"
         :class="{ none: saleItemDtoList.length == 0 }"
       >
-        300m, 도보로 3분
+        현재 위치로 부터 {{ this.distance}} m
+      </div>
+      <div 
+        v-else
+        class="store-prediction"
+        :class="{ none: saleItemDtoList.length == 0 }">
+        현재 위치로 부터 {{ this.distance / 1000}} km
       </div>
       <div
         class="ment"
@@ -50,7 +57,7 @@
 
 <script>
 import http from "@/util/http-common";
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "StoreItem",
 
@@ -67,10 +74,13 @@ export default {
     lat: String,
     lng: String,
   },
-
+  computed: {
+    ...mapGetters("store", ["currentX", "currentY"]),
+  },
   data() {
     return {
       saleItemDtoList: [],
+      distance : ""
     };
   },
   methods: {
@@ -81,6 +91,28 @@ export default {
         name: "storeView",
       });
     },
+    getdistance(lat1, lon1, lat2, lon2) {
+      if (lat1 == lat2 && lon1 == lon2) {
+        this.distance = 0
+        return
+      }
+      var radLat1 = (Math.PI * lat1) / 180;
+      var radLat2 = (Math.PI * lat2) / 180;
+      var theta = lon1 - lon2;
+      var radTheta = (Math.PI * theta) / 180;
+      var dist =
+        Math.sin(radLat1) * Math.sin(radLat2) +
+        Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+      if (dist > 1) dist = 1;
+
+      dist = Math.acos(dist);
+      dist = (dist * 180) / Math.PI;
+      dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+      if (dist < 100) dist = Math.round(dist / 10) * 10;
+      else dist = Math.round(dist / 100) * 100;
+      this.distance = dist
+      return ;
+    },
   },
   created() {
     http.get(`/sale/list/${this.storeId}`).then((response) => {
@@ -89,6 +121,7 @@ export default {
         console.log(response);
       }
     });
+    this.getdistance(this.currentX, this.currentY, this.lat, this.lng)
     console.log(this.saleItemDtoList);
   },
 };
