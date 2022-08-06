@@ -221,6 +221,15 @@ public class StoreService {
         return new ResponseEntity<>(saleDto, HttpStatus.OK);
     }
 
+    public ResponseEntity<List<StoreDto>> getKeyword(SelectDto selectDto) {
+        List<Store> storeList = storeRepository.findByStoreNameContaining(selectDto.getKeyword());
+        List<StoreDto> storeDtoList = new ArrayList<>();
+        for(int i = 0; i < storeList.size(); i++) {
+            storeDtoList.add(storeList.get(i).toDto());
+        }
+        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+    }
+
     // 좌표 가져오는 메서드
     public HashMap<String, String> getCoordinate(String fullAddress) {
 
