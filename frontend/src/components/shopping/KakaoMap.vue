@@ -385,16 +385,16 @@ export default {
       return dist;
     },
     moving(item) {
-      var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-        mapOption = {
-          center: new kakao.maps.LatLng(
-            this.storexLatitude,
-            this.storeLongitude
-          ), // 지도의 중심좌표
-          level: 3, // 지도의 확대 레벨
-        };
+      // var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+      //   mapOption = {
+      //     center: new kakao.maps.LatLng(
+      //       this.storexLatitude,
+      //       this.storeLongitude
+      //     ), // 지도의 중심좌표
+      //     level: 3, // 지도의 확대 레벨
+      //   };
 
-      var map = new kakao.maps.Map(mapContainer, mapOption);
+      // var map = new kakao.maps.Map(mapContainer, mapOption);
       this.storexLatitude = item.saleDto.storeDto.lat;
       this.storeLongitude = item.saleDto.storeDto.lng;
       // 이동할 위도 경도 위치를 생성합니다
@@ -405,7 +405,7 @@ export default {
 
       // 지도 중심을 부드럽게 이동시킵니다
       // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-      map.panTo(moveLatLon);
+      this.map.panTo(moveLatLon);
 
       var imageSrc =
         "https://cdn4.iconfinder.com/data/icons/food-delivery-service-3/100/food_delivery_gps_mark_service_boy_online-256.png";
@@ -423,9 +423,37 @@ export default {
         ), // 마커를 표시할 위치
         image: markerImage, // 마커 이미지
       });
+      var infowindow = new kakao.maps.InfoWindow({
+          content:
+            '<div class="wrap">' +
+            '    <div class="info">' +
+            '        <div class="title" >' +
+            `            ${item.saleDto.storeDto.storeName}` +
+            "        </div>" +
+            '        <div class="body">' +
+            '            <div class="desc">' +
+            `               <div class="jibun ellipsis">전화번호 : ${item.saleDto.storeDto.tel}</div>` +
+            `               <div class="jibun ellipsis">휴일 : ${item.saleDto.storeDto.offDay}</div>` +
+            `               <div class="jibun ellipsis">마감시간 : ${item.saleDto.storeDto.closingTime}</div>` +
+            "            </div>" +
+            "        </div>" +
+            "    </div>" +
+            "</div>",
+        });
+        // console.log(this.map)
 
+        kakao.maps.event.addListener(
+          marker,
+          "mouseover",
+          this.makeOverListener(this.map, marker, infowindow)
+        );
+        kakao.maps.event.addListener(
+          marker,
+          "mouseout",
+          this.makeOutListener(infowindow)
+        );
       // 마커가 지도 위에 표시되도록 설정합니다
-      marker.setMap(map);
+      marker.setMap(this.map);
     },
   },
 };
