@@ -78,7 +78,7 @@ export default {
         console.log(this.discardStoreImg);
         if (response.status == 200) {
           alert("가게 정보 폐기 완료되었습니다!");
-          this.$router.push("MypageOwnerView");
+          this.$router.push("/");
         } else {
           alert("가게 정보 삭제에 실패했습니다.");
         }

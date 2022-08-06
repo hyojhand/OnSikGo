@@ -112,7 +112,11 @@
             ></b-form-input>
             <br />
           </b-form-group>
-          <button>사업자 등록번호 확인</button>
+          <button type="button" @click="ownerNumcheck">
+            사업자 등록번호 확인
+          </button>
+          <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
+          <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
         </div>
         <br />
         <!--매장 종료시간-->
@@ -173,6 +177,7 @@
 
 <script>
 import http from "@/util/http-common";
+import axios from "axios";
 export default {
   name: "StoreInfoChangeView",
   data() {
@@ -184,6 +189,9 @@ export default {
       extraAddress1: "",
       previewImg: null,
       show: true,
+      ownercheckDuple: false,
+      ownerfailDuple: false,
+      numCheck: true,
       days: [
         { value: "월요일", text: "월요일" },
         { value: "화요일", text: "화요일" },
@@ -270,7 +278,29 @@ export default {
         },
       }).open();
     },
-
+    ownerNumcheck() {
+      axios
+        .post(
+          "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON",
+          {
+            b_no: [this.storeDto.storeNum],
+          }
+        )
+        .then((response) => {
+          if (response.data.match_cnt == 1) {
+            this.ownercheckDuple = true;
+            this.ownerfailDuple = false;
+            this.numCheck = true;
+          } else {
+            this.ownercheckDuple = false;
+            this.ownerfailDuple = true;
+            this.numCheck = false;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     modifyStore() {
       if (this.address1 != "" && this.extraAddress1 != "") {
         this.storeDto.address = this.address1;
@@ -280,30 +310,36 @@ export default {
       console.log(this.storeDto.extraAddress);
       this.storeDto.offDay = this.off.join;
       console.log(this.storeDto.offDay);
-      http.defaults.headers["access-token"] =
-        localStorage.getItem("access-token");
-      var temp = this.off.join(",");
-      this.storeDto.offDay = temp;
-      console.log(this.storeDto);
-      const formData = new FormData();
-      formData.append("file", this.imgFile);
-      formData.append(
-        "storeDto",
-        new Blob([JSON.stringify(this.storeDto)], { type: "application/json" })
-      );
-      console.log(formData);
-      http
-        .put(`/store/${this.storeDto.storeId}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          if (response.status == 200) {
-            alert("가게정보 수정완료");
-            this.$router.push({ name: "mypageOwner" });
-          }
-        });
+      if (this.numCheck == true) {
+        http.defaults.headers["access-token"] =
+          localStorage.getItem("access-token");
+        var temp = this.off.join(",");
+        this.storeDto.offDay = temp;
+        console.log(this.storeDto);
+        const formData = new FormData();
+        formData.append("file", this.imgFile);
+        formData.append(
+          "storeDto",
+          new Blob([JSON.stringify(this.storeDto)], {
+            type: "application/json",
+          })
+        );
+        console.log(formData);
+        http
+          .put(`/store/${this.storeDto.storeId}`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              alert("가게정보 수정완료");
+              this.$router.push({ name: "mypageOwner" });
+            }
+          });
+      } else {
+        alert("사업자 등록번호를 정확하게 입력해주세요");
+      }
     },
     onSubmit(event) {
       event.preventDefault();

@@ -53,9 +53,9 @@ export default {
       this.stores = response.data;
       this.store = response.data[0];
       this.storeId = response.data[0].storeId;
-      console.log(this.storeId);
+      // console.log(this.storeId);
       this.discardStoreId(this.storeId);
-      console.log(this.store);
+      // console.log(this.store);
     });
 
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
@@ -74,15 +74,15 @@ export default {
     ]),
     async selectStore(event) {
       this.storeId = event.target.value;
-      console.log(this.storeId);
+      // console.log(this.storeId);
       await http.get(`/store/${this.storeId}`).then((response) => {
         this.storeName = response.data.storeName;
         this.storeImg = response.data.storeImgUrl;
       });
 
-      console.log(this.storeId);
-      console.log(this.storeName);
-      console.log(this.storeImg);
+      // console.log(this.storeId);
+      // console.log(this.storeName);
+      // console.log(this.storeImg);
       this.discardStoreId(this.storeId);
       this.discardStoreName(this.storeName);
       this.discardStoreImg(this.storeImg);
@@ -93,7 +93,7 @@ export default {
       http.get(`/store/${this.storeId}`).then((response) => {
         this.store = response.data;
         this.storeName = response.data.storeName;
-        console.log(response.data);
+        // console.log(response.data);
       });
     },
     // changeSaleItem() {
