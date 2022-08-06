@@ -95,7 +95,7 @@ public class StoreService {
         findStore.update(storeDto, coordinate);
 
         String storeImgUrl = awsS3Service.uploadImge(file);
-        storeDto.setStoreImgUrl(storeImgUrl);
+        findStore.updateImg(storeImgUrl);
 
         storeRepository.save(findStore);
         return new ResponseEntity<>("가게 정보가 수정되었습니다.", HttpStatus.OK);
@@ -186,7 +186,7 @@ public class StoreService {
         String date = now.format(dayFormatter);
         Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
         if(!findSale.isPresent()) {
-            return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("fail", HttpStatus.OK);
         }
 
         findSale.get().updateClosed();

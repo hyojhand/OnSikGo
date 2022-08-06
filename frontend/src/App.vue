@@ -232,8 +232,8 @@
           </v-list-item>
           <MemberQuitModal></MemberQuitModal>
           <StoreInfoDiscardModal
-            v-if="this.storecnt == false"
-            :no="this.storeId"
+            v-if="this.discardStoreCnt >= 2"
+            :no="this.discardStoreId"
           ></StoreInfoDiscardModal>
           <br /><br /><br />
           <button @click="addstorepage">매장추가</button>
@@ -320,7 +320,6 @@ export default {
       store: {},
       storeId: "",
       saleItemList: [],
-      storecnt: true,
       notlogins: [
         { title: "홈", router: "/" },
         { title: "로그인", router: "/login" },
@@ -373,19 +372,11 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("discardStore", ["discardStoreCnt", "discardStoreId"]),
     ...mapGetters("accounts", ["userCheck"]),
   },
   created() {
     this.pageType = this.pages.includes(this.title);
-
-    http.defaults.headers["access-token"] =
-      localStorage.getItem("access-token");
-    http.get("/store/list").then((response) => {
-      console.log(response.data.length);
-      if (response.data.length >= 2) {
-        this.storecnt = false;
-      }
-    });
   },
   updated() {
     this.title = document.title;

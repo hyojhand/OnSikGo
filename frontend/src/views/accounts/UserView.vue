@@ -131,11 +131,8 @@
           <button 
           class="border-m radius-m notice-btn" 
           @click="signup()"
-          v-if="check1 && check2">
+          v-if="check1 && check2 && checkbox">
             가입하기
-          </button>
-          <button @click="clear" class="border-m radius-m notice-btn clear">
-            초기화
           </button>
         </div>
         <div v-if="signupfailDuple">회원가입에 실패했습니다.</div>
@@ -240,6 +237,7 @@ export default {
   methods: {
     // 이메일 중복 확인 및 인증번호 전송
     isCheck() {
+      this.emailfailDuple = false;
       http
         .post("/user/email", {
           email: this.email
@@ -257,6 +255,8 @@ export default {
     },
     // 인증번호 확인
     checkMail() {
+      this.mailconfirmDuple = false;
+      this.mailfailDuple = false;
       http
         .post("/user/emailAuthNumber", {
           email: this.email,
@@ -274,6 +274,8 @@ export default {
     },
     // 닉네임 중복 확인
     nicknameCheck() {
+      this.nicknameDuple = false;
+      this.nicknamefailDuple = false;
       http
         .post("/user/nickname", {
           nickname: this.nickname
@@ -293,14 +295,6 @@ export default {
     submit() {
       this.$v.$touch();
     },
-    clear() {
-      this.$v.$reset();
-      this.name = "";
-      this.email = "";
-      this.password = "";
-      this.nickname = "";
-      this.checkbox = false;
-    },
     signup() {
       http
         .post("/user/signup", {
@@ -313,7 +307,6 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.$router.push("/signup/complete");
-            console.log(response.data);
           } else {
             this.signupfailDuple = !this.signupfailDuple;
           }
