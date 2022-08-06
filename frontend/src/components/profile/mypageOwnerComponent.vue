@@ -32,7 +32,11 @@
 
           <div class="d-flex justify-content-end">
             <!--영업종료 버튼은 빨간색으로 하기-->
-            <button id="mypage-button" @click="movetoClose">영업 종료</button>
+            <button 
+              id="mypage-button" 
+              @click="movetoClose"
+              :disabled="closedCheck == true"
+          >영업 종료</button>
           </div>
         </div>
       </div>
@@ -77,6 +81,7 @@ export default {
     return {
       storeName: "",
       saleItemList: [],
+      closedCheck: ""
     };
   },
   props: {
@@ -86,9 +91,9 @@ export default {
     discountList,
   },
   computed: {
-    ...mapGetters("discardStore",
-      ["discardStoreId",]
-    )
+    ...mapGetters("discardStore",[
+      "discardStoreId", 
+    ])
   },
   methods: {
     dataAnalysis() {
@@ -111,10 +116,12 @@ export default {
     console.log(this.store);
     http.get(`/sale/list/${this.discardStoreId}`).then((response) => {
       this.saleItemList = response.data;
+      // console.log("check",response.data);
     });
 
     http.get(`/store/close/${this.discardStoreId}`).then((response) => {
-      console.log(response.data);
+      this.closedCheck = response.data.closed
+      // console.log(response.data);
     });
   },
 };
