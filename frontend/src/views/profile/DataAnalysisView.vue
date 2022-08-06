@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <!--현재 내 날짜로부터 7일전날짜부터 ~ 현재 날짜 -->
-    <div class="store font-l">지금 내 매장 이름</div>
+    <div class="store font-l">{{ this.name }}</div>
 
     <div class="mt-5 mb-5">
       <h3>점주님은, 이번주 온식고를 통해</h3>
       <br />
-      <h4>얼마원 가치의 세상을 구하셨어요!</h4>
+      <h4>{{ this.storeValue.total }}원의 세상을 구하셨어요!</h4>
     </div>
     <div v-if="!once" @click="opento" class="date font-m">
       날짜를 선택하세요
@@ -47,6 +47,7 @@
 <script>
 import barChart from "@/components/profile/barChart.vue";
 import wordCloud from "@/components/profile/wordCloud.vue";
+import http from "@/util/http-common";
 
 export default {
   name: "dataAnalysisView",
@@ -54,12 +55,51 @@ export default {
     barChart,
     wordCloud,
   },
+  props: ["storeId"],
   data() {
     return {
+      id: "",
+      name: "",
+      baseStart: "",
+      baseEnd: "",
       dates: [],
       pick: true,
       once: false,
+      storeValue: [],
     };
+  },
+  async created() {
+    // 날짜만들기
+    const date = new Date();
+
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDay()).slice(-2) - 1;
+    const day2 = ("0" + date.getDay()).slice(-2) - 6;
+    const dateStr = year + "-" + month + "-" + day;
+    const dateStr2 = year + "-" + month + "-" + day2;
+    this.baseStart = dateStr;
+    this.baseEnd = dateStr2;
+    console.log(this.baseStart);
+    console.log(this.endDate);
+
+    this.id = this.$route.params.storeId;
+    http.get(`/store/${this.id}`).then((response) => {
+      this.name = response.data.storeName;
+    });
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+    await http
+      .post(`/analysis/sale-history`, {
+        storeId: this.id,
+        startDate: "2022-08-01",
+        endDate: "2022-08-05",
+      })
+      .then((response) => {
+        this.storeValue = response.data;
+        console.log("뜬다");
+        console.log(this.storeValue);
+      });
   },
   methods: {
     open() {
