@@ -1,6 +1,6 @@
 <template>
   <div>
-    <card id="mypage-card">
+    <div class="card" id="mypage-card">
       <div class="row">
         <div class="col-3">
           <div class="mt-7 ml-4">
@@ -14,7 +14,7 @@
               안녕하세요,👨‍🍳<br />{{ store.storeName }}입니다. </span
             ><br />
             <span style="color: gray; font-size: 0.7rem"
-              >매장 위치: {{ store.location }}</span
+              >매장 위치: {{ store.address }} {{ store.extraAddress }}</span
             ><br />
             <span style="color: gray; font-size: 0.7rem"
               >문 닫는 시간: {{ store.closingTime }}</span
@@ -32,11 +32,17 @@
 
           <div class="d-flex justify-content-end">
             <!--영업종료 버튼은 빨간색으로 하기-->
-            <button id="mypage-button" @click="movetoClose">영업 종료</button>
+            <button
+              id="mypage-button"
+              @click="movetoClose"
+              :disabled="closedCheck == true"
+            >
+              영업 종료
+            </button>
           </div>
         </div>
       </div>
-    </card>
+    </div>
 
     <br />
     <div>
@@ -70,12 +76,14 @@
 <script>
 import discountList from "@/components/profile/discountList.vue";
 import http from "@/util/http-common";
+import { mapGetters } from "vuex";
 export default {
   name: "mypageOwnerComponent",
   data() {
     return {
       storeName: "",
       saleItemList: [],
+      closedCheck: "",
     };
   },
   props: {
@@ -83,6 +91,9 @@ export default {
   },
   components: {
     discountList,
+  },
+  computed: {
+    ...mapGetters("discardStore", ["discardStoreId"]),
   },
   methods: {
     dataAnalysis() {
@@ -103,12 +114,14 @@ export default {
   },
   created() {
     console.log(this.store);
-    http.get(`/sale/list/${this.store.storeId}`).then((response) => {
+    http.get(`/sale/list/${this.discardStoreId}`).then((response) => {
       this.saleItemList = response.data;
+      // console.log("check",response.data);
     });
 
-    http.get(`/store/close/${this.store.storeId}`).then((response) => {
-      console.log(response.data);
+    http.get(`/store/close/${this.discardStoreId}`).then((response) => {
+      this.closedCheck = response.data.closed;
+      // console.log(response.data);
     });
   },
 };
@@ -116,7 +129,7 @@ export default {
 
 <style>
 #mypage-card {
-  height: 300px;
+  height: 250px;
   width: 400px;
   border-radius: 15px;
   display: inline-block;

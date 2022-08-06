@@ -56,38 +56,17 @@
             label="매장위치"
             label-for="input-3"
           >
-            <span style="color: black" class="text-start">{{
-              this.storeDto.location
-            }}</span>
+            <span style="color: black" class="text-start"
+              >{{ this.storeDto.address }}
+              {{ this.storeDto.extraAddress }}</span
+            >
             <br />
             <span id="red-small"
               >가게 주소를 변경하기 위해서는 <br />아래의 "주소 검색" 버튼을
               눌러주세요</span
             >
 
-            <!-- -----------가게 주소 입력-------------- -->
-            <div class="position-box">
-              <v-text-field
-                v-model="address"
-                label="가게 주소를 입력해주세요."
-                class="input-box"
-                color="black"
-                type="address"
-                @input="$v.address.$touch()"
-                @blur="$v.address.$touch()"
-              ></v-text-field>
-            </div>
-
-            <v-text-field
-              v-model="extraAddress"
-              label="상세 주소를 입력해주세요."
-              class="input-box"
-              color="black"
-              type="address"
-              @input="$v.address.$touch()"
-              @blur="$v.address.$touch()"
-            ></v-text-field>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end mt-3">
               <button
                 class="border-m radius-m address-btn"
                 @click="execDaumPostcode()"
@@ -95,6 +74,24 @@
                 주소 검색
               </button>
             </div>
+            <!-- -----------가게 주소 입력-------------- -->
+            <div class="position-box">
+              <v-text-field
+                v-model="this.address1"
+                label="가게 주소를 입력해주세요."
+                class="input-box"
+                color="black"
+                type="address"
+              ></v-text-field>
+            </div>
+
+            <v-text-field
+              v-model="this.extraAddress1"
+              label="상세 주소를 입력해주세요."
+              class="input-box"
+              color="black"
+              type="address"
+            ></v-text-field>
           </b-form-group>
         </div>
         <br />
@@ -147,8 +144,6 @@
             multiple
             chips
             required
-            @input="$v.off.$touch()"
-            @blur="$v.off.$touch()"
           ></v-select>
           <span id="red-small"
             >변경하지 않는다면 그대로 휴무일이 유지됩니다</span
@@ -162,8 +157,6 @@
             label="카테고리를 선택해주세요."
             required
             color="black"
-            @input="$v.storeDto.category.$touch()"
-            @blur="$v.storeDto.category.$touch()"
           ></v-select>
         </div>
         <br />
@@ -186,11 +179,11 @@ export default {
     return {
       imgFile: null,
       storeDto: {},
-      off: "",
+      off: [],
+      address1: "",
+      extraAddress1: "",
       previewImg: null,
       show: true,
-      address: "",
-      extraAddress: "",
       days: [
         { value: "월요일", text: "월요일" },
         { value: "화요일", text: "화요일" },
@@ -215,6 +208,13 @@ export default {
       this.storeDto = response.data;
       this.previewImg = this.storeDto.storeImgUrl;
       console.log(this.storeDto);
+      this.storeDto.offDay.split(",").map((day) => {
+        var temp = {
+          value: day,
+          text: day,
+        };
+        this.off.push({ ...temp });
+      });
     });
   },
   methods: {
@@ -235,15 +235,15 @@ export default {
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
-          if (this.extraAddress !== "") {
-            this.extraAddress = "";
+          if (this.extraAddress1 !== "") {
+            this.extraAddress1 = "";
           }
           if (data.userSelectedType === "R") {
             // 사용자가 도로명 주소를 선택했을 경우
-            this.address = data.roadAddress;
+            this.address1 = data.roadAddress;
           } else {
             // 사용자가 지번 주소를 선택했을 경우(J)
-            this.address = data.jibunAddress;
+            this.address1 = data.jibunAddress;
           }
 
           // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
@@ -251,32 +251,40 @@ export default {
             // 법정동명이 있을 경우 추가한다. (법정리는 제외)
             // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
             if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
-              this.extraAddress += data.bname;
+              this.extraAddress1 += data.bname;
             }
             // 건물명이 있고, 공동주택일 경우 추가한다.
             if (data.buildingName !== "" && data.apartment === "Y") {
-              this.extraAddress +=
-                this.extraAddress !== ""
+              this.extraAddress1 +=
+                this.extraAddress1 !== ""
                   ? `, ${data.buildingName}`
                   : data.buildingName;
             }
             // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-            if (this.extraAddress !== "") {
-              this.extraAddress = `(${this.extraAddress})`;
+            if (this.extraAddress1 !== "") {
+              this.extraAddress1 = `(${this.extraAddress1})`;
             }
           } else {
-            this.extraAddress = "";
+            this.extraAddress1 = "";
           }
         },
       }).open();
     },
 
     modifyStore() {
-      // this.storeDto.offDay = this.off.join;
-      // console.log(this.storeDto.offDay);
+      if (this.address1 != "" && this.extraAddress1 != "") {
+        this.storeDto.address = this.address1;
+        this.storeDto.extraAddress = this.extraAddress1;
+      }
+      console.log(this.storeDto.address);
+      console.log(this.storeDto.extraAddress);
+      this.storeDto.offDay = this.off.join;
+      console.log(this.storeDto.offDay);
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-
+      var temp = this.off.join(",");
+      this.storeDto.offDay = temp;
+      console.log(this.storeDto);
       const formData = new FormData();
       formData.append("file", this.imgFile);
       formData.append(

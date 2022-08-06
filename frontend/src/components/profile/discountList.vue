@@ -28,6 +28,8 @@
 <script>
 import EditStockModal from "@/components/management/EditStockModal.vue";
 import http from "@/util/http-common";
+
+
 export default {
   name: "discountList",
   components: {
@@ -45,7 +47,7 @@ export default {
     totalStock: Number,
     itemId: Number,
   },
-
+  
   async created() {
     await http.get(`/sale/${this.itemId}`).then((response) => {
       if (response.status == 200) {

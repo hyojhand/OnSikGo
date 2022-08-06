@@ -51,7 +51,7 @@ public class StoreService {
     @Transactional
     public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
 
-        HashMap<String, String> coordinate = getCoordinate(ownerDto.getLocation());
+        HashMap<String, String> coordinate = getCoordinate(ownerDto.getAddress());
         Store store = ownerDto.toStoreEntity(coordinate);
         store.addUser(user);
 
@@ -74,7 +74,7 @@ public class StoreService {
         String storeImgUrl = awsS3Service.uploadImge(file);
         storeDto.setStoreImgUrl(storeImgUrl);
 
-        HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
+        HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
         Store store = storeDto.toEntity(coordinate);
         store.addUser(findUser);
 
@@ -91,7 +91,7 @@ public class StoreService {
 
         Store findStore = storeRepository.findById(store_id).get();
 
-        HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
+        HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
         findStore.update(storeDto, coordinate);
 
         String storeImgUrl = awsS3Service.uploadImge(file);
@@ -219,6 +219,15 @@ public class StoreService {
         SaleDto saleDto = findSale.get().toDto(findStore.get().toDto());
 
         return new ResponseEntity<>(saleDto, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<StoreDto>> getKeyword(SelectDto selectDto) {
+        List<Store> storeList = storeRepository.findByStoreNameContaining(selectDto.getKeyword());
+        List<StoreDto> storeDtoList = new ArrayList<>();
+        for(int i = 0; i < storeList.size(); i++) {
+            storeDtoList.add(storeList.get(i).toDto());
+        }
+        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
     }
 
     // 좌표 가져오는 메서드

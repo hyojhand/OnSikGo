@@ -1,6 +1,9 @@
 <template>
-  <v-card class="mx-auto card-box" max-width="344">
-    <div class="row card-box" v-if="`${userDto.role}` == 'USER'">
+  <v-card 
+    v-if="`${elapsedTime}` < 1440"
+    class="mx-auto card-box" 
+    max-width="344">
+    <div class="row card-box" v-if="`${noticeState}` == 'ORDER'">
       <img
         class="img-box col-5"
         :src="`${orderDto.saleItemDto.itemDto.itemImgUrl}`"
@@ -17,7 +20,16 @@
           >
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
-          <p class="time-text">{{ elapsedTime}}분전</p>
+          <p 
+            class="time-text"
+            v-if="elapsedTime < 60"
+          >{{ elapsedTime }}분 전
+          </p>
+          <p
+            class="time-text"
+            v-else
+          >{{ (elapsedTime / 60).toFixed(0) }}시간 전
+          </p>
           <button class="border-m radius-m notice-btn" @click="gohistory()">
             주문 보러가기
           </button>
@@ -42,7 +54,16 @@
           >
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
-          <p class="time-text">{{ createdDate }}</p>
+          <p 
+            class="time-text"
+            v-if="elapsedTime < 60"
+          >{{ elapsedTime }}분 전
+          </p>
+          <p
+            class="time-text"
+            v-else
+          >{{ (elapsedTime / 60).toFixed(0) }}시간 전
+          </p>
           <button class="border-m radius-m notice-btn" @click="gostore()">
             정보 보러가기
           </button>
@@ -65,6 +86,7 @@ export default {
     state: Boolean,
     userDto: [],
     createdDate: String,
+    noticeState: String,
   },
   created() {
     this.nowDate()

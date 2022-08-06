@@ -37,6 +37,7 @@
 
 <script>
 import http from '@/util/http-common.js';
+import { mapActions } from "vuex";
 
 export default {
   name: "orderList",
@@ -52,6 +53,9 @@ export default {
     this.nowDate()
   },
   methods: {
+    ...mapActions("storeStore", [
+      "getStoreId",
+    ]),
     orderCancel(order) {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
@@ -67,8 +71,8 @@ export default {
       })
           
     },
-    goStore(sotreId) {
-      this.getStoreId(sotreId);
+    goStore(storeId) {
+      this.getStoreId(storeId);
       this.$router.push("/store");
     },
     

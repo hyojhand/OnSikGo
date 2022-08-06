@@ -53,6 +53,8 @@ export default {
       this.stores = response.data;
       this.store = response.data[0];
       this.storeId = response.data[0].storeId;
+      console.log(this.storeId);
+      this.discardStoreId(this.storeId);
       console.log(this.store);
     });
 
@@ -72,11 +74,12 @@ export default {
     ]),
     async selectStore(event) {
       this.storeId = event.target.value;
-
-      http.get(`/store/${this.storeId}`).then((response) => {
+      console.log(this.storeId);
+      await http.get(`/store/${this.storeId}`).then((response) => {
         this.storeName = response.data.storeName;
         this.storeImg = response.data.storeImgUrl;
       });
+
       console.log(this.storeId);
       console.log(this.storeName);
       console.log(this.storeImg);
