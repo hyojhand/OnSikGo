@@ -44,6 +44,7 @@ export default {
       itemList: [],
       storeName: "",
       storeImg: "",
+      storeCnt: "",
     };
   },
   async created() {
@@ -51,21 +52,18 @@ export default {
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
       this.stores = response.data;
+      this.storeCnt = this.stores.length;
       this.store = response.data[0];
       this.storeId = response.data[0].storeId;
-      // console.log(this.storeId);
       this.discardStoreId(this.storeId);
-      // console.log(this.store);
+      this.discardStoreCnt(this.storeCnt);
+      console.log("!!");
     });
 
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
       this.saleItemList = response.data;
       this.getDsicardStoreList(response.data);
     });
-
-    // await http.get(`/item/list/${this.storeId}`).then((response) => {
-    //   this.itemList = response.data;
-    // });
   },
   methods: {
     ...mapActions("discardStore", [
@@ -73,10 +71,10 @@ export default {
       "discardStoreName",
       "discardStoreImg",
       "getDsicardStoreList",
+      "discardStoreCnt",
     ]),
     async selectStore(event) {
       this.storeId = event.target.value;
-      // console.log(this.storeId);
       await http.get(`/store/${this.storeId}`).then((response) => {
         this.storeName = response.data.storeName;
         this.storeImg = response.data.storeImgUrl;
@@ -84,27 +82,17 @@ export default {
       await http.get(`/sale/list/${this.storeId}`).then((response) => {
         this.getDsicardStoreList(response.data);
       });
-      // console.log(this.storeId);
-      // console.log(this.storeName);
-      // console.log(this.storeImg);
       this.discardStoreId(this.storeId);
       this.discardStoreName(this.storeName);
       this.discardStoreImg(this.storeImg);
       await this.changeStore();
-      // await this.changeSaleItem();
     },
     changeStore() {
       http.get(`/store/${this.storeId}`).then((response) => {
         this.store = response.data;
         this.storeName = response.data.storeName;
-        // console.log(response.data);
       });
     },
-    // changeSaleItem() {
-    //   http.get(`/sale/list/${this.storeId}`).then((response) => {
-    //     this.saleItemList = response.data;
-    //   });
-    // },
   },
 };
 </script>
