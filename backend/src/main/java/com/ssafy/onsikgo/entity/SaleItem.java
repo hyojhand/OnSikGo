@@ -69,9 +69,10 @@ public class SaleItem {
         return this;
     }
 
-    public SaleItem update(Integer stock, Integer salePrice) {
+    public SaleItem update(Integer stock, Integer salePrice,Integer totalStock) {
         this.stock = stock;
         this.salePrice = salePrice;
+        this.totalStock = totalStock;
         return this;
     }
 }

@@ -184,13 +184,16 @@ public class StoreService {
 
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = now.format(dayFormatter);
-        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
+
+        Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(findStore.get(), date);
         if(!findSale.isPresent()) {
-            return new ResponseEntity<>("fail", HttpStatus.OK);
+            return new ResponseEntity<>("fail", HttpStatus.NO_CONTENT);
         }
 
         findSale.get().updateClosed();
         saleRepository.save(findSale.get());
+
+
 
         return new ResponseEntity<>("가게 결산이 완료되었습니다.", HttpStatus.OK);
     }
