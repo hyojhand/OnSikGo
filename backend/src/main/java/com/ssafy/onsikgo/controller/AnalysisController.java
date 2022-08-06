@@ -18,7 +18,7 @@ public class AnalysisController {
 
     private final AnalysisService analysisService;
 
-    @GetMapping("/sale-history")
+    @PostMapping("/sale-history")
     public ResponseEntity<Object> getSaleHistory(@RequestBody HistoryReqDto historyReqDto, HttpServletRequest request){
         log.info(historyReqDto.toString());
         return analysisService.getSaleHistory(historyReqDto,request);

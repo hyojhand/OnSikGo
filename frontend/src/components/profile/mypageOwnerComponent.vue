@@ -54,13 +54,8 @@
 
     <div class="container">
       <div class="font-l sales">오늘 할인 판매 상품</div>
-      <div v-if="this.saleItemList.length">
-        <discountList
-          v-for="(saleItem, index) in saleItemList"
-          :key="index"
-          v-bind="saleItem"
-          :storeId="storeId"
-        />
+      <div v-if="this.discardStoreList.length">
+        <discount-list/>
       </div>
       <div v-else class="non-msg">
         <div>오늘은 등록한</div>
@@ -90,7 +85,10 @@ export default {
     discountList,
   },
   computed: {
-    ...mapGetters("discardStore", ["discardStoreId"]),
+    ...mapGetters("discardStore", [
+      "discardStoreId",
+      "discardStoreList"
+    ]),
   },
   methods: {
     dataAnalysis() {
@@ -110,14 +108,6 @@ export default {
     },
   },
   created() {
-    // console.log(this.store.storeId);
-    // console.log(this.store);
-    // console.log(this.discardStoreId);
-    http.get(`/sale/list/${this.discardStoreId}`).then((response) => {
-      this.saleItemList = response.data;
-      // console.log("check",response.data);
-    });
-
     http.get(`/store/close/${this.discardStoreId}`).then((response) => {
       this.closedCheck = response.data.closed;
       // console.log(response.data);
