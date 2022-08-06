@@ -13,6 +13,7 @@
       <div class="col-4 mt-2">
         <!--좋아요 버튼-->
         <button @click="like" v-if="isliking === 'fail'"><i class="fa-regular fa-heart"></i></button>
+        <!-- 좋아요 된 상태 -->
         <button v-else @click="unlike"><span class="likeButton"><i class="fa-solid fa-heart"></i></span>좋아요</button>
 
       </div>
