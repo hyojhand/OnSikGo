@@ -60,8 +60,8 @@
                 required
                 @keyup.enter="checkName()"
                 ></v-text-field>
-                <div v-if="success">임시비밀번호가 전송되었습니다.</div>
-                <div v-if="fail">가입된 이름 혹은 이메일이 아닙니다.</div>
+                <div v-if="checkCheck === 1">임시비밀번호가 전송되었습니다.</div>
+                <div v-if="checkCheck === 2">가입된 이름 혹은 이메일이 아닙니다.</div>
             </v-row>
           </v-container>
         </v-card-text>
@@ -69,7 +69,8 @@
           <v-spacer></v-spacer>
           <v-btn class="find-button1" color="success" depressed @click="checkName()">
               임시비밀번호 전송</v-btn>
-          <v-btn class="find-button2" color="error" depressed  @click="dialog = false">닫기</v-btn>
+          <v-btn class="find-button2" color="error" depressed  @click="clear()">닫기</v-btn>
+          <!-- <v-btn class="find-button3" color="primary" depressed @click="clear()">초기화</v-btn> -->
         </v-card-actions>
       </v-card>
       </v-dialog>
@@ -95,8 +96,7 @@ export default {
     emailCheck:"",
     dialog: false,
     loginCheck: false,
-    success: false,
-    fail: false,
+    checkCheck: 0,
   }),
 
   methods: {
@@ -129,14 +129,23 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            this.dialog = false;
-            this.success = true;
+            this.checkCheck = 1;
           } else {
-            this.fail = true;
+            this.checkCheck = 2;
           }
-        });
+        })
+        // .catch(() => {
+        //   this.checkCheck = 2;
+        // })
     },
-  },
+
+    clear() {
+      this.userName = "";
+      this.emailCheck = "";
+      this.dialog = false;
+      this.checkCheck = 0;
+    }
+  }
 };
 </script>
 
@@ -199,6 +208,11 @@ button {
   width: 50%;
 }
 .find-button2 {
+  display: flex;
+  width: 30%;
+}
+
+.find-button3 {
   display: flex;
   width: 30%;
 }
