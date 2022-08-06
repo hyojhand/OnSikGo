@@ -45,20 +45,30 @@ export default {
       storeName: "",
     };
   },
-  created() {
-    http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+  async created() {
+    await http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+      console.log(response.data);
       this.storeName = response.data.storeName;
       console.log(this.storeName);
     });
+
+    // await http
+    //   .get(`sale/list/${this.$route.params.storeId}`)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //   });
   },
   methods: {
     realClose() {
       this.storeId = this.$route.params.storeId;
       console.log(this.storeId);
       http.put(`/store/close/${this.storeId}`).then((response) => {
-        console.log(response);
-        alert("매장 결산이 완료되었습니다");
-        this.$router.push("/mypage/owner");
+        if (response.data == "fail") {
+          alert("오늘 해당 매장 정보가 없습니다!");
+        } else {
+          alert("매장 결산이 완료되었습니다");
+          this.$router.push("/mypage/owner");
+        }
       });
     },
     noClose() {
