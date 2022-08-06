@@ -11,7 +11,7 @@
       <div class="col-7">
         <div>
           <div class="info-box">상품명 : {{ item.itemDto.itemName }}</div>
-          <div class="info-box">남은 재고: {{ item.saleDto.stock }} 개</div>
+          <div class="info-box">남은 재고: {{ item.stock }} 개</div>
 
           <div class="info-box">정상판매가 : {{ item.itemDto.price }} 원</div>
           <div class="info-box sale">
@@ -21,8 +21,8 @@
         </div>
         <div>
           <edit-stock-modal
-            :no="item.itemId"
-            :store="item.saleDto.storeDto.storeId"
+            :item="item"
+            :storeId="item.saleDto.storeDto.storeId"
           ></edit-stock-modal>
         </div>
       </div>
