@@ -131,7 +131,7 @@
           <button 
           class="border-m radius-m notice-btn" 
           @click="signup()"
-          v-if="check1 && check2">
+          v-if="check1 && check2 && checkbox">
             가입하기
           </button>
         </div>
@@ -237,6 +237,7 @@ export default {
   methods: {
     // 이메일 중복 확인 및 인증번호 전송
     isCheck() {
+      this.emailfailDuple = false;
       http
         .post("/user/email", {
           email: this.email
@@ -254,6 +255,8 @@ export default {
     },
     // 인증번호 확인
     checkMail() {
+      this.mailconfirmDuple = false;
+      this.mailfailDuple = false;
       http
         .post("/user/emailAuthNumber", {
           email: this.email,
@@ -271,6 +274,8 @@ export default {
     },
     // 닉네임 중복 확인
     nicknameCheck() {
+      this.nicknameDuple = false;
+      this.nicknamefailDuple = false;
       http
         .post("/user/nickname", {
           nickname: this.nickname
