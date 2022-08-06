@@ -74,8 +74,16 @@
           <div class="product-location">
             매장위치 : {{ item.saleDto.storeDto.storeName }}
           </div>
-          <div class="product-prediction">
+          <div 
+            v-if="item.distance < 3000"
+            class="product-prediction">
             현재 위치로부터 {{ item.distance }} m
+          </div>
+          <div
+            v-else
+            class="product-prediction"
+            >
+            현재 위치로부터 {{ item.distance /1000 }} km
           </div>
           <div class="price-case">
             <span class="discount-price">{{ item.salePrice }}원</span>
