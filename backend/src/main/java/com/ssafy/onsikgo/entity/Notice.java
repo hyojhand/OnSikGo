@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class Notice {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long noticeId;
 
     @Column(nullable = false)
