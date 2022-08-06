@@ -70,7 +70,6 @@
           <v-btn class="find-button1" color="success" depressed @click="checkName()">
               임시비밀번호 전송</v-btn>
           <v-btn class="find-button2" color="error" depressed  @click="clear()">닫기</v-btn>
-          <!-- <v-btn class="find-button3" color="primary" depressed @click="clear()">초기화</v-btn> -->
         </v-card-actions>
       </v-card>
       </v-dialog>
