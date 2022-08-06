@@ -21,7 +21,9 @@
         placeholder="비밀번호를 입력해주세요."
       />
     </form>
-
+    <div v-if="loginCheck">
+      로그인에 실패하였습니다.
+    </div>
     <div class="btn-box mb-5">
       <button class="radius-m primary" @click="login()" @keyup.enter="login()">
         로그인 하기
@@ -58,6 +60,8 @@
                 required
                 @keyup.enter="checkName()"
                 ></v-text-field>
+                <div v-if="success">임시비밀번호가 전송되었습니다.</div>
+                <div v-if="fail">가입된 이름 혹은 이메일이 아닙니다.</div>
             </v-row>
           </v-container>
         </v-card-text>
@@ -90,6 +94,9 @@ export default {
     userName: "",
     emailCheck:"",
     dialog: false,
+    loginCheck: false,
+    success: false,
+    fail: false,
   }),
 
   methods: {
@@ -107,8 +114,11 @@ export default {
             localStorage.setItem("access-token", response.data.token);
             this.$router.push("/");
           } else {
-            alert("로그인에 실패했습니다");
+            this.loginCheck = true;
           }
+        })
+        .catch(() => {
+          this.loginCheck = true;
         });
     },
     checkName() {
@@ -119,10 +129,10 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            alert("임시 비밀번호를 발송하였습니다");
             this.dialog = false;
+            this.success = true;
           } else {
-            alert("가입된 이름 혹은 이메일이 아닙니다.");
+            this.fail = true;
           }
         });
     },
