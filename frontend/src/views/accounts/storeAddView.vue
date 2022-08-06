@@ -66,8 +66,16 @@
             ></v-text-field>
           </div>
           <div class="col-3">
-            <button class="border-l radius-m address-btn">번호 인증</button>
+            <button
+              @click="ownerNumcheck"
+              class="border-l radius-m address-btn"
+              type="button"
+            >
+              번호 인증
+            </button>
           </div>
+          <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
+          <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
         </div>
       </div>
 
@@ -129,7 +137,7 @@
 
 <script>
 import http from "@/util/http-common";
-
+import axios from "axios";
 export default {
   name: "storeAddView",
   data() {
@@ -144,6 +152,9 @@ export default {
       end: "",
       off: "",
       category: "",
+      ownercheckDuple: false,
+      ownerfailDuple: false,
+      numCheck: true,
       items: [
         { value: "KOREA", text: "한식" },
         { value: "JAPAN", text: "일식" },
@@ -218,6 +229,30 @@ export default {
         },
       }).open();
     },
+    ownerNumcheck() {
+      axios
+        .post(
+          "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON",
+          {
+            b_no: [this.identify],
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.match_cnt == 1) {
+            this.ownercheckDuple = true;
+            this.ownerfailDuple = false;
+            this.numCheck = true;
+          } else {
+            this.ownercheckDuple = false;
+            this.ownerfailDuple = true;
+            this.numCheck = false;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     registerStore() {
       this.storeDto = {
         storeName: this.store,
@@ -235,24 +270,28 @@ export default {
         "storeDto",
         new Blob([JSON.stringify(this.storeDto)], { type: "application/json" })
       );
-      http.defaults.headers["access-token"] =
-        localStorage.getItem("access-token");
-      console.log(this.storeDto);
-      http
-        .post("/store/register", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          if (response.status == 200) {
-            console.log(this.storeDto);
-            alert("매장이 추가 완료되었습니다");
-            this.$router.push("/mypage/owner");
-          } else {
-            alert("매장 추가가 완료되지 않았습니다.");
-          }
-        });
+      if (this.numCheck == true) {
+        http.defaults.headers["access-token"] =
+          localStorage.getItem("access-token");
+        console.log(this.storeDto);
+        http
+          .post("/store/register", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              console.log(this.storeDto);
+              alert("매장이 추가 완료되었습니다");
+              this.$router.push("/mypage/owner");
+            } else {
+              alert("매장 추가가 완료되지 않았습니다.");
+            }
+          });
+      } else {
+        alert("사업자 등록번호를 다시 확인해주세요");
+      }
     },
   },
 };
