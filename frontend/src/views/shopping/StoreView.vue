@@ -12,9 +12,17 @@
       <span class="col-4 mt-2 fw-bold">{{ storeDto.storeName }}</span>
       <div class="col-4 mt-2">
         <!--좋아요 버튼-->
-        <button @click="like" v-if="isliking === 'fail'"><i class="fa-regular fa-heart"></i></button>
+        <button 
+          @click="like" 
+          v-if="likeCheck == fail"
+        ><i class="fa-regular fa-heart">좋아요 안된상태{{ likeCheck }}</i>
+        </button>
         <!-- 좋아요 된 상태 -->
-        <button v-else @click="unlike"><span class="likeButton"><i class="fa-solid fa-heart"></i></span>좋아요</button>
+        <button 
+          v-else 
+          @click="unlike"
+        ><i class="fa-solid fa-heart">좋아요 된상태</i>
+        </button>
 
       </div>
     </div>
@@ -101,7 +109,7 @@ import StoreKakaoMap from "@/components/shopping/StoreKakaoMap";
 import StoreProductItem from "@/components/shopping/StoreProductItem.vue";
 import StoreReview from "@/components/shopping/StoreReview.vue";
 import http from "@/util/http-common";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "StoreView",
 
@@ -119,11 +127,11 @@ export default {
       saleItemList: [],
       reviewContent: "",
       reviewList: [],
-      isliking: false,
     };
   },
   computed: {
     ...mapGetters("storeStore", ["getStoreId"]),
+    ...mapGetters("store" ["likeCheck"]),
   },
 
   async created() {
@@ -142,10 +150,11 @@ export default {
     await this.selectReview();
     await this.likecheck();
   },
-  updated() {
-    this.likecheck();
-  },
+
   methods: {
+    ...mapActions("store", [
+      "getlikeCheck"
+    ]),
     onClickTab(tab) {
       this.selectedTab = tab;
     },
@@ -176,7 +185,9 @@ export default {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http.get(`/follow/find/${this.getStoreId}`).then((res) => {
-        this.isliking = res.data;
+        console.log(res.data)
+        this.getlikeCheck(res.data)
+        console.log(this.likeCheck)
       });
     },
     like() {
@@ -184,6 +195,8 @@ export default {
         localStorage.getItem("access-token");
       http.get(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
+          this.getlikeCheck("success")
+          console.log(response)
           // alert("좋아요 눌렀음");
         }
       });
@@ -193,6 +206,8 @@ export default {
         localStorage.getItem("access-token");
       http.delete(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
+          this.getlikeCheck("fail")
+          console.log(response)
           // alert("좋아요 취소");
         }
       });
@@ -261,6 +276,5 @@ ul.tabs li {
 
 .likeButton {
   color: red;
-  background-color: red;
 }
 </style>

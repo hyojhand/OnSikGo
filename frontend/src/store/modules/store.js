@@ -12,7 +12,7 @@ const store = {
       orderStore:"",
       aroundSaleStore:[],
       myStoreId:"",
-
+      likeCheck: "fail",
     },
     getters: {
       currentAddress: state => state.currentAddress,
@@ -22,6 +22,7 @@ const store = {
       orderStore: state => state.orderStore,
       aroundSaleStore: state => state.aroundSaleStore,
       myStoreId: state => state.myStoreId,
+      likeCheck: state => state.likeCheck,
 
     },
     actions: {
@@ -51,6 +52,9 @@ const store = {
       },
       getMyStoreId : ({commit}, myStoreId) => {
         commit("GET_MYSTOREID", myStoreId)
+      },
+      getlikeCheck : ({commit}, likeCheck) => {
+        commit("GET_LIKECHECK", likeCheck)
       }
     },
     mutations: {
@@ -75,6 +79,9 @@ const store = {
       GET_MYSTOREID: (state, myStoreId) => {
         state.myStoreId = myStoreId
       },
+      GET_LIKECHECK: (state, likeCheck) => {
+        state.likeCheck = likeCheck
+      }
     },
   };
   
