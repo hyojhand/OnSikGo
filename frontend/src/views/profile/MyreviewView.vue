@@ -3,11 +3,17 @@
     <div class="mt-7">
       <h3>🙋‍♀️🙋‍♂️리뷰</h3>
     </div>
-    <reviewList
-      v-for="(review, index) in reviewList"
-      :key="index"
-      v-bind="review"
-    />
+    <div v-if="this.reviewList.length">
+      <reviewList
+        v-for="(review, index) in reviewList"
+        :key="index"
+        v-bind="review"
+      />
+    </div>
+    <div v-else class="non-msg">
+      <div>아직 등록한</div>
+      <div>리뷰가 없어요 ㅠ</div>
+    </div>
   </div>
 </template>
 
@@ -47,4 +53,17 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.non-msg {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.non-msg > div {
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
+}
+</style>
