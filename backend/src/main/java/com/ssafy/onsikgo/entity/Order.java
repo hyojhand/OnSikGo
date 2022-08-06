@@ -42,7 +42,7 @@ public class Order {
     @JoinColumn(name = "saleItemId")
     private SaleItem saleItem;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
     private List<Notice> notices = new ArrayList<>();
 
     public Order update(State state) {
