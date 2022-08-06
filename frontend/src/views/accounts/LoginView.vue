@@ -105,7 +105,7 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             localStorage.setItem("access-token", response.data.token);
-            this.$router.push("/login");
+            this.$router.push("/");
           } else {
             alert("로그인에 실패했습니다");
           }

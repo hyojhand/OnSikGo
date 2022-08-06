@@ -21,7 +21,10 @@
               @input="$v.email.$touch()"
               @blur="$v.email.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m confirm-btn" @click="isCheck()">
+            <button 
+              class="border-m radius-m confirm-btn" 
+              @click="isCheck()"
+              type="button">
               {{ checkmsg }}
             </button>
           </div>
@@ -37,7 +40,10 @@
                 placeholder="인증번호를 입력하세요."
               />
               <CountTimer v-if="time" :time="time" :key="rederKey"/>
-              <button class="border-m radius-m mailconfirm-btn" @click="checkMail()">
+              <button 
+                class="border-m radius-m mailconfirm-btn" 
+                @click="checkMail()"
+                type="button">
                 확인
               </button>
             </div>
@@ -111,7 +117,10 @@
               @input="$v.identify.$touch()"
               @blur="$v.identify.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="checkOwner()">
+            <button 
+              class="border-m radius-m address-btn" 
+              @click="checkOwner()"
+              type="button">
               인증
             </button>
           <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
@@ -141,7 +150,10 @@
               @input="$v.address.$touch()"
               @blur="$v.address.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="execDaumPostcode()">
+            <button 
+              class="border-m radius-m address-btn" 
+              @click="execDaumPostcode()"
+              type="button">
               주소 검색
             </button>
           </div>

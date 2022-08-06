@@ -27,7 +27,7 @@
             @blur="$v.email.$touch()"
           ></v-text-field>
 
-          <button class="border-m radius-m confrim-btn" @click="isCheck()" >
+          <button type="button" class="border-m radius-m confrim-btn" @click="isCheck()" >
             {{ checkmsg }}
           </button>
           <div v-if="emailfailDuple">이미 가입된 메일입니다.</div>
@@ -45,6 +45,7 @@
             <button
               class="border-m radius-m mailconfirm-btn"
               @click="checkMail()"
+              type="button"
             >
               인증
             </button>
@@ -107,6 +108,7 @@
           <button
             class="border-m radius-m name-confrim-btn"
             @click="nicknameCheck()"
+            type="button"
           >
             중복확인
           </button>
