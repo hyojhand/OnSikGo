@@ -122,6 +122,7 @@ export default {
         });
     },
     checkName() {
+      this.checkCheck = 0;
       http
         .post("/user/pw-find", {
           email: this.emailCheck,
@@ -134,9 +135,6 @@ export default {
             this.checkCheck = 2;
           }
         })
-        // .catch(() => {
-        //   this.checkCheck = 2;
-        // })
     },
 
     clear() {
