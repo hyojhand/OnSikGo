@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div>
     <div
       v-for="(item, index) in discardStoreList"
       :key="index"
-      class="row"
+      class="container row"
     >
       <div class="col-5">
         <img :src="`${item.itemDto.itemImgUrl}`" />
@@ -20,10 +20,10 @@
           <div class="info-box">할인판매가: {{ item.salePrice }} 원</div>
         </div>
         <div>
-          <edit-stock-modal
+          <edit-test
             :item="item"
             :storeId="item.saleDto.storeDto.storeId"
-          ></edit-stock-modal>
+          ></edit-test>
         </div>
       </div>
     </div>
@@ -32,25 +32,17 @@
 </template>
 
 <script>
-import EditStockModal from "@/components/management/EditStockModal.vue";
+import EditTest from "@/components/management/EditTest.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "discountList",
   components: {
-    EditStockModal,
+    EditTest,
   },
   computed: {
     ...mapGetters("discardStore", [
       "discardStoreList",
     ]),
-  },
-  methods: {
-    prodmodify() {
-      this.$router.push({
-        name: "prodChange",
-        params: { itemId: this.itemId, storeId: this.no },
-      });
-    },
   },
 };
 </script>
