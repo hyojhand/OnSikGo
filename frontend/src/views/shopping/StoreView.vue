@@ -1,16 +1,17 @@
 <template>
   <div>
     <!--헤더-->
-    <div class="d-flex text-align-center mt-2 ml-2 mr-2">
+    <div class="store-header mb-5">
       <img
         :src="`${storeDto.storeImgUrl}`"
         alt="profile"
-        class="col-4"
-        width="30"
-        height="100"
+        class="store-img"
       />
-      <span class="col-4 mt-2 fw-bold">{{ storeDto.storeName }}</span>
-      <div class="col-4 mt-2">
+      <div class="store-name">
+        <span class="mt-2 fw-bold">{{ storeDto.storeName }}</span>
+      </div>
+      <!-- 좋아요 -->
+      <div class="store-like mt-2">
         <!--좋아요 버튼-->
         <div 
           v-if="liking == 'fail'"
@@ -206,6 +207,7 @@ export default {
         localStorage.getItem("access-token");
       http.get(`/follow/find/${this.getStoreId}`).then((res) => {
         // console.log(res.data)
+        console.log("찍힘");
         this.liking = res.data
         // console.log(this.liking)
       });
@@ -234,8 +236,33 @@ export default {
 };
 </script>
 <style scoped>
-/* 점없애고 가로정렬 */
+.store-header{
+  position: relative;
+  width:100%;
+  height:100%;
+  z-index: 1;
+}
+.store-name{
+  position: absolute;
+  border-radius: 10px;
+  background-color: white;
+  top: 85%;
+  left: 25%;
+  width:50%;
+  height:20%;
+  z-index: 2;
+}
+.store-like{
+  position: absolute; 
+  top: 5%;
+  left: 90%;
+  z-index: 9999;
+}
 
+/* 점없애고 가로정렬 */
+.store-img{
+  width: 100%;
+}
 
 .location {
   text-align: left;
