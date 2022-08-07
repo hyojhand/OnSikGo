@@ -90,12 +90,12 @@ export default {
         ],
         datasets: [
           {
-            label: "Data One",
+            label: "팔린갯수",
             backgroundColor: "#f87979",
             data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 15],
           },
           {
-            label: "Data two",
+            label: "total",
             backgroundColor: "black",
             data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 18],
           },

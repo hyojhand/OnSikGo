@@ -4,9 +4,9 @@
     <div class="store font-l">{{ this.name }}</div>
 
     <div class="mt-5 mb-5">
-      <h3>점주님은, 이번주 온식고를 통해</h3>
+      <h3>점주님은, 온식고를 통해</h3>
       <br />
-      <h4>{{ this.storeValue.total }}원의 세상을 구하셨어요!</h4>
+      <h4>{{ this.storeValue.total }}원치의 세상을 구하셨어요!</h4>
     </div>
     <div v-if="!once" @click="opento" class="date font-m">
       날짜를 선택하세요
@@ -22,7 +22,7 @@
         <button
           v-if="this.dates[0] && this.dates[1]"
           class="index-btn border-m radius-m text-s"
-          @click="open"
+          @click="search"
         >
           검색하기
         </button>
@@ -37,8 +37,8 @@
       ></v-date-picker>
     </div>
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
-    <word-cloud></word-cloud>
-    <bar-chart></bar-chart>
+    <word-cloud :to="this.storeValue"></word-cloud>
+    <bar-chart :to="this.storeValue"></bar-chart>
 
     <!--판매한 금액의 총금액을 넣음-->
   </div>
@@ -65,50 +65,92 @@ export default {
       dates: [],
       pick: true,
       once: false,
-      storeValue: [],
+      storeValue: "",
     };
   },
   async created() {
-    // 날짜만들기
-    const date = new Date();
+    // 날짜 계산
+    let nowDate = new Date();
+    let weekDate = nowDate.getTime() - 7 * 24 * 60 * 60 * 1000;
+    nowDate.setTime(weekDate);
 
-    const year = date.getFullYear();
-    const month = ("0" + (date.getMonth() + 1)).slice(-2);
-    const day = ("0" + date.getDay()).slice(-2) - 7;
-    const day2 = ("0" + date.getDay()).slice(-2);
-    const dateStr = year + "-" + month + "-" + day;
-    const dateStr2 = year + "-" + month + "-" + day2;
-    this.baseStart = dateStr;
-    this.baseEnd = dateStr2;
-    console.log(this.baseStart);
-    console.log(this.endDate);
+    let weekYear = nowDate.getFullYear();
+    let weekMonth = nowDate.getMonth() + 1;
+    let weekDay = nowDate.getDate();
 
+    if (weekMonth < 10) {
+      weekMonth = "0" + weekMonth;
+    }
+    if (weekDay < 10) {
+      weekDay = "0" + weekDay;
+    }
+    let nowDate2 = new Date();
+    let result = weekYear + "-" + weekMonth + "-" + weekDay;
+    this.baseStart = result;
+
+    weekDate = nowDate2.getTime() - 1 * 24 * 60 * 60 * 1000;
+    nowDate2.setTime(weekDate);
+
+    weekYear = nowDate2.getFullYear();
+    weekMonth = nowDate2.getMonth() + 1;
+    weekDay = nowDate2.getDate();
+
+    if (weekMonth < 10) {
+      weekMonth = "0" + weekMonth;
+    }
+    if (weekDay < 10) {
+      weekDay = "0" + weekDay;
+    }
+
+    result = weekYear + "-" + weekMonth + "-" + weekDay;
+    this.baseEnd = result;
+    // 가게 이름 받아오기
     this.id = this.$route.params.storeId;
-    http.get(`/store/${this.id}`).then((response) => {
+    await http.get(`/store/${this.id}`).then((response) => {
       this.name = response.data.storeName;
     });
+    // 정보 가져오기
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     await http
       .post(`/analysis/sale-history`, {
         storeId: this.id,
-        startDate: "2022-08-01",
-        endDate: "2022-08-05",
+        startDate: this.baseStart,
+        endDate: this.baseEnd,
       })
       .then((response) => {
         this.storeValue = response.data;
-        console.log("뜬다");
-        console.log(this.storeValue);
+        console.log("나오나?");
+        let temp = this.storeValue;
+
+        console.log(temp.slice(1, 0));
       });
   },
   methods: {
     open() {
       this.pick = !this.pick;
     },
+    search() {
+      this.pick = !this.pick;
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      http
+        .post(`/analysis/sale-history`, {
+          storeId: this.id,
+          startDate: this.dates[0],
+          endDate: this.dates[1],
+        })
+        .then((response) => {
+          this.storeValue = response.data;
+          console.log(this.storeValue);
+        });
+    },
     opento() {
       this.pick = !this.pick;
       this.once = !this.once;
     },
+
+    // 날짜구하기
   },
   computed: {
     dateRangeText() {

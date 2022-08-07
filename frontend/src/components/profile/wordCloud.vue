@@ -45,6 +45,8 @@
       class="word-cloud"
     >
     </wordcloud>
+    <div>{{ this.to }}</div>
+    <div>{{ this.menu }}</div>
   </div>
 </template>
 
@@ -52,10 +54,11 @@
 import wordcloud from "vue-wordcloud";
 
 export default {
-  name: "app",
+  name: "wordCloud",
   components: {
     wordcloud,
   },
+  props: ["to"],
   data() {
     return {
       myColors: ["#FE2E2E", "#8904B1", "#FE9A2E", "#08088A", "#088A4B"],
