@@ -38,9 +38,9 @@
             <button
               id="mypage-button"
               @click="movetoClose"
-              :disabled="closedCheck == true"
+              :disabled="this.discardStoreClose == true"
             >
-              영업 종료
+              영업 종료 {{ discardStoreClose }}
             </button>
           </div>
         </div>
@@ -73,7 +73,7 @@
 
 <script>
 import discountList from "@/components/profile/discountList.vue";
-import http from "@/util/http-common";
+// import http from "@/util/http-common";
 import { mapGetters } from "vuex";
 export default {
   name: "mypageOwnerComponent",
@@ -91,7 +91,11 @@ export default {
     discountList,
   },
   computed: {
-    ...mapGetters("discardStore", ["discardStoreId", "discardStoreList"]),
+    ...mapGetters("discardStore", [
+      "discardStoreId", 
+      "discardStoreList",
+      "discardStoreClose"
+    ]),
   },
   methods: {
     dataAnalysis() {
@@ -112,12 +116,6 @@ export default {
         params: { storeId: this.store.storeId },
       });
     },
-  },
-  created() {
-    http.get(`/store/close/${this.discardStoreId}`).then((response) => {
-      this.closedCheck = response.data.closed;
-      // console.log(response.data);
-    });
   },
 };
 </script>

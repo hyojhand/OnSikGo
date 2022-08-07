@@ -52,17 +52,22 @@ export default {
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
       this.stores = response.data;
+
       this.storeCnt = this.stores.length;
       this.store = response.data[0];
       this.storeId = response.data[0].storeId;
       this.discardStoreId(this.storeId);
       this.discardStoreCnt(this.storeCnt);
-      console.log("!!");
+
     });
 
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
       this.saleItemList = response.data;
       this.getDsicardStoreList(response.data);
+    });
+    await http.get(`/store/close/${this.storeId}`).then((response) => {
+        this.getDiscardStoreClose(response.data.closed);
+      // console.log(response.data);
     });
   },
   methods: {
@@ -71,6 +76,7 @@ export default {
       "discardStoreName",
       "discardStoreImg",
       "getDsicardStoreList",
+      "getDiscardStoreClose",
       "discardStoreCnt",
     ]),
     async selectStore(event) {
@@ -78,13 +84,20 @@ export default {
       await http.get(`/store/${this.storeId}`).then((response) => {
         this.storeName = response.data.storeName;
         this.storeImg = response.data.storeImgUrl;
+        
       });
       await http.get(`/sale/list/${this.storeId}`).then((response) => {
         this.getDsicardStoreList(response.data);
+        
+      });
+      await http.get(`/store/close/${this.storeId}`).then((response) => {
+        this.getDiscardStoreClose(response.data.closed);
+      // console.log(response.data);
       });
       this.discardStoreId(this.storeId);
       this.discardStoreName(this.storeName);
       this.discardStoreImg(this.storeImg);
+      
       await this.changeStore();
     },
     changeStore() {
