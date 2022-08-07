@@ -364,7 +364,7 @@ export default {
       const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
       if (!this.$v.password.$dirty) return errors;
       !validatePassword.test(this.password) && errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
-      !this.$v.password.minLength && errors.push(" ");
+      !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
       !this.$v.password.required && errors.push(" ");
       return errors;
     },
