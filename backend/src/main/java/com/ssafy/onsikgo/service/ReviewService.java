@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -43,8 +44,13 @@ public class ReviewService {
 
         findUser = userRepository.findByEmail(userEmail).get();
 
-        Long storeId = Long.valueOf(map.get("store_id"));
+        Long storeId = Long.valueOf(map.get("storeId"));
         Store findStore = storeRepository.findById(storeId).get();
+
+        List<Review>reviews = reviewRepository.findByUserAndStore(findUser,findStore);
+        if(reviews.size()>1){
+            return new ResponseEntity<>("한 가게에 최대 2개의 리뷰만 등록가능합니다.", HttpStatus.NO_CONTENT);
+        }
 
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
@@ -52,7 +58,12 @@ public class ReviewService {
 
         String content = map.get("content");
 
-        ReviewDto reviewDto = new ReviewDto(content,createdDate,false,findUser.getNickname(),null);
+        ReviewDto reviewDto = new ReviewDto();
+        reviewDto.setContent(content);
+        reviewDto.setCreatedDate(createdDate);
+        reviewDto.setReported(false);
+        reviewDto.setNickname(findUser.getNickname());
+        reviewDto.setUserImgUrl(findUser.getImgUrl());
 
         Review review = reviewDto.toEntity(findUser,findStore);
         reviewRepository.save(review);
@@ -76,6 +87,18 @@ public class ReviewService {
             result.add(review.toDto());
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<ReviewDto>> getUserNicknameReview(HashMap<String, String> map) {
+        String nickName = map.get("nickname");
+        Optional<User> findUser = userRepository.findByNickname(nickName);
+        List<Review> reviewList = reviewRepository.findByUser(findUser.get());
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+        for(Review review : reviewList) {
+            reviewDtoList.add(review.toDto());
+        }
+
+        return new ResponseEntity<>(reviewDtoList, HttpStatus.OK);
     }
 
     public ResponseEntity<List<ReviewDto>> getStoreReview(Long store_id){
@@ -103,5 +126,15 @@ public class ReviewService {
         review.update();
         reviewRepository.save(review);
         return new ResponseEntity<>("리뷰가 신고되었습니다.", HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<ReviewDto>> getTotal() {
+        List<Review> allReview = reviewRepository.findAll();
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+        for(Review review : allReview) {
+            reviewDtoList.add(review.toDto());
+        }
+
+        return new ResponseEntity<>(reviewDtoList, HttpStatus.OK);
     }
 }

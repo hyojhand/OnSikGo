@@ -12,9 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/review")
+@RequestMapping("/api/review")
 @RequiredArgsConstructor
 public class ReviewController {
 
@@ -28,6 +29,12 @@ public class ReviewController {
     public ResponseEntity<Object> getUserReview(HttpServletRequest request){
         return reviewService.getUserReview(request);
     }
+
+    @PostMapping("/user")
+    public ResponseEntity<List<ReviewDto>> getUserNicknameReview(@RequestBody HashMap<String,String> map){
+        return reviewService.getUserNicknameReview(map);
+    }
+
     @GetMapping("/store/{store_id}")
     public ResponseEntity<List<ReviewDto>> getStoreReview(@PathVariable Long store_id){
         return reviewService.getStoreReview(store_id);
@@ -36,8 +43,14 @@ public class ReviewController {
     public ResponseEntity<String> delete(@PathVariable Long review_id){
         return reviewService.delete(review_id);
     }
+
     @PatchMapping("/{review_id}")
     public ResponseEntity<String> report(@PathVariable Long review_id){
         return reviewService.report(review_id);
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<List<ReviewDto>> getTotal() {
+        return reviewService.getTotal();
     }
 }

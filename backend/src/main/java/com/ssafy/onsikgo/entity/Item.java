@@ -21,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 @RequiredArgsConstructor
 public class Item {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long itemId;
 
     @Column(nullable = false)
@@ -38,7 +38,7 @@ public class Item {
     @JoinColumn(name = "storeId")
     private Store store;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE)
     private List<SaleItem> saleItems = new ArrayList<>();
 
     public void addStore(Store store) {

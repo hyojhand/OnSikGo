@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/follow")
+@RequestMapping("/api/follow")
 @RequiredArgsConstructor
 public class FollowController {
 
@@ -29,5 +30,10 @@ public class FollowController {
     @DeleteMapping("/{store_id}")
     public ResponseEntity<Object> delete(HttpServletRequest request,@PathVariable Long store_id){
         return followService.delete(request,store_id);
+    }
+
+    @GetMapping("/find/{store_id}")
+    public ResponseEntity<String> findFollow(HttpServletRequest request,@PathVariable Long store_id) {
+        return followService.findFollow(request,store_id);
     }
 }

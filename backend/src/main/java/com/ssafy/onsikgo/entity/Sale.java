@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -14,11 +13,12 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Sale {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long saleId;
 
     @Column(nullable = false)
@@ -34,7 +34,7 @@ public class Sale {
     @JoinColumn(name = "storeId")
     private Store store;
 
-    @OneToMany(mappedBy = "sale")
+    @OneToMany(mappedBy = "sale" , cascade = CascadeType.REMOVE)
     private List<SaleItem> saleItems = new ArrayList<>();
 
     public SaleDto toDto(StoreDto storeDto) {
@@ -47,9 +47,13 @@ public class Sale {
                 .build();
     }
 
-    public Sale updateClosed(Integer totalPrice) {
-        this.closed = true;
+    public Sale updateTotalPrice(Integer totalPrice) {
         this.totalPrice = totalPrice;
+        return this;
+    }
+
+    public Sale updateClosed() {
+        this.closed = true;
         return this;
     }
 

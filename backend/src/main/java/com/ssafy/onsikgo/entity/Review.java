@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class Review {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long reviewId;
 
     @Column(nullable = false)
@@ -42,11 +42,13 @@ public class Review {
 
     public ReviewDto toDto(){
         return ReviewDto.builder()
+                .reviewId(this.reviewId)
+                .userImgUrl(this.user.getImgUrl())
                 .content(this.content)
                 .createdDate(this.createdDate)
                 .reported(this.reported)
                 .storeDto(this.store.toDto())
-                .nickName(this.user.getNickname())
+                .nickname(this.user.getNickname())
                 .build();
     }
 }
