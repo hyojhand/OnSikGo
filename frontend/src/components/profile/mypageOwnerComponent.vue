@@ -99,7 +99,10 @@ export default {
   },
   methods: {
     dataAnalysis() {
-      this.$router.push("/mypage/owner/analysis");
+      this.$router.push({
+        name: "dataAnalysis",
+        params: { storeId: this.store.storeId, storeName: this.storeName },
+      });
     },
     storechange() {
       this.$router.push({
