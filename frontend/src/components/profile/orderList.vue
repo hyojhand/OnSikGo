@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="col-3 ml-3 mt-2">
-            <button v-show="`${order.state}` === 'ORDER' && `${elapsedTime}` < 30" id="btn-order" type="button" @click="orderCancel(order)">주문취소</button><br /><br />
+            <button v-show="`${order.state}` === 'WAIT' && `${elapsedTime}` < 10" id="btn-order" type="button" @click="orderCancel(order)">주문취소</button><br /><br />
             <button id="btn-order" @click="goStore(order.saleItemDto.saleDto.storeDto.storeId)" type="button">
               가게보기
             </button>
