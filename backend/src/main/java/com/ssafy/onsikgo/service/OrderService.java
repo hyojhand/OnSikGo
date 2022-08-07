@@ -1,25 +1,23 @@
 package com.ssafy.onsikgo.service;
 
-import com.ssafy.onsikgo.dto.NoticeDto;
 import com.ssafy.onsikgo.dto.OrderDto;
 import com.ssafy.onsikgo.entity.*;
 import com.ssafy.onsikgo.repository.*;
 import com.ssafy.onsikgo.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -33,7 +31,6 @@ public class OrderService {
     private final SaleItemRepository saleItemRepository;
     private final NoticeRepository noticeRepository;
     private final TokenProvider tokenProvider;
-
 //    private final EntityManager em;
 
     @Transactional
@@ -148,7 +145,7 @@ public class OrderService {
 
         int money = saleItem.getSalePrice() * findOrder.get().getCount();
         Store store = saleItem.getItem().getStore();
-        Optional<Sale> findSale = saleRepository.findByStoreAndDate(store, date);
+        Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(store, date);
         if(!findSale.isPresent()) {
             return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
         }
@@ -227,4 +224,32 @@ public class OrderService {
         return new ResponseEntity<>("사용자가 주문을 취소하였습니다.", HttpStatus.OK);
     }
 
+    public ResponseEntity<String> totalOrderPrice(HttpServletRequest request) {
+        String token = request.getHeader("access-token");
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
+        }
+
+        String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
+        Optional<User> findUser = userRepository.findByEmail(userEmail);
+        if(!findUser.isPresent()) {
+            return new ResponseEntity<>("존재하지 않는 유저", HttpStatus.NO_CONTENT);
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        LocalDateTime start = now.withDayOfMonth(1);
+        String startMonth = start.format(dayFormatter) + "0000";
+        LocalDateTime end = now.withDayOfMonth(now.toLocalDate().lengthOfMonth());
+        String endMonth = end.format(dayFormatter) + "0000";
+
+        List<Order> findMonthOrder = orderRepository.findByUserAndDateBetweenAndState(findUser.get(), startMonth, endMonth, State.ORDER);
+        int buyPrice = 0;
+        for(Order order : findMonthOrder) {
+            buyPrice += order.getCount() * order.getSaleItem().getSalePrice();
+        }
+
+        return new ResponseEntity<>(String.valueOf(buyPrice), HttpStatus.OK);
+    }
 }

@@ -174,24 +174,35 @@ export default {
     }
   },
   methods: {
+    selectSaleCount() {
+      this.storeList.map(async (store, i) => {
+        await http.get(`/sale/list/${store.storeId}`).then((response) => {
+          this.storeList[i] = {
+            ...this.storeList[i],
+            saleCount: response.data.length,
+          };
+        });
+        this.$forceUpdate();
+      });
+    },
     selectAllList() {
       this.category = "";
       http.get("/store/total").then((response) => {
         if (response.status == 200) {
           this.storeList = response.data;
+          this.selectSaleCount();
         }
       });
-      console.log("뭔데 이거");
-      console.log(this.category);
     },
-    selectStoreList() {
-      http
+    async selectStoreList() {
+      await http
         .post("/store/list", {
           category: this.category,
         })
         .then((response) => {
           if (response.status == 200) {
             this.storeList = response.data;
+            this.selectSaleCount();
           }
         });
     },
@@ -202,7 +213,6 @@ export default {
     selectJapan() {
       this.category = "JAPAN";
       this.selectStoreList();
-      console.log(this.category);
     },
     selectIngredient() {
       this.category = "INGREDIENT";
@@ -220,9 +230,9 @@ export default {
       this.category = "WESTERN";
       this.selectStoreList();
     },
-    selectKeyword() {
+    async selectKeyword() {
       if (this.category) {
-        http
+        await http
           .post("/store/list", {
             category: this.category,
             keyword: this.keyword,
@@ -230,19 +240,20 @@ export default {
           .then((response) => {
             if (response.status == 200) {
               this.storeList = response.data;
+              this.selectSaleCount();
             }
           });
       } else {
-        http
+        await http
           .post("/store/keyword", {
             keyword: this.keyword,
           })
           .then((response) => {
             if (response.status == 200) {
               this.storeList = response.data;
+              this.selectSaleCount();
             }
           });
-        console.log("전체로 검색완료");
       }
     },
     resetList() {

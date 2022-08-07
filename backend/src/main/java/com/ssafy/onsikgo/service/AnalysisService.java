@@ -1,7 +1,6 @@
 package com.ssafy.onsikgo.service;
 
-import com.ssafy.onsikgo.dto.HistoryReqDto;
-import com.ssafy.onsikgo.dto.HistoryResDto;
+import com.ssafy.onsikgo.dto.*;
 import com.ssafy.onsikgo.entity.Sale;
 import com.ssafy.onsikgo.entity.SaleItem;
 import com.ssafy.onsikgo.entity.Store;
@@ -45,17 +44,40 @@ public class AnalysisService {
         int total_revenue=0;
         for(Sale sale:list){
             for(SaleItem saleItem:sale.getSaleItems()){
-                HistoryResDto historyResDto = (HistoryResDto)result.getOrDefault(saleItem.getItem().getItemName(),new HistoryResDto());
-                int total = saleItem.getTotalStock();
-                int left = saleItem.getStock();
-                int sold = total-left;
-                int revenue = saleItem.getSalePrice()*sold;
-                total_revenue+=revenue;
-                historyResDto.update(total,sold,left,revenue);
-                result.put(saleItem.getItem().getItemName(),historyResDto);
+                    HistoryDto historyResDto = (HistoryDto)result.getOrDefault(saleItem.getItem().getItemName(),new HistoryDto());
+                    int total = saleItem.getTotalStock();
+                    int left = saleItem.getStock();
+                    int sold = total-left;
+                    historyResDto.update(total,sold,left);
+                    result.put(saleItem.getItem().getItemName(),historyResDto);
                 }
+            total_revenue+=sale.getTotalPrice();
             }
-        result.put("total",total_revenue);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+
+        HistoryResDto historyResDto = new HistoryResDto(total_revenue);
+
+        for( String strKey : result.keySet() ){
+            HistoryDto historyDto = (HistoryDto) result.get(strKey);
+
+            SoldRatioDto soldRatioDto = new SoldRatioDto();
+            LeftRatioDto leftRatioDto = new LeftRatioDto();
+
+            soldRatioDto.setName(strKey);
+            leftRatioDto.setName(strKey);
+            double value = (Math.round((((double)historyDto.getSold()/(double)historyDto.getTotal()))*100)*100)/100.0;
+            soldRatioDto.setValue(value);
+            leftRatioDto.setValue(100-value);
+
+            soldRatioDto.setSold(historyDto.getSold());
+            leftRatioDto.setLeft(historyDto.getLeft());
+
+            soldRatioDto.setTotal(historyDto.getTotal());
+            leftRatioDto.setTotal(historyDto.getTotal());
+
+            historyResDto.getGood().add(soldRatioDto);
+            historyResDto.getBad().add(leftRatioDto);
+        }
+
+        return new ResponseEntity<>(historyResDto, HttpStatus.OK);
         }
     }

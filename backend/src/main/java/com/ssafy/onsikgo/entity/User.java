@@ -76,6 +76,7 @@ public class User {
                 .userName(this.userName)
                 .imgUrl(this.imgUrl)
                 .role(this.role)
+                .loginType(this.loginType.toString())
                 .build();
     }
 

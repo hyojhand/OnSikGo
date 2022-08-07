@@ -2,16 +2,19 @@
   <div class="all">
     <div class="web">
       <div class="on-box">
-        <img src="@/assets/jjab.png" alt="짭logo.." />
-        <button class="on-btn">온식고 식구에게 문의하기</button>
-        <button class="on-btn">온식고 널리 알리기</button>
-      </div>
-      <div class="mt-5">
-        <div class="logo-text">
-          <h1 class="text-l">Onsikgo</h1>
-          <h3>에서</h3>
+        <div>
+          <h1 class="text-l">Onsikgo,</h1>
+          <h3>지구를 구하는 마지막 주문</h3>
         </div>
-        <h3>지구를 함께 지켜보아요</h3>
+        <div id="div1" class="mt-5">
+          <img src="@/assets/real_logo.png" width="350" height="300" />
+        </div>
+        <div class="mt-5 ml-16">
+          <button @click="movetoNaver" class="on-btn">
+            온식고 식구에게 문의하기
+          </button>
+          <button @click="copyLink" class="on-btn">온식고 널리 알리기</button>
+        </div>
       </div>
     </div>
     <v-app id="app">
@@ -28,7 +31,7 @@
         <v-spacer></v-spacer>
         <img
           v-if="title === '온식고'"
-          src="@/assets/logo.png"
+          src="@/assets/real_logo.png"
           alt="logo였던것.."
           style="height: 100%; width: 20%"
         />
@@ -82,9 +85,9 @@
       <v-navigation-drawer app v-model="drawer" absolute clipped temporary>
         <router-link :to="{ name: 'main' }">
           <img
-            src="@/assets/logo.png"
+            src="@/assets/real_logo.png"
             alt="logo였던것.."
-            style="height: 6%; width: 20%; margin: 3% 0%"
+            style="height: 6%; width: 25%; margin: 3% 0%"
           />
         </router-link>
         <!-- 로그인 안했을 경우 -->
@@ -213,9 +216,9 @@
       <v-navigation-drawer app v-model="setting" absolute clipped temporary>
         <router-link :to="{ name: 'main' }">
           <img
-            src="@/assets/logo.png"
+            src="@/assets/real_logo.png"
             alt="logo였던것.."
-            style="height: 6%; width: 20%; margin: 3% 0%"
+            style="height: 6%; width: 25%; margin: 3% 0%"
           />
         </router-link>
 
@@ -405,6 +408,23 @@ export default {
     addstorepage() {
       this.$router.push("/addstore");
     },
+
+    copyLink() {
+      let currentUrl = window.document.location.href;
+
+      let t = document.createElement("textarea");
+      document.body.appendChild(t);
+      t.value = currentUrl;
+      t.select();
+      document.execCommand("copy");
+      document.body.removeChild(t);
+
+      alert("현재 url 주소 복사가 완료되었습니다🌏🧡");
+    },
+    movetoNaver() {
+      var link = "https://forms.gle/WJpvMqG54SUF29io8";
+      window.open(link);
+    },
   },
 };
 </script>
@@ -486,6 +506,20 @@ export default {
 @media screen and (max-width: 414px) {
   #app {
     width: 100%;
+  }
+}
+#div1 {
+  position: relative;
+  animation: mymove 3s;
+  animation-timing-function: ease;
+}
+
+@keyframes mymove {
+  from {
+    left: 400px;
+  }
+  to {
+    left: 0px;
   }
 }
 </style>

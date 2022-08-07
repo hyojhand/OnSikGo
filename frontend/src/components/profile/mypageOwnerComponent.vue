@@ -13,8 +13,14 @@
             <span id="color-black">
               안녕하세요,👨‍🍳<br />{{ store.storeName }}입니다. </span
             ><br />
-            <span style="color: gray; font-size: 0.7rem"
-              >매장 위치: {{ store.address }} {{ store.extraAddress }}</span
+            <span style="color: gray; font-size: 0.7rem">매장 위치:</span>
+            <span style="color: gray; font-size: 0.7rem">{{
+              store.address
+            }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem">{{
+              store.extraAddress
+            }}</span
             ><br />
             <span style="color: gray; font-size: 0.7rem"
               >문 닫는 시간: {{ store.closingTime }}</span
@@ -32,9 +38,9 @@
             <button
               id="mypage-button"
               @click="movetoClose"
-              :disabled="closedCheck == true"
+              :disabled="this.discardStoreClose == true"
             >
-              영업 종료
+              영업 종료 {{ discardStoreClose }}
             </button>
           </div>
         </div>
@@ -55,7 +61,7 @@
     <div class="container">
       <div class="font-l sales">오늘 할인 판매 상품</div>
       <div v-if="this.discardStoreList.length">
-        <discount-list/>
+        <discount-list />
       </div>
       <div v-else class="non-msg">
         <div>오늘은 등록한</div>
@@ -67,7 +73,7 @@
 
 <script>
 import discountList from "@/components/profile/discountList.vue";
-import http from "@/util/http-common";
+// import http from "@/util/http-common";
 import { mapGetters } from "vuex";
 export default {
   name: "mypageOwnerComponent",
@@ -86,8 +92,9 @@ export default {
   },
   computed: {
     ...mapGetters("discardStore", [
-      "discardStoreId",
-      "discardStoreList"
+      "discardStoreId", 
+      "discardStoreList",
+      "discardStoreClose"
     ]),
   },
   methods: {
@@ -106,12 +113,6 @@ export default {
         params: { storeId: this.store.storeId },
       });
     },
-  },
-  created() {
-    http.get(`/store/close/${this.discardStoreId}`).then((response) => {
-      this.closedCheck = response.data.closed;
-      // console.log(response.data);
-    });
   },
 };
 </script>

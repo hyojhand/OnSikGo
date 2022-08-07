@@ -47,6 +47,7 @@ public class StoreService {
     private final UserRepository userRepository;
     private final SaleRepository saleRepository;
     private final AwsS3Service awsS3Service;
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/store/noimage.png";
 
     @Transactional
     public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
@@ -71,7 +72,12 @@ public class StoreService {
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
         findUser = userRepository.findByEmail(userEmail).get();
 
-        String storeImgUrl = awsS3Service.uploadImge(file);
+
+        String storeImgUrl = defaultImg;
+
+        if(!file.isEmpty()){
+            storeImgUrl = awsS3Service.uploadImge(file);
+        }
         storeDto.setStoreImgUrl(storeImgUrl);
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
@@ -94,7 +100,11 @@ public class StoreService {
         HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
         findStore.update(storeDto, coordinate);
 
-        String storeImgUrl = awsS3Service.uploadImge(file);
+        String storeImgUrl = defaultImg;
+        if(!file.isEmpty()){
+            storeImgUrl = awsS3Service.uploadImge(file);
+        }
+
         findStore.updateImg(storeImgUrl);
 
         storeRepository.save(findStore);
@@ -184,13 +194,16 @@ public class StoreService {
 
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = now.format(dayFormatter);
-        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
+
+        Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(findStore.get(), date);
         if(!findSale.isPresent()) {
-            return new ResponseEntity<>("fail", HttpStatus.OK);
+            return new ResponseEntity<>("fail", HttpStatus.NO_CONTENT);
         }
 
         findSale.get().updateClosed();
         saleRepository.save(findSale.get());
+
+
 
         return new ResponseEntity<>("가게 결산이 완료되었습니다.", HttpStatus.OK);
     }
