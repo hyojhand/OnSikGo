@@ -11,6 +11,7 @@ public class LeftRatioDto implements Comparable<LeftRatioDto>{
     private String name;
     private double value;
     private int left;
+    private int total;
     @Override
     public int compareTo(LeftRatioDto o) {
         return this.value > o.getValue() ? -1 : 1;
