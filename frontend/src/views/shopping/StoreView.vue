@@ -52,7 +52,7 @@
       </div>
       <div class="mt-2">
         <ul class="content">
-          <li>상세위치: {{ storeDto.location }}</li>
+          <li>상세위치: {{ storeDto.address + " " + storeDto.extraAddress}}</li>
           <li>전화번호: {{ storeDto.tel }}</li>
           <li>영업시간: {{ storeDto.closingTime }}</li>
           <li>휴무일: {{ storeDto.offDay }}</li>
@@ -65,9 +65,12 @@
     <ul class="tabs">
       <li
         v-for="tab in tabs"
-        v-bind:class="{ active: tab === selectedTab }"
+        v-bind:class="{ 
+          active: tab === selectedTab,
+          select: tab === selectedTab, }"
         :key="tab"
         v-on:click="onClickTab(tab)"
+        class="tab"
       >
         <span>{{ tab }}</span>
       </li>
@@ -81,7 +84,6 @@
           v-for="(saleItem, index) in saleItemList"
           :key="index"
           v-bind="saleItem"
-          :no="storeId"
         />
       </div>
       <div v-else class="non-msg">
@@ -91,6 +93,23 @@
     </div>
     <div class="product mt-3" v-else>
       <p class="head">🥨 온식고 식구들의 입소문</p>
+      <!--리뷰입력창-->
+      <div class="input-group comment">
+        <input
+          v-model="reviewContent"
+          type="text"
+          class="form-control"
+          placeholder="리뷰를 입력해주세요"
+          aria-label="Input Review"
+          aria-describedby="basic-addon1"
+          @keyup.enter="registerReview()"
+        />
+        <button @click="registerReview()">
+          <span class="input-group-text" id="basic-addon1">
+            <i class="fa-solid fa-comment"></i>
+          </span>
+        </button>
+      </div>
       <div v-if="this.reviewList.length">
         <store-review
           v-for="(reviewDto, index) in reviewList"
@@ -101,22 +120,6 @@
       <div v-else class="non-msg">
         <div>오늘은 등록된</div>
         <div>상품이 없어요 ㅠ</div>
-      </div>
-      <!--리뷰입력창-->
-      <div class="input-group comment">
-        <input
-          v-model="reviewContent"
-          type="text"
-          class="form-control"
-          placeholder="리뷰를 입력해주세요"
-          aria-label="Input Review"
-          aria-describedby="basic-addon1"
-        />
-        <button @click="registerReview()" @keyup.enter="registerReview()">
-          <span class="input-group-text" id="basic-addon1">
-            <i class="fa-solid fa-comment"></i>
-          </span>
-        </button>
       </div>
     </div>
   </div>
@@ -157,17 +160,17 @@ export default {
     
     await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
-      console.log(this.storeDto);
+      // console.log(this.storeDto);
     });
 
     await http.get(`/sale/list/${this.getStoreId}`).then((response) => {
       this.saleItemList = response.data;
-      console.log(response.data);
+      // console.log(response.data);
     });
 
     await this.selectReview();
     await this.likeCheck();
-    await console.log(this.likeState)
+    // await console.log(this.likeState)
 
   },
 
@@ -178,7 +181,7 @@ export default {
     selectReview() {
       http.get(`/review/store/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
-          this.reviewList = response.data;
+          this.reviewList = response.data.reverse();
         }
       });
     },
@@ -202,9 +205,9 @@ export default {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http.get(`/follow/find/${this.getStoreId}`).then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         this.liking = res.data
-        console.log(this.liking)
+        // console.log(this.liking)
       });
     },
     like() {
@@ -233,26 +236,6 @@ export default {
 <style scoped>
 /* 점없애고 가로정렬 */
 
-ul.tabs {
-  margin: 0px;
-  padding: 0px;
-  list-style: none;
-}
-ul.tabs li {
-  list-style-type: none;
-  float: left;
-  background: none;
-  color: #222;
-  padding: 10px 15px;
-  cursor: pointer;
-  border: 1px solid #b9b9b9;
-  border-radius: 16px;
-  width: 78px;
-  height: 21px;
-  font-size: 12px;
-  padding: 0;
-  margin-left: 5px;
-}
 
 .location {
   text-align: left;
@@ -292,4 +275,19 @@ ul.tabs li {
 .likeButton {
   color: red;
 }
+
+.tabs {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-left: 5%;
+}
+.tab {
+  font-size: 18px;
+  margin-right: 5%;
+}
+.select > span {
+  color: black;
+}
+
 </style>

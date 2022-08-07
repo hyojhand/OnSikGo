@@ -37,10 +37,10 @@
     <div class="col-4 product-case">
       <p class="store-product" :class="{ none: saleItemDtoList.length == 0 }">
         등록물품 :
-        <sapn
+        <span
           class="product-count"
           :class="{ none: saleItemDtoList.length == 0 }"
-          >{{ saleItemDtoList.length }}</sapn
+          >{{ saleItemDtoList.length }}</span
         >
         개
       </p>
@@ -118,11 +118,11 @@ export default {
     http.get(`/sale/list/${this.storeId}`).then((response) => {
       if (response.status == 200) {
         this.saleItemDtoList = response.data;
-        console.log(response);
+        // console.log(response);
       }
     });
     this.getdistance(this.currentX, this.currentY, this.lat, this.lng)
-    console.log(this.saleItemDtoList);
+    // console.log(this.saleItemDtoList);
   },
 };
 </script>

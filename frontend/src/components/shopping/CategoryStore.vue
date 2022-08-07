@@ -181,8 +181,8 @@ export default {
           this.storeList = response.data;
         }
       });
-      console.log("뭔데 이거");
-      console.log(this.category);
+      // console.log("뭔데 이거");
+      // console.log(this.category);
     },
     selectStoreList() {
       http
@@ -202,7 +202,7 @@ export default {
     selectJapan() {
       this.category = "JAPAN";
       this.selectStoreList();
-      console.log(this.category);
+      // console.log(this.category);
     },
     selectIngredient() {
       this.category = "INGREDIENT";
@@ -242,7 +242,7 @@ export default {
               this.storeList = response.data;
             }
           });
-        console.log("전체로 검색완료");
+        // console.log("전체로 검색완료");
       }
     },
     resetList() {
