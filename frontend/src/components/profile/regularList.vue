@@ -19,10 +19,10 @@
               >오늘 매장 할인 물품 개수: {{ saleItemDtoList.length }}</span
             >
             <div class="d-flex justify-content-end">
-              <router-link
-                :to="{ name: 'storeView', params: { storeId: this.storeId } }"
-                ><button class="store-moving">가게보기</button></router-link
-              >
+              <button 
+                class="store-moving"
+                @click="storeDetail()"
+              >가게보기</button>
             </div>
           </div>
         </div>
@@ -33,6 +33,7 @@
 
 <script>
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
 export default {
   name: "regularList",
   props: {
@@ -62,6 +63,15 @@ export default {
         this.saleItemDtoList = response.data;
       }
     });
+  },
+  methods: {
+    ...mapActions("storeStore", ["getStoreId"]),
+    storeDetail() {
+      this.getStoreId(this.storeId);
+      this.$router.push({
+        name: "storeView",
+      });
+    },
   },
 };
 </script>

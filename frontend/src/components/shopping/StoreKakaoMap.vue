@@ -77,8 +77,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #map {
-  width: 330px;
-  height: 280px;
+  width: 100%;
+  height: 300px;
+  margin-bottom: 2%;
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 }
 
 .button-group {
