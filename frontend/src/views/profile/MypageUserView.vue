@@ -8,7 +8,7 @@
       <span
         >{{ userDto.userName }} 님!, <br />이번 달에
         <strong id="green">온식고</strong>를 통해 <br /><strong id="green"
-          >주문금액원</strong
+          >{{ this.orderPrice }}원</strong
         >의 세상을 구하셨어요!</span
       >
     </div>
@@ -49,6 +49,7 @@ export default {
     return {
       userDto: {},
       storeregularList: [],
+      orderPrice: "",
     };
   },
   created() {
@@ -57,11 +58,16 @@ export default {
 
     http.get("/user").then((response) => {
       this.userDto = response.data;
+      // console.log(this.userDto);
     });
 
     http.get("/follow").then((response) => {
       console.log(response.data);
       this.storeregularList = response.data;
+    });
+
+    http.get("/order/price").then((response) => {
+      this.orderPrice = response.data;
     });
   },
   methods: {
