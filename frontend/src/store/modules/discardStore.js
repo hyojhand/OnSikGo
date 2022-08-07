@@ -48,7 +48,7 @@ const discardStore = {
     },
     GET_DISCARD_STORECLOSE: (state, storeClose) => {
       state.discardStoreClose = storeClose;
-      console.log(storeClose);
+      // console.log(storeClose);
     },
     GET_DISCARD_STORELIST: (state, storeList) => {
       state.discardStoreList = storeList;
