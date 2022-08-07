@@ -15,7 +15,6 @@ public class NoticeDto {
 
     private String content;
     private Boolean state;
-    private String location;
     private UserDto userDto;
     private OrderDto orderDto;
     private Long receivedId;
@@ -26,7 +25,6 @@ public class NoticeDto {
         return Notice.builder()
                 .content(this.content)
                 .state(false)
-                .location(this.location)
                 .receivedId(this.receivedId)
                 .user(user)
                 .order(order)
