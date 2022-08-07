@@ -22,6 +22,7 @@
         <input
           v-model="password"
           :type="passwordType"
+          :error-messages="passwordErrors"
           id="input-box-all"
           placeholder="새 비밀번호"
         />
@@ -64,6 +65,19 @@ export default {
       currentPwcheck: false,
     };
   },
+
+  // computed: {
+    // passwordErrors() {
+      // const errors = [];
+      // const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
+      // if (!this.$v.password.$dirty) return errors;
+      // !validatePassword.test(this.password) && errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
+  //     !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
+  //     !this.$v.password.required && errors.push(" ");
+      // return errors;
+    // },
+  // },
+
   methods: {
     checkcurrentPw() {
       http.defaults.headers["access-token"] =
@@ -88,7 +102,7 @@ export default {
       if (
         this.password == this.passwordConfirm &&
         this.currentPwcheck == true &&
-        this.password.length >= 1
+        this.password.length >= 8
       ) {
         http.defaults.headers["access-token"] =
           localStorage.getItem("access-token");

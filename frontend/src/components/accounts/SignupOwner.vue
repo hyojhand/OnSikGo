@@ -8,7 +8,7 @@
         outlined
         min-height="450"
       >
-        <form class="mb-2 el-case">
+        <form @submit.prevent="submit" class="mb-2 el-case">
           <!-- 메일 입력하기 -->
           <div class="position-box">
             <v-text-field
@@ -91,8 +91,8 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 2"
-          v-bind:disabled="check1 == false" 
           >
+          <!-- v-bind:disabled="check1 == false" -->
           다음으로</button>
         </div>
       </v-stepper-content>
@@ -104,7 +104,7 @@
         outlined
         min-height="200"
       >
-        <form class="mb-2">
+        <form @submit.prevent="submit" class="mb-2">
           <!-- --------------사업자 등록번호 입력------------ -->
           <div class="position-box">
             <v-text-field
@@ -149,6 +149,7 @@
               type="address"
               @input="$v.address.$touch()"
               @blur="$v.address.$touch()"
+              v-bind:disabled="true" 
             ></v-text-field>
             <button 
               class="border-m radius-m address-btn" 
@@ -186,7 +187,7 @@
         outlined
         min-height="200"
       >
-        <form class="mb-2">
+        <form @submit.prevent="submit" class="mb-2">
           <!-- -------------전화번호 입력----------- -->
           <v-text-field
             v-model="tel"
@@ -329,7 +330,7 @@ export default {
         {value: '일', text: '일요일'},
       ],
       time:false,
-      rederKey:0
+      rederKey:0,
     };
   },
 
@@ -360,8 +361,10 @@ export default {
     },
     passwordErrors() {
       const errors = [];
+      const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
       if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.minLength && errors.push(" ");
+      !validatePassword.test(this.password) && errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
+      !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
       !this.$v.password.required && errors.push(" ");
       return errors;
     },

@@ -82,6 +82,7 @@
                 class="input-box"
                 color="black"
                 type="address"
+                v-bind:disabled="true"
               ></v-text-field>
             </div>
 
