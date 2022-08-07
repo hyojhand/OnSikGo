@@ -13,7 +13,7 @@
       </div>
     </div>
     <v-card class="btn-box" black outlined min-width="330">
-      <form class="mb-2 el-case">
+      <form @submit.prevent="submit" class="mb-2 el-case">
         <!-- -------메일 입력하기---------------------------- -->
         <div class="mail-input">
           <v-text-field

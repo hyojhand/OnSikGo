@@ -8,7 +8,7 @@
         outlined
         min-height="450"
       >
-        <form class="mb-2 el-case">
+        <form @submit.prevent="submit" class="mb-2 el-case">
           <!-- 메일 입력하기 -->
           <div class="position-box">
             <v-text-field
@@ -104,7 +104,7 @@
         outlined
         min-height="200"
       >
-        <form class="mb-2">
+        <form @submit.prevent="submit" class="mb-2">
           <!-- --------------사업자 등록번호 입력------------ -->
           <div class="position-box">
             <v-text-field
@@ -187,7 +187,7 @@
         outlined
         min-height="200"
       >
-        <form class="mb-2">
+        <form @submit.prevent="submit" class="mb-2">
           <!-- -------------전화번호 입력----------- -->
           <v-text-field
             v-model="tel"
