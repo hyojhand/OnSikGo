@@ -36,7 +36,7 @@ public class ItemService {
     public ResponseEntity<String> register(MultipartFile file, ItemDto itemDto, Long store_id) {
 
         String itemImgUrl = defaultImg;
-        if(!file.isEmpty()){
+        if(file!=null){
             itemImgUrl = awsS3Service.uploadImge(file);
         }
         itemDto.setItemImgUrl(itemImgUrl);
