@@ -368,7 +368,7 @@ export default {
             item.distance = distance;
           });
         });
-      this.createMap();
+      this.resetmoving(this.currentxLatitude, this.currentLongitude);
     },
     // 거리 구하기
     getdistance(lat1, lon1, lat2, lon2) {
@@ -391,6 +391,20 @@ export default {
       else dist = Math.round(dist / 100) * 100;
 
       return dist;
+    },
+    resetmoving(lat, lng) {
+      this.storexLatitude = lat;
+      this.storeLongitude = lng;
+      // 이동할 위도 경도 위치를 생성합니다
+      var moveLatLon = new kakao.maps.LatLng(
+        lat,
+        lng
+      );
+
+      // 지도 중심을 부드럽게 이동시킵니다
+      // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+      this.map.panTo(moveLatLon);
+
     },
     moving(item) {
       // var mapContainer = document.getElementById("map"), // 지도를 표시할 div

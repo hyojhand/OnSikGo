@@ -36,7 +36,7 @@ public class ItemService {
     public ResponseEntity<String> register(MultipartFile file, ItemDto itemDto, Long store_id) {
 
         String itemImgUrl = defaultImg;
-        if(!file.isEmpty()){
+        if(file!=null){
             itemImgUrl = awsS3Service.uploadImge(file);
         }
         itemDto.setItemImgUrl(itemImgUrl);
@@ -66,7 +66,7 @@ public class ItemService {
 
         Item findItem = itemRepository.findById(item_id).get();
 
-        if(file.isEmpty()) {
+        if(file!=null) {
             itemDto.setItemImgUrl(findItem.getItemImgUrl());
             findItem.update(itemDto);
         } else {

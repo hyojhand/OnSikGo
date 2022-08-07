@@ -98,14 +98,17 @@ public class StoreService {
         Store findStore = storeRepository.findById(store_id).get();
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
-        findStore.update(storeDto, coordinate);
 
-        String storeImgUrl = defaultImg;
-        if(!file.isEmpty()){
-            storeImgUrl = awsS3Service.uploadImge(file);
+        if(file == null) {
+            storeDto.setStoreImgUrl(findStore.getStoreImgUrl());
+        } else {
+            if (!findStore.getStoreImgUrl().equals(defaultImg)) {
+                awsS3Service.delete(findStore.getStoreImgUrl());
+            }
+            String storeImgUrl = awsS3Service.uploadImge(file);
+            storeDto.setStoreImgUrl(storeImgUrl);
         }
-
-        findStore.updateImg(storeImgUrl);
+        findStore.update(storeDto, coordinate);
 
         storeRepository.save(findStore);
         return new ResponseEntity<>("가게 정보가 수정되었습니다.", HttpStatus.OK);
