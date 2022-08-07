@@ -99,43 +99,6 @@ public class SaleService {
         return new ResponseEntity<>("세일상품 등록완료", HttpStatus.OK);
     }
 
-
-//    public ResponseEntity<SaleResultDto> getSaleResult(HashMap<String, String> map, Long store_id) {
-//
-//        String date = map.get("date");
-//
-//        Optional<Store> findStore = storeRepository.findById(store_id);
-//        if(!findStore.isPresent()) {
-//            return new ResponseEntity<>(new SaleResultDto(), HttpStatus.NO_CONTENT);
-//        }
-//
-//        /**
-//         *
-//         */
-//        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
-//        if(!findSale.isPresent()) {
-//            return new ResponseEntity<>(new SaleResultDto(), HttpStatus.NO_CONTENT);
-//        }
-//
-//        List<SaleItem> saleItemList = saleItemRepository.findBySale(findSale.get());
-//
-//        StoreDto storeDto = findSale.get().getStore().toDto();
-//        SaleDto saleDto = findSale.get().toDto(storeDto);
-//        List<SaleItemDto> saleItemDtoList = new ArrayList<>();
-//        for(int i = 0; i < saleItemList.size(); i++) {
-//            SaleItem saleItem = saleItemList.get(i);
-//            ItemDto itemDto = saleItem.getItem().toDto();
-//            SaleItemDto saleItemDto = saleItemList.get(i).toDto(itemDto, saleDto);
-//            saleItemDtoList.add(saleItemDto);
-//        }
-//
-//        SaleResultDto saleResultDto = new SaleResultDto();
-//        saleResultDto.setSaleDto(saleDto);
-//        saleResultDto.setSaleItemDtoList(saleItemDtoList);
-//
-//        return new ResponseEntity<>(saleResultDto,HttpStatus.OK);
-//    }
-
     public ResponseEntity<List<SaleItemDto>> getSaleItemList(Long store_id) {
 
         LocalDateTime now = LocalDateTime.now();

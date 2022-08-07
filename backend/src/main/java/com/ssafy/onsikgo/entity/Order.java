@@ -34,6 +34,8 @@ public class Order {
     @Column(nullable = false)
     private State state; // 주문 상태 [주문대기 WAIT, 승인완료 SUCCESS, 승인거절 FAIL]
 
+    private Integer orderPrice;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
@@ -45,9 +47,9 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
     private List<Notice> notices = new ArrayList<>();
 
-    public Order update(State state) {
+    public void update(State state, Integer orderPrice) {
         this.state = state;
-        return this;
+        this.orderPrice = orderPrice;
     }
 
     public OrderDto toDto(SaleItemDto saleItemDto) {
@@ -55,6 +57,7 @@ public class Order {
                 .date(this.date)
                 .count(this.count)
                 .state(this.state)
+                .orderPrice(this.orderPrice)
                 .saleItemDto(saleItemDto)
                 .orderId(this.orderId)
                 .build();
