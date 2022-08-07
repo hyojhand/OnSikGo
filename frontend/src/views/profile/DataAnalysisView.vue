@@ -36,9 +36,47 @@
         class="calender"
       ></v-date-picker>
     </div>
+    <div class="ti-box row">
+      <div class="col-6 imo-box likes">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          fill="#464fa6"
+          class="bi bi-emoji-smile-fill"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"
+          />
+        </svg>
+        <span
+          >저희가 가장 많은 <br />
+          사랑을 받았어요!!</span
+        >
+      </div>
+      <div class="col-6 imo-box">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          fill="tomato"
+          class="bi bi-emoji-frown-fill"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm-2.715 5.933a.5.5 0 0 1-.183-.683A4.498 4.498 0 0 1 8 9.5a4.5 4.5 0 0 1 3.898 2.25.5.5 0 0 1-.866.5A3.498 3.498 0 0 0 8 10.5a3.498 3.498 0 0 0-3.032 1.75.5.5 0 0 1-.683.183zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"
+          />
+        </svg>
+        <span
+          >저희는 <br />
+          관리가 필요해요..</span
+        >
+      </div>
+    </div>
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
-    <word-cloud :to="this.storeValue"></word-cloud>
-    <bar-chart :to="this.storeValue"></bar-chart>
+    <word-cloud :to="this.storeValue.good"></word-cloud>
+    <bar-chart :to="this.makedata"></bar-chart>
 
     <!--판매한 금액의 총금액을 넣음-->
   </div>
@@ -66,6 +104,8 @@ export default {
       pick: true,
       once: false,
       storeValue: "",
+      status: true,
+      makedata: {},
     };
   },
   async created() {
@@ -120,10 +160,28 @@ export default {
       })
       .then((response) => {
         this.storeValue = response.data;
-        console.log("나오나?");
-        let temp = this.storeValue;
-
-        console.log(temp.slice(1, 0));
+        console.log("이거 굿");
+        console.log(this.storeValue.good);
+        var chartD = {};
+        var labels = new Array();
+        var data = [
+          { label: "팔린 갯수", backgroundColor: "#f87979" },
+          { label: "전체 갯수", backgroundColor: "black" },
+        ];
+        var dd = new Array();
+        for (let i = 0; i <= this.storeValue.good.length - 1; i++) {
+          labels.push(this.storeValue.good[i].name);
+          dd.push(this.storeValue.good[i].sold);
+        }
+        console.log("나와라 dd");
+        console.log(dd);
+        chartD.labels = labels;
+        data[0].data = dd;
+        data[1].data = dd;
+        chartD.datasets = data;
+        this.makedata = chartD;
+        console.log("나와라");
+        console.log(chartD);
       });
   },
   methods: {
@@ -192,5 +250,29 @@ export default {
 .index-btn {
   color: white;
   background-color: rgba(0, 0, 0, 60%);
+}
+.ti-box {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 5% 0;
+}
+.imo-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+.imo-box > span {
+  text-align: start;
+  margin-left: 7%;
+  color: tomato;
+}
+.likes > span {
+  color: #464fa6;
 }
 </style>

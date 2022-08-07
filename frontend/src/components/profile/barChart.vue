@@ -11,6 +11,8 @@
       :height="height"
       :width="600"
     />
+    <div>{{ this.to }}</div>
+    <div>뭔데</div>
   </div>
 </template>
 
@@ -73,6 +75,7 @@ export default {
   },
   data() {
     return {
+      // chartData: this.to,
       chartData: {
         labels: [
           "January",
