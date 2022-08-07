@@ -6,7 +6,7 @@
           <h1 class="text-l">Onsikgo,</h1>
           <h3>지구를 구하는 마지막 주문</h3>
         </div>
-        <div id="div1">
+        <div id="div1" class="mt-5">
           <img src="@/assets/real_logo.png" width="350" height="300" />
         </div>
         <div class="mt-5 ml-16">
