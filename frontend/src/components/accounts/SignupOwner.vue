@@ -330,7 +330,7 @@ export default {
         {value: '일', text: '일요일'},
       ],
       time:false,
-      rederKey:0
+      rederKey:0,
     };
   },
 
@@ -361,7 +361,9 @@ export default {
     },
     passwordErrors() {
       const errors = [];
+      const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
       if (!this.$v.password.$dirty) return errors;
+      !validatePassword.test(this.password) && errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
       !this.$v.password.minLength && errors.push(" ");
       !this.$v.password.required && errors.push(" ");
       return errors;
