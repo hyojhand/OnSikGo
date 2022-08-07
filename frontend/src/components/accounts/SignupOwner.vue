@@ -350,7 +350,10 @@ export default {
   computed: {
     nameErrors() {
       const errors = [];
+      var pattern_name = /^[가-힣]{2,10}$/
       if (!this.$v.name.$dirty) return errors;
+      this.name.search(/\s/) != -1 &&errors.push("이름은 빈 칸을 포함 할 수 없습니다.")
+      !pattern_name.test(this.name)&&errors.push("2글자 이상의 한글 이름을 입력해주세요.");
       !this.$v.name.maxLength && errors.push(" ");
       !this.$v.name.required && errors.push(" ");
       return errors;
@@ -385,12 +388,16 @@ export default {
     telErrors() {
       const errors = [];
       if (!this.$v.tel.$dirty) return errors;
+      var pattern_num = /[0-9]/;
+      !(pattern_num.test(this.tel))&&errors.push("숫자만 입력해 주세요.");
       !this.$v.tel.required && errors.push(" ");
       return errors;
     },
     identifyErrors() {
       const errors = [];
       if (!this.$v.identify.$dirty) return errors;
+      var pattern_num = /[0-9]/;
+      !(pattern_num.test(this.identify))&&errors.push("숫자만 입력해 주세요.");
       !this.$v.identify.required && errors.push(" ");
       return errors;
     },
