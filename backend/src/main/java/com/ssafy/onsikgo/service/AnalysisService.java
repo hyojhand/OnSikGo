@@ -71,6 +71,9 @@ public class AnalysisService {
             soldRatioDto.setSold(historyDto.getSold());
             leftRatioDto.setLeft(historyDto.getLeft());
 
+            soldRatioDto.setTotal(historyDto.getTotal());
+            leftRatioDto.setTotal(historyDto.getTotal());
+
             historyResDto.getGood().add(soldRatioDto);
             historyResDto.getBad().add(leftRatioDto);
         }
