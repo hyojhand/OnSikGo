@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class Notice {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long noticeId;
 
     @Column(nullable = false)
@@ -30,6 +30,9 @@ public class Notice {
     @Column(nullable = false)
     private Long receivedId;
 
+    @Column(nullable = false)
+    private NoticeState noticeState;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "orderId")
     private Order order;
@@ -38,11 +41,12 @@ public class Notice {
     @JoinColumn(name = "userId")
     private User user;
 
-    public Notice(String content, User user, Order order, Long receivedId) {
+    public Notice(String content, User user, Order order, Long receivedId, NoticeState noticeState) {
         this.content = content;
         this.state = false;
         this.user = user;
         this.order = order;
+        this.noticeState = noticeState;
         this.receivedId = receivedId;
     }
 
@@ -54,6 +58,7 @@ public class Notice {
                 .receivedId(this.receivedId)
                 .userDto(userDto)
                 .orderDto(orderDto)
+                .noticeState(this.noticeState)
                 .build();
     }
 

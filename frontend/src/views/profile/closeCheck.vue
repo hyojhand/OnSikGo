@@ -1,17 +1,18 @@
 <template>
   <div>
     <div class="mt-10">
-      <h3>♥오늘 영업 끝!!♥</h3>
-      <span>오늘 하루 수고하셨습니다!</span>
+      <h3>💙오늘 영업 끝!!🌏</h3>
+      <span>오늘 하루도 수고하셨습니다!</span>
     </div>
     <div class="mt-10">
       <p>
-        <strong>{{ storeName }}매장</strong>의 영업을 정말로 종료하시겠습니까?
+        <strong>"{{ storeName }}" 매장</strong>의 영업을 <br />정말로
+        종료하시겠습니까?
       </p>
       <!--글자 사이즈 줄이고 빨간색으로 표시할부분!-->
-      <span
-        >💥영업을 종료하시면 <br />오늘 등록하신 마감할인 상품이 전부
-        <strong id="redColor">초기화</strong>됩니다💥</span
+      <span id="red-small"
+        >💥영업을 종료하시면 오늘 등록하신 마감할인 상품이 전부
+        초기화됩니다💥</span
       >
     </div>
     <br />
@@ -44,18 +45,30 @@ export default {
       storeName: "",
     };
   },
-  created() {
-    http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+  async created() {
+    await http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+      console.log(response.data);
       this.storeName = response.data.storeName;
       console.log(this.storeName);
     });
+
+    // await http
+    //   .get(`sale/list/${this.$route.params.storeId}`)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //   });
   },
   methods: {
     realClose() {
       this.storeId = this.$route.params.storeId;
       console.log(this.storeId);
       http.put(`/store/close/${this.storeId}`).then((response) => {
-        console.log(response);
+        if (response.data == "fail") {
+          alert("오늘 해당 매장 정보가 없습니다!");
+        } else {
+          alert("매장 결산이 완료되었습니다");
+          this.$router.push("/mypage/owner");
+        }
       });
     },
     noClose() {
@@ -66,7 +79,8 @@ export default {
 </script>
 
 <style scoped>
-#redColor {
-  font: red;
+#red-small {
+  color: rgb(222, 124, 39);
+  font-size: 0.75rem;
 }
 </style>

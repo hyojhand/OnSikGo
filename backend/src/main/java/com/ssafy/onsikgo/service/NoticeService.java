@@ -38,14 +38,14 @@ public class NoticeService {
 
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
         Optional<User> findUser = userRepository.findByEmail(userEmail);
-        if(!findUser.isPresent()) {
+        if (!findUser.isPresent()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
 
         List<Notice> notices = noticeRepository.findByReceivedId(findUser.get().getUserId());
         List<NoticeDto> noticeDtos = new ArrayList<>();
         UserDto userDto = findUser.get().toDto();
-        for(Notice notice : notices) {
+        for (Notice notice : notices) {
             Order order = notice.getOrder();
             SaleItem saleItem = order.getSaleItem();
             Item item = saleItem.getItem();
@@ -53,7 +53,7 @@ public class NoticeService {
             Store store = sale.getStore();
             SaleItemDto saleItemDto = saleItem.toDto(item.toDto(), sale.toDto(store.toDto()));
             OrderDto orderDto = order.toDto(saleItemDto);
-            noticeDtos.add(notice.toDto(userDto,orderDto));
+            noticeDtos.add(notice.toDto(userDto, orderDto));
         }
 
         return new ResponseEntity<>(noticeDtos, HttpStatus.OK);
@@ -65,7 +65,7 @@ public class NoticeService {
         Optional<Notice> findNotice = noticeRepository.findById(notice_id);
         Notice notice = findNotice.get();
         noticeRepository.delete(notice);
-        return new ResponseEntity<>("알림이 삭제되었습니다." , HttpStatus.OK);
+        return new ResponseEntity<>("알림이 삭제되었습니다.", HttpStatus.OK);
     }
 }
 

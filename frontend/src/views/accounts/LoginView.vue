@@ -21,7 +21,9 @@
         placeholder="비밀번호를 입력해주세요."
       />
     </form>
-
+    <div v-if="loginCheck">
+      로그인에 실패하였습니다.
+    </div>
     <div class="btn-box mb-5">
       <button class="radius-m primary" @click="login()" @keyup.enter="login()">
         로그인 하기
@@ -58,6 +60,8 @@
                 required
                 @keyup.enter="checkName()"
                 ></v-text-field>
+                <div v-if="checkCheck === 1">임시비밀번호가 전송되었습니다.</div>
+                <div v-if="checkCheck === 2">가입된 이름 혹은 이메일이 아닙니다.</div>
             </v-row>
           </v-container>
         </v-card-text>
@@ -65,7 +69,7 @@
           <v-spacer></v-spacer>
           <v-btn class="find-button1" color="success" depressed @click="checkName()">
               임시비밀번호 전송</v-btn>
-          <v-btn class="find-button2" color="error" depressed  @click="dialog = false">닫기</v-btn>
+          <v-btn class="find-button2" color="error" depressed  @click="clear()">닫기</v-btn>
         </v-card-actions>
       </v-card>
       </v-dialog>
@@ -90,6 +94,8 @@ export default {
     userName: "",
     emailCheck:"",
     dialog: false,
+    loginCheck: false,
+    checkCheck: 0,
   }),
 
   methods: {
@@ -97,6 +103,7 @@ export default {
       this.$router.push("/signup");
     },
     login() {
+      this.loginCheck = false,
       http
         .post("/user/login", {
           email: this.email,
@@ -105,13 +112,17 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             localStorage.setItem("access-token", response.data.token);
-            this.$router.push("/login");
+            this.$router.push("/");
           } else {
-            alert("로그인에 실패했습니다");
+            this.loginCheck = true;
           }
+        })
+        .catch(() => {
+          this.loginCheck = true;
         });
     },
     checkName() {
+      this.checkCheck = 0;
       http
         .post("/user/pw-find", {
           email: this.emailCheck,
@@ -119,14 +130,20 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            alert("임시 비밀번호를 발송하였습니다");
-            this.dialog = false;
+            this.checkCheck = 1;
           } else {
-            alert("가입된 이름 혹은 이메일이 아닙니다.");
+            this.checkCheck = 2;
           }
-        });
+        })
     },
-  },
+
+    clear() {
+      this.userName = "";
+      this.emailCheck = "";
+      this.dialog = false;
+      this.checkCheck = 0;
+    }
+  }
 };
 </script>
 
@@ -189,6 +206,11 @@ button {
   width: 50%;
 }
 .find-button2 {
+  display: flex;
+  width: 30%;
+}
+
+.find-button3 {
   display: flex;
   width: 30%;
 }

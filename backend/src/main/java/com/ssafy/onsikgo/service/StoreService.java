@@ -1,5 +1,6 @@
 package com.ssafy.onsikgo.service;
 
+import com.ssafy.onsikgo.dto.SaleDto;
 import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.StoreDto;
@@ -50,7 +51,7 @@ public class StoreService {
     @Transactional
     public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
 
-        HashMap<String, String> coordinate = getCoordinate(ownerDto.getLocation());
+        HashMap<String, String> coordinate = getCoordinate(ownerDto.getAddress());
         Store store = ownerDto.toStoreEntity(coordinate);
         store.addUser(user);
 
@@ -73,7 +74,7 @@ public class StoreService {
         String storeImgUrl = awsS3Service.uploadImge(file);
         storeDto.setStoreImgUrl(storeImgUrl);
 
-        HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
+        HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
         Store store = storeDto.toEntity(coordinate);
         store.addUser(findUser);
 
@@ -90,11 +91,11 @@ public class StoreService {
 
         Store findStore = storeRepository.findById(store_id).get();
 
-        HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
+        HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
         findStore.update(storeDto, coordinate);
 
         String storeImgUrl = awsS3Service.uploadImge(file);
-        storeDto.setStoreImgUrl(storeImgUrl);
+        findStore.updateImg(storeImgUrl);
 
         storeRepository.save(findStore);
         return new ResponseEntity<>("가게 정보가 수정되었습니다.", HttpStatus.OK);
@@ -183,15 +184,53 @@ public class StoreService {
 
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = now.format(dayFormatter);
-        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
+
+        Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(findStore.get(), date);
         if(!findSale.isPresent()) {
-            return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("fail", HttpStatus.NO_CONTENT);
         }
 
         findSale.get().updateClosed();
         saleRepository.save(findSale.get());
 
+
+
         return new ResponseEntity<>("가게 결산이 완료되었습니다.", HttpStatus.OK);
+    }
+
+    public ResponseEntity<SaleDto> getSaleInfo(Long store_id) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String time = now.format(timeFormatter);
+        if(Integer.parseInt(time) < 6) {
+            now = now.minusDays(1);
+        }
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = now.format(dayFormatter);
+
+        Optional<Store> findStore = storeRepository.findById(store_id);
+        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
+
+        if(!findSale.isPresent()) {
+            SaleDto saleDto = new SaleDto();
+            saleDto.setClosed(false);
+            saleDto.setStoreDto(findStore.get().toDto());
+            return new ResponseEntity<>(saleDto, HttpStatus.OK);
+        }
+
+        SaleDto saleDto = findSale.get().toDto(findStore.get().toDto());
+
+        return new ResponseEntity<>(saleDto, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<StoreDto>> getKeyword(SelectDto selectDto) {
+        List<Store> storeList = storeRepository.findByStoreNameContaining(selectDto.getKeyword());
+        List<StoreDto> storeDtoList = new ArrayList<>();
+        for(int i = 0; i < storeList.size(); i++) {
+            storeDtoList.add(storeList.get(i).toDto());
+        }
+        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
     }
 
     // 좌표 가져오는 메서드
@@ -253,5 +292,14 @@ public class StoreService {
         map.put("lng", lng);
 
         return map;
+    }
+
+    public ResponseEntity<List<StoreDto>> getTotal() {
+        List<Store> storeList = storeRepository.findAll();
+        List<StoreDto> storeDtoList = new ArrayList<>();
+        for(Store store : storeList) {
+            storeDtoList.add(store.toDto());
+        }
+        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
     }
 }

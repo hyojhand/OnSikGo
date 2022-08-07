@@ -114,4 +114,14 @@ public class ItemService {
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    public ResponseEntity<Page<ItemDto>> getKeywordPage(PageDto pageDto, Long store_id) {
+        Optional<Store> findStore = storeRepository.findById(store_id);
+        PageRequest pageRequest = PageRequest.of(pageDto.getPage(), pageDto.getSize());
+        Page<Item> page = itemRepository.findPageByStoreAndItemNameContaining(findStore.get(),pageDto.getKeyword() ,pageRequest);
+        Page<ItemDto> map = page.map(item -> new ItemDto(item.getItemId(),item.getItemName(),item.getPrice(),
+                item.getItemImgUrl(), item.getComment()));
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }

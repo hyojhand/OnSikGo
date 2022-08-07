@@ -11,22 +11,6 @@
           {{ store.storeName }}
         </option>
       </select>
-
-      <!-- <b-dropdown
-          id="dropdown-1"
-          style="border-color: #63bf68"
-          text="this.stores[0].storeName"
-        >
-          <b-dropdown-item>
-            <option
-              :key="index"
-              :value="store"
-              v-for="(store, index) in stores"
-            >
-              {{ store.storeName }}
-            </option>
-          </b-dropdown-item>
-        </b-dropdown> -->
     </div>
     <!-- 상품 등록 & 검색 탭 -->
 
@@ -62,7 +46,7 @@
         <!-- 검색 아이콘 -->
         <button>
           <svg
-            @click="keywordSelect()"
+            @click="keywordSelect(1)"
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
@@ -98,14 +82,18 @@
       </div>
     </div>
 
-    <div class="item-container">
+    <div class="item-container" v-if="this.items.length">
       <all-product-list
         class="item-card"
         v-for="(item, index) in items"
         :key="index"
-        v-bind="item"
+        v-bind:item="item"
         :storeId="storeId"
       />
+    </div>
+    <div v-else class="non-msg">
+      <div>상품을 등록하여</div>
+      <div>Onsikgo를 시작해주세요!</div>
     </div>
     <!--페이지네이션-->
     <nav aria-label="Page navigation example">
@@ -120,9 +108,7 @@
           :key="index"
           v-bind="page"
         >
-          <a class="page-link" href="#" @click="selectPage(index)">{{
-            index
-          }}</a>
+          <a class="page-link" href="#" @click="movePage(index)">{{ index }}</a>
         </li>
         <li class="page-item">
           <a class="page-link" href="#" @click="nextPage()">Next</a>
@@ -142,12 +128,14 @@ export default {
   data() {
     return {
       stores: [],
-      storeId: "",
-      items: [],
+      store: {},
+      storeId: null,
+      items: {},
       keyword: "",
       saleList: [],
       totalPage: Number,
       page: Number,
+      isKeyword: false,
     };
   },
 
@@ -159,15 +147,7 @@ export default {
       this.storeId = response.data[0].storeId;
     });
 
-    await http
-      .post(`/item/page/${this.storeId}`, {
-        page: 0,
-        size: 4,
-      })
-      .then((response) => {
-        this.items = response.data.content;
-        this.totalPage = response.data.totalPages;
-      });
+    await this.selectPage(1);
   },
 
   components: {
@@ -186,21 +166,53 @@ export default {
         })
         .then((response) => {
           this.items = response.data.content;
+          this.totalPage = response.data.totalPages;
+          this.items.map(async (item, i) => {
+            await http
+              .get(`/sale/${item.itemId}`)
+              //
+              .then((response) => {
+                if (response.status == 200) {
+                  this.items[i] = {
+                    ...this.items[i],
+                    sale: response.data,
+                  };
+                }
+              });
+            this.$forceUpdate();
+          });
         });
     },
     nextPage() {
       if (this.page + 1 >= this.totalPage) {
         this.page = this.totalPage;
-        this.selectPage(this.page);
+        if (this.isKeyword === false) {
+          this.selectPage(this.page);
+        } else {
+          this.keywordSelect(this.page);
+        }
       } else {
         this.page = this.page + 2;
-        this.selectPage(this.page);
+        if (this.isKeyword === false) {
+          this.selectPage(this.page);
+        } else {
+          this.keywordSelect(this.page);
+        }
       }
     },
     previousPage() {
-      if (this.page - 1 < 0) this.selectPage(1);
-      else {
-        this.selectPage(this.page);
+      if (this.page - 1 < 0) {
+        if (this.isKeyword === false) {
+          this.selectPage(1);
+        } else {
+          this.keywordSelect(1);
+        }
+      } else {
+        if (this.isKeyword === false) {
+          this.selectPage(this.page);
+        } else {
+          this.keywordSelect(this.page);
+        }
       }
     },
     prodregister() {
@@ -210,20 +222,42 @@ export default {
         name: "prodRegister",
       });
     },
-    keywordSelect() {
+    keywordSelect(index) {
+      this.page = index - 1;
+      this.isKeyword = true;
       http
-        .post(`/item/list/keyword/${this.storeId}`, {
+        .post(`/item/page/keyword/${this.storeId}`, {
           keyword: this.keyword,
+          page: this.page,
+          size: 4,
         })
         .then((response) => {
-          this.items = response.data;
+          this.items = response.data.content;
+          this.totalPage = response.data.totalPages;
+          this.items.map(async (item, i) => {
+            await http.get(`/sale/${item.itemId}`).then((response) => {
+              if (response.status == 200) {
+                this.items[i] = {
+                  ...this.items[i],
+                  sale: response.data,
+                };
+              }
+            });
+            this.$forceUpdate();
+          });
         });
     },
+    movePage(index) {
+      this.page = index;
+      if (this.isKeyword == false) {
+        this.selectPage(this.page);
+      } else {
+        this.keywordSelect(this.page);
+      }
+    },
     resetItemList() {
-      this.keyword = "";
-      http.get(`/item/list/${this.storeId}`).then((response) => {
-        this.items = response.data;
-      });
+      this.isKeyword = false;
+      this.selectPage(1);
     },
     selectStore(event) {
       this.storeId = event.target.value;
@@ -272,5 +306,17 @@ export default {
 }
 .nav-box {
   padding: 0;
+}
+.non-msg {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.non-msg > div {
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
 }
 </style>

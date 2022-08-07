@@ -41,7 +41,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 .btn-box {

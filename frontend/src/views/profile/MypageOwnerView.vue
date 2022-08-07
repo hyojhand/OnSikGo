@@ -1,19 +1,22 @@
 <template>
   <div>
-    <div class="d-flex justify-content-center">
-      <select
-        id="dropdown1"
-        style="border-color: #63bf68"
-        @change="selectStore($event)"
-      >
-        <option
-          :key="index"
-          :value="store.storeId"
-          v-for="(store, index) in stores"
+    <div class="mt-5">
+      <div class="d-flex justify-content-center">
+        <select
+          id="dropdown1"
+          class="store-name"
+          style="border-color: #63bf68"
+          @change="selectStore($event)"
         >
-          {{ store.storeName }}
-        </option>
-      </select>
+          <option
+            :key="index"
+            :value="store.storeId"
+            v-for="(store, index) in stores"
+          >
+            {{ store.storeName }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <br />
@@ -26,6 +29,7 @@
 <script>
 import mypageOwnerComponent from "@/components/profile/mypageOwnerComponent.vue";
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
 export default {
   name: "MypageOwnerView",
   components: {
@@ -39,6 +43,8 @@ export default {
       saleItemList: [],
       itemList: [],
       storeName: "",
+      storeImg: "",
+      storeCnt: "",
     };
   },
   async created() {
@@ -46,37 +52,60 @@ export default {
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
       this.stores = response.data;
+
+      this.storeCnt = this.stores.length;
       this.store = response.data[0];
       this.storeId = response.data[0].storeId;
-      console.log(this.store.storeName);
+      this.discardStoreId(this.storeId);
+      this.discardStoreCnt(this.storeCnt);
+
     });
 
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
       this.saleItemList = response.data;
+      this.getDsicardStoreList(response.data);
     });
-
-    // await http.get(`/item/list/${this.storeId}`).then((response) => {
-    //   this.itemList = response.data;
-    // });
+    await http.get(`/store/close/${this.storeId}`).then((response) => {
+        this.getDiscardStoreClose(response.data.closed);
+      // console.log(response.data);
+    });
   },
   methods: {
+    ...mapActions("discardStore", [
+      "discardStoreId",
+      "discardStoreName",
+      "discardStoreImg",
+      "getDsicardStoreList",
+      "getDiscardStoreClose",
+      "discardStoreCnt",
+    ]),
     async selectStore(event) {
       this.storeId = event.target.value;
+      await http.get(`/store/${this.storeId}`).then((response) => {
+        this.storeName = response.data.storeName;
+        this.storeImg = response.data.storeImgUrl;
+        
+      });
+      await http.get(`/sale/list/${this.storeId}`).then((response) => {
+        this.getDsicardStoreList(response.data);
+        
+      });
+      await http.get(`/store/close/${this.storeId}`).then((response) => {
+        this.getDiscardStoreClose(response.data.closed);
+      // console.log(response.data);
+      });
+      this.discardStoreId(this.storeId);
+      this.discardStoreName(this.storeName);
+      this.discardStoreImg(this.storeImg);
+      
       await this.changeStore();
-      // await this.changeSaleItem();
     },
     changeStore() {
       http.get(`/store/${this.storeId}`).then((response) => {
         this.store = response.data;
         this.storeName = response.data.storeName;
-        console.log(response.data);
       });
     },
-    // changeSaleItem() {
-    //   http.get(`/sale/list/${this.storeId}`).then((response) => {
-    //     this.saleItemList = response.data;
-    //   });
-    // },
   },
 };
 </script>
@@ -97,5 +126,11 @@ export default {
   background-color: white;
   border-top: 2px solid rgba(0, 0, 0, 20%);
   border-bottom: 2px solid rgba(0, 0, 0, 20%);
+}
+.store-name {
+  width: 40%;
+  font-size: 30px;
+  text-align: center;
+  padding: 2% 0;
 }
 </style>

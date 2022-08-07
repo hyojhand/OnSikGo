@@ -7,9 +7,9 @@
     <!--수정정보나타내기-->
     <div>
       <div class="img-box">
-        <img :src="`${itemDto.itemImgUrl}`" alt="IMG-PRODUCT" />
+        <b-img :src="previewImg" height="150px" width="150px" />
         <div class="img-input">
-          <input v-on:change="fileSelect()" type="file" ref="imgFile" />
+          <input @change="fileSelect" type="file" />
         </div>
       </div>
       <input
@@ -67,6 +67,7 @@ export default {
       imgFile: null,
       itemDto: {},
       storeDto: {},
+      previewImg: null,
     };
   },
   computed: {
@@ -81,12 +82,25 @@ export default {
 
     await http.get(`/item/${this.getItemId}`).then((response) => {
       this.itemDto = response.data;
+      this.previewImg = this.itemDto.itemImgUrl;
+      this.$forceUpdate();
     });
   },
 
   methods: {
-    fileSelect() {
-      this.imgFile = this.$refs.imgFile.files[0];
+    fileSelect(event) {
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+      this.imgFile = input.files[0];
     },
     prodchange() {
       const formData = new FormData();

@@ -1,10 +1,7 @@
 package com.ssafy.onsikgo.entity;
 
 import com.ssafy.onsikgo.dto.UserDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class User {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
 
     @Column(nullable = false)
@@ -79,6 +76,7 @@ public class User {
                 .userName(this.userName)
                 .imgUrl(this.imgUrl)
                 .role(this.role)
+                .loginType(this.loginType.toString())
                 .build();
     }
 
