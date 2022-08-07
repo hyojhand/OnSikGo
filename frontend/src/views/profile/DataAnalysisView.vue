@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <!--현재 내 날짜로부터 7일전날짜부터 ~ 현재 날짜 -->
-    <div class="store font-l">{{ this.name }}</div>
+    <div class="store font-l">{{ this.storeName }}</div>
 
     <div class="mt-5 mb-5">
-      <h3>점주님은, 온식고를 통해</h3>
+      <h3>점주님은 온식고를 통해</h3>
       <br />
-      <h4>{{ this.storeValue.total }}원치의 세상을 구하셨어요!</h4>
+      <h4>{{ this.total }}원치의 세상을 구하셨어요!</h4>
     </div>
     <div v-if="!once" @click="opento" class="date font-m">
       날짜를 선택하세요
@@ -27,6 +27,7 @@
           검색하기
         </button>
       </div>
+
       <v-date-picker
         v-if="!pick"
         v-model="dates"
@@ -55,7 +56,7 @@
           사랑을 받았어요!!</span
         >
       </div>
-      <div class="col-6 imo-box">
+      <!-- <div class="col-6 imo-box" @click="bad()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"
@@ -72,11 +73,12 @@
           >저희는 <br />
           관리가 필요해요..</span
         >
-      </div>
+      </div> -->
     </div>
+
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
-    <word-cloud :to="this.storeValue.good"></word-cloud>
-    <bar-chart :to="this.makedata"></bar-chart>
+    <word-cloud></word-cloud>
+    <bar-chart></bar-chart>
 
     <!--판매한 금액의 총금액을 넣음-->
   </div>
@@ -86,6 +88,7 @@
 import barChart from "@/components/profile/barChart.vue";
 import wordCloud from "@/components/profile/wordCloud.vue";
 import http from "@/util/http-common";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "dataAnalysisView",
@@ -98,56 +101,19 @@ export default {
     return {
       id: "",
       name: "",
-      baseStart: "",
-      baseEnd: "",
       dates: [],
       pick: true,
       once: false,
       storeValue: "",
-      status: true,
-      makedata: {},
     };
   },
   async created() {
-    // 날짜 계산
-    let nowDate = new Date();
-    let weekDate = nowDate.getTime() - 7 * 24 * 60 * 60 * 1000;
-    nowDate.setTime(weekDate);
-
-    let weekYear = nowDate.getFullYear();
-    let weekMonth = nowDate.getMonth() + 1;
-    let weekDay = nowDate.getDate();
-
-    if (weekMonth < 10) {
-      weekMonth = "0" + weekMonth;
-    }
-    if (weekDay < 10) {
-      weekDay = "0" + weekDay;
-    }
-    let nowDate2 = new Date();
-    let result = weekYear + "-" + weekMonth + "-" + weekDay;
-    this.baseStart = result;
-
-    weekDate = nowDate2.getTime() - 1 * 24 * 60 * 60 * 1000;
-    nowDate2.setTime(weekDate);
-
-    weekYear = nowDate2.getFullYear();
-    weekMonth = nowDate2.getMonth() + 1;
-    weekDay = nowDate2.getDate();
-
-    if (weekMonth < 10) {
-      weekMonth = "0" + weekMonth;
-    }
-    if (weekDay < 10) {
-      weekDay = "0" + weekDay;
-    }
-
-    result = weekYear + "-" + weekMonth + "-" + weekDay;
-    this.baseEnd = result;
+    this.getBaseStart();
+    this.getBaseEnd();
     // 가게 이름 받아오기
     this.id = this.$route.params.storeId;
     await http.get(`/store/${this.id}`).then((response) => {
-      this.name = response.data.storeName;
+      this.getStoreName(response.data.storeName);
     });
     // 정보 가져오기
     http.defaults.headers["access-token"] =
@@ -160,36 +126,33 @@ export default {
       })
       .then((response) => {
         this.storeValue = response.data;
-        console.log("이거 굿");
-        console.log(this.storeValue.good);
-        var chartD = {};
-        var labels = new Array();
-        var data = [
-          { label: "팔린 갯수", backgroundColor: "#f87979" },
-          { label: "전체 갯수", backgroundColor: "black" },
-        ];
-        var dd = new Array();
-        for (let i = 0; i <= this.storeValue.good.length - 1; i++) {
-          labels.push(this.storeValue.good[i].name);
-          dd.push(this.storeValue.good[i].sold);
-        }
-        console.log("나와라 dd");
-        console.log(dd);
-        chartD.labels = labels;
-        data[0].data = dd;
-        data[1].data = dd;
-        chartD.datasets = data;
-        this.makedata = chartD;
-        console.log("나와라");
-        console.log(chartD);
+        console.log(this.storeValue.bad);
+        this.getTotal(this.storeValue);
+        this.getWordCloud(this.storeValue.good);
+        // this.getWordBad(this.storeValue.good);
+        this.getChart(this.storeValue.good);
       });
   },
   methods: {
+    ...mapActions("analysis", [
+      // "goodStatus",
+      // "badStatus",
+      "getBaseStart",
+      "getBaseEnd",
+      "getStoreName",
+      "getTotal",
+      "getDate",
+      "getWordCloud",
+      // "getWordBad",
+      "getChart",
+    ]),
     open() {
       this.pick = !this.pick;
     },
     search() {
       this.pick = !this.pick;
+      this.getDate(this.dates);
+      this.dates = this.date;
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http
@@ -200,17 +163,38 @@ export default {
         })
         .then((response) => {
           this.storeValue = response.data;
-          console.log(this.storeValue);
+          this.getTotal(this.storeValue);
+          this.getWordCloud(this.storeValue.good);
+          // this.getWordBad(this.storeValue.good);
+          this.getChart(this.storeValue.good);
         });
     },
     opento() {
       this.pick = !this.pick;
       this.once = !this.once;
     },
-
-    // 날짜구하기
+    // good() {
+    //   this.goodStatus();
+    //   console.log(this.status);
+    // },
+    // bad() {
+    //   this.badStatus();
+    //   console.log(this.status);
+    // },
   },
+
+  // 날짜구하기
+
   computed: {
+    ...mapGetters("analysis", [
+      // "status",
+      "baseStart",
+      "baseEnd",
+      "date",
+      "storeName",
+      "total",
+      "wordCloud",
+    ]),
     dateRangeText() {
       return this.dates.join(" ~ ");
     },

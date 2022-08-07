@@ -2,7 +2,7 @@
   <div class="wrap-vertical">
     <Bar
       :chart-options="chartOptions"
-      :chart-data="chartData"
+      :chart-data="this.chart"
       :chart-id="chartId"
       :dataset-id-key="datasetIdKey"
       :plugins="plugins"
@@ -11,14 +11,12 @@
       :height="height"
       :width="600"
     />
-    <div>{{ this.to }}</div>
-    <div>뭔데</div>
   </div>
 </template>
 
 <script>
 import { Bar } from "vue-chartjs/legacy";
-
+import { mapGetters } from "vuex";
 import {
   Chart as ChartJS,
   Title,
@@ -42,6 +40,9 @@ export default {
   name: "BarChart",
   components: {
     Bar,
+  },
+  computed: {
+    ...mapGetters("analysis", ["chart"]),
   },
   props: {
     chartId: {
@@ -73,37 +74,9 @@ export default {
       default: () => [],
     },
   },
+
   data() {
     return {
-      // chartData: this.to,
-      chartData: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
-        ],
-        datasets: [
-          {
-            label: "팔린갯수",
-            backgroundColor: "#f87979",
-            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 15],
-          },
-          {
-            label: "total",
-            backgroundColor: "black",
-            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 18],
-          },
-        ],
-      },
       chartOptions: {
         responsive: false,
         maintainAspectRatio: false,
