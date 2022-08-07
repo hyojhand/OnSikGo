@@ -149,7 +149,7 @@
               type="address"
               @input="$v.address.$touch()"
               @blur="$v.address.$touch()"
-              v-bind:disabled="true"
+              v-bind:disabled="true" 
             ></v-text-field>
             <button 
               class="border-m radius-m address-btn" 
