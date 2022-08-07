@@ -2,19 +2,19 @@
   <div>
     <div class="row">
       <!--프로필사진-->
-      <div class="col-3" @click="moveUserReview()">
+      <div class="col-2" @click="moveUserReview()">
         <img :src="`${userImgUrl}`" style="height: 40px" />
         <p style="font-size: small">{{ nickname }}</p>
       </div>
       <!--리뷰 본문 부분-->
-      <div class="col-9">
+      <div class="col-8">
         <p>{{ content }}</p>
-        <div class="report">
+      </div>
+      <div class="report col-2">
             <img src="@/assets/images/siren.png" @click="reportReview(reviewId)" style="width: 30%">
           <div v-if="reportDuple">신고가 완료되었습니다.</div>
         </div>
-        <hr class="mt-3" />
-      </div>
+      <hr class="mt-3" />
     </div>
   </div>
 </template>
@@ -64,11 +64,8 @@ export default {
 
 <style scoped>
 img {
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 
-.report {
-  margin-top: 15%;
-  margin-left: 70%;
-}
+
 </style>
