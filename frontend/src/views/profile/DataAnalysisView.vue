@@ -37,7 +37,7 @@
         class="calender"
       ></v-date-picker>
     </div>
-    <div class="ti-box row">
+    <div class="ti-box row" v-if="this.wordCloud.length > 0">
       <div class="col-6 imo-box likes">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -77,8 +77,14 @@
     </div>
 
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
-    <word-cloud></word-cloud>
-    <bar-chart></bar-chart>
+    <div v-if="this.wordCloud.length > 0">
+      <word-cloud></word-cloud>
+      <bar-chart></bar-chart>
+    </div>
+    <div v-else class="non-msg">
+      <div>해당 기간동안</div>
+      <div>등록된 제품이 없어요</div>
+    </div>
 
     <!--판매한 금액의 총금액을 넣음-->
   </div>
@@ -126,7 +132,7 @@ export default {
       })
       .then((response) => {
         this.storeValue = response.data;
-        console.log(this.storeValue.bad);
+        console.log(this.storeValue.good);
         this.getTotal(this.storeValue);
         this.getWordCloud(this.storeValue.good);
         // this.getWordBad(this.storeValue.good);
@@ -258,5 +264,17 @@ export default {
 }
 .likes > span {
   color: #464fa6;
+}
+.non-msg {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.non-msg > div {
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
 }
 </style>
