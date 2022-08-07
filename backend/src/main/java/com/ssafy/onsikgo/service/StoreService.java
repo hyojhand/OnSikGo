@@ -15,6 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,8 @@ public class StoreService {
     private final SaleRepository saleRepository;
     private final AwsS3Service awsS3Service;
     private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/store/noimage.png";
+    @Value("${java.file.kakao-api}")
+    private String kakao;
 
     @Transactional
     public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
@@ -98,14 +101,17 @@ public class StoreService {
         Store findStore = storeRepository.findById(store_id).get();
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
-        findStore.update(storeDto, coordinate);
 
-        String storeImgUrl = defaultImg;
-        if(!file.isEmpty()){
-            storeImgUrl = awsS3Service.uploadImge(file);
+        if(file == null) {
+            storeDto.setStoreImgUrl(findStore.getStoreImgUrl());
+        } else {
+            if (!findStore.getStoreImgUrl().equals(defaultImg)) {
+                awsS3Service.delete(findStore.getStoreImgUrl());
+            }
+            String storeImgUrl = awsS3Service.uploadImge(file);
+            storeDto.setStoreImgUrl(storeImgUrl);
         }
-
-        findStore.updateImg(storeImgUrl);
+        findStore.update(storeDto, coordinate);
 
         storeRepository.save(findStore);
         return new ResponseEntity<>("가게 정보가 수정되었습니다.", HttpStatus.OK);
@@ -246,7 +252,7 @@ public class StoreService {
     // 좌표 가져오는 메서드
     public HashMap<String, String> getCoordinate(String fullAddress) {
 
-        String apiKey = "57a2eb95ed5c50c6a133bae6b8980f38";
+        String apiKey = kakao;
         String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json";
         String jsonString = null;
 

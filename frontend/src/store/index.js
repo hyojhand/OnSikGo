@@ -9,9 +9,11 @@ import store from "@/store/modules/store.js";
 import itemStore from "@/store/modules/itemStore";
 import storeStore from "@/store/modules/storeStore";
 import discardStore from "@/store/modules/discardStore";
+import analysis from "./modules/analysis";
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   modules: {
+    analysis,
     accounts,
     store,
     itemStore,
