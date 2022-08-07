@@ -3,7 +3,6 @@ package com.ssafy.onsikgo.service;
 import com.ssafy.onsikgo.dto.ItemDto;
 import com.ssafy.onsikgo.dto.PageDto;
 import com.ssafy.onsikgo.dto.SelectDto;
-import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Item;
 import com.ssafy.onsikgo.entity.Store;
 import com.ssafy.onsikgo.repository.ItemRepository;
@@ -31,12 +30,15 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final StoreRepository storeRepository;
     private final AwsS3Service awsS3Service;
-    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/store/default-product-image.png";
 
     @Transactional
     public ResponseEntity<String> register(MultipartFile file, ItemDto itemDto, Long store_id) {
 
-        String itemImgUrl = awsS3Service.uploadImge(file);
+        String itemImgUrl = defaultImg;
+        if(!file.isEmpty()){
+            itemImgUrl = awsS3Service.uploadImge(file);
+        }
         itemDto.setItemImgUrl(itemImgUrl);
         Item item = itemDto.toEntity();
         Store findStore = storeRepository.findById(store_id).get();
@@ -64,7 +66,7 @@ public class ItemService {
 
         Item findItem = itemRepository.findById(item_id).get();
 
-        if(file == null) {
+        if(file.isEmpty()) {
             itemDto.setItemImgUrl(findItem.getItemImgUrl());
             findItem.update(itemDto);
         } else {

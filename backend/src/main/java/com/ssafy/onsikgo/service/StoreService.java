@@ -47,6 +47,7 @@ public class StoreService {
     private final UserRepository userRepository;
     private final SaleRepository saleRepository;
     private final AwsS3Service awsS3Service;
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/store/noimage.png";
 
     @Transactional
     public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
@@ -71,7 +72,12 @@ public class StoreService {
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
         findUser = userRepository.findByEmail(userEmail).get();
 
-        String storeImgUrl = awsS3Service.uploadImge(file);
+
+        String storeImgUrl = defaultImg;
+
+        if(!file.isEmpty()){
+            storeImgUrl = awsS3Service.uploadImge(file);
+        }
         storeDto.setStoreImgUrl(storeImgUrl);
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
@@ -94,7 +100,11 @@ public class StoreService {
         HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
         findStore.update(storeDto, coordinate);
 
-        String storeImgUrl = awsS3Service.uploadImge(file);
+        String storeImgUrl = defaultImg;
+        if(!file.isEmpty()){
+            storeImgUrl = awsS3Service.uploadImge(file);
+        }
+
         findStore.updateImg(storeImgUrl);
 
         storeRepository.save(findStore);
