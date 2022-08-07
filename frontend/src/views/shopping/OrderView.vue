@@ -155,7 +155,7 @@ export default {
     },
     // 가게정보 조회
     findStock() {
-      console.log(this.orderStore)
+      // console.log(this.orderStore)
       http
         .get(`/store/${this.orderStore}`)
         .then((response) => {

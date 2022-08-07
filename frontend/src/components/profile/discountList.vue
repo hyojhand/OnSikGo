@@ -15,34 +15,33 @@
 
           <div class="info-box">정상판매가 : {{ item.itemDto.price }} 원</div>
           <div class="info-box sale">
-            할인율 : 🔻{{ ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(2) }}%
+            할인율 : 🔻{{
+              ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(2)
+            }}%
           </div>
           <div class="info-box">할인판매가: {{ item.salePrice }} 원</div>
         </div>
         <div>
-          <edit-test
-            :item="item"
+          <edit-stock-modal
+            :item="item.itemDto"
             :storeId="item.saleDto.storeDto.storeId"
-          ></edit-test>
+          ></edit-stock-modal>
         </div>
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
-import EditTest from "@/components/management/EditTest.vue";
+import EditStockModal from "@/components/management/EditStockModal.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "discountList",
   components: {
-    EditTest,
+    EditStockModal,
   },
   computed: {
-    ...mapGetters("discardStore", [
-      "discardStoreList",
-    ]),
+    ...mapGetters("discardStore", ["discardStoreList"]),
   },
 };
 </script>

@@ -51,9 +51,9 @@ export default {
           level: 3 // 지도의 확대 레벨
       };
       var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+      var imageSrc = "https://cdn4.iconfinder.com/data/icons/food-delivery-service-3/100/food_delivery_gps_mark_service_boy_online-256.png" 
       // 마커 이미지의 이미지 크기 입니다
-      var imageSize = new kakao.maps.Size(24, 35); 
+      var imageSize = new kakao.maps.Size(40, 45); 
       
       // 마커 이미지를 생성합니다    
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)   
@@ -77,8 +77,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #map {
-  width: 330px;
-  height: 280px;
+  width: 100%;
+  height: 300px;
+  margin-bottom: 2%;
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 }
 
 .button-group {

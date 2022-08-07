@@ -47,6 +47,7 @@ public class StoreService {
     private final UserRepository userRepository;
     private final SaleRepository saleRepository;
     private final AwsS3Service awsS3Service;
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/store/noimage.png";
 
     @Transactional
     public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
@@ -71,7 +72,12 @@ public class StoreService {
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
         findUser = userRepository.findByEmail(userEmail).get();
 
-        String storeImgUrl = awsS3Service.uploadImge(file);
+
+        String storeImgUrl = defaultImg;
+
+        if(!file.isEmpty()){
+            storeImgUrl = awsS3Service.uploadImge(file);
+        }
         storeDto.setStoreImgUrl(storeImgUrl);
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
@@ -92,10 +98,17 @@ public class StoreService {
         Store findStore = storeRepository.findById(store_id).get();
 
         HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
-        findStore.update(storeDto, coordinate);
 
-        String storeImgUrl = awsS3Service.uploadImge(file);
-        findStore.updateImg(storeImgUrl);
+        if(file == null) {
+            storeDto.setStoreImgUrl(findStore.getStoreImgUrl());
+        } else {
+            if (!findStore.getStoreImgUrl().equals(defaultImg)) {
+                awsS3Service.delete(findStore.getStoreImgUrl());
+            }
+            String storeImgUrl = awsS3Service.uploadImge(file);
+            storeDto.setStoreImgUrl(storeImgUrl);
+        }
+        findStore.update(storeDto, coordinate);
 
         storeRepository.save(findStore);
         return new ResponseEntity<>("가게 정보가 수정되었습니다.", HttpStatus.OK);
