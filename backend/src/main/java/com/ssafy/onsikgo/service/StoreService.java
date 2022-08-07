@@ -101,7 +101,7 @@ public class StoreService {
         findStore.update(storeDto, coordinate);
 
         String storeImgUrl = defaultImg;
-        if(!file.isEmpty()){
+        if(file!=null){
             storeImgUrl = awsS3Service.uploadImge(file);
         }
 
