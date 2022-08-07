@@ -86,7 +86,9 @@ public class Store {
         this.user = user;
         return;
     }
-
+    public void updateImg(String imgsrc){
+        this.storeImgUrl = imgsrc;
+    }
     public StoreDto toDto() {
 
         return StoreDto.builder()

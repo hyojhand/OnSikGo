@@ -13,8 +13,14 @@
             <span id="color-black">
               안녕하세요,👨‍🍳<br />{{ store.storeName }}입니다. </span
             ><br />
-            <span style="color: gray; font-size: 0.7rem"
-              >매장 위치: {{ store.address }} {{ store.extraAddress }}</span
+            <span style="color: gray; font-size: 0.7rem">매장 위치:</span>
+            <span style="color: gray; font-size: 0.7rem">{{
+              store.address
+            }}</span
+            ><br />
+            <span style="color: gray; font-size: 0.7rem">{{
+              store.extraAddress
+            }}</span
             ><br />
             <span style="color: gray; font-size: 0.7rem"
               >문 닫는 시간: {{ store.closingTime }}</span
