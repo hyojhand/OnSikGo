@@ -24,3 +24,5 @@ pnpm-debug.log*
 
 
 # *.properties
+/frontend/src/util/http-common.js
+/backend/src/main/resources/application.properties

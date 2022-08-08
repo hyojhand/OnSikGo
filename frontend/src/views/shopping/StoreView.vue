@@ -312,6 +312,7 @@ export default {
 .tab {
   font-size: 18px;
   margin-right: 5%;
+
 }
 .select > span {
   color: black;

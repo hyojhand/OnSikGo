@@ -3,13 +3,30 @@
     <div class="web">
       <div class="on-box">
         <div>
-          <span style="font-size: 6rem; font-weight: bold">Onsikgo,</span><br />
-          <span style="font-size: 2rem; font-weight: bold"
+          <span
+            style="
+              font-size: 4rem;
+              font-weight: bold;
+              color: rgba(140, 184, 131);
+            "
+            >Onsikgo,</span
+          ><br />
+          <span
+            style="
+              font-size: 2rem;
+              font-weight: bold;
+              color: rgba(140, 184, 131);
+            "
             >지구를 구하는 마지막 주문</span
           >
         </div>
         <div id="div1" class="mt-5">
-          <img src="@/assets/real_logo.png" width="350" height="300" />
+          <img
+            src="@/assets/real_logo.png"
+            width="350"
+            height="300"
+            @click="goMain"
+          />
         </div>
         <div class="mt-5 ml-16">
           <button @click="movetoNaver" class="on-btn">
@@ -422,11 +439,14 @@ export default {
       document.execCommand("copy");
       document.body.removeChild(t);
 
-      alert("현재 url 주소 복사가 완료되었습니다🌏🧡");
+      alert("현재 주소 복사가 완료되었습니다🌏🧡");
     },
     movetoNaver() {
       var link = "https://forms.gle/WJpvMqG54SUF29io8";
       window.open(link);
+    },
+    goMain() {
+      this.$router.push("/");
     },
   },
 };

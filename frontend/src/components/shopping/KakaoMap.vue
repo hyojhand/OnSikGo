@@ -49,9 +49,9 @@
         </button>
       </div>
     </div>
-    <div v-if="this.items.length > 0">
+    <div v-if="this.items.length > 0" style="padding-left: 1rem;">
       <div
-        class="item-card"
+        class="item-card mt-3 mb-3"
         v-for="(item, index) in items"
         :key="index"
         v-bind="item"
@@ -66,13 +66,13 @@
           :src="item.itemDto.itemImgUrl"
           style="cursor: pointer"
           alt=""
-          class="col-3"
+          class="product-img col-3"
         />
 
         <div class="col-6 info-case">
           <div class="product-name">{{ item.itemDto.itemName }}</div>
           <div class="product-location">
-            매장위치 : {{ item.saleDto.storeDto.storeName }}
+            매장명 : {{ item.saleDto.storeDto.storeName }}
           </div>
           <div 
             v-if="item.distance < 3000"
@@ -93,14 +93,14 @@
                 ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(0)
               }}%
             </div>
-            <span class="price">({{ item.itemDto.price }}원)</span>
+            <span class="price"> ({{ item.itemDto.price }}원)</span>
           </div>
         </div>
         <div class="col-3 stock-case">
           <p class="product-quantity">
             재고 : <span class="product-number">{{ item.stock }}</span> 개
           </p>
-          <button class="border-m radius-s" @click="productOrder(item)">
+          <button class="order-button border-m radius-s" @click="productOrder(item)">
             주문하기
           </button>
         </div>
@@ -143,14 +143,16 @@ export default {
       // 현재 위치
       navigator.geolocation.getCurrentPosition((position) => {
         (this.currentxLatitude = position.coords.latitude), // 위도
-          (this.currentLongitude = position.coords.longitude); // 경도
+        (this.currentLongitude = position.coords.longitude); // 경도
         this.storexLatitude = this.currentxLatitude;
         this.storeLongitude = this.currentLongitude;
         // 현재위치
         // console.log(this.currentLongitude, this.currentxLatitude)
         this.curruntLocation();
       });
-      // 못찾은 경우
+     
+    } else {
+      this.curruntLocation();
     }
   },
 
@@ -507,7 +509,7 @@ img {
 }
 /* 거리 에측 */
 .product-prediction {
-  font-size: 10px !important;
+  font-size: 0.75rem;
   color: #b9b9b9;
 }
 /* 할인율 */
@@ -543,6 +545,9 @@ img {
   color: red;
   font-weight: bolder;
 }
+.product-img{
+  border-radius: 50%;
+}
 
 .product-order {
   border: 1px solid;
@@ -559,10 +564,10 @@ img {
   padding-right: 3%;
 }
 .item-card {
-  width: 100%;
+  width: 95%;
   display: flex;
   flex-direction: row;
-  padding: 3px 0;
+  padding: 3px 0p;
 
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
@@ -582,7 +587,8 @@ img {
   font-size: 12px;
   background-repeat: no-repeat;
   padding: 5px 5px;
-  width: 260px;
+  width: 320px;
+  height: 30px;
   background-color: #fff;
 }
 
@@ -609,5 +615,10 @@ img {
   margin-top: 3%;
   color: rgba(0, 0, 0, 0.3);
   font-size: 30px;
+}
+
+.order-button:hover{
+  background-color: #b9b9b9;
+  color: #fff;
 }
 </style>

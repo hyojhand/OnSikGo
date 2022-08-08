@@ -3,7 +3,7 @@
     <card id="regular-card">
       <div class="container">
         <div class="row">
-          <div class="col-3 mt-3">
+          <div class="col-3">
             <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
           </div>
           <div class="col-8 ml-3" id="cardText">
@@ -16,13 +16,15 @@
               >매장 휴무일: {{ offDay }}</span
             ><br />
             <span style="color: gray; font-size: 0.7rem"
-              >오늘 매장 할인 물품 개수: {{ saleItemDtoList.length }}</span
+              >오늘 매장 할인 물품 개수:
+            </span>
+            <span style="color: rgba(140, 184, 131)">
+              {{ saleItemDtoList.length }}개</span
             >
             <div class="d-flex justify-content-end">
-              <button 
-                class="store-moving"
-                @click="storeDetail()"
-              >가게보기</button>
+              <button class="store-moving" @click="storeDetail()">
+                가게보기
+              </button>
             </div>
           </div>
         </div>
@@ -85,13 +87,11 @@ export default {
   text-align: start;
 }
 #regular-card {
-  height: 150px;
-  width: 400px;
-  border-radius: 15px;
-  display: inline-block;
-  margin-top: 30px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 10%);
+  margin: 0;
 }
 .store-moving {
   height: 25px;
