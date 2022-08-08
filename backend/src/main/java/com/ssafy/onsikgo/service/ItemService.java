@@ -66,7 +66,7 @@ public class ItemService {
 
         Item findItem = itemRepository.findById(item_id).get();
 
-        if(file!=null) {
+        if(file==null) {
             itemDto.setItemImgUrl(findItem.getItemImgUrl());
             findItem.update(itemDto);
         } else {
