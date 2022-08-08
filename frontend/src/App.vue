@@ -25,6 +25,7 @@
         temporary
         flat
         class="nav-box"
+        style="position:sticky;"
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer">
         </v-app-bar-nav-icon>
