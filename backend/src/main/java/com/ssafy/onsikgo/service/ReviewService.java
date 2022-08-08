@@ -47,11 +47,6 @@ public class ReviewService {
         Long storeId = Long.valueOf(map.get("storeId"));
         Store findStore = storeRepository.findById(storeId).get();
 
-        List<Review>reviews = reviewRepository.findByUserAndStore(findUser,findStore);
-        if(reviews.size()>1){
-            return new ResponseEntity<>("한 가게에 최대 2개의 리뷰만 등록가능합니다.", HttpStatus.NO_CONTENT);
-        }
-
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String createdDate = today.format(formatter);
