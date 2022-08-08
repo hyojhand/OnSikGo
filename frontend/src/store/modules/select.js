@@ -14,6 +14,8 @@ const select = {
   mutations: {
     GET_SAVE_STORE: (state, index) => {
       state.saveStore = index;
+      console.log("스토어아이디");
+      console.log(state.saveStore);
     },
   },
 };

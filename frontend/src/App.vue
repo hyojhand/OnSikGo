@@ -27,7 +27,7 @@
         temporary
         flat
         class="nav-box"
-        style="position:sticky;"
+        style="position: sticky"
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -479,6 +479,7 @@ export default {
   background-color: rgb(240, 240, 240);
   align-items: center;
   text-align: center;
+  height: 100%;
   margin: 0 auto;
   max-width: 420px;
   width: 100%;
