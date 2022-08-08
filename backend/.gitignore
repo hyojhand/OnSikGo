@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 **/src/main/resources/properties/env.properties
+**/src/main/resources/application.properties
 
 ### STS ###
 .apt_generated
@@ -38,3 +39,7 @@ out/
 ### VS Code ###
 .vscode/
 *.p12
+
+*.properties
+
+/backend/src/main/resources/application.properties
