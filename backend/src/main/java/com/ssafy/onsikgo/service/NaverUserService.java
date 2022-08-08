@@ -108,16 +108,11 @@ public class NaverUserService implements SocialUserService {
                 return userDto;
             }
             String nickname;
-            while(true){
-                String temp_nickname = UUID.randomUUID().toString().replaceAll("-", "");
-                temp_nickname = "User"+temp_nickname.substring(0, 10);
-                nickname=(String)account.getOrDefault("nickname",temp_nickname);
-                user = userRepository.findByNickname(nickname);
-                if(!user.isPresent()){
-                    userDto.setNickname(nickname);
-                    break;
-                }
-            }
+            String temp_nickname = UUID.randomUUID().toString().replaceAll("-", "");
+            temp_nickname = "User"+temp_nickname.substring(0, 10);
+            nickname=(String)account.getOrDefault("nickname",temp_nickname);
+            userDto.setNickname(nickname);
+
             String profile_image_url= (String)account.getOrDefault("profile_image",defaultImg);
             userDto.setImgUrl(profile_image_url);
 
