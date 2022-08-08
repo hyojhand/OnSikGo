@@ -36,7 +36,8 @@
       <v-dialog 
       v-model="dialog"
       persistent
-      class="popup">
+      transition="dialog-bottom-transition"
+      max-width="350">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           v-bind="attrs"
