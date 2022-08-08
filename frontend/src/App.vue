@@ -499,6 +499,7 @@ export default {
   background-color: rgb(240, 240, 240);
   align-items: center;
   text-align: center;
+  height: 100%;
   margin: 0 auto;
   max-width: 420px;
   width: 100%;
