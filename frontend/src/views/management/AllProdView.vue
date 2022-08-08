@@ -2,21 +2,17 @@
   <div>
     <!--매장선택-->
     <div>
-      <select
-        id="dropdown1"
-        class="store-name"
-        @change="selectStore($event)"
-        v-model="this.storeId"
-      >
+      <select id="dropdown1" class="store-name" @change="selectStore($event)">
+        <option :selected="this.saveName.lenght">
+          {{ this.saveName }}
+        </option>
         <option
           :key="index"
           :value="store.storeId"
           v-for="(store, index) in stores"
-          :selected="false"
         >
           {{ store.storeName }}
         </option>
-        <!-- <option :key="11" :value="11" :selected="false">"ttqtqtqt"</option> -->
       </select>
     </div>
     <!-- 상품 등록 & 검색 탭 -->
@@ -150,9 +146,12 @@ export default {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
-      if (this.saveStore.lenght) {
+      if (this.saveStore.length) {
+        console.log("여기에 사람있어요");
+        this.stores = response.data;
         this.storeId = this.saveStore;
       } else {
+        console.log("여긴 없어요 ㅋ");
         this.stores = response.data;
         this.storeId = response.data[0].storeId;
       }
@@ -165,7 +164,7 @@ export default {
     AllProductList,
   },
   computed: {
-    ...mapGetters("select", ["saveStore"]),
+    ...mapGetters("select", ["saveStore", "saveName"]),
   },
 
   methods: {
@@ -180,6 +179,7 @@ export default {
           size: 4,
         })
         .then((response) => {
+          console.log(response);
           this.items = response.data.content;
           this.totalPage = response.data.totalPages;
           this.items.map(async (item, i) => {
