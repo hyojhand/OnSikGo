@@ -71,11 +71,13 @@ export default {
   props: {
     item: Object,
     storeId: Number,
+    stok: Number,
+    salePric: Number,
   },
   data() {
     return {
-      salePrice: this.item.sale.salePrice,
-      stock: this.item.sale.stock,
+      salePrice: this.salePric,
+      stock: this.stok,
     };
   },
 

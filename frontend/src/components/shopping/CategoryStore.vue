@@ -2,20 +2,32 @@
   <div class="container">
     <!-- 상위 가게 카테고리 -->
     <div class="row">
-      <div class="col" id="category-img">
+      <div 
+        :class="{
+              select: this.tabs[0] === this.category
+        }"
+        class="col" id="category-img">
         <a>
           <img
+            
+            class="tab"
             src="@/assets/images/all.png"
             alt="all"
             @click="selectAllList()"
           />
         </a>
-        <p>모두 보기</p>
+        <p >모두 보기</p>
       </div>
 
-      <div class="col" id="category-img">
+      <div
+        :class="{
+              select: this.tabs[1] === this.category
+        }" 
+        class="col" id="category-img">
         <a>
           <img
+            
+            class="tab"
             src="@/assets/images/koreanfood.png"
             alt="koreanfood"
             @click="selectKorea()"
@@ -24,9 +36,14 @@
         <p>한식</p>
       </div>
 
-      <div class="col" id="category-img">
+      <div
+        :class="{
+              select: this.tabs[2] === this.category
+        }"  
+        class="col" id="category-img">
         <a>
           <img
+            class="tab"
             src="@/assets/images/japanesefood.png"
             alt="japanesefood"
             @click="selectJapan()"
@@ -37,9 +54,14 @@
     </div>
     <!-- 하위 가게 카테고리 -->
     <div class="row">
-      <div class="col" id="category-img">
+      <div 
+        :class="{
+          select: this.tabs[3] === this.category
+        }"
+        class="col" id="category-img">
         <a>
           <img
+            class="tab"
             src="@/assets/images/snackbar.png"
             alt="westernfood"
             @click="selectWestern()"
@@ -47,9 +69,15 @@
         </a>
         <p>양식</p>
       </div>
-      <div class="col" id="category-img">
+      <div
+        :class="{
+          select: this.tabs[4] === this.category
+        }" 
+        class="col" id="category-img">
         <a>
           <img
+            
+            class="tab"
             src="@/assets/images/chinesefood.png"
             alt="snackbar"
             @click="selectSnack()"
@@ -57,9 +85,14 @@
         </a>
         <p>분식</p>
       </div>
-      <div class="col" id="category-img">
+      <div
+        :class="{
+          select: this.tabs[5] === this.category
+        }" 
+        class="col" id="category-img">
         <a>
           <img
+            class="tab"
             src="@/assets/images/dessert.png"
             alt="dessert"
             @click="selectDesssert()"
@@ -69,9 +102,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col" id="category-img">
-        <a
-          ><img
+      <div
+        :class="{
+              select: this.tabs[6] === this.category
+        }" 
+        class="col" id="category-img">
+        <a>
+          <img 
+            class="tab"
             src="@/assets/images/westernfood.png"
             alt="ingredient"
             @click="selectIngredient()"
@@ -92,7 +130,7 @@
           v-model="keyword"
           class="search-box"
           type="search"
-          placeholder=" 가게명을 입력해주세요"
+          placeholder="         가게명을 입력해주세요"
         />
         <!-- 검색 아이콘 -->
         <button class="product-search" @click="selectKeyword()">
@@ -100,7 +138,7 @@
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
-            fill="currentColor"
+            fill="black"
             class="bi bi-search"
             viewBox="0 0 16 16"
           >
@@ -115,7 +153,7 @@
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
-            fill="currentColor"
+            fill="black"
             class="bi bi-arrow-clockwise"
             viewBox="0 0 16 16"
           >
@@ -153,9 +191,13 @@ export default {
   name: "CategoryStore",
   data() {
     return {
+      tabs:[
+        "", "KOREA", "JAPAN", 
+        "WESTERN", "SNACK", "DESSERT", "INGREDIENT"],
       category: "",
       storeList: [],
       keyword: "",
+      selectTab:"",
     };
   },
   props: ["to", "keyw"],
@@ -202,6 +244,7 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.storeList = response.data;
+            
             this.selectSaleCount();
           }
         });
@@ -287,12 +330,33 @@ img {
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
   height: 300px;
 }
+.col > p{
+  color : rgb(140, 184, 131);
+}
 .search-container {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   margin: 3% 0;
+}
+.search-box {
+  border: solid 1px;
+  border-radius: 12px;
+  font-size: 12px;
+  background-repeat: no-repeat;
+  padding: 5px 5px;
+  width: 210px;
+  height: 30px;
+  background-color: #fff;
+}
+
+.search-box::-webkit-input-placeholder {
+  background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
+  background-size: contain;
+  background-position: 1px center;
+  background-repeat: no-repeat;
+  text-indent: 0;
 }
 .search-case {
   display: flex;
@@ -303,6 +367,16 @@ img {
   flex-direction: column;
   align-items: center;
 }
+
+
+.select > a > img {
+  filter: opacity(0.5) drop-shadow(0 0 0 #D75281);
+}
+.select > p{
+  color: black;
+  opacity: 0.4;
+}
+
 .container .row #category-img:hover {
   width: 50px; /* 사진크기 조절 */
   transform: scale(1.3, 1.3); /* 가로2배 새로 1.5배 로 커짐 */

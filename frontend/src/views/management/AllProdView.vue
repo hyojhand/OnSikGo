@@ -2,14 +2,21 @@
   <div>
     <!--매장선택-->
     <div>
-      <select id="dropdown1" class="store-name" @change="selectStore($event)">
+      <select
+        id="dropdown1"
+        class="store-name"
+        @change="selectStore($event)"
+        v-model="this.storeId"
+      >
         <option
           :key="index"
           :value="store.storeId"
           v-for="(store, index) in stores"
+          :selected="false"
         >
           {{ store.storeName }}
         </option>
+        <!-- <option :key="11" :value="11" :selected="false">"ttqtqtqt"</option> -->
       </select>
     </div>
     <!-- 상품 등록 & 검색 탭 -->
@@ -121,7 +128,7 @@
 <script>
 import AllProductList from "@/components/management/AllProductList.vue";
 import http from "@/util/http-common";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "AllProdView",
 
@@ -143,8 +150,12 @@ export default {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
-      this.stores = response.data;
-      this.storeId = response.data[0].storeId;
+      if (this.saveStore.lenght) {
+        this.storeId = this.saveStore;
+      } else {
+        this.stores = response.data;
+        this.storeId = response.data[0].storeId;
+      }
     });
 
     await this.selectPage(1);
@@ -153,10 +164,14 @@ export default {
   components: {
     AllProductList,
   },
+  computed: {
+    ...mapGetters("select", ["saveStore"]),
+  },
 
   methods: {
     ...mapActions("itemStore", ["getItemId"]),
     ...mapActions("storeStore", ["getStoreId"]),
+    ...mapActions("select", ["getSaveStore"]),
     selectPage(index) {
       this.page = index - 1;
       http
@@ -261,6 +276,7 @@ export default {
     },
     selectStore(event) {
       this.storeId = event.target.value;
+      this.getSaveStore(event.target.value);
       this.selectPage(1);
     },
   },

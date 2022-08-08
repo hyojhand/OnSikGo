@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="mt-6">
-      <img :src="`${userDto.imgUrl}`" width="100" height="75" />
+    <div>
+      <img :src="`${userDto.imgUrl}`" width="100" height="100" />
     </div>
 
     <div class="mt-3">

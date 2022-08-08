@@ -3,11 +3,30 @@
     <div class="web">
       <div class="on-box">
         <div>
-          <h1 class="text-l">Onsikgo,</h1>
-          <h3>지구를 구하는 마지막 주문</h3>
+          <span
+            style="
+              font-size: 4rem;
+              font-weight: bold;
+              color: rgba(140, 184, 131);
+            "
+            >Onsikgo,</span
+          ><br />
+          <span
+            style="
+              font-size: 2rem;
+              font-weight: bold;
+              color: rgba(140, 184, 131);
+            "
+            >지구를 구하는 마지막 주문</span
+          >
         </div>
         <div id="div1" class="mt-5">
-          <img src="@/assets/real_logo.png" width="350" height="300" />
+          <img
+            src="@/assets/real_logo.png"
+            width="350"
+            height="300"
+            @click="goMain"
+          />
         </div>
         <div class="mt-5 ml-16">
           <button @click="movetoNaver" class="on-btn">
@@ -25,6 +44,7 @@
         temporary
         flat
         class="nav-box"
+        style="position: sticky"
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -419,11 +439,14 @@ export default {
       document.execCommand("copy");
       document.body.removeChild(t);
 
-      alert("현재 url 주소 복사가 완료되었습니다🌏🧡");
+      alert("현재 주소 복사가 완료되었습니다🌏🧡");
     },
     movetoNaver() {
       var link = "https://forms.gle/WJpvMqG54SUF29io8";
       window.open(link);
+    },
+    goMain() {
+      this.$router.push("/");
     },
   },
 };
@@ -445,7 +468,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-left: 130px;
-  margin-top: 150px;
+  margin-top: 50px;
 }
 .on-box > img {
   width: 300px;
@@ -456,7 +479,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin: 0 0 0 20px;
+  margin: 0 0 0 10px;
 }
 .on-btn {
   height: 60px;
@@ -469,11 +492,6 @@ export default {
   padding: 3%;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.2);
 }
-.logo-text {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-}
 .web > h1 {
   color: black;
 }
@@ -481,6 +499,7 @@ export default {
   background-color: rgb(240, 240, 240);
   align-items: center;
   text-align: center;
+  height: 100%;
   margin: 0 auto;
   max-width: 420px;
   width: 100%;
@@ -521,5 +540,8 @@ export default {
   to {
     left: 0px;
   }
+}
+#text-onsikgo {
+  font-size: 50rem;
 }
 </style>
