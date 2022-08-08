@@ -143,14 +143,16 @@ export default {
       // 현재 위치
       navigator.geolocation.getCurrentPosition((position) => {
         (this.currentxLatitude = position.coords.latitude), // 위도
-          (this.currentLongitude = position.coords.longitude); // 경도
+        (this.currentLongitude = position.coords.longitude); // 경도
         this.storexLatitude = this.currentxLatitude;
         this.storeLongitude = this.currentLongitude;
         // 현재위치
         // console.log(this.currentLongitude, this.currentxLatitude)
         this.curruntLocation();
       });
-      // 못찾은 경우
+     
+    } else {
+      this.curruntLocation();
     }
   },
 
@@ -583,6 +585,7 @@ img {
   background-repeat: no-repeat;
   padding: 5px 5px;
   width: 260px;
+  height: 30px;
   background-color: #fff;
 }
 
