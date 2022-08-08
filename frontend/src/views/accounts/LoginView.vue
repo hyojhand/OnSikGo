@@ -35,7 +35,8 @@
       <div>비밀번호를 잊으셨나요?</div>
       <v-dialog 
       v-model="dialog"
-      persistent>
+      persistent
+      class="popup">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           v-bind="attrs"
@@ -219,6 +220,10 @@ button {
 
 .find-button3 {
   display: flex;
+  width: 30%;
+}
+
+.popup {
   width: 30%;
 }
 </style>
