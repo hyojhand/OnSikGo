@@ -16,7 +16,7 @@
             @click="selectAllList()"
           />
         </a>
-        <p>모두 보기</p>
+        <p >모두 보기</p>
       </div>
 
       <div
@@ -330,6 +330,9 @@ img {
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
   height: 300px;
 }
+.col > p{
+  color : rgb(140, 184, 131);
+}
 .search-container {
   display: flex;
   flex-direction: row;
@@ -364,6 +367,8 @@ img {
   flex-direction: column;
   align-items: center;
 }
+
+
 .select > a > img {
   filter: opacity(0.5) drop-shadow(0 0 0 #D75281);
 }
