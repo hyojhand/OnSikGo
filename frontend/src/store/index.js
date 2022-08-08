@@ -10,6 +10,7 @@ import itemStore from "@/store/modules/itemStore";
 import storeStore from "@/store/modules/storeStore";
 import discardStore from "@/store/modules/discardStore";
 import analysis from "./modules/analysis";
+import offdayStore from "@/store/modules/offdayStore";
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   modules: {
@@ -19,5 +20,6 @@ export default new Vuex.Store({
     itemStore,
     storeStore,
     discardStore,
+    offdayStore,
   },
 });
