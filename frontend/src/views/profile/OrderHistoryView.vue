@@ -1,5 +1,6 @@
 <template>
   <div>
+    <span style="font-size: 1.5rem">💌주문내역💌</span>
     <div v-if="this.orderList.length">
       <order-list
         v-for="(order, index) in orderList"
@@ -47,6 +48,13 @@ export default {
 </script>
 
 <style scoped>
+.hiscard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 10%);
+  margin: 0;
+}
 .non-msg {
   width: 100%;
   height: 300px;

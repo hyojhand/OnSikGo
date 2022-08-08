@@ -1,31 +1,37 @@
 <template>
   <div>
-    <div
-      v-for="(item, index) in discardStoreList"
-      :key="index"
-      class="container row"
-    >
-      <div class="col-5">
-        <img :src="`${item.itemDto.itemImgUrl}`" />
-      </div>
-      <div class="col-7">
-        <div>
-          <div class="info-box">상품명 : {{ item.itemDto.itemName }}</div>
-          <div class="info-box">남은 재고: {{ item.stock }} 개</div>
-
-          <div class="info-box">정상판매가 : {{ item.itemDto.price }} 원</div>
-          <div class="info-box sale">
-            할인율 : 🔻{{
-              ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(2)
-            }}%
+    <div v-for="(item, index) in discardStoreList" :key="index">
+      <div class="container">
+        <div class="row">
+          <div class="col-4">
+            <img class="dcimg" :src="`${item.itemDto.itemImgUrl}`" />
           </div>
-          <div class="info-box">할인판매가: {{ item.salePrice }} 원</div>
-        </div>
-        <div>
-          <edit-stock-modal
-            :item="item.itemDto"
-            :storeId="item.saleDto.storeDto.storeId"
-          ></edit-stock-modal>
+          <div class="col-7 ml-3">
+            <div>
+              <div class="info-box" style="font-size: 1.5rem">
+                {{ item.itemDto.itemName }}
+              </div>
+              <div class="info-box" style="color: gray">
+                남은 재고: {{ item.stock }} 개
+              </div>
+
+              <div class="info-box" style="color: gray">
+                정상판매가 : {{ item.itemDto.price }} 원
+              </div>
+              <div class="info-box sale">
+                할인율 : 🔻{{
+                  ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(2)
+                }}%
+              </div>
+              <div class="info-box">할인판매가: {{ item.salePrice }} 원</div>
+            </div>
+            <div>
+              <edit-stock-modal
+                :item="item.itemDto"
+                :storeId="item.saleDto.storeDto.storeId"
+              ></edit-stock-modal>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -47,8 +53,8 @@ export default {
 </script>
 
 <style scoped>
-img {
-  width: 100%;
+.dcimg {
+  border-radius: 50%;
 }
 .container {
   display: flex;
