@@ -22,10 +22,12 @@
           <div class="info-box">할인판매가: {{ item.salePrice }} 원</div>
         </div>
         <div>
-          <edit-stock-modal
+          <edit-discard-modal
             :item="item.itemDto"
+            :stok="item.stock"
+            :salePric="item.salePrice"
             :storeId="item.saleDto.storeDto.storeId"
-          ></edit-stock-modal>
+          ></edit-discard-modal>
         </div>
       </div>
     </div>
@@ -33,12 +35,12 @@
 </template>
 
 <script>
-import EditStockModal from "@/components/management/EditStockModal.vue";
+import EditDiscardModal from "@/components/management/EditDiscardModal.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "discountList",
   components: {
-    EditStockModal,
+    EditDiscardModal,
   },
   computed: {
     ...mapGetters("discardStore", ["discardStoreList"]),

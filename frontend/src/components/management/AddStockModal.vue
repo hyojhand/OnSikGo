@@ -58,7 +58,6 @@
           <button @click="prodchange" class="border-m radius-m edit-btn">
             수량등록
           </button>
-          <product-delete-modal :no="this.item.itemId"></product-delete-modal>
         </div>
       </v-card>
     </v-dialog>
@@ -66,16 +65,12 @@
 </template>
 
 <script>
-import ProductDeleteModal from "@/components/management/ProductDeleteModal.vue";
 import http from "@/util/http-common";
 export default {
   name: "AddStockModal",
   props: {
     item: Object,
     storeId: Number,
-  },
-  components: {
-    ProductDeleteModal,
   },
   data() {
     return {
@@ -86,13 +81,25 @@ export default {
 
   methods: {
     prodchange() {
-      http.post(`/sale/${this.storeId}`, {
-        itemId: this.item.itemId,
-        salePrice: this.salePrice,
-        stock: this.stock,
-      });
+      http
+        .post(`/sale/${this.storeId}`, {
+          itemId: this.item.itemId,
+          salePrice: this.salePrice,
+          stock: this.stock,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            console.log("완료");
+          } else {
+            alert("등록안됨");
+          }
+        })
+        .catch((error) => {
+          console.log("에러");
+          console.log(error);
+        });
 
-      this.$router.go();
+      // this.$router.go();
     },
   },
 };

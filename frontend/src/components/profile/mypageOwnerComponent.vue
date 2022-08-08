@@ -46,7 +46,6 @@
         </div>
       </div>
     </div>
-
     <br />
     <div>
       <div class="container mt-10">
@@ -92,9 +91,9 @@ export default {
   },
   computed: {
     ...mapGetters("discardStore", [
-      "discardStoreId", 
+      "discardStoreId",
       "discardStoreList",
-      "discardStoreClose"
+      "discardStoreClose",
     ]),
   },
   methods: {
