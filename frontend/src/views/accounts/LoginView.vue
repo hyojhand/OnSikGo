@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="title">
-      <div class="font-l text-m">OnSikGo</div>
-      <div class="font-m text-m">로그인을 통해</div>
-      <div class="font-m text-m">함께 세상을 구해나가봐요</div>
+    <div class="title" style="justify-content:center !important">
+      <div class="fs-1 text-start" style="color:green;">OnSikGo</div>
+      <div class="font-m text-start mt-4">로그인을 통해</div>
+      <div class="font-m text-start">함께 세상을 구해나가봐요</div>
     </div>
     <!--로그인버튼-->
     <form class="input-box">
@@ -21,26 +21,28 @@
         placeholder="비밀번호를 입력해주세요."
       />
     </form>
-    <div v-if="loginCheck">
+    <div v-if="loginCheck" style="color:crimson; margin-top: 5%; margin-bottom: 3%;">
       로그인에 실패하였습니다.
     </div>
-    <div class="btn-box mb-5">
+    <div class="btn-box mb-5 mt-3">
       <button class="radius-m primary" @click="login()" @keyup.enter="login()">
         로그인 하기
       </button>
       <button class="radius-m error" @click="signup()">회원 가입</button>
     </div>
 
-    <div class="find-box">
+    <div class="find-box" style="margin-top:5%">
       <div>비밀번호를 잊으셨나요?</div>
       <v-dialog 
       v-model="dialog"
       persistent
-      class="popup">
+      transition="dialog-bottom-transition"
+      max-width="350">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           v-bind="attrs"
-          v-on="on">
+          v-on="on"
+          width="110">
           비밀번호 찾기</v-btn>
       </template>
       <v-card>
