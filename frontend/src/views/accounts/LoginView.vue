@@ -60,6 +60,7 @@
                 required
                 @keyup.enter="checkName()"
                 ></v-text-field>
+                <loading-spinner v-if="isLoading"></loading-spinner>
                 <div v-if="checkCheck === 1">임시비밀번호가 전송되었습니다.</div>
                 <div v-if="checkCheck === 2">가입된 이름 혹은 이메일이 아닙니다.</div>
             </v-row>
@@ -82,11 +83,13 @@
 
 <script>
 import SocialLogin from "@/components/accounts/SocialLogin.vue";
+import LoadingSpinner from "@/components/home/LoadingSpinner.vue";
 import http from "@/util/http-common";
 export default {
   name: "LoginView",
   components: {
     SocialLogin,
+    LoadingSpinner,
   },
   data: () => ({
     email: "",
@@ -96,6 +99,7 @@ export default {
     dialog: false,
     loginCheck: false,
     checkCheck: 0,
+    isLoading: false,
   }),
 
   methods: {
@@ -123,6 +127,7 @@ export default {
     },
     checkName() {
       this.checkCheck = 0;
+      this.isLoading = true;
       http
         .post("/user/pw-find", {
           email: this.emailCheck,
@@ -130,8 +135,10 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
+            this.isLoading = false;
             this.checkCheck = 1;
           } else {
+            this.isLoading = false;
             this.checkCheck = 2;
           }
         })

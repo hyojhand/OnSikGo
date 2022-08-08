@@ -27,9 +27,9 @@
     <div class="col-4 product-case">
       <p class="store-product" :class="{ none: saleCount == 0 }">
         등록물품 :
-        <sapn class="product-count" :class="{ none: saleCount == 0 }">{{
+        <span class="product-count" :class="{ none: saleCount == 0 }">{{
           saleCount
-        }}</sapn>
+        }}</span>
         개
       </p>
       <button

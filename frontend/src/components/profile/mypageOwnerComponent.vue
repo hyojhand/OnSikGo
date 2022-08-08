@@ -29,7 +29,7 @@
               >전화번호: {{ store.tel }}</span
             ><br />
             <span style="color: gray; font-size: 0.7rem"
-              >매장 휴무일: {{ store.offDay }}</span
+              >매장 휴무일: {{ this.storeOffday }}</span
             >
           </div>
 
@@ -95,6 +95,7 @@ export default {
       "discardStoreList",
       "discardStoreClose",
     ]),
+    ...mapGetters("offdayStore", ["storeOffday"]),
   },
   methods: {
     dataAnalysis() {
