@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-7">
-      <h3>🙋‍♀️🙋‍♂️리뷰</h3>
+      <span style="font-size: 1.5rem; font-weight: bold">🙋‍♀️ 리뷰 🙋‍♂️</span>
     </div>
     <div v-if="this.reviewList.length">
       <reviewList

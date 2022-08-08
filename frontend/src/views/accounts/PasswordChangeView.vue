@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mt-16" style="color: black">✔ 비밀번호 수정 ✔</h1>
+    <h1 style="color: black">✔ 비밀번호 수정 ✔</h1>
     <div>
       <div class="container">
         <div class="row">
@@ -18,23 +18,29 @@
         </div>
       </div>
 
-      <div class="d-flex justify-content-start ml-6">
-        <input
-          v-model="password"
-          :type="passwordType"
-          :error-messages="passwordErrors"
-          id="input-box-all"
-          placeholder="새 비밀번호"
-        />
-      </div>
-      <div class="d-flex justify-content-start ml-6 mt-3">
-        <input
-          v-model="passwordConfirm"
-          :type="passwordConfirmType"
-          id="input-box-all"
-          placeholder="새 비밀번호 재입력"
-        />
-      </div>
+      <v-text-field
+        v-model="password"
+        :error-messages="passwordErrors"
+        label="비밀번호를 입력해주세요."
+        required
+        class="input-box"
+        color="black"
+        type="password"
+        @input="$v.password.$touch()"
+        @blur="$v.password.$touch()"
+      ></v-text-field>
+
+      <v-text-field
+        class="input-box"
+        v-model="passwordConfirm"
+        :error-messages="passwordConfirmErrors"
+        label="비밀번호를 다시 입력해주세요."
+        required
+        color="black"
+        type="password"
+        @input="$v.passwordConfirm.$touch()"
+        @blur="$v.passwordConfirm.$touch()"
+      ></v-text-field>
     </div>
     <div class="d-flex justify-content-end mt-6 mr-10">
       <button @click="changePw">변경하기</button>
@@ -43,8 +49,12 @@
 </template>
 
 <script>
+import { validationMixin } from "vuelidate";
+import { required } from "vuelidate/lib/validators";
+import minLength from "vuelidate/lib/validators/minLength";
 import http from "@/util/http-common";
 export default {
+  mixins: [validationMixin],
   name: "PasswordChangeView",
   data: () => {
     return {
@@ -65,19 +75,29 @@ export default {
       currentPwcheck: false,
     };
   },
-
-  // computed: {
-    // passwordErrors() {
-      // const errors = [];
-      // const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
-      // if (!this.$v.password.$dirty) return errors;
-      // !validatePassword.test(this.password) && errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
-  //     !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
-  //     !this.$v.password.required && errors.push(" ");
-      // return errors;
-    // },
-  // },
-
+  validations: {
+    password: { required, minLength: minLength(8) },
+    passwordConfirm: { required, minLength: minLength(8) },
+  },
+  computed: {
+    passwordErrors() {
+      const errors = [];
+      const validatePassword =
+        /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
+      if (!this.$v.password.$dirty) return errors;
+      !validatePassword.test(this.password) &&
+        errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
+      !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
+      !this.$v.password.required && errors.push(" ");
+      return errors;
+    },
+    passwordConfirmErrors() {
+      const errors = [];
+      if (this.password == this.passwordConfirm) return errors;
+      errors.push("비밀번호가 일치하지 않습니다.");
+      return errors;
+    },
+  },
   methods: {
     checkcurrentPw() {
       http.defaults.headers["access-token"] =

@@ -1,13 +1,8 @@
 <template>
   <div>
-    <div class="mt-5">
+    <div>
       <div class="d-flex justify-content-center">
-        <select
-          id="dropdown1"
-          class="store-name"
-          style="border-color: #63bf68"
-          @change="selectStore($event)"
-        >
+        <select id="dropdown1" class="store-name" @change="selectStore($event)">
           <option
             :key="index"
             :value="store.storeId"
@@ -166,15 +161,6 @@ export default {
 </script>
 
 <style scoped>
-#drowpdown1 {
-  border-color: #63bf68;
-  border-block-width: 4px;
-  background-color: white;
-}
-#space-even {
-  display: flex;
-  justify-content: space-evenly;
-}
 .sales {
   margin-top: 3%;
   padding: 3% 0;

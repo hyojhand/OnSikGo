@@ -113,9 +113,16 @@
             ></b-form-input>
             <br />
           </b-form-group>
-          <button type="button" @click="ownerNumcheck">
-            사업자 등록번호 확인
-          </button>
+          <div class="d-flex justify-content-end">
+            <button
+              type="button"
+              @click="ownerNumcheck"
+              class="border-m radius-m address-btn"
+            >
+              사업자 등록번호 확인
+            </button>
+          </div>
+
           <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
           <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
         </div>
@@ -150,9 +157,6 @@
             chips
             required
           ></v-select>
-          <span id="red-small"
-            >변경하지 않는다면 그대로 휴무일이 유지됩니다</span
-          >
         </div>
         <!-- ------------카테고리셀렉트 박스----------- -->
         <div class="ml-5 mr-4 mt-3">
@@ -330,10 +334,8 @@ export default {
           this.storeDto.offDay = Array.from(this.off).join(",");
         }
 
-        console.log(this.storeDto.offDay);
-        console.log("@");
+        // 휴무일 정렬
         if (this.storeDto.offDay.length >= 5) {
-          console.log("2개 이상임");
           this.storeDto.offDay.split(",").map((day) => {
             this.offDaylist.push(day);
           });
