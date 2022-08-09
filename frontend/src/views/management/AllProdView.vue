@@ -1,9 +1,13 @@
 <template>
   <div>
     <!--매장선택-->
-    <div>
-      <select id="dropdown1" class="store-name" @change="selectStore($event)">
-        <option :selected="this.saveName.lenght" class="opt bg-opacity-50">
+    <div class="selec-box">
+      <select
+        id="dropdown1"
+        class="store-name form-select"
+        @change="selectStore($event)"
+      >
+        <option id="first" :selected="this.saveName.lenght" class="opt">
           {{ this.saveName }}
         </option>
         <option
@@ -14,6 +18,22 @@
           {{ store.storeName }}
         </option>
       </select>
+      <!-- <label for="first">
+        <svg
+          v-if="this.stores.length > 1"
+          v-on="dropdown1"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          fill="currentColor"
+          class="bi bi-caret-down-fill"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+          />
+        </svg>
+      </label> -->
     </div>
     <!-- 상품 등록 & 검색 탭 -->
 
@@ -280,14 +300,18 @@ export default {
       this.getSaveStore(event.target.value);
       this.selectPage(1);
     },
+    click(e) {
+      console.log(e);
+    },
   },
 };
 </script>
 
 <style scoped>
 .store-name {
-  width: 40%;
-  font-size: 30px;
+  width: 80%;
+  font-size: 25px;
+  font-weight: 800;
   text-align: center;
   padding: 2% 0;
 }
@@ -339,5 +363,14 @@ export default {
 .opt {
   background-color: rgba(140, 184, 131, 0.5);
   color: white;
+}
+.selec-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.selec-box > svg {
+  margin-left: 7px;
 }
 </style>
