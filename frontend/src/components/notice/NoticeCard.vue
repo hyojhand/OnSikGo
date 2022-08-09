@@ -1,6 +1,12 @@
 <template>
-  <v-card class="mx-auto card-box" max-width="344">
-    <div class="row card-box">
+  <v-card 
+    class="mx-auto card-box"
+    max-width="344">
+    <div 
+    :class="{
+      active: `${orderDto.state}` == 'WAIT'
+    }"
+    class="row card-box">
       <img class="img-box col-5" :src="`${userDto.imgUrl}`" alt="유저 프로필" />
       <div class="col-7 order-box">
         <v-list-item-content>
@@ -10,7 +16,9 @@
           </v-list-item-title>
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
-          <p class="time-text">{{ createdDate }}</p>
+          <p v-if="`${orderDto.state}` === 'WAIT'" class="time-text">주문대기</p>
+          <p v-else-if="`${orderDto.state}` === 'CANCEL'" class="time-text">주문취소</p>
+          <p v-else-if="`${orderDto.state}` === 'ORDER'" class="time-text">주문완료</p>
           <notice-modal :value="items"></notice-modal>
         </v-card-actions>
       </div>
@@ -34,9 +42,10 @@ export default {
     location: String,
     orderDto: [],
     receivedId: Number,
-    state: Boolean,
+    state: String,
     userDto: [],
     createdDate: String,
+    noticeState: String,
   },
   created() {
     this.getData();
@@ -62,6 +71,9 @@ export default {
 </script>
 
 <style scoped>
+
+
+
 .card-box {
   display: flex;
   flex-direction: row;
@@ -98,5 +110,9 @@ export default {
 }
 .notice {
   color: black;
+}
+.active {
+  background-color: #fff;
+  border-radius: 20px;
 }
 </style>
