@@ -56,7 +56,7 @@ public class NoticeService {
             Store store = sale.getStore();
             SaleItemDto saleItemDto = saleItem.toDto(item.toDto(), sale.toDto(store.toDto()));
             OrderDto orderDto = order.toDto(saleItemDto);
-            noticeDtos.add(notice.toDto(userDto, orderDto));
+            noticeDtos.add(notice.toDto(order.getUser().toDto(), orderDto));
         }
 
         return new ResponseEntity<>(noticeDtos, HttpStatus.OK);
