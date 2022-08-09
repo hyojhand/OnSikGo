@@ -68,13 +68,19 @@
           </div>
           <div v-else>
             <div v-if="userCheck === 1">
-              <router-link :to="{ name: 'notice' }">
-                <i class="fa-solid fa-bell" width="24px" height="16"></i>
+              <router-link v-if="noticeState === false" :to="{ name: 'notice' }">
+                <img src="@/assets/images/bell.png" alt="알림" style="width:24px; height:24px">
+              </router-link>
+              <router-link v-else :to="{ name: 'notice' }">
+                <img src="@/assets/images/basebell.png" alt="알림" style="width:24px; height:24px">
               </router-link>
             </div>
             <div v-else>
-              <router-link :to="{ name: 'noticeUser' }">
-                <i class="fa-solid fa-bell" width="24px" height="16"></i>
+              <router-lin v-if="noticeState === false" :to="{ name: 'noticeUser' }">
+                <img src="@/assets/images/bell.png" alt="알림" style="width:24px; height:24px">
+              </router-lin>
+              <router-link v-else :to="{ name: 'noticeUser' }">
+                <img src="@/assets/images/basebell.png" alt="알림" style="width:24px; height:24px">
               </router-link>
             </div>
           </div>
@@ -327,6 +333,7 @@ export default {
       setting: false,
       // 비로그인 0, 업주 1, 일반 유저 2, 관리자 3
       userState: 0,
+      noticeState: true,
       title: document.title,
       pageType: true,
       logincheck: false,
@@ -413,7 +420,13 @@ export default {
           this.getUserCheck(3);
         }
       });
+      http
+        .get("/notice/state-check").then((response) =>{
+          this.noticeState = response.data
+        })
     }
+    
+
   },
   methods: {
     ...mapActions("accounts", ["getUserCheck"]),
