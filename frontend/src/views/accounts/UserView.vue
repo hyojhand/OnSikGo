@@ -43,7 +43,7 @@
             />
             <CountTimer v-if="time" :time="time" :key="rederKey"/>
             <button
-              class="border-m radius-m mailconfirm-btn mb-5"
+              class="border-m radius-m mailconfirm-btn mb-5 "
               @click="checkMail()"
               type="button"
             >
