@@ -11,7 +11,7 @@
         <span class="mt-2 fw-bold">{{ storeDto.storeName }}</span>
       </div>
       <!-- 좋아요 -->
-      <div class="store-like mt-2">
+      <div v-if="userCheck" class="store-like mt-2">
         <!--좋아요 버튼-->
         <div 
           v-if="liking == 'fail'"
@@ -19,8 +19,8 @@
           <svg 
             @click="like"
             xmlns="http://www.w3.org/2000/svg" 
-            width="16" 
-            height="16" 
+            width="33" 
+            height="33" 
             fill="red" 
             class="bi bi-heart" 
             viewBox="0 0 16 16">
@@ -34,8 +34,8 @@
           <svg 
             @click="unlike"
             xmlns="http://www.w3.org/2000/svg" 
-            width="16" 
-            height="16" 
+            width="33" 
+            height="33" 
             fill="red" 
             class="bi bi-heart-fill" 
             viewBox="0 0 16 16">
