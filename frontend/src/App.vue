@@ -111,7 +111,8 @@
           />
         </router-link>
         <!-- 로그인 안했을 경우 -->
-        <v-list v-if="userCheck === 0" nav>
+        
+        <v-list v-if="userCheck == 0" nav>
           <v-list-item
             v-for="item in notlogins"
             :key="item.title"
@@ -127,11 +128,11 @@
         </v-list>
 
         <!-- 로그인 했을 경우 -->
-        <div v-else>
-          <!-- 토글바 업주 로그인의 경우 -->
-          <v-list v-if="userCheck === 1" nav>
+        <div v-if="userCheck">
+          <!-- 토글바 관리자 로그인 경우 -->
+          <v-list v-if="userCheck === 3" nav>
             <v-list-item
-              v-for="item in owners"
+              v-for="item in admins"
               :key="item.title"
               :to="item.router"
             >
@@ -139,12 +140,11 @@
                 <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <router-link :to="{ name: 'logout' }">
-              <svg
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               width="25"
               height="25"
-              fill="red"
+              fill="currentColor"
               class="bi bi-box-arrow-in-right"
               viewBox="0 0 16 16"
             >
@@ -157,8 +157,6 @@
                 d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
               />
             </svg>
-            </router-link>
-            
           </v-list>
           <!-- 토글바 일반 유저 로그인 경우 -->
           <v-list v-else-if="userCheck === 2" nav>
@@ -189,10 +187,10 @@
               />
             </svg>
           </v-list>
-          <!-- 토글바 관리자 로그인 경우 -->
+          <!-- 토글바 업주 로그인의 경우 -->
           <v-list v-else nav>
             <v-list-item
-              v-for="item in admins"
+              v-for="item in owners"
               :key="item.title"
               :to="item.router"
             >
@@ -200,11 +198,12 @@
                 <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <svg
+            <router-link :to="{ name: 'logout' }">
+              <svg
               xmlns="http://www.w3.org/2000/svg"
               width="25"
               height="25"
-              fill="currentColor"
+              fill="red"
               class="bi bi-box-arrow-in-right"
               viewBox="0 0 16 16"
             >
@@ -217,8 +216,28 @@
                 d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
               />
             </svg>
+            </router-link>
+            
           </v-list>
+          
+
         </div>
+        <!-- 로그인 안했을 경우 -->
+        
+        <v-list v-else nav>
+          <v-list-item
+            v-for="item in notlogins"
+            :key="item.title"
+            :to="item.router"
+          >
+            <v-list-item-content>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <router-link :to="{ name: 'login' }">
+              <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
+          </router-link>
+        </v-list>
       </v-navigation-drawer>
 
       <!-- 설정 토글바 -->
