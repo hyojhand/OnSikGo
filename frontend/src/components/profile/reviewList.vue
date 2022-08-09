@@ -92,6 +92,8 @@ export default {
       http.delete(`/review/${this.reviewId}`).then((response) => {
         console.log(response.data);
         alert("리뷰가 삭제되었습니다.");
+        // 새로고침 해야함
+        this.$router.go();
       });
     },
   },
