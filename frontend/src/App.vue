@@ -54,6 +54,7 @@
           src="@/assets/real_logo.png"
           alt="logo였던것.."
           style="height: 100%; width: 20%"
+          class="ml-5"
         />
         <div v-else>
           {{ title }}
@@ -61,8 +62,8 @@
         <v-spacer></v-spacer>
         <div class="icon-box">
           <div v-if="userCheck === 0">
-            <router-link :to="{ name: 'login' }">
-              <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <router-link :to="{ name: 'login' }" style="text-decoration: none">
+              <p class="mt-4 mr-2 login" style="color: rgb(140, 184, 131); font-weight: bold;">로그인</p>
             </router-link>
           </div>
           <div v-else>
