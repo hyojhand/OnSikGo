@@ -70,7 +70,6 @@ export default {
   name: "EditStockModal",
   props: {
     item: Object,
-    storeId: Number,
   },
   data() {
     return {

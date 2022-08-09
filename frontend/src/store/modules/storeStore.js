@@ -1,7 +1,7 @@
 const storeStore = {
   namespaced: true,
   state: {
-    getStoreId: "",
+    getStoreId: Number,
   },
   getters: {
     getStoreId: (state) => state.getStoreId,
