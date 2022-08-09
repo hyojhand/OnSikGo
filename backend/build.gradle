@@ -51,6 +51,13 @@ dependencies {
 	//querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	// swagger
+//	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+//	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+	// firebase
+	implementation 'com.google.firebase:firebase-admin:7.1.0'
 }
 
 tasks.named('test') {

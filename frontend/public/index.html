@@ -94,5 +94,13 @@
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script src="https://cdn.flarelane.com/WebSDK.js"></script>
+    <script>
+      FlareLane.initialize({
+        projectId: "36ccd382-f66d-4c9d-9c4e-6550b2d83269",
+        // 사용중인 별도 이름의 ServiceWorker가 있는 경우 해당 경로
+        // serviceWorkerPath: '/otherServiceWorker.js'
+      });
+    </script>
   </body>
 </html>
