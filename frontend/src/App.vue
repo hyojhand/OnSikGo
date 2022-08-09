@@ -3,21 +3,22 @@
     <div class="web">
       <div class="on-box">
         <div>
-          <span
+          <p
             style="
               font-size: 4rem;
               font-weight: bold;
               color: rgba(140, 184, 131);
+              margin-bottom: 10px;
             "
-            >Onsikgo,</span
-          ><br />
-          <span
+            >Onsikgo,</p
+          >
+          <p
             style="
               font-size: 2rem;
               font-weight: bold;
               color: rgba(140, 184, 131);
             "
-            >지구를 구하는 마지막 주문</span
+            >지구를 구하는 마지막 주문</p
           >
         </div>
         <div id="div1" class="mt-5">
@@ -117,26 +118,12 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
-            fill="currentColor"
-            class="bi bi-box-arrow-in-right"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-            />
-          </svg>
+          <router-link :to="{ name: 'login' }">
+              <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
+          </router-link>
         </v-list>
 
         <!-- 로그인 했을 경우 -->
@@ -149,14 +136,15 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <svg
+            <router-link :to="{ name: 'logout' }">
+              <svg
               xmlns="http://www.w3.org/2000/svg"
               width="25"
               height="25"
-              fill="currentColor"
+              fill="red"
               class="bi bi-box-arrow-in-right"
               viewBox="0 0 16 16"
             >
@@ -169,6 +157,8 @@
                 d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
               />
             </svg>
+            </router-link>
+            
           </v-list>
           <!-- 토글바 일반 유저 로그인 경우 -->
           <v-list v-else-if="userCheck === 2" nav>
@@ -178,7 +168,7 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <svg
@@ -207,7 +197,7 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <svg
@@ -249,7 +239,7 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <MemberQuitModal></MemberQuitModal>
@@ -286,7 +276,7 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <MemberQuitModal></MemberQuitModal>
@@ -503,6 +493,13 @@ export default {
   max-width: 420px;
   width: 100%;
   min-height: 100%;
+}
+
+.toggle-login {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  color: red;
 }
 .bi-box-arrow-in-right {
   position: fixed;

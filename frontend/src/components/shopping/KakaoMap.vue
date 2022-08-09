@@ -3,7 +3,7 @@
     <div id="map"></div>
     <div class="container">
       <!-- 검색란 -->
-      <div class="search-container">
+      <div class="search-container m-1">
         <input
           v-model="keyword"
           @keyup.enter="keywordSelect()"
@@ -527,7 +527,7 @@ img {
 }
 .price {
   color: rgba(0, 0, 0, 0.2);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 /* 할인가 */
 .discount-price {
@@ -547,6 +547,9 @@ img {
 }
 .product-img{
   border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  padding-bottom: 5px;
 }
 
 .product-order {
@@ -561,7 +564,8 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding-right: 3%;
+  padding: 0;
+  margin: 0;
 }
 .item-card {
   width: 95%;
@@ -577,8 +581,14 @@ img {
 }
 
 .product-search {
-  padding-right: 5px;
-  padding-left: 5px;
+  padding: 0;
+  margin: 0;
+  padding-right: 10px;
+  padding-left: 15px;
+}
+.search-reset{
+  padding: 0;
+  margin: 0;
 }
 
 .search-box {
@@ -618,7 +628,7 @@ img {
 }
 
 .order-button:hover{
-  background-color: #b9b9b9;
+  background-color: rgb(140, 184, 131);
   color: #fff;
 }
 </style>
