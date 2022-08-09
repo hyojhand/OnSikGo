@@ -46,7 +46,7 @@ export default {
         if (response.status == 200) {
           if (response.data != null) {
             this.getMyReviewList(response.data);
-            console.log(this.reviewList);
+            // console.log(this.reviewList);
           } else {
             alert("리뷰가 없습니다.");
           }
