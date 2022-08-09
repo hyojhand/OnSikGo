@@ -7,12 +7,14 @@ const select = {
     saveName: "",
     myStore: "",
     saveMyStore: "",
+    storeValue: {},
   },
   getters: {
     saveStore: (state) => state.saveStore,
     saveName: (state) => state.saveName,
     myStore: (state) => state.myStore,
     saveMyStore: (state) => state.saveMyStore,
+    storeValue: (state) => state.storeValue,
   },
   actions: {
     getSaveStore: ({ commit }, storeId) => {
@@ -20,6 +22,9 @@ const select = {
     },
     getMyStore: ({ commit }, storeId) => {
       commit("GET_MY_STORE", storeId);
+    },
+    getStoreValue: ({ commit }, data) => {
+      commit("GET_STORE_VALUE", data);
     },
   },
   mutations: {
@@ -34,6 +39,9 @@ const select = {
       http.get(`/store/${storeId}`).then((response) => {
         state.saveMyStore = response.data.storeName;
       });
+    },
+    GET_STORE_VALUE: (state, data) => {
+      state.storeValue = data;
     },
   },
 };
