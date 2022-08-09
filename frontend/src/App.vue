@@ -110,22 +110,6 @@
             style="height: 6%; width: 25%; margin: 3% 0%"
           />
         </router-link>
-        <!-- 로그인 안했을 경우 -->
-        
-        <v-list v-if="userCheck == 0" nav>
-          <v-list-item
-            v-for="item in notlogins"
-            :key="item.title"
-            :to="item.router"
-          >
-            <v-list-item-content>
-              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <router-link :to="{ name: 'login' }">
-              <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
-          </router-link>
-        </v-list>
 
         <!-- 로그인 했을 경우 -->
         <div v-if="userCheck">
@@ -219,11 +203,9 @@
             </router-link>
             
           </v-list>
-          
-
         </div>
-        <!-- 로그인 안했을 경우 -->
         
+        <!-- 로그인 안했을 경우 -->
         <v-list v-else nav>
           <v-list-item
             v-for="item in notlogins"
