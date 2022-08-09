@@ -25,22 +25,19 @@
               </div>
               <div class="info-box">할인판매가: {{ item.salePrice }} 원</div>
             </div>
-            <div>
+            <!-- <div>
               <edit-stock-modal
                 :item="item.itemDto"
                 :storeId="item.saleDto.storeDto.storeId"
               ></edit-stock-modal>
-            </div>
+            </div> -->
+            <edit-discard-modal
+              :item="item.itemDto"
+              :stok="item.stock"
+              :salePric="item.salePrice"
+              :storeId="item.saleDto.storeDto.storeId"
+            ></edit-discard-modal>
           </div>
-          <div class="info-box">할인판매가: {{ item.salePrice }} 원</div>
-        </div>
-        <div>
-          <edit-discard-modal
-            :item="item.itemDto"
-            :stok="item.stock"
-            :salePric="item.salePrice"
-            :storeId="item.saleDto.storeDto.storeId"
-          ></edit-discard-modal>
         </div>
       </div>
     </div>

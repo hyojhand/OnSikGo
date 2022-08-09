@@ -67,7 +67,7 @@
 <script>
 import http from "@/util/http-common";
 export default {
-  name: "EditStockModal",
+  name: "EditDiscardModal",
   props: {
     item: Object,
     storeId: Number,
@@ -78,12 +78,18 @@ export default {
     return {
       salePrice: this.salePric,
       stock: this.stok,
+      saleId: "",
     };
+  },
+  created() {
+    http.get(`/sale/${this.item.itemId}`).then((response) => {
+      this.saleId = response.data.saleItemId;
+    });
   },
 
   methods: {
     stockchange() {
-      http.put(`/sale/${this.item.sale.saleItemId}`, {
+      http.put(`/sale/${this.saleId}`, {
         salePrice: this.salePrice,
         stock: this.stock,
       });

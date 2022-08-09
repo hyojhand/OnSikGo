@@ -10,10 +10,18 @@
       <div class="col-8">
         <p>{{ content }}</p>
       </div>
-      <div v-if="userCheck" class="report col-2">
-            <img src="@/assets/images/siren.png" @click="reportReview(reviewId)" style="width: 30%">
-          <div v-if="reportDuple">신고가 완료되었습니다.</div>
+      <div class="reviewicon col-3" v-if="userCheck" style="margin-left: 330px;">
+        <!-- 리뷰 작성 유저일때 -->
+        <div v-if="userDto.nickname == nickname">
+          <v-btn @click="deleteReview(reviewId)" color="error" style="width: 35px">삭제</v-btn>
+          <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
         </div>
+        <!-- 이외의 유저일때 -->
+        <div v-else class="report">
+            <img src="@/assets/images/siren.png" @click="reportReview(reviewId)" style="width: 35px;">
+        <div v-if="reportDuple">신고가 완료되었습니다.</div>
+        </div>
+      </div>
       <hr class="mt-3" />
     </div>
   </div>
@@ -28,6 +36,8 @@ export default {
   data () {
     return {
       reportDuple: false,
+      deleteDuple: false,
+      userDto: {},
     }
   },
 
@@ -39,12 +49,24 @@ export default {
     storeDto: {},
     reviewId: null,
   },
+
   computed : {
     ...mapGetters("accounts", [
       "userCheck",
     ]),
   },
-  created() {},
+
+  created() {
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+    
+    http
+      .get("/user")
+      .then((response) => {
+        this.userDto = response.data;
+      });
+  },
+
   methods: {
     moveUserReview() {
       this.$router.push({
@@ -62,7 +84,19 @@ export default {
             this.reportDuple = true;
           }
         })
-    }
+    },
+    
+    deleteReview(reviewId){
+      this.deleteDuple = false;
+      http
+        .delete(`/review/${reviewId}`)
+        .then((response) => {
+          if (response.status == 200) {
+            console.log(response);
+            // this.$router.go();
+          } 
+        })
+    },
   },
 };
 </script>
