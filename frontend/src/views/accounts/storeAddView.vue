@@ -9,7 +9,7 @@
       </div>
 
       <!-- ------상호명 입력--------------- -->
-      <div class="ml-3 mr-4 mt-10">
+      <div class="ml-4 mr-4 mt-10">
         <v-text-field
           v-model="store"
           label="상호명을 입력해주세요."
