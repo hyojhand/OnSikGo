@@ -10,14 +10,18 @@
       <div class="col-8">
         <p>{{ content }}</p>
       </div>
-      <div>
-        <v-btn @click="deleteReview(reviewId)" color="error" style="">삭제</v-btn>
-        <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
-      </div>
-      <div v-if="userCheck" class="report col-2">
-            <img src="@/assets/images/siren.png" @click="reportReview(reviewId)" style="width: 30%">
-          <div v-if="reportDuple">신고가 완료되었습니다.</div>
+      <div class="reviewicon" v-if="userCheck">
+        <!-- 리뷰 작성 유저일때 -->
+        <div>
+          <v-btn @click="deleteReview(reviewId)" color="error" style="">삭제</v-btn>
+          <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
         </div>
+        <!-- 이외의 유저일때 -->
+        <div class="report col-2">
+            <img src="@/assets/images/siren.png" @click="reportReview(reviewId)" style="width: 30%">
+        <div v-if="reportDuple">신고가 완료되었습니다.</div>
+        </div>
+      </div>
       <hr class="mt-3" />
     </div>
   </div>
