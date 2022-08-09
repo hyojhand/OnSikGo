@@ -2,7 +2,14 @@
   <div>
     <div>
       <div class="d-flex justify-content-center">
-        <select id="dropdown1" class="store-name" @change="selectStore($event)">
+        <select
+          id="dropdown1"
+          class="store-name form-select"
+          @change="selectStore($event)"
+        >
+          <option :selected="this.saveMyStore.lenght" class="opt">
+            {{ this.saveMyStore }}
+          </option>
           <option
             :key="index"
             :value="store.storeId"
@@ -24,7 +31,7 @@
 <script>
 import mypageOwnerComponent from "@/components/profile/mypageOwnerComponent.vue";
 import http from "@/util/http-common";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "MypageOwnerView",
   components: {
@@ -49,11 +56,16 @@ export default {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
-      this.stores = response.data;
-
+      if (this.saveMyStore.length) {
+        this.stores = response.data;
+        this.storeId = this.myStore;
+      } else {
+        this.stores = response.data;
+        this.storeId = response.data[0].storeId;
+        this.getMyStore(this.storeId);
+      }
       this.storeCnt = this.stores.length;
       this.store = response.data[0];
-      this.storeId = response.data[0].storeId;
       this.discardStoreId(this.storeId);
       this.discardStoreCnt(this.storeCnt);
       console.log(this.store.offDay);
@@ -94,6 +106,7 @@ export default {
       // console.log(response.data);
     });
   },
+  computed: { ...mapGetters("select", ["saveMyStore", "myStore"]) },
   methods: {
     ...mapActions("discardStore", [
       "discardStoreId",
@@ -104,8 +117,10 @@ export default {
       "discardStoreCnt",
     ]),
     ...mapActions("offdayStore", ["storeOffday"]),
+    ...mapActions("select", ["getMyStore"]),
     async selectStore(event) {
       this.storeId = event.target.value;
+      this.getMyStore(event.target.value);
       await http.get(`/store/${this.storeId}`).then((response) => {
         // console.log(response.data.offDay);
         if (response.data.offDay.length >= 5) {
@@ -169,9 +184,14 @@ export default {
   border-bottom: 2px solid rgba(0, 0, 0, 20%);
 }
 .store-name {
-  width: 40%;
-  font-size: 30px;
+  width: 80%;
+  font-size: 25px;
+  font-weight: 800;
   text-align: center;
   padding: 2% 0;
+}
+.opt {
+  background-color: rgba(140, 184, 131, 0.5);
+  color: white;
 }
 </style>
