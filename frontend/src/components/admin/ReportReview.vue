@@ -4,12 +4,13 @@
       v-for="(report, index) in reviewList"
       :key="index"
       class="row">
-      <div class="text-start">
-        <p class="text-primary">{{ report.nickname }} : {{ report.content }}</p>
-        <p>작성한 가게명: {{ report.storeDto.storeName }}</p>
+      <div class="text-start mt-3">
+        <p>작성자명: {{ report.nickname }}</p>
+        <p>가게명: {{ report.storeDto.storeName }}</p>
+        <p class="text-primary fs-5">내용: {{ report.content }}</p>
       </div>
-        <v-btn @click="deleteReview(report)" color="error" samll depressed>삭제</v-btn>
-      <hr>
+        <v-btn @click="deleteReview(report)" color="error" style="width: 100px; left:300px;" depressed>삭제</v-btn>
+      <hr class="mt-5">
     </div>
   </div>
 </template>

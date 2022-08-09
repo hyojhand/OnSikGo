@@ -1,17 +1,16 @@
 <template>
   <div>
-    <h1>AdminStore</h1>
     <div
       v-for="(stores, index) in storeList"
       :key="index"
-      class="row fs-5 text-start mt-3">
+      class="row text-start mt-3">
       <div>
-        <p class="text-primary">가게명: {{ stores.storeName }} <br></p> 
-        <p>가게주소: {{ stores.location }}</p> 
+        <p class="text-primary fs-5">가게명: {{ stores.storeName }} <br></p> 
+        <p>가게주소: {{ stores.address}}</p> 
       </div>
         <br>
-        <v-btn @click="deleteStore(stores)" color="error" samll depressed>삭제</v-btn>
-        <hr>
+        <v-btn @click="deleteStore(stores)" color="error" style="width: 100px; left:300px;" depressed>삭제</v-btn>
+        <hr class="mt-5">
     </div>
   </div>
 </template>
