@@ -1,10 +1,10 @@
 package com.ssafy.onsikgo.controller;
 
-import com.ssafy.onsikgo.dto.*;
+import com.ssafy.onsikgo.dto.SaleItemDto;
+import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +27,7 @@ public class SaleController {
 
     @GetMapping("/list/{store_id}")
     public ResponseEntity<List<SaleItemDto>> getSaleItemList(@PathVariable Long store_id) {
-        return saleService.getSaleItemList(store_id);
+        return saleService.getSaleItemDtoList(saleService.getSaleItemList(store_id));
     }
 
     @PutMapping("/{sale_item_id}")

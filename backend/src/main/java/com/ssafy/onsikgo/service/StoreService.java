@@ -1,9 +1,6 @@
 package com.ssafy.onsikgo.service;
 
-import com.ssafy.onsikgo.dto.SaleDto;
-import com.ssafy.onsikgo.dto.SelectDto;
-import com.ssafy.onsikgo.dto.OwnerDto;
-import com.ssafy.onsikgo.dto.StoreDto;
+import com.ssafy.onsikgo.dto.*;
 import com.ssafy.onsikgo.entity.*;
 import com.ssafy.onsikgo.repository.SaleRepository;
 import com.ssafy.onsikgo.repository.StoreRepository;
@@ -32,10 +29,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -48,6 +42,7 @@ public class StoreService {
     private final UserRepository userRepository;
     private final SaleRepository saleRepository;
     private final AwsS3Service awsS3Service;
+    private final SaleService saleService;
     private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/store/noimage.png";
     @Value("${java.file.kakao-api}")
     private String kakao;
@@ -143,14 +138,23 @@ public class StoreService {
         findUser = userRepository.findByEmail(userEmail).get();
 
         List<Store> storeList = storeRepository.findByUser(findUser);
-        List<StoreDto> storeDtoList = new ArrayList<>();
-        for(Store store : storeList) {
-            StoreDto storeDto = store.toDto();
-            storeDtoList.add(storeDto);
-        }
-        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
-    }
 
+        return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
+    }
+    public List<StoreDto> getSortList(List<Store> storeList){
+        List<StoreDto> list = new ArrayList<>();
+        for(Store store : storeList) {
+            List<SaleItemDto> saleItemDtos = saleService.getSaleItemList(store.getStoreId());
+            StoreDto storeDto = store.toDto();
+            storeDto.setTotalStock(0);
+            if(saleItemDtos!=null){
+                storeDto.setTotalStock(saleItemDtos.size());
+            }
+            list.add(storeDto);
+        }
+        Collections.sort(list);
+        return list;
+    }
     public ResponseEntity<List<StoreDto>> getCategoryKeyword(SelectDto selectDto) {
         if(selectDto.getKeyword() != null && selectDto.getCategory() != null) {
             List<Store> storeList = storeRepository.findByStoreNameContainingAndCategory(selectDto.getKeyword(),Category.valueOf(selectDto.getCategory()));
@@ -158,7 +162,7 @@ public class StoreService {
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
             }
-            return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+            return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
         }
 
         if(selectDto.getKeyword() != null) {
@@ -167,7 +171,7 @@ public class StoreService {
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
             }
-            return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+            return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
         }
 
         if(selectDto.getCategory() != null) {
@@ -176,7 +180,7 @@ public class StoreService {
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
             }
-            return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+            return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
@@ -246,7 +250,7 @@ public class StoreService {
         for(int i = 0; i < storeList.size(); i++) {
             storeDtoList.add(storeList.get(i).toDto());
         }
-        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
     }
 
     // 좌표 가져오는 메서드
@@ -316,6 +320,6 @@ public class StoreService {
         for(Store store : storeList) {
             storeDtoList.add(store.toDto());
         }
-        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
     }
 }
