@@ -113,7 +113,7 @@
           </b-form-group>
           <div class="container">
             <div class="row">
-              <div class="col-6">
+              <div class="col-5">
                 <div v-if="ownercheckDuple" id="red-small">
                   사업자 번호가 확인 되었습니다.
                 </div>
@@ -121,12 +121,13 @@
                   다시 확인해주시길 바랍니다.
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-7">
                 <div class="d-flex justify-content-end">
                   <button
                     type="button"
                     @click="ownerNumcheck"
                     class="border-m radius-m address-btn"
+                    style="width: 100%"
                   >
                     사업자 등록번호 확인
                   </button>
