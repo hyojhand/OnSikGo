@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center mt-5">
         <select
           id="dropdown1"
           class="store-name form-select"

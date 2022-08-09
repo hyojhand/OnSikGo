@@ -57,10 +57,10 @@
             label-for="input-3"
           >
             <span style="color: black" class="text-start"
-              >{{ this.storeDto.address }}
+              >{{ this.storeDto.address }}<br />
               {{ this.storeDto.extraAddress }}</span
             >
-            <br />
+            <br /><br />
             <span id="red-small"
               >가게 주소를 변경하기 위해서는 <br />아래의 "주소 검색" 버튼을
               눌러주세요</span
@@ -80,7 +80,6 @@
                 v-model="this.address1"
                 label="가게 주소를 입력해주세요."
                 class="input-box"
-                color="black"
                 type="address"
                 v-bind:disabled="true"
               ></v-text-field>
@@ -90,7 +89,6 @@
               v-model="this.extraAddress1"
               label="상세 주소를 입력해주세요."
               class="input-box"
-              color="black"
               type="address"
             ></v-text-field>
           </b-form-group>
@@ -113,18 +111,29 @@
             ></b-form-input>
             <br />
           </b-form-group>
-          <div class="d-flex justify-content-end">
-            <button
-              type="button"
-              @click="ownerNumcheck"
-              class="border-m radius-m address-btn"
-            >
-              사업자 등록번호 확인
-            </button>
+          <div class="container">
+            <div class="row">
+              <div class="col-6">
+                <div v-if="ownercheckDuple" id="red-small">
+                  사업자 번호가 확인 되었습니다.
+                </div>
+                <div v-if="ownerfailDuple" id="red-small">
+                  다시 확인해주시길 바랍니다.
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-flex justify-content-end">
+                  <button
+                    type="button"
+                    @click="ownerNumcheck"
+                    class="border-m radius-m address-btn"
+                  >
+                    사업자 등록번호 확인
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
-          <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
         </div>
         <br />
         <!--매장 종료시간-->
@@ -171,8 +180,14 @@
         <br />
         <!--form 끝-->
         <div class="ml-5 mr-4 mt-3 mb-16">
-          <div class="d-flex justify-content-between">
-            <button type="submit" @click="modifyStore()">수정완료</button>
+          <div class="d-flex justify-content-end">
+            <button
+              type="submit"
+              class="border-m radius-m address-btn"
+              @click="modifyStore()"
+            >
+              수정완료
+            </button>
           </div>
         </div>
       </b-form>
