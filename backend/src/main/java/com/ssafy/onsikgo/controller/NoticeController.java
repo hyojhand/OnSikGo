@@ -29,7 +29,7 @@ public class NoticeController {
         return noticeService.delete(notice_id);
     }
 
-    @GetMapping("/state-ckeck")
+    @GetMapping("/state-check")
     public ResponseEntity<Boolean> stateFalseCheck(HttpServletRequest request) {
         return noticeService.stateFalseCheck(request);
     }
