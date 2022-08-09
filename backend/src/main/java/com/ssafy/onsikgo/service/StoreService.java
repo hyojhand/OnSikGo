@@ -1,9 +1,6 @@
 package com.ssafy.onsikgo.service;
 
-import com.ssafy.onsikgo.dto.SaleDto;
-import com.ssafy.onsikgo.dto.SelectDto;
-import com.ssafy.onsikgo.dto.OwnerDto;
-import com.ssafy.onsikgo.dto.StoreDto;
+import com.ssafy.onsikgo.dto.*;
 import com.ssafy.onsikgo.entity.*;
 import com.ssafy.onsikgo.repository.SaleRepository;
 import com.ssafy.onsikgo.repository.StoreRepository;
@@ -15,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,10 +29,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -47,11 +42,15 @@ public class StoreService {
     private final UserRepository userRepository;
     private final SaleRepository saleRepository;
     private final AwsS3Service awsS3Service;
+    private final SaleService saleService;
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/store/noimage.png";
+    @Value("${java.file.kakao-api}")
+    private String kakao;
 
     @Transactional
     public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
 
-        HashMap<String, String> coordinate = getCoordinate(ownerDto.getLocation());
+        HashMap<String, String> coordinate = getCoordinate(ownerDto.getAddress());
         Store store = ownerDto.toStoreEntity(coordinate);
         store.addUser(user);
 
@@ -71,10 +70,15 @@ public class StoreService {
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
         findUser = userRepository.findByEmail(userEmail).get();
 
-        String storeImgUrl = awsS3Service.uploadImge(file);
+
+        String storeImgUrl = defaultImg;
+
+        if(!file.isEmpty()){
+            storeImgUrl = awsS3Service.uploadImge(file);
+        }
         storeDto.setStoreImgUrl(storeImgUrl);
 
-        HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
+        HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
         Store store = storeDto.toEntity(coordinate);
         store.addUser(findUser);
 
@@ -91,11 +95,18 @@ public class StoreService {
 
         Store findStore = storeRepository.findById(store_id).get();
 
-        HashMap<String, String> coordinate = getCoordinate(storeDto.getLocation());
-        findStore.update(storeDto, coordinate);
+        HashMap<String, String> coordinate = getCoordinate(storeDto.getAddress());
 
-        String storeImgUrl = awsS3Service.uploadImge(file);
-        storeDto.setStoreImgUrl(storeImgUrl);
+        if(file == null) {
+            storeDto.setStoreImgUrl(findStore.getStoreImgUrl());
+        } else {
+            if (!findStore.getStoreImgUrl().equals(defaultImg)) {
+                awsS3Service.delete(findStore.getStoreImgUrl());
+            }
+            String storeImgUrl = awsS3Service.uploadImge(file);
+            storeDto.setStoreImgUrl(storeImgUrl);
+        }
+        findStore.update(storeDto, coordinate);
 
         storeRepository.save(findStore);
         return new ResponseEntity<>("가게 정보가 수정되었습니다.", HttpStatus.OK);
@@ -127,14 +138,23 @@ public class StoreService {
         findUser = userRepository.findByEmail(userEmail).get();
 
         List<Store> storeList = storeRepository.findByUser(findUser);
-        List<StoreDto> storeDtoList = new ArrayList<>();
-        for(Store store : storeList) {
-            StoreDto storeDto = store.toDto();
-            storeDtoList.add(storeDto);
-        }
-        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
-    }
 
+        return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
+    }
+    public List<StoreDto> getSortList(List<Store> storeList){
+        List<StoreDto> list = new ArrayList<>();
+        for(Store store : storeList) {
+            List<SaleItemDto> saleItemDtos = saleService.getSaleItemList(store.getStoreId());
+            StoreDto storeDto = store.toDto();
+            storeDto.setTotalStock(0);
+            if(saleItemDtos!=null){
+                storeDto.setTotalStock(saleItemDtos.size());
+            }
+            list.add(storeDto);
+        }
+        Collections.sort(list);
+        return list;
+    }
     public ResponseEntity<List<StoreDto>> getCategoryKeyword(SelectDto selectDto) {
         if(selectDto.getKeyword() != null && selectDto.getCategory() != null) {
             List<Store> storeList = storeRepository.findByStoreNameContainingAndCategory(selectDto.getKeyword(),Category.valueOf(selectDto.getCategory()));
@@ -142,7 +162,7 @@ public class StoreService {
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
             }
-            return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+            return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
         }
 
         if(selectDto.getKeyword() != null) {
@@ -151,7 +171,7 @@ public class StoreService {
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
             }
-            return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+            return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
         }
 
         if(selectDto.getCategory() != null) {
@@ -160,7 +180,7 @@ public class StoreService {
             for(int i = 0; i < storeList.size(); i++) {
                 storeDtoList.add(storeList.get(i).toDto());
             }
-            return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+            return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
@@ -184,13 +204,16 @@ public class StoreService {
 
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = now.format(dayFormatter);
-        Optional<Sale> findSale = saleRepository.findByStoreAndDate(findStore.get(), date);
+
+        Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(findStore.get(), date);
         if(!findSale.isPresent()) {
-            return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("fail", HttpStatus.NO_CONTENT);
         }
 
         findSale.get().updateClosed();
         saleRepository.save(findSale.get());
+
+
 
         return new ResponseEntity<>("가게 결산이 완료되었습니다.", HttpStatus.OK);
     }
@@ -221,10 +244,19 @@ public class StoreService {
         return new ResponseEntity<>(saleDto, HttpStatus.OK);
     }
 
+    public ResponseEntity<List<StoreDto>> getKeyword(SelectDto selectDto) {
+        List<Store> storeList = storeRepository.findByStoreNameContaining(selectDto.getKeyword());
+        List<StoreDto> storeDtoList = new ArrayList<>();
+        for(int i = 0; i < storeList.size(); i++) {
+            storeDtoList.add(storeList.get(i).toDto());
+        }
+        return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
+    }
+
     // 좌표 가져오는 메서드
     public HashMap<String, String> getCoordinate(String fullAddress) {
 
-        String apiKey = "57a2eb95ed5c50c6a133bae6b8980f38";
+        String apiKey = kakao;
         String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json";
         String jsonString = null;
 
@@ -288,6 +320,6 @@ public class StoreService {
         for(Store store : storeList) {
             storeDtoList.add(store.toDto());
         }
-        return new ResponseEntity<>(storeDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
     }
 }

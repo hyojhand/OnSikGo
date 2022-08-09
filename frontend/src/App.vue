@@ -2,16 +2,39 @@
   <div class="all">
     <div class="web">
       <div class="on-box">
-        <img src="@/assets/jjab.png" alt="짭logo.." />
-        <button class="on-btn">온식고 식구에게 문의하기</button>
-        <button class="on-btn">온식고 널리 알리기</button>
-      </div>
-      <div class="mt-5">
-        <div class="logo-text">
-          <h1 class="text-l">Onsikgo</h1>
-          <h3>에서</h3>
+        <div>
+          <p
+            style="
+              font-size: 4rem;
+              font-weight: bold;
+              color: rgba(140, 184, 131);
+              margin-bottom: 10px;
+            "
+            >Onsikgo,</p
+          >
+          <p
+            style="
+              font-size: 2rem;
+              font-weight: bold;
+              color: rgba(140, 184, 131);
+            "
+            >지구를 구하는 마지막 주문</p
+          >
         </div>
-        <h3>지구를 함께 지켜보아요</h3>
+        <div id="div1" class="mt-5">
+          <img
+            src="@/assets/real_logo.png"
+            width="350"
+            height="300"
+            @click="goMain"
+          />
+        </div>
+        <div class="mt-5 ml-16">
+          <button @click="movetoNaver" class="on-btn">
+            온식고 식구에게 문의하기
+          </button>
+          <button @click="copyLink" class="on-btn">온식고 널리 알리기</button>
+        </div>
       </div>
     </div>
     <v-app id="app">
@@ -28,28 +51,38 @@
         <v-spacer></v-spacer>
         <img
           v-if="title === '온식고'"
-          src="@/assets/logo.png"
+          src="@/assets/real_logo.png"
           alt="logo였던것.."
           style="height: 100%; width: 20%"
+          class="ml-5"
         />
-        <div v-else>
+        <div v-else style="font-weight:bolder">
           {{ title }}
         </div>
         <v-spacer></v-spacer>
         <div class="icon-box">
-          <button @click="stateCheck(userState)">상태체크</button>
-          <div v-if="logincheck === false">
-            <router-link :to="{ name: 'login' }">
-              <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          <div v-if="userCheck === 0">
+            <router-link :to="{ name: 'login' }" style="text-decoration: none">
+              <p class="mt-4 mr-2 login" style="color: rgb(140, 184, 131); font-weight: bold;">로그인</p>
             </router-link>
           </div>
           <div v-else>
-            <router-link :to="{ name: 'notice' }" v-if="userState === 1">
-              <i class="fa-solid fa-bell" width="24px" height="16"></i>
-            </router-link>
-            <router-link :to="{ name: 'noticeUser' }" v-else>
-              <i class="fa-solid fa-bell" width="24px" height="16"></i>
-            </router-link>
+            <div v-if="userCheck === 1">
+              <router-link v-if="noticeState === false" :to="{ name: 'notice' }">
+                <img src="@/assets/images/bell.png" alt="알림" style="width:24px; height:24px padding-top:5px">
+              </router-link>
+              <router-link v-else :to="{ name: 'notice' }">
+                <img src="@/assets/images/basebell.png" alt="알림" style="width:24px; height:24px padding-top:3px">
+              </router-link>
+            </div>
+            <div v-else>
+              <router-lin v-if="noticeState === false" :to="{ name: 'noticeUser' }">
+                <img src="@/assets/images/bell.png" alt="알림" style="width:24px; height:24px padding-top:5px">
+              </router-lin>
+              <router-link v-else :to="{ name: 'noticeUser' }">
+                <img src="@/assets/images/basebell.png" alt="알림" style="width:24px; height:24px padding-top:3px">
+              </router-link>
+            </div>
           </div>
           <!-- 마이페이지 일 경우에 톱니바퀴도 보이기 -->
           <button
@@ -61,7 +94,7 @@
               width="24"
               height="24"
               fill="currentColor"
-              class="bi bi-gear ml-3"
+              class="bi bi-gear mb-1"
               viewBox="0 0 16 16"
             >
               <path
@@ -79,175 +112,97 @@
       <v-navigation-drawer app v-model="drawer" absolute clipped temporary>
         <router-link :to="{ name: 'main' }">
           <img
-            src="@/assets/logo.png"
+            src="@/assets/real_logo.png"
             alt="logo였던것.."
-            style="height: 6%; width: 20%; margin: 3% 0%"
+            style="height: 6%; width: 25%; margin: 3% 0%"
           />
         </router-link>
-        <!-- 로그인 안했을 경우 -->
-        <v-list v-if="logincheck === false" nav>
-          <v-list-item
-            v-for="item in notlogins"
-            :key="item.title"
-            :to="item.router"
-          >
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
-            fill="currentColor"
-            class="bi bi-box-arrow-in-right"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-            />
-          </svg>
-        </v-list>
 
         <!-- 로그인 했을 경우 -->
-        <div v-else>
-          <!-- 토글바 업주 로그인의 경우 -->
-          <v-list v-if="userState === 1" nav>
-            <v-list-item
-              v-for="item in owners"
-              :key="item.title"
-              :to="item.router"
-            >
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              fill="currentColor"
-              class="bi bi-box-arrow-in-right"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
-              />
-              <path
-                fill-rule="evenodd"
-                d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-              />
-            </svg>
-          </v-list>
-          <!-- 토글바 일반 유저 로그인 경우 -->
-          <v-list v-else-if="userState === 0" nav>
-            <v-list-item
-              v-for="item in users"
-              :key="item.title"
-              :to="item.router"
-            >
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              fill="currentColor"
-              class="bi bi-box-arrow-in-right"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
-              />
-              <path
-                fill-rule="evenodd"
-                d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-              />
-            </svg>
-          </v-list>
+        <div v-if="userCheck == 1 || userCheck == 2 || userCheck == 3">
           <!-- 토글바 관리자 로그인 경우 -->
-          <v-list v-else nav>
+          <v-list v-if="userCheck === 3" nav>
             <v-list-item
               v-for="item in admins"
               :key="item.title"
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              fill="currentColor"
-              class="bi bi-box-arrow-in-right"
-              viewBox="0 0 16 16"
+          </v-list>
+          <!-- 토글바 일반 유저 로그인 경우 -->
+          <v-list v-else-if="userCheck === 2" nav>
+            <v-list-item
+              v-for="item in users"
+              :key="item.title"
+              :to="item.router"
             >
-              <path
-                fill-rule="evenodd"
-                d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
-              />
-              <path
-                fill-rule="evenodd"
-                d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-              />
-            </svg>
+              <v-list-item-content>
+                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <!-- 토글바 업주 로그인의 경우 -->
+          <v-list v-else nav>
+            <v-list-item
+              v-for="item in owners"
+              :key="item.title"
+              :to="item.router"
+            >
+              <v-list-item-content>
+                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </div>
+
+        <!-- 로그인 안했을 경우 -->
+        <v-list v-else nav>
+          <v-list-item
+            v-for="item in notlogins"
+            :key="item.title"
+            :to="item.router"
+          >
+            <v-list-item-content>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <router-link :to="{ name: 'login' }">
+              <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
+          </router-link>
+        </v-list>
       </v-navigation-drawer>
 
       <!-- 설정 토글바 -->
       <v-navigation-drawer app v-model="setting" absolute clipped temporary>
         <router-link :to="{ name: 'main' }">
           <img
-            src="@/assets/logo.png"
+            src="@/assets/real_logo.png"
             alt="logo였던것.."
-            style="height: 6%; width: 20%; margin: 3% 0%"
+            style="height: 6%; width: 25%; margin: 3% 0%"
           />
         </router-link>
 
         <!-- 설정 토글바 업주 버전 -->
-        <v-list v-if="userState === 1" nav>
+        <v-list v-if="userCheck === 1" nav>
           <v-list-item
             v-for="item in settingOwners"
             :key="item.title"
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <MemberQuitModal></MemberQuitModal>
-          <StoreInfoDiscardModal :no="this.storeId"></StoreInfoDiscardModal>
+          <StoreInfoDiscardModal
+            v-if="this.discardStoreCnt >= 2"
+            :no="this.discardStoreId"
+          ></StoreInfoDiscardModal>
           <br /><br /><br />
-          <button @click="addstorepage" class="success">매장추가</button>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
-            fill="currentColor"
-            class="bi bi-box-arrow-in-right"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-            />
-          </svg>
+          <button @click="addstorepage">매장추가</button>
         </v-list>
 
         <!-- 설정 토글바 일반 유저 버전 -->
@@ -258,27 +213,10 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <MemberQuitModal></MemberQuitModal>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
-            fill="currentColor"
-            class="bi bi-box-arrow-in-right"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-            />
-          </svg>
         </v-list>
       </v-navigation-drawer>
 
@@ -293,6 +231,7 @@
 import http from "@/util/http-common";
 import MemberQuitModal from "@/components/profile/MemberQuitModal.vue";
 import StoreInfoDiscardModal from "@/components/profile/StoreInfoDiscardModal.vue";
+import { mapGetters, mapActions } from "vuex";
 // import storeAddModal from "@/components/accounts/storeAddModal.vue"
 export default {
   components: {
@@ -304,8 +243,9 @@ export default {
     return {
       drawer: false,
       setting: false,
-      // 일반 유저 0, 업주 1, 관리자 3
+      // 비로그인 0, 업주 1, 일반 유저 2, 관리자 3
       userState: 0,
+      noticeState: true,
       title: document.title,
       pageType: true,
       logincheck: false,
@@ -313,7 +253,6 @@ export default {
       store: {},
       storeId: "",
       saleItemList: [],
-
       notlogins: [
         { title: "홈", router: "/" },
         { title: "로그인", router: "/login" },
@@ -362,10 +301,14 @@ export default {
         "매장추가",
         "영업종료 확인",
         "비밀번호변경",
+        "관리자 페이지",
       ],
     };
   },
-
+  computed: {
+    ...mapGetters("discardStore", ["discardStoreCnt", "discardStoreId"]),
+    ...mapGetters("accounts", ["userCheck"]),
+  },
   created() {
     this.pageType = this.pages.includes(this.title);
   },
@@ -375,29 +318,52 @@ export default {
     this.pageType = this.pages.includes(this.title);
 
     if (localStorage.getItem("access-token") == null) {
-      this.logincheck = false;
+      this.getUserCheck(0);
     } else {
-      this.logincheck = true;
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
 
       http.get("/user").then((response) => {
         if (response.data.role == "OWNER") {
-          this.userState = 1;
+          this.getUserCheck(1);
         } else if (response.data.role == "USER") {
-          this.userState = 0;
+          this.getUserCheck(2);
         } else {
-          this.userState = 3;
+          this.getUserCheck(3);
         }
       });
+      http
+        .get("/notice/state-check").then((response) =>{
+          this.noticeState = response.data
+        })
     }
+    
+
   },
   methods: {
-    stateCheck(userState) {
-      console.log(userState);
-    },
+    ...mapActions("accounts", ["getUserCheck"]),
     addstorepage() {
       this.$router.push("/addstore");
+    },
+
+    copyLink() {
+      let currentUrl = window.document.location.href;
+
+      let t = document.createElement("textarea");
+      document.body.appendChild(t);
+      t.value = currentUrl;
+      t.select();
+      document.execCommand("copy");
+      document.body.removeChild(t);
+
+      alert("현재 주소 복사가 완료되었습니다🌏🧡");
+    },
+    movetoNaver() {
+      var link = "https://forms.gle/WJpvMqG54SUF29io8";
+      window.open(link);
+    },
+    goMain() {
+      this.$router.push("/");
     },
   },
 };
@@ -419,7 +385,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-left: 130px;
-  margin-top: 150px;
+  margin-top: 50px;
 }
 .on-box > img {
   width: 300px;
@@ -430,7 +396,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin: 0 0 0 20px;
+  margin: 0 0 0 10px;
 }
 .on-btn {
   height: 60px;
@@ -443,11 +409,6 @@ export default {
   padding: 3%;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.2);
 }
-.logo-text {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-}
 .web > h1 {
   color: black;
 }
@@ -455,10 +416,18 @@ export default {
   background-color: rgb(240, 240, 240);
   align-items: center;
   text-align: center;
+  height: 100%;
   margin: 0 auto;
   max-width: 420px;
   width: 100%;
   min-height: 100%;
+}
+
+.toggle-login {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  color: red;
 }
 .bi-box-arrow-in-right {
   position: fixed;
@@ -481,5 +450,22 @@ export default {
   #app {
     width: 100%;
   }
+}
+#div1 {
+  position: relative;
+  animation: mymove 3s;
+  animation-timing-function: ease;
+}
+
+@keyframes mymove {
+  from {
+    left: 400px;
+  }
+  to {
+    left: 0px;
+  }
+}
+#text-onsikgo {
+  font-size: 50rem;
 }
 </style>

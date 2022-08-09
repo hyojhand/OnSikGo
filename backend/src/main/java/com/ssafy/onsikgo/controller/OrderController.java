@@ -45,4 +45,8 @@ public class OrderController {
         return orderService.cancelOrder(order_id, request);
     }
 
+    @GetMapping("/price")
+    public ResponseEntity<String> totalOrderPrice(HttpServletRequest request) {
+        return orderService.totalOrderPrice(request);
+    }
 }

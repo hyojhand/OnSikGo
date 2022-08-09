@@ -1,16 +1,30 @@
 <template>
   <v-card class="mx-auto card-box" max-width="344">
-    <div class="row card-box">
+    <div
+      :class="{
+        active: `${orderDto.state}` == 'WAIT',
+      }"
+      class="row card-box"
+    >
       <img class="img-box col-5" :src="`${userDto.imgUrl}`" alt="유저 프로필" />
       <div class="col-7 order-box">
         <v-list-item-content>
           <v-list-item-title class="text mb-3 msg-box">
+            <span>{{ orderDto.date }}</span>
             <span v-html="`${content}`"></span>
             <!-- <span class="notice">님의</span> -->
           </v-list-item-title>
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
-          <p class="time-text">{{ createdDate }}</p>
+          <p v-if="`${orderDto.state}` === 'WAIT'" class="time-text">
+            주문대기
+          </p>
+          <p v-else-if="`${orderDto.state}` === 'CANCEL'" class="time-text">
+            주문취소
+          </p>
+          <p v-else-if="`${orderDto.state}` === 'ORDER'" class="time-text">
+            주문완료
+          </p>
           <notice-modal :value="items"></notice-modal>
         </v-card-actions>
       </div>
@@ -25,34 +39,36 @@ export default {
   name: "NoticeCard",
   components: { NoticeModal },
   data() {
-    return{
+    return {
       items: [],
-    }
+    };
   },
   props: {
     content: String,
     location: String,
     orderDto: [],
     receivedId: Number,
-    state: Boolean,
+    state: String,
     userDto: [],
     createdDate: String,
+    noticeState: String,
   },
-  created(){
-    this.getData()
+  created() {
+    this.getData();
+    console.log(this.userDto);
   },
   methods: {
-    getData(){
+    getData() {
       var temp = {
-        content : this.content,
-        location : this.location,
+        content: this.content,
+        location: this.location,
         orderDto: this.orderDto,
         receivedId: this.receivedId,
         state: this.state,
         userDto: this.userDto,
         createdDate: this.createdDate,
-      }
-      this.items = temp
+      };
+      this.items = temp;
     },
     goDetail() {
       this.$router.push("/notice/detail");
@@ -98,5 +114,9 @@ export default {
 }
 .notice {
   color: black;
+}
+.active {
+  background-color: #fff;
+  border-radius: 20px;
 }
 </style>

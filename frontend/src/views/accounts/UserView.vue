@@ -13,7 +13,7 @@
       </div>
     </div>
     <v-card class="btn-box" black outlined min-width="330">
-      <form class="mb-2 el-case">
+      <form @submit.prevent="submit" class="mb-2 el-case">
         <!-- -------메일 입력하기---------------------------- -->
         <div class="mail-input">
           <v-text-field
@@ -27,7 +27,7 @@
             @blur="$v.email.$touch()"
           ></v-text-field>
 
-          <button class="border-m radius-m confrim-btn" @click="isCheck()" >
+          <button type="button" class="border-m radius-m confrim-btn" @click="isCheck()" >
             {{ checkmsg }}
           </button>
           <div v-if="emailfailDuple">이미 가입된 메일입니다.</div>
@@ -45,6 +45,7 @@
             <button
               class="border-m radius-m mailconfirm-btn"
               @click="checkMail()"
+              type="button"
             >
               인증
             </button>
@@ -107,6 +108,7 @@
           <button
             class="border-m radius-m name-confrim-btn"
             @click="nicknameCheck()"
+            type="button"
           >
             중복확인
           </button>
@@ -129,11 +131,8 @@
           <button 
           class="border-m radius-m notice-btn" 
           @click="signup()"
-          v-bind:disabled="check1 == false | check1 == false">
+          v-if="check1 && check2 && checkbox">
             가입하기
-          </button>
-          <button @click="clear" class="border-m radius-m notice-btn clear">
-            초기화
           </button>
         </div>
         <div v-if="signupfailDuple">회원가입에 실패했습니다.</div>
@@ -187,8 +186,8 @@ export default {
     signupfailDuple: false,
     check1: false,
     check2: false,
-    time:null,
-    rederKey:0
+    time: false,
+    rederKey:0,
   }),
 
   computed: {
@@ -199,8 +198,11 @@ export default {
       return errors;
     },
     nameErrors() {
+      var pattern_name = /^[가-힣]{2,10}$/
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
+      this.name.search(/\s/) != -1 &&errors.push("이름은 빈 칸을 포함 할 수 없습니다.")
+      !pattern_name.test(this.name)&&errors.push("2글자 이상의 한글 이름을 입력해주세요.");
       !this.$v.name.maxLength &&
         errors.push("이름은 10글자 이내로 입력해야합니다.");
       !this.$v.name.required && errors.push(" ");
@@ -208,7 +210,9 @@ export default {
     },
     passwordErrors() {
       const errors = [];
-      if (!this.$v.password.$dirty) return errors;
+      const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
+      if (!this.$v.password.$dirty) return errors; 
+      !validatePassword.test(this.password) && errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
       !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
       !this.$v.password.required && errors.push(" ");
       return errors;
@@ -222,6 +226,8 @@ export default {
     nicknameErrors() {
       const errors = [];
       if (!this.$v.nickname.$dirty) return errors;
+      this.nickname.search(/\s/) != -1 &&errors.push("닉네임은 빈 칸을 포함 할 수 없습니다.")
+
       !this.$v.nickname.maxLength &&
         errors.push("닉네임은 10글자 이내로 입력해야합니다.");
       !this.$v.nickname.required && errors.push(" ");
@@ -238,6 +244,7 @@ export default {
   methods: {
     // 이메일 중복 확인 및 인증번호 전송
     isCheck() {
+      this.emailfailDuple = false;
       http
         .post("/user/email", {
           email: this.email
@@ -255,6 +262,8 @@ export default {
     },
     // 인증번호 확인
     checkMail() {
+      this.mailconfirmDuple = false;
+      this.mailfailDuple = false;
       http
         .post("/user/emailAuthNumber", {
           email: this.email,
@@ -264,7 +273,7 @@ export default {
         if ((response.status) == 200) {
           this.mailconfirmDuple = !this.mailconfirmDuple;
           this.check1 = true;
-          this.time=null;
+          this.time = false;
         } else {
           this.mailfailDuple = !this.mialfailDuple;
         }
@@ -272,6 +281,8 @@ export default {
     },
     // 닉네임 중복 확인
     nicknameCheck() {
+      this.nicknameDuple = false;
+      this.nicknamefailDuple = false;
       http
         .post("/user/nickname", {
           nickname: this.nickname
@@ -291,14 +302,6 @@ export default {
     submit() {
       this.$v.$touch();
     },
-    clear() {
-      this.$v.$reset();
-      this.name = "";
-      this.email = "";
-      this.password = "";
-      this.nickname = "";
-      this.checkbox = false;
-    },
     signup() {
       http
         .post("/user/signup", {
@@ -311,7 +314,6 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.$router.push("/signup/complete");
-            console.log(response.data);
           } else {
             this.signupfailDuple = !this.signupfailDuple;
           }

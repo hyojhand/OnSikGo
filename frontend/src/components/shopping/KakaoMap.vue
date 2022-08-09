@@ -3,7 +3,7 @@
     <div id="map"></div>
     <div class="container">
       <!-- 검색란 -->
-      <div class="search-container">
+      <div class="search-container m-1">
         <input
           v-model="keyword"
           @keyup.enter="keywordSelect()"
@@ -49,9 +49,9 @@
         </button>
       </div>
     </div>
-    <div v-if="this.items.length > 0">
+    <div v-if="this.items.length > 0" style="padding-left: 1rem;">
       <div
-        class="item-card"
+        class="item-card mt-3 mb-3"
         v-for="(item, index) in items"
         :key="index"
         v-bind="item"
@@ -66,16 +66,24 @@
           :src="item.itemDto.itemImgUrl"
           style="cursor: pointer"
           alt=""
-          class="col-3"
+          class="product-img col-3"
         />
 
         <div class="col-6 info-case">
           <div class="product-name">{{ item.itemDto.itemName }}</div>
           <div class="product-location">
-            매장위치 : {{ item.saleDto.storeDto.storeName }}
+            매장명 : {{ item.saleDto.storeDto.storeName }}
           </div>
-          <div class="product-prediction">
+          <div 
+            v-if="item.distance < 3000"
+            class="product-prediction">
             현재 위치로부터 {{ item.distance }} m
+          </div>
+          <div
+            v-else
+            class="product-prediction"
+            >
+            현재 위치로부터 {{ item.distance /1000 }} km
           </div>
           <div class="price-case">
             <span class="discount-price">{{ item.salePrice }}원</span>
@@ -85,14 +93,14 @@
                 ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(0)
               }}%
             </div>
-            <span class="price">({{ item.itemDto.price }}원)</span>
+            <span class="price"> ({{ item.itemDto.price }}원)</span>
           </div>
         </div>
         <div class="col-3 stock-case">
           <p class="product-quantity">
             재고 : <span class="product-number">{{ item.stock }}</span> 개
           </p>
-          <button class="border-m radius-s" @click="productOrder(item)">
+          <button class="order-button border-m radius-s" @click="productOrder(item)">
             주문하기
           </button>
         </div>
@@ -135,14 +143,16 @@ export default {
       // 현재 위치
       navigator.geolocation.getCurrentPosition((position) => {
         (this.currentxLatitude = position.coords.latitude), // 위도
-          (this.currentLongitude = position.coords.longitude); // 경도
+        (this.currentLongitude = position.coords.longitude); // 경도
         this.storexLatitude = this.currentxLatitude;
         this.storeLongitude = this.currentLongitude;
         // 현재위치
         // console.log(this.currentLongitude, this.currentxLatitude)
         this.curruntLocation();
       });
-      // 못찾은 경우
+     
+    } else {
+      this.curruntLocation();
     }
   },
 
@@ -360,7 +370,7 @@ export default {
             item.distance = distance;
           });
         });
-      this.createMap();
+      this.resetmoving(this.currentxLatitude, this.currentLongitude);
     },
     // 거리 구하기
     getdistance(lat1, lon1, lat2, lon2) {
@@ -384,17 +394,31 @@ export default {
 
       return dist;
     },
-    moving(item) {
-      var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-        mapOption = {
-          center: new kakao.maps.LatLng(
-            this.storexLatitude,
-            this.storeLongitude
-          ), // 지도의 중심좌표
-          level: 3, // 지도의 확대 레벨
-        };
+    resetmoving(lat, lng) {
+      this.storexLatitude = lat;
+      this.storeLongitude = lng;
+      // 이동할 위도 경도 위치를 생성합니다
+      var moveLatLon = new kakao.maps.LatLng(
+        lat,
+        lng
+      );
 
-      var map = new kakao.maps.Map(mapContainer, mapOption);
+      // 지도 중심을 부드럽게 이동시킵니다
+      // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+      this.map.panTo(moveLatLon);
+
+    },
+    moving(item) {
+      // var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+      //   mapOption = {
+      //     center: new kakao.maps.LatLng(
+      //       this.storexLatitude,
+      //       this.storeLongitude
+      //     ), // 지도의 중심좌표
+      //     level: 3, // 지도의 확대 레벨
+      //   };
+
+      // var map = new kakao.maps.Map(mapContainer, mapOption);
       this.storexLatitude = item.saleDto.storeDto.lat;
       this.storeLongitude = item.saleDto.storeDto.lng;
       // 이동할 위도 경도 위치를 생성합니다
@@ -405,7 +429,7 @@ export default {
 
       // 지도 중심을 부드럽게 이동시킵니다
       // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-      map.panTo(moveLatLon);
+      this.map.panTo(moveLatLon);
 
       var imageSrc =
         "https://cdn4.iconfinder.com/data/icons/food-delivery-service-3/100/food_delivery_gps_mark_service_boy_online-256.png";
@@ -423,9 +447,37 @@ export default {
         ), // 마커를 표시할 위치
         image: markerImage, // 마커 이미지
       });
+      var infowindow = new kakao.maps.InfoWindow({
+          content:
+            '<div class="wrap">' +
+            '    <div class="info">' +
+            '        <div class="title" >' +
+            `            ${item.saleDto.storeDto.storeName}` +
+            "        </div>" +
+            '        <div class="body">' +
+            '            <div class="desc">' +
+            `               <div class="jibun ellipsis">전화번호 : ${item.saleDto.storeDto.tel}</div>` +
+            `               <div class="jibun ellipsis">휴일 : ${item.saleDto.storeDto.offDay}</div>` +
+            `               <div class="jibun ellipsis">마감시간 : ${item.saleDto.storeDto.closingTime}</div>` +
+            "            </div>" +
+            "        </div>" +
+            "    </div>" +
+            "</div>",
+        });
+        // console.log(this.map)
 
+        kakao.maps.event.addListener(
+          marker,
+          "mouseover",
+          this.makeOverListener(this.map, marker, infowindow)
+        );
+        kakao.maps.event.addListener(
+          marker,
+          "mouseout",
+          this.makeOutListener(infowindow)
+        );
       // 마커가 지도 위에 표시되도록 설정합니다
-      marker.setMap(map);
+      marker.setMap(this.map);
     },
   },
 };
@@ -457,7 +509,7 @@ img {
 }
 /* 거리 에측 */
 .product-prediction {
-  font-size: 10px !important;
+  font-size: 0.75rem;
   color: #b9b9b9;
 }
 /* 할인율 */
@@ -475,7 +527,7 @@ img {
 }
 .price {
   color: rgba(0, 0, 0, 0.2);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 /* 할인가 */
 .discount-price {
@@ -493,6 +545,12 @@ img {
   color: red;
   font-weight: bolder;
 }
+.product-img{
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  padding-bottom: 5px;
+}
 
 .product-order {
   border: 1px solid;
@@ -506,13 +564,14 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding-right: 3%;
+  padding: 0;
+  margin: 0;
 }
 .item-card {
-  width: 100%;
+  width: 95%;
   display: flex;
   flex-direction: row;
-  padding: 3px 0;
+  padding: 3px 0p;
 
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
@@ -522,8 +581,14 @@ img {
 }
 
 .product-search {
-  padding-right: 5px;
-  padding-left: 5px;
+  padding: 0;
+  margin: 0;
+  padding-right: 10px;
+  padding-left: 15px;
+}
+.search-reset{
+  padding: 0;
+  margin: 0;
 }
 
 .search-box {
@@ -532,7 +597,8 @@ img {
   font-size: 12px;
   background-repeat: no-repeat;
   padding: 5px 5px;
-  width: 260px;
+  width: 320px;
+  height: 30px;
   background-color: #fff;
 }
 
@@ -559,5 +625,10 @@ img {
   margin-top: 3%;
   color: rgba(0, 0, 0, 0.3);
   font-size: 30px;
+}
+
+.order-button:hover{
+  background-color: rgb(140, 184, 131);
+  color: #fff;
 }
 </style>

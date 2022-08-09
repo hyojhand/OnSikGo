@@ -4,11 +4,17 @@ const discardStore = {
     discardStoreId: "",
     discardStoreImg: "",
     discardStoreName: "",
+    discardStoreClose: "",
+    discardStoreList: [],
+    discardStoreCnt: "",
   },
   getters: {
     discardStoreId: (state) => state.discardStoreId,
     discardStoreImg: (state) => state.discardStoreImg,
     discardStoreName: (state) => state.discardStoreName,
+    discardStoreClose: (state) => state.discardStoreClose,
+    discardStoreList: (state) => state.discardStoreList,
+    discardStoreCnt: (state) => state.discardStoreCnt,
   },
   actions: {
     discardStoreId: ({ commit }, storeId) => {
@@ -20,6 +26,15 @@ const discardStore = {
     discardStoreName: ({ commit }, storeName) => {
       commit("DISCARD_STORENAME", storeName);
     },
+    getDiscardStoreClose: ({ commit }, storeClose) => {
+      commit("GET_DISCARD_STORECLOSE", storeClose);
+    },
+    getDsicardStoreList: ({ commit }, storeList) => {
+      commit("GET_DISCARD_STORELIST", storeList);
+    },
+    discardStoreCnt: ({ commit }, storeCnt) => {
+      commit("DISCARD_STORE_CNT", storeCnt);
+    },
   },
   mutations: {
     DISCARD_STOREID: (state, storeId) => {
@@ -30,6 +45,16 @@ const discardStore = {
     },
     DISCARD_STORENAME: (state, storeName) => {
       state.discardStoreName = storeName;
+    },
+    GET_DISCARD_STORECLOSE: (state, storeClose) => {
+      state.discardStoreClose = storeClose;
+      // console.log(storeClose);
+    },
+    GET_DISCARD_STORELIST: (state, storeList) => {
+      state.discardStoreList = storeList;
+    },
+    DISCARD_STORE_CNT: (state, storeCnt) => {
+      state.discardStoreCnt = storeCnt;
     },
   },
 };

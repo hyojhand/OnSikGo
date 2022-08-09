@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class Review {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long reviewId;
 
     @Column(nullable = false)

@@ -1,6 +1,5 @@
 package com.ssafy.onsikgo.controller;
 
-import com.ssafy.onsikgo.dto.ItemDto;
 import com.ssafy.onsikgo.dto.SaleDto;
 import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.StoreDto;
@@ -71,5 +70,10 @@ public class StoreController {
     @GetMapping("/total")
     public ResponseEntity<List<StoreDto>> getTotal() {
         return storeService.getTotal();
+    }
+
+    @PostMapping("/keyword")
+    public ResponseEntity<List<StoreDto>> getKeyword(@RequestBody SelectDto selectDto) {
+        return storeService.getKeyword(selectDto);
     }
 }

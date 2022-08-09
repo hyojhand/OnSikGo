@@ -2,23 +2,20 @@
   <div>
     <form>
       <div class="mt-5">
-      <b-img :src="previewImg" height="200px" width="200px" />
+        <b-img :src="previewImg" height="200px" width="200px" />
         <p class="d-flex justify-content-end">
-          <input @change="fileSelect" type="file" />        
+          <input @change="fileSelect" type="file" />
         </p>
       </div>
 
       <!-- ------상호명 입력--------------- -->
-      <div class="ml-3 mr-4 mt-10">
+      <div class="ml-4 mr-4 mt-10">
         <v-text-field
           v-model="store"
-          :error-messages="storeErrors"
           label="상호명을 입력해주세요."
           required
           class="input-box"
           color="black"
-          @input="$v.store.$touch()"
-          @blur="$v.store.$touch()"
         ></v-text-field>
       </div>
 
@@ -33,8 +30,6 @@
               class="input-box"
               color="black"
               type="address"
-              @input="$v.address.$touch()"
-              @blur="$v.address.$touch()"
             ></v-text-field>
           </div>
           <div class="col-3">
@@ -55,8 +50,6 @@
           class="input-box"
           color="black"
           type="address"
-          @input="$v.address.$touch()"
-          @blur="$v.address.$touch()"
         ></v-text-field>
       </div>
 
@@ -66,20 +59,23 @@
           <div class="col-9">
             <v-text-field
               v-model="identify"
-              :error-messages="identifyErrors"
               label="사업자번호를 입력해주세요."
               required
               class="input-box"
               color="black"
-              @input="$v.identify.$touch()"
-              @blur="$v.identify.$touch()"
             ></v-text-field>
           </div>
           <div class="col-3">
-            <button class="border-l radius-m address-btn" @click="checkOwner()">
+            <button
+              @click="ownerNumcheck"
+              class="border-l radius-m address-btn"
+              type="button"
+            >
               번호 인증
             </button>
           </div>
+          <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
+          <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
         </div>
       </div>
 
@@ -87,14 +83,11 @@
       <div class="ml-3 mr-4 mt-3">
         <v-text-field
           v-model="tel"
-          :error-messages="telErrors"
           type="tel"
           label="가게 전화번호를 입력해주세요."
           required
           class="input-box"
           color="black"
-          @input="$v.tel.$touch()"
-          @blur="$v.tel.$touch()"
         ></v-text-field>
       </div>
 
@@ -107,8 +100,6 @@
           required
           class="input-box"
           color="black"
-          @input="$v.end.$touch()"
-          @blur="$v.end.$touch()"
         ></v-text-field>
       </div>
 
@@ -120,8 +111,6 @@
           label="휴무일을 입력해주세요."
           multiple
           chips
-          @input="$v.off.$touch()"
-          @blur="$v.off.$touch()"
         ></v-select>
       </div>
 
@@ -133,8 +122,6 @@
           label="카테고리를 선택해주세요."
           required
           color="black"
-          @input="$v.category.$touch()"
-          @blur="$v.category.$touch()"
         ></v-select>
       </div>
     </form>
@@ -150,20 +137,24 @@
 
 <script>
 import http from "@/util/http-common";
-
+import axios from "axios";
 export default {
   name: "storeAddView",
   data() {
     return {
       imgFile: null,
-      previewImg:null,
+      previewImg: null,
       store: "",
       address: "",
+      extraAddress: "",
       tel: "",
       identify: "",
       end: "",
       off: "",
       category: "",
+      ownercheckDuple: false,
+      ownerfailDuple: false,
+      numCheck: true,
       items: [
         { value: "KOREA", text: "한식" },
         { value: "JAPAN", text: "일식" },
@@ -184,36 +175,13 @@ export default {
       storeDto: [],
     };
   },
-
-  // computed: {
-  //   storeErrors() {
-  //     const errors = [];
-  //     if (!this.$v.store.$dirty) return errors;
-  //     !this.$v.store.required && errors.push(" ");
-  //     return errors;
-  //   },
-
-  //   telErrors() {
-  //     const errors = [];
-  //     if (!this.$v.tel.$dirty) return errors;
-  //     !this.$v.tel.required && errors.push(" ");
-  //     return errors;
-  //   },
-  //   identifyErrors() {
-  //     const errors = [];
-  //     if (!this.$v.identify.$dirty) return errors;
-  //     !this.$v.identify.required && errors.push(" ");
-  //     return errors;
-  //   },
-  // },
-
   methods: {
     fileSelect(event) {
       var input = event.target;
 
       if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (e) => {
           this.previewImg = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
@@ -222,8 +190,7 @@ export default {
       }
 
       this.imgFile = input.files[0];
-
-},
+    },
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
@@ -262,46 +229,69 @@ export default {
         },
       }).open();
     },
-
-    checkOwner() {
-      alert("사업자 번호 등록");
+    ownerNumcheck() {
+      axios
+        .post(
+          "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON",
+          {
+            b_no: [this.identify],
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.match_cnt == 1) {
+            this.ownercheckDuple = true;
+            this.ownerfailDuple = false;
+            this.numCheck = true;
+          } else {
+            this.ownercheckDuple = false;
+            this.ownerfailDuple = true;
+            this.numCheck = false;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-
     registerStore() {
-      // 이미지 파일도 추가하게 넣어야함
       this.storeDto = {
         storeName: this.store,
-        location: this.address,
+        address: this.address,
+        extraAddress: this.extraAddress,
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
         offDay: this.off.join(),
         category: this.category,
       };
-      console.log(this.storeDto);
       const formData = new FormData();
       formData.append("file", this.imgFile);
       formData.append(
         "storeDto",
         new Blob([JSON.stringify(this.storeDto)], { type: "application/json" })
       );
-      console.log(formData);
-      http.defaults.headers["access-token"] =
-        localStorage.getItem("access-token");
-      http
-        .post("/store/register", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          if (response.status == 200) {
-            alert("매장이 추가 완료되었습니다");
-            this.$router.push("/mypage/owner");
-          } else {
-            alert("매장 추가가 완료되지 않았습니다.");
-          }
-        });
+      if (this.numCheck == true) {
+        http.defaults.headers["access-token"] =
+          localStorage.getItem("access-token");
+        console.log(this.storeDto);
+        http
+          .post("/store/register", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              console.log(this.storeDto);
+              alert("매장이 추가 완료되었습니다");
+              this.$router.push("/mypage/owner");
+            } else {
+              alert("매장 추가가 완료되지 않았습니다.");
+            }
+          });
+      } else {
+        alert("사업자 등록번호를 다시 확인해주세요");
+      }
     },
   },
 };

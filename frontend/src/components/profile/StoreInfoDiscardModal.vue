@@ -21,11 +21,11 @@
               width="120"
               height="150"
               class="col-5"
-              :src="`${this.discardStoreImg}`"
+              :src="`${this.stimg}`"
             />
             <div class="col-6 mt-7 mr-2">
               <span style="color: black" class="text-m"
-                >"{{ this.discardStoreName }}"의 매장정보를<br />
+                >"{{ this.stname }}"의 매장정보를<br />
                 폐기하시겠습니까?</span
               >
               <br />
@@ -57,28 +57,28 @@ export default {
   data() {
     return {
       dialog: false,
+      stname: "",
+      stimg: "",
     };
   },
   computed: {
-    ...mapGetters("discardStore", [
-      "discardStoreId",
-      "discardStoreName",
-      "discardStoreImg",
-    ]),
+    ...mapGetters("discardStore", ["discardStoreId"]),
+  },
+  created() {
+    http.get(`/store/${this.discardStoreId}`).then((response) => {
+      this.stname = response.data.storeName;
+      this.stimg = response.data.storeImgUrl;
+    });
   },
   methods: {
     backToMypage() {
       this.dialog = false;
     },
     deleteStore() {
-      // console.log(this.discardStoreId);
       http.delete(`/store/${this.discardStoreId}`).then((response) => {
-        console.log(this.discardStoreId);
-        console.log(this.discardStoreName);
-        console.log(this.discardStoreImg);
         if (response.status == 200) {
           alert("가게 정보 폐기 완료되었습니다!");
-          this.$router.push("MypageOwnerView");
+          this.$router.go();
         } else {
           alert("가게 정보 삭제에 실패했습니다.");
         }

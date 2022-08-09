@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="mt-6">
-      <img :src="`${userDto.imgUrl}`" width="100" height="75" />
+    <div>
+      <img :src="`${userDto.imgUrl}`" width="100" height="100" />
     </div>
 
     <div class="mt-3">
       <span
         >{{ userDto.userName }} 님!, <br />이번 달에
         <strong id="green">온식고</strong>를 통해 <br /><strong id="green"
-          >주문금액원</strong
+          >{{ this.orderPrice }}원</strong
         >의 세상을 구하셨어요!</span
       >
     </div>
@@ -21,7 +21,7 @@
     <hr />
     <br />
     <h5>✨ {{ userDto.userName }} 님의 단골매장</h5>
-    <div>
+    <div v-if="this.storeregularList.length">
       <regularList
         v-for="(store, index) in storeregularList"
         :key="index"
@@ -29,7 +29,10 @@
       >
       </regularList>
     </div>
-
+    <div v-else class="non-msg">
+      <div>단골 매장을</div>
+      <div>등록해보는건 어떨까요?</div>
+    </div>
     <br />
   </div>
 </template>
@@ -46,6 +49,7 @@ export default {
     return {
       userDto: {},
       storeregularList: [],
+      orderPrice: "",
     };
   },
   created() {
@@ -54,11 +58,16 @@ export default {
 
     http.get("/user").then((response) => {
       this.userDto = response.data;
+      // console.log(this.userDto);
     });
 
     http.get("/follow").then((response) => {
       console.log(response.data);
       this.storeregularList = response.data;
+    });
+
+    http.get("/order/price").then((response) => {
+      this.orderPrice = response.data;
     });
   },
   methods: {
@@ -95,5 +104,17 @@ export default {
   background-color: #368f3d;
   color: #ffffff;
   width: 100px;
+}
+.non-msg {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.non-msg > div {
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
 }
 </style>

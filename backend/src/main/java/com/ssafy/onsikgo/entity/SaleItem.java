@@ -21,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class SaleItem {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long saleItemId;
 
     @Column(nullable = false)
@@ -41,7 +41,7 @@ public class SaleItem {
     @JoinColumn(name = "itemId")
     private Item item;
 
-    @OneToMany(mappedBy = "saleItem")
+    @OneToMany(mappedBy = "saleItem" , cascade = CascadeType.REMOVE)
     private List<Order> orders = new ArrayList<>();
 
     public SaleItemDto toDto(ItemDto itemDto, SaleDto saleDto) {
@@ -69,9 +69,10 @@ public class SaleItem {
         return this;
     }
 
-    public SaleItem update(Integer stock, Integer salePrice) {
+    public SaleItem update(Integer stock, Integer salePrice,Integer totalStock) {
         this.stock = stock;
         this.salePrice = salePrice;
+        this.totalStock = totalStock;
         return this;
     }
 }

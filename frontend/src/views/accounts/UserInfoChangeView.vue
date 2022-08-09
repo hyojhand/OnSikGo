@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div class="ml-6 mt-3">
+    <div v-if="this.userDto.loginType == 'ONSIKGO'" class="ml-6 mt-3">
       <div class="container">
         <div class="row">
           <div class="col-6">
@@ -61,6 +61,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <span>소셜 로그인으로 가입한 경우 비밀번호 변경이 어렵습니다.</span>
     </div>
     <div class="ml-10 mr-10 mt-10">
       <div class="d-flex justify-content-end">
@@ -89,6 +92,7 @@ export default {
 
     await http.get("/user").then((response) => {
       this.userDto = response.data;
+      console.log(this.userDto.loginType);
       this.previewImg = this.userDto.imgUrl;
       this.role = response.data.role;
     });
