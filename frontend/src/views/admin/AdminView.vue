@@ -1,10 +1,11 @@
 <template>
   <div class="container">
-    <h1>관리자페이지</h1>
-    <hr class="mt-5">
+    <!-- <h1 class="mb-5">관리자 페이지</h1> -->
     <!-- Tab 기능 -->
       <ul class="tabs row ">
-        <li class="col" v-for="tab in tabs" 
+        <li 
+          class="col" 
+          v-for="tab in tabs" 
           v-bind:class="{active : tab === selectedTab}" 
           :key="tab"
           v-on:click="onClickTab(tab)">
@@ -84,12 +85,15 @@ ul.tabs li{
   color: #222;
   padding: 10px 15px;
   cursor: pointer;
-  border: 1px solid #B9B9B9;
-  border-radius: 16px;
   width:78px;
   height: 30px;
   font-size: 15px;
   padding: 0;
   margin-left: 5px;
+  margin-top: 10px;
+}
+
+.active > span {
+  color:rgb(140, 184, 131);
 }
 </style>
