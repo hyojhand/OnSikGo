@@ -1,22 +1,28 @@
 <template>
   <div class="container">
     <!--현재 내 날짜로부터 7일전날짜부터 ~ 현재 날짜 -->
-    <div class="store font-l">{{ this.storeName }}</div>
 
     <div class="mt-5 mb-5">
-      <h3>점주님은 온식고를 통해</h3>
+      <span style="font-size: 1.3rem">"{{ this.storeName }}" 점주님은 </span
+      ><br /><span style="font-size: 1.3rem; color: #8cb883">온식고</span>
+      <span style="font-size: 1.3rem">를 통해</span>
       <br />
-      <h4>{{ this.total }}원치의 세상을 구하셨어요!</h4>
+      <span style="font-size: 1.3rem; color: #8cb883">{{ this.total }}원 </span
+      ><span style="font-size: 1.3rem">가치의 세상을 구하셨어요!</span>
     </div>
-    <div v-if="!once" @click="opento" class="date font-m">
-      날짜를 선택하세요
+    <div v-if="!once" @click="opento" class="date font-m mt-5">
+      📆 <br /><span style="font-size: 0.8rem"
+        >* 달력을 클릭하여 날짜를 선택하세요 *</span
+      >
     </div>
     <div v-else>
       <div class="calender-container">
         <div @click="open">
-          <div v-if="this.dates[0]" class="date">{{ this.dates[0] }}일부터</div>
+          <div v-if="this.dates[0]" class="date">
+            시작일자: {{ this.dates[0] }}
+          </div>
           <div v-if="this.dates[1]" class="date">
-            {{ this.dates[1] }}일까지 선택하셨습니다.
+            끝 일자: {{ this.dates[1] }}
           </div>
         </div>
         <button
@@ -38,24 +44,25 @@
       ></v-date-picker>
     </div>
     <div class="ti-box row" v-if="this.wordCloud.length > 0">
-      <div class="col-6 imo-box likes">
-        <svg
+      <!-- <div class="col-6 imo-box likes"> -->
+      <!-- <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"
           height="30"
-          fill="#464fa6"
+          fill="#8cb883"
           class="bi bi-emoji-smile-fill"
           viewBox="0 0 16 16"
         >
           <path
             d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"
           />
-        </svg>
-        <span
-          >저희가 가장 많은 <br />
-          사랑을 받았어요!!</span
-        >
-      </div>
+        </svg> -->
+      <span style="font-size: 1.3rem">😋 잘 팔린 상품들을 한눈에! 😋</span
+      ><br /><br />
+      <span style="font-size: 0.9rem; font-weight: 500"
+        >글씨 크기가 클 수록 많이 팔린 상품입니다.</span
+      >
+      <!-- </div> -->
       <!-- <div class="col-6 imo-box" @click="bad()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -78,8 +85,17 @@
 
     <!-- 데이터 불러와서 상위 5개의 제품 보여줌 -->
     <div v-if="this.wordCloud.length > 0">
-      <word-cloud></word-cloud>
-      <bar-chart></bar-chart>
+      <div v-if="this.total != 0">
+        <word-cloud></word-cloud>
+      </div>
+      <div class="mt-5">
+        <span style="font-size: 1.3rem">📊 팔린 개수와 전체 개수 비교 📊</span>
+        <br />
+        <span style="font-size: 0.9rem; font-weight: 500"
+          >오른쪽으로 스크롤하여 데이터를 비교해보세요!</span
+        ><br /><br />
+        <bar-chart></bar-chart>
+      </div>
     </div>
     <div v-else class="non-msg">
       <div>해당 기간동안</div>
@@ -263,7 +279,8 @@ export default {
   color: tomato;
 }
 .likes > span {
-  color: #464fa6;
+  color: black;
+  font-size: 1.3rem;
 }
 .non-msg {
   width: 100%;

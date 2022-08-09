@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      myColors: ["#FE2E2E", "#8904B1", "#FE9A2E", "#08088A", "#088A4B"],
+      myColors: ["#66AB48", "#037C5E", "#C67E53", "#BA4E61", "#BE4A05"],
     };
   },
 };
