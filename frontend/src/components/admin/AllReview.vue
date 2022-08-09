@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>전체리뷰</h1>
     <div
       v-for="(review, index) in reviewList"
       :key="index"
