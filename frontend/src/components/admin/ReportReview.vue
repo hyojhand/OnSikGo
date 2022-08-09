@@ -5,8 +5,8 @@
       :key="index"
       class="row">
       <div class="text-start mt-3">
-        <p>작성자명: {{ report.nickname }}</p>
-        <p>가게명: {{ report.storeDto.storeName }}</p>
+        <li>작성자명: {{ report.nickname }}</li>
+        <li>가게명: {{ report.storeDto.storeName }}</li>
         <p class="text-primary fs-5">내용: {{ report.content }}</p>
       </div>
         <v-btn @click="deleteReview(report)" color="error" style="width: 100px; left:300px;" depressed>삭제</v-btn>
@@ -33,11 +33,9 @@ export default {
         .get('/admin/reportedReviews')
         .then((response) => {
           this.reviewList = response.data;
-          console.log(response.data);
         })
     },
     deleteReview(review) {
-      console.log(review.reviewId);
       http
         .delete(`/review/${review.reviewId}`)
         .then((response) => {

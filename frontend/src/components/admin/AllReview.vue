@@ -5,8 +5,8 @@
       :key="index"
       class="row">
       <div class="text-start mt-3">
-        <p>글쓴이: {{ review.nickname }}</p>
-        <p>가게명: {{ review.storeDto.storeName }}</p>
+        <li>글쓴이: {{ review.nickname }}</li>
+        <li>가게명: {{ review.storeDto.storeName }}</li>
         <p class="text-primary fs-5">작성내용: {{ review.content }}</p>
       </div>
         <v-btn @click="deleteReview(review)" color="error" style="width: 100px; left:300px;" depressed>삭제</v-btn>

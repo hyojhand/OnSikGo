@@ -33,11 +33,9 @@ export default {
         .get('/store/total')
         .then((response) => {
           this.storeList = response.data;
-          console.log(response.data);
         })
     },
     deleteStore(stores) {
-      console.log(stores);
       http
         .delete(`/store/${stores.storeId}`)
         .then((response) => {
