@@ -1,6 +1,8 @@
 <template>
   <div>
-    <span style="font-size: 1.5rem">💌주문내역💌</span>
+    <div class="mt-5">
+      <span style="font-size: 1.5rem">💌주문내역💌</span>
+    </div>
     <div v-if="this.orderList.length">
       <order-list
         v-for="(order, index) in orderList"
