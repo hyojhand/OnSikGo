@@ -112,7 +112,7 @@
         </router-link>
 
         <!-- 로그인 했을 경우 -->
-        <div v-if="userCheck">
+        <div v-if="userCheck == 1 || userCheck == 2 || userCheck == 3">
           <!-- 토글바 관리자 로그인 경우 -->
           <v-list v-if="userCheck === 3" nav>
             <v-list-item
@@ -204,7 +204,7 @@
             
           </v-list>
         </div>
-        
+
         <!-- 로그인 안했을 경우 -->
         <v-list v-else nav>
           <v-list-item
