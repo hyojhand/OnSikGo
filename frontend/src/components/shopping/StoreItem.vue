@@ -1,106 +1,150 @@
 <template>
-  <div class="store-container">
-    <div class="row">
-      <!-- 가게 이미지 -->
-      <div class="col-2">
-        <img
-          class="store-image"
-          :src="`${storeImgUrl}`"
-          height="50"
-          width="50"
-        />
+  <div class="store-container" :class="{ zerostock: saleCount == 0 }">
+    <!-- 가게 이미지 -->
+
+    <img :src="`${storeImgUrl}`" class="col-3" />
+
+    <!-- 가게 설명 -->
+    <div class="col-5 store-case">
+      <div class="store-name" :class="{ none: saleCount == 0 }">
+        {{ storeName }}
       </div>
-      <!-- 가게 설명 -->
-      <div class="store col">
-        <p class="store-name">{{ storeName }}</p>
-        <p class="store-prediction">300m, 도보로 3분</p>
+      <div
+        v-if="this.distance < 3000"
+        class="store-prediction"
+        :class="{ none: saleCount == 0 }"
+      >
+        현재 위치로 부터 {{ this.distance }} m
       </div>
-      <!-- 물품수량 & 버튼 -->
-      <div class="col">
-        <p class="store-product">
-          등록물품 :
-          <span class="product-count"> {{ saleItemDtoList.length }}</span> 개
-        </p>
-        <router-link
-          class="store-moving"
-          :to="{ name: 'storeView', params: { storeId: this.storeId } }"
-          >가게보기</router-link
-        >
+      <div v-else class="store-prediction" :class="{ none: saleCount == 0 }">
+        현재 위치로 부터 {{ this.distance / 1000 }} km
       </div>
-      <hr style="border: 1px solid #222; margin: 3px" />
+      <div class="ment" :class="{ none: saleCount == 0 }" v-if="saleCount == 0">
+        오늘 등록된 물품이 없어요ㅠ
+      </div>
+    </div>
+    <!-- 물품수량 & 버튼 -->
+    <div class="col-4 product-case">
+      <p class="store-product" :class="{ none: saleCount == 0 }">
+        등록물품 :
+        <span class="product-count" :class="{ none: saleCount == 0 }">{{
+          saleCount
+        }}</span>
+        개
+      </p>
+      <button
+        class="border-m radius-s"
+        :class="{ none: saleCount == 0 }"
+        @click="storeDetail()"
+      >
+        가게보기
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import http from "@/util/http-common";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "StoreItem",
 
   props: {
     storeId: Number,
     storeName: String,
-    location: String,
-    tel: String,
-    storeNum: String,
     storeImgUrl: String,
-    closingTime: String,
-    offDay: String,
     category: String,
     lat: String,
     lng: String,
+    saleCount: Number,
   },
-
+  computed: {
+    ...mapGetters("store", ["currentX", "currentY"]),
+  },
   data() {
     return {
-      saleItemDtoList: [],
+      distance: "",
     };
   },
-  created() {
-    http.get(`/sale/list/${this.storeId}`).then((response) => {
-      if (response.status == 200) {
-        this.saleItemDtoList = response.data;
+  methods: {
+    ...mapActions("storeStore", ["getStoreId"]),
+    storeDetail() {
+      this.getStoreId(this.storeId);
+      this.$router.push({
+        name: "storeView",
+      });
+    },
+    getdistance(lat1, lon1, lat2, lon2) {
+      if (lat1 == lat2 && lon1 == lon2) {
+        this.distance = 0;
+        return;
       }
-    });
+      var radLat1 = (Math.PI * lat1) / 180;
+      var radLat2 = (Math.PI * lat2) / 180;
+      var theta = lon1 - lon2;
+      var radTheta = (Math.PI * theta) / 180;
+      var dist =
+        Math.sin(radLat1) * Math.sin(radLat2) +
+        Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+      if (dist > 1) dist = 1;
+
+      dist = Math.acos(dist);
+      dist = (dist * 180) / Math.PI;
+      dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+      if (dist < 100) dist = Math.round(dist / 10) * 10;
+      else dist = Math.round(dist / 100) * 100;
+      this.distance = dist;
+      return;
+    },
+  },
+  created() {
+    this.getdistance(this.currentX, this.currentY, this.lat, this.lng);
   },
 };
 </script>
 
 <style scoped>
 .store-container {
-  padding: 6px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  height: 120px;
+  margin: 0;
 }
-
-.store-container .row .store-image {
-  width: 50px;
+.store-product {
+  font-size: 13px;
 }
-
-.store-container .row .store {
-  text-align: left;
+.product-case {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0;
 }
-.store-container .row .store .store-name {
-  font-size: 12px;
-  font-weight: bolder;
-}
-.store-container .row .store .store-prediction {
-  font-size: 6px !important;
-  color: #b9b9b9;
-}
-
-.store-container .row .store-product {
-  font-size: 12px;
-}
-.store-container .row .product-count {
+.product-count {
   color: red;
-  font-weight: bolder;
 }
-
-.store-container .row .store-moving {
-  border: 1px solid;
-  text-decoration-line: none;
-  border-radius: 15px;
-  font-size: 12px;
-  padding: 3px;
-  color: #222;
+.store-case {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: left;
+}
+.store-name {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+.zerostock {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.none {
+  color: rgba(0, 0, 0, 0.7);
+}
+img {
+  padding: 0;
+}
+.ment {
+  font-size: 13px;
 }
 </style>

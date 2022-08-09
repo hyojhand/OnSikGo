@@ -1,8 +1,8 @@
 <template>
-<div class="text-center">
+  <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="success" dark v-bind="attrs" v-on="on"> 제발 되어주세요 </v-btn>
+        <button v-bind="attrs" v-on="on">제발 되어주세요</button>
       </template>
 
       <v-card>
@@ -48,11 +48,7 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style>
-
-</style>
+<style></style>

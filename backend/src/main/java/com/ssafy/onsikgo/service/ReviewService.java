@@ -47,13 +47,23 @@ public class ReviewService {
         Long storeId = Long.valueOf(map.get("storeId"));
         Store findStore = storeRepository.findById(storeId).get();
 
+        List<Review>reviews = reviewRepository.findByUserAndStore(findUser,findStore);
+        if(reviews.size()>1){
+            return new ResponseEntity<>("한 가게에 최대 2개의 리뷰만 등록가능합니다.", HttpStatus.NO_CONTENT);
+        }
+
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String createdDate = today.format(formatter);
 
         String content = map.get("content");
 
-        ReviewDto reviewDto = new ReviewDto(content,createdDate,false,findUser.getNickname(),null, findUser.getImgUrl());
+        ReviewDto reviewDto = new ReviewDto();
+        reviewDto.setContent(content);
+        reviewDto.setCreatedDate(createdDate);
+        reviewDto.setReported(false);
+        reviewDto.setNickname(findUser.getNickname());
+        reviewDto.setUserImgUrl(findUser.getImgUrl());
 
         Review review = reviewDto.toEntity(findUser,findStore);
         reviewRepository.save(review);
@@ -118,4 +128,13 @@ public class ReviewService {
         return new ResponseEntity<>("리뷰가 신고되었습니다.", HttpStatus.OK);
     }
 
+    public ResponseEntity<List<ReviewDto>> getTotal() {
+        List<Review> allReview = reviewRepository.findAll();
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+        for(Review review : allReview) {
+            reviewDtoList.add(review.toDto());
+        }
+
+        return new ResponseEntity<>(reviewDtoList, HttpStatus.OK);
+    }
 }

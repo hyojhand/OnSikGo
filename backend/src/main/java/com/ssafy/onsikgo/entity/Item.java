@@ -21,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 @RequiredArgsConstructor
 public class Item {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long itemId;
 
     @Column(nullable = false)

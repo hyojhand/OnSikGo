@@ -1,37 +1,38 @@
 <template>
   <!--상품정렬-->
   <div>
-    <img :src="`${itemImgUrl}`" alt="IMG-PRODUCT" style="height: 150px" />
+    <img :src="`${item.itemImgUrl}`" alt="IMG-PRODUCT" style="height: 150px" />
     <div class="item-name">
-      {{ itemName }}
+      {{ item.itemName }}
     </div>
-    <div>{{ this.no }}</div>
     <div class="info-container">
       <div class="item-info">
         <div class="info-box">
           <div>정상 판매가 :</div>
-          <div class="ml-1">{{ price }} 원</div>
+          <div class="ml-1">{{ item.price }} 원</div>
         </div>
         <div class="info-box">
           <div>할인 판매가 :</div>
-          <div class="ml-1">{{ this.saleDto.salePrice }} 원</div>
+          <div class="ml-1">{{ item.sale.salePrice }} 원</div>
         </div>
         <div class="info-box">
           <div>등록 수량 :</div>
-          <div class="ml-1">{{ this.saleDto.stock }} 개</div>
+          <div class="ml-1">{{ item.sale.stock }} 개</div>
         </div>
       </div>
       <button @click="prodmodify()" class="border-m radius-s my-1 edit-btn">
         정보수정
       </button>
       <add-stock-modal
-        :no="this.itemId"
-        :store="this.storeId"
+        v-if="item.sale.stock == 0"
+        :item="this.item"
+        :storeId="this.storeId"
         class="stock-btn mb-1"
       ></add-stock-modal>
       <edit-stock-modal
-        :no="this.itemId"
-        :store="this.storeId"
+        v-else
+        :item="this.item"
+        :storeId="this.storeId"
         class="stock-btn"
       ></edit-stock-modal>
     </div>
@@ -39,9 +40,9 @@
 </template>
 
 <script>
-import http from "@/util/http-common";
 import EditStockModal from "@/components/management/EditStockModal.vue";
 import AddStockModal from "@/components/management/AddStockModal.vue";
+import { mapActions } from "vuex";
 export default {
   name: "AllProductList",
   components: {
@@ -49,35 +50,21 @@ export default {
     EditStockModal,
   },
   data() {
-    return {
-      saleDto: {},
-      stock: Number,
-    };
+    return {};
   },
   props: {
+    item: Object,
     storeId: Number,
-    itemId: Number,
-    itemName: String,
-    price: Number,
-    itemImgUrl: String,
-    comment: String,
-    no: Number,
-    item: Number,
-  },
-
-  created() {
-    http.get(`/sale/${this.itemId}`).then((response) => {
-      if (response.status == 200) {
-        this.saleDto = response.data;
-      }
-    });
   },
 
   methods: {
+    ...mapActions("itemStore", ["getItemId"]),
+    ...mapActions("storeStore", ["getStoreId"]),
     prodmodify() {
+      this.getItemId(this.item.itemId);
+      this.getStoreId(this.storeId);
       this.$router.push({
         name: "prodChange",
-        params: { itemId: this.itemId, storeId: this.storeId },
       });
     },
   },
