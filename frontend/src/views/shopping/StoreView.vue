@@ -97,14 +97,19 @@
       <!--리뷰입력창-->
       <div class="input-group comment">
         <input
+          v-if="userCheck"
           v-model="reviewContent"
           type="text"
           class="form-control"
-          placeholder="리뷰를 입력해주세요"
           aria-label="Input Review"
           aria-describedby="basic-addon1"
-          @keyup.enter="registerReview()"
-        />
+          @keyup.enter="registerReview()"/>
+        <input
+          v-else
+          type="text"
+          class="form-control"
+          placeholder="리뷰를 입력해주세요"
+          @click="login()"/>
         <button @click="registerReview()">
           <span class="input-group-text" id="basic-addon1">
             <i class="fa-solid fa-comment"></i>
@@ -154,6 +159,7 @@ export default {
   },
   computed: {
     ...mapGetters("storeStore", ["getStoreId"]),
+    ...mapGetters("accounts", ["userCheck"]),
   },
 
   async created() {
@@ -232,6 +238,9 @@ export default {
         }
       });
     },
+    login(){
+      this.$router.push("/login");
+    }
   },
 };
 </script>
