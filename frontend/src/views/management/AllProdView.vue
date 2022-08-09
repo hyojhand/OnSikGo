@@ -7,7 +7,7 @@
         class="store-name form-select"
         @change="selectStore($event)"
       >
-        <option id="first" :selected="this.saveName.lenght" class="opt">
+        <option id="first" selected class="opt">
           {{ this.saveName }}
         </option>
         <option

@@ -7,7 +7,7 @@
           class="store-name form-select"
           @change="selectStore($event)"
         >
-          <option :selected="this.saveMyStore.lenght" class="opt">
+          <option selected class="opt">
             {{ this.saveMyStore }}
           </option>
           <option
@@ -56,16 +56,16 @@ export default {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
+      this.stores = response.data;
       if (this.saveMyStore.length) {
-        this.stores = response.data;
         this.storeId = this.myStore;
+        this.store = this.storeValue;
       } else {
-        this.stores = response.data;
         this.storeId = response.data[0].storeId;
         this.getMyStore(this.storeId);
+        this.store = response.data[0];
       }
       this.storeCnt = this.stores.length;
-      this.store = response.data[0];
       this.discardStoreId(this.storeId);
       this.discardStoreCnt(this.storeCnt);
       console.log(this.store.offDay);
@@ -106,7 +106,9 @@ export default {
       // console.log(response.data);
     });
   },
-  computed: { ...mapGetters("select", ["saveMyStore", "myStore"]) },
+  computed: {
+    ...mapGetters("select", ["saveMyStore", "myStore", "storeValue"]),
+  },
   methods: {
     ...mapActions("discardStore", [
       "discardStoreId",
@@ -117,7 +119,7 @@ export default {
       "discardStoreCnt",
     ]),
     ...mapActions("offdayStore", ["storeOffday"]),
-    ...mapActions("select", ["getMyStore"]),
+    ...mapActions("select", ["getMyStore", "getStoreValue"]),
     async selectStore(event) {
       this.storeId = event.target.value;
       this.getMyStore(event.target.value);
@@ -169,6 +171,7 @@ export default {
       http.get(`/store/${this.storeId}`).then((response) => {
         this.store = response.data;
         this.storeName = response.data.storeName;
+        this.getStoreValue(response.data);
       });
     },
   },
