@@ -393,4 +393,14 @@ img {
   color: rgba(0, 0, 0, 0.3);
   font-size: 30px;
 }
+.product-search {
+  padding: 0;
+  margin: 0;
+  padding-right: 10px;
+  padding-left: 15px;
+}
+.search-reset{
+  padding: 0;
+  margin: 0;
+}
 </style>
