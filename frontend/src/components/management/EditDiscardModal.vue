@@ -7,14 +7,14 @@
           class="border-m radius-s text-m reason"
           v-on="on"
         >
-          재고등록
+          수량변경
         </button>
       </template>
 
       <!--수정정보나타내기-->
       <v-card class="modal-content">
         <v-card-title class="d-flex justify-content-center card-title">
-          재고 등록하기
+          수량 변경하기
         </v-card-title>
         <img :src="`${item.itemImgUrl}`" alt="IMG-PRODUCT" />
         <div class="item-name">
@@ -50,13 +50,13 @@
               class="col-7 content"
               v-model="stock"
               type="number"
-              placeholder="등록 수량을 입력해주세요."
+              placeholder="변경 수량을 입력해주세요."
             />
           </div>
         </form>
         <div class="btn-box">
-          <button @click="prodchange" class="border-m radius-m edit-btn">
-            수량등록
+          <button @click="stockchange()" class="border-m radius-m edit-btn">
+            수량변경
           </button>
         </div>
       </v-card>
@@ -67,37 +67,26 @@
 <script>
 import http from "@/util/http-common";
 export default {
-  name: "AddStockModal",
+  name: "EditStockModal",
   props: {
     item: Object,
     storeId: Number,
+    stok: Number,
+    salePric: Number,
   },
   data() {
     return {
-      salePrice: "",
-      stock: "",
+      salePrice: this.salePric,
+      stock: this.stok,
     };
   },
 
   methods: {
-    prodchange() {
-      http
-        .post(`/sale/${this.storeId}`, {
-          itemId: this.item.itemId,
-          salePrice: this.salePrice,
-          stock: this.stock,
-        })
-        .then((response) => {
-          if (response.status == 200) {
-            console.log("완료");
-          } else {
-            alert("등록안됨");
-          }
-        })
-        .catch((error) => {
-          console.log("에러");
-          console.log(error);
-        });
+    stockchange() {
+      http.put(`/sale/${this.item.sale.saleItemId}`, {
+        salePrice: this.salePrice,
+        stock: this.stock,
+      });
 
       this.$router.go();
     },
@@ -109,7 +98,7 @@ export default {
 .reason {
   display: flex;
   color: white;
-  background-color: rgb(140, 184, 131);
+  background-color: rgba(0, 0, 0, 20%);
   width: 100%;
   flex-direction: row;
   justify-content: center;

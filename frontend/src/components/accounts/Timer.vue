@@ -14,7 +14,7 @@ export default {
     name : "CountTimer",
     props: {
         time: Number,
-        Key:Number
+        KeyNum:Number
     },
     data: function () {
         return {

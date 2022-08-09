@@ -10,7 +10,7 @@
       <div class="col-8">
         <p>{{ content }}</p>
       </div>
-      <div class="report col-2">
+      <div v-if="userCheck" class="report col-2">
             <img src="@/assets/images/siren.png" @click="reportReview(reviewId)" style="width: 30%">
           <div v-if="reportDuple">신고가 완료되었습니다.</div>
         </div>
@@ -21,6 +21,7 @@
 
 <script>
 import http from '@/util/http-common';
+import { mapGetters } from 'vuex';
 export default {
   name: "StoreReview",
   
@@ -38,7 +39,11 @@ export default {
     storeDto: {},
     reviewId: null,
   },
-
+  computed : {
+    ...mapGetters("accounts", [
+      "userCheck",
+    ]),
+  },
   created() {},
   methods: {
     moveUserReview() {

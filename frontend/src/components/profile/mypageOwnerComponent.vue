@@ -1,52 +1,50 @@
 <template>
   <div>
+    <!--마이페이지 점주 카드-->
     <div class="card" id="mypage-card">
-      <div class="row">
-        <div class="col-3">
-          <div class="mt-7 ml-4">
-            <img fluid :src="`${store.storeImgUrl}`" height="80" width="100" />
-          </div>
-        </div>
-        <div class="col-7 ml-5">
-          <div style="text-align: start">
-            <br />
-            <span id="color-black">
-              안녕하세요,👨‍🍳<br />{{ store.storeName }}입니다. </span
-            ><br />
-            <span style="color: gray; font-size: 0.7rem">매장 위치:</span>
-            <span style="color: gray; font-size: 0.7rem">{{
-              store.address
-            }}</span
-            ><br />
-            <span style="color: gray; font-size: 0.7rem">{{
-              store.extraAddress
-            }}</span
-            ><br />
-            <span style="color: gray; font-size: 0.7rem"
-              >문 닫는 시간: {{ store.closingTime }}</span
-            ><br />
-            <span style="color: gray; font-size: 0.7rem"
-              >전화번호: {{ store.tel }}</span
-            ><br />
-            <span style="color: gray; font-size: 0.7rem"
-              >매장 휴무일: {{ store.offDay }}</span
-            >
-          </div>
+      <!--마이페이지 매장 사진-->
+      <img
+        class="mt-5"
+        fluid
+        :src="`${store.storeImgUrl}`"
+        width="200"
+        height="150"
+      />
 
-          <div class="d-flex justify-content-end">
-            <!--영업종료 버튼은 빨간색으로 하기-->
-            <button
-              id="mypage-button"
-              @click="movetoClose"
-              :disabled="this.discardStoreClose == true"
-            >
-              영업 종료 {{ discardStoreClose }}
-            </button>
-          </div>
+      <div>
+        <div class="mt-2">
+          <span id="color-black">
+            안녕하세요,👨‍🍳 {{ store.storeName }}입니다.
+          </span>
+        </div>
+        <div class="ml-7 mt-5" style="text-align: start">
+          <span class="mypage_asset">매장 위치: </span>
+          <span class="mypage">{{ store.address }}</span>
+          <span class="mypage">{{ store.extraAddress }}</span
+          ><br />
+          <span class="mypage_asset">문 닫는 시간: </span>
+          <span class="mypage">{{ store.closingTime }}</span
+          ><br />
+          <span class="mypage_asset">전화번호: </span>
+          <span class="mypage">{{ store.tel }}</span
+          ><br />
+          <span class="mypage_asset">매장 휴무일: </span>
+          <span class="mypage">{{ this.storeOffday }}</span
+          ><br />
         </div>
       </div>
-    </div>
 
+      <div class="d-flex justify-content-end mt-5 mr-6">
+        <!--영업종료 버튼은 빨간색으로 하기-->
+        <button
+          id="mypage-button"
+          @click="movetoClose"
+          :disabled="this.discardStoreClose == true"
+        >
+          영업 종료 {{ discardStoreClose }}
+        </button>
+      </div>
+    </div>
     <br />
     <div>
       <div class="container mt-10">
@@ -92,14 +90,18 @@ export default {
   },
   computed: {
     ...mapGetters("discardStore", [
-      "discardStoreId", 
+      "discardStoreId",
       "discardStoreList",
-      "discardStoreClose"
+      "discardStoreClose",
     ]),
+    ...mapGetters("offdayStore", ["storeOffday"]),
   },
   methods: {
     dataAnalysis() {
-      this.$router.push("/mypage/owner/analysis");
+      this.$router.push({
+        name: "dataAnalysis",
+        params: { storeId: this.store.storeId, storeName: this.storeName },
+      });
     },
     storechange() {
       this.$router.push({
@@ -119,19 +121,27 @@ export default {
 
 <style>
 #mypage-card {
-  height: 250px;
+  height: 400px;
   width: 400px;
   border-radius: 15px;
   display: inline-block;
-  margin-top: 30px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   overflow: hidden;
 }
-#color-black {
-  color: black;
+.mypageimg {
+  border-radius: 50%;
+}
+.mypage {
+  color: gray;
+  font-size: 0.8rem;
+}
+.mypage_asset {
+  color: gray;
+  font-size: 0.8rem;
+  font-weight: bolder;
 }
 #mypage-button {
-  height: 25px;
+  height: 30px;
   border: none;
   display: inline-block;
   border-radius: 5px;

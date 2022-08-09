@@ -82,6 +82,7 @@
                 class="input-box"
                 color="black"
                 type="address"
+                v-bind:disabled="true"
               ></v-text-field>
             </div>
 
@@ -112,9 +113,16 @@
             ></b-form-input>
             <br />
           </b-form-group>
-          <button type="button" @click="ownerNumcheck">
-            사업자 등록번호 확인
-          </button>
+          <div class="d-flex justify-content-end">
+            <button
+              type="button"
+              @click="ownerNumcheck"
+              class="border-m radius-m address-btn"
+            >
+              사업자 등록번호 확인
+            </button>
+          </div>
+
           <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
           <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
         </div>
@@ -149,9 +157,6 @@
             chips
             required
           ></v-select>
-          <span id="red-small"
-            >변경하지 않는다면 그대로 휴무일이 유지됩니다</span
-          >
         </div>
         <!-- ------------카테고리셀렉트 박스----------- -->
         <div class="ml-5 mr-4 mt-3">
@@ -176,6 +181,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import http from "@/util/http-common";
 import axios from "axios";
 export default {
@@ -192,6 +198,8 @@ export default {
       ownercheckDuple: false,
       ownerfailDuple: false,
       numCheck: true,
+      offDaylist: [],
+      realoffDayList: "",
       days: [
         { value: "월요일", text: "월요일" },
         { value: "화요일", text: "화요일" },
@@ -226,6 +234,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions("offdayStore", ["storeOffday"]),
     fileSelect(event) {
       var input = event.target;
 
@@ -306,10 +315,11 @@ export default {
         this.storeDto.address = this.address1;
         this.storeDto.extraAddress = this.extraAddress1;
       }
-      console.log(this.storeDto.address);
-      console.log(this.storeDto.extraAddress);
+      // console.log(this.storeDto.address);
+      // console.log(this.storeDto.extraAddress);
+
       this.storeDto.offDay = this.off.join;
-      console.log(this.storeDto.offDay);
+      // console.log(this.storeDto.offDay);
       if (this.numCheck == true) {
         http.defaults.headers["access-token"] =
           localStorage.getItem("access-token");
@@ -324,6 +334,31 @@ export default {
           this.storeDto.offDay = Array.from(this.off).join(",");
         }
 
+        // 휴무일 정렬
+        if (this.storeDto.offDay.length >= 5) {
+          this.storeDto.offDay.split(",").map((day) => {
+            this.offDaylist.push(day);
+          });
+          const daySorter = {
+            월요일: 1,
+            화요일: 2,
+            수요일: 3,
+            목요일: 4,
+            금요일: 5,
+            토요일: 6,
+            일요일: 7,
+          };
+          this.offDaylist.sort(function sortBydaySorter(a, b) {
+            return daySorter[a] - daySorter[b];
+          });
+          this.realoffDayList = this.offDaylist.join();
+        } else {
+          this.realoffDayList = this.storeDto.offDay;
+        }
+        console.log(this.realoffDayList);
+        this.storeOffday(this.realoffDayList);
+
+        this.storeOffday(this.storeDto.offDay);
         const formData = new FormData();
         formData.append("file", this.imgFile);
         formData.append(

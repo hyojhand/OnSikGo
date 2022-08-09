@@ -15,6 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,8 @@ public class StoreService {
     private final SaleRepository saleRepository;
     private final AwsS3Service awsS3Service;
     private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/store/noimage.png";
+    @Value("${java.file.kakao-api}")
+    private String kakao;
 
     @Transactional
     public ResponseEntity<String> firstRegister(OwnerDto ownerDto, User user) {
@@ -249,7 +252,7 @@ public class StoreService {
     // 좌표 가져오는 메서드
     public HashMap<String, String> getCoordinate(String fullAddress) {
 
-        String apiKey = "57a2eb95ed5c50c6a133bae6b8980f38";
+        String apiKey = kakao;
         String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json";
         String jsonString = null;
 

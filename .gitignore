@@ -21,3 +21,8 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+
+# *.properties
+/frontend/src/util/http-common.js
+/backend/src/main/resources/application.properties

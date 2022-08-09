@@ -24,11 +24,13 @@
         정보수정
       </button>
       <add-stock-modal
+        v-if="item.sale.stock == 0"
         :item="this.item"
         :storeId="this.storeId"
         class="stock-btn mb-1"
       ></add-stock-modal>
       <edit-stock-modal
+        v-else
         :item="this.item"
         :storeId="this.storeId"
         class="stock-btn"

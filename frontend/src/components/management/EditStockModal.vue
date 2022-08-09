@@ -74,8 +74,8 @@ export default {
   },
   data() {
     return {
-      salePrice: "",
-      stock: "",
+      salePrice: this.item.sale.salePrice,
+      stock: this.item.sale.stock,
     };
   },
 

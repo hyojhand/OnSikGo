@@ -124,7 +124,9 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 주문", HttpStatus.NO_CONTENT);
         }
 
-        findOrder.get().update(State.ORDER);
+
+        Integer salePrice = findOrder.get().getSaleItem().getSalePrice();
+        findOrder.get().update(State.ORDER,salePrice * findOrder.get().getCount());
         orderRepository.save(findOrder.get());
 
         SaleItem saleItem = findOrder.get().getSaleItem();
@@ -143,7 +145,7 @@ public class OrderService {
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = now.format(dayFormatter);
 
-        int money = saleItem.getSalePrice() * findOrder.get().getCount();
+        int money = findOrder.get().getOrderPrice();
         Store store = saleItem.getItem().getStore();
         Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(store, date);
         if(!findSale.isPresent()) {
@@ -155,7 +157,7 @@ public class OrderService {
         findSale.get().updateTotalPrice(totalPrice);
         saleRepository.save(findSale.get());
 
-        String content = findUser.get().getNickname() + " 님의 " + "<br/>상품이 준비되었습니다.";
+        String content = findSale.get().getStore().getStoreName() + " 매장의 " + "<br/>상품이 준비되었습니다.";
         Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
@@ -180,7 +182,7 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 주문", HttpStatus.NO_CONTENT);
         }
 
-        findOrder.get().update(State.CANCEL);
+        findOrder.get().update(State.CANCEL, 0);
         orderRepository.save(findOrder.get());
 
         String reason = map.get("reason");
@@ -209,7 +211,7 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 주문", HttpStatus.NO_CONTENT);
         }
 
-        findOrder.get().update(State.CANCEL);
+        findOrder.get().update(State.CANCEL, 0);
         orderRepository.save(findOrder.get());
 
         SaleItem saleItem = findOrder.get().getSaleItem();
@@ -247,7 +249,7 @@ public class OrderService {
         List<Order> findMonthOrder = orderRepository.findByUserAndDateBetweenAndState(findUser.get(), startMonth, endMonth, State.ORDER);
         int buyPrice = 0;
         for(Order order : findMonthOrder) {
-            buyPrice += order.getCount() * order.getSaleItem().getSalePrice();
+            buyPrice += order.getOrderPrice();
         }
 
         return new ResponseEntity<>(String.valueOf(buyPrice), HttpStatus.OK);

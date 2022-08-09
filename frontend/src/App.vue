@@ -3,11 +3,31 @@
     <div class="web">
       <div class="on-box">
         <div>
-          <h1 class="text-l">Onsikgo,</h1>
-          <h3>지구를 구하는 마지막 주문</h3>
+          <p
+            style="
+              font-size: 4rem;
+              font-weight: bold;
+              color: rgba(140, 184, 131);
+              margin-bottom: 10px;
+            "
+            >Onsikgo,</p
+          >
+          <p
+            style="
+              font-size: 2rem;
+              font-weight: bold;
+              color: rgba(140, 184, 131);
+            "
+            >지구를 구하는 마지막 주문</p
+          >
         </div>
         <div id="div1" class="mt-5">
-          <img src="@/assets/real_logo.png" width="350" height="300" />
+          <img
+            src="@/assets/real_logo.png"
+            width="350"
+            height="300"
+            @click="goMain"
+          />
         </div>
         <div class="mt-5 ml-16">
           <button @click="movetoNaver" class="on-btn">
@@ -90,47 +110,18 @@
             style="height: 6%; width: 25%; margin: 3% 0%"
           />
         </router-link>
-        <!-- 로그인 안했을 경우 -->
-        <v-list v-if="userCheck === 0" nav>
-          <v-list-item
-            v-for="item in notlogins"
-            :key="item.title"
-            :to="item.router"
-          >
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
-            fill="currentColor"
-            class="bi bi-box-arrow-in-right"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-            />
-          </svg>
-        </v-list>
 
         <!-- 로그인 했을 경우 -->
-        <div v-else>
-          <!-- 토글바 업주 로그인의 경우 -->
-          <v-list v-if="userCheck === 1" nav>
+        <div v-if="userCheck == 1 || userCheck == 2 || userCheck == 3">
+          <!-- 토글바 관리자 로그인 경우 -->
+          <v-list v-if="userCheck === 3" nav>
             <v-list-item
-              v-for="item in owners"
+              v-for="item in admins"
               :key="item.title"
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <svg
@@ -159,7 +150,7 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <svg
@@ -180,22 +171,23 @@
               />
             </svg>
           </v-list>
-          <!-- 토글바 관리자 로그인 경우 -->
+          <!-- 토글바 업주 로그인의 경우 -->
           <v-list v-else nav>
             <v-list-item
-              v-for="item in admins"
+              v-for="item in owners"
               :key="item.title"
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <svg
+            <router-link :to="{ name: 'logout' }">
+              <svg
               xmlns="http://www.w3.org/2000/svg"
               width="25"
               height="25"
-              fill="currentColor"
+              fill="red"
               class="bi bi-box-arrow-in-right"
               viewBox="0 0 16 16"
             >
@@ -208,8 +200,26 @@
                 d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
               />
             </svg>
+            </router-link>
+            
           </v-list>
         </div>
+
+        <!-- 로그인 안했을 경우 -->
+        <v-list v-else nav>
+          <v-list-item
+            v-for="item in notlogins"
+            :key="item.title"
+            :to="item.router"
+          >
+            <v-list-item-content>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <router-link :to="{ name: 'login' }">
+              <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
+          </router-link>
+        </v-list>
       </v-navigation-drawer>
 
       <!-- 설정 토글바 -->
@@ -230,7 +240,7 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <MemberQuitModal></MemberQuitModal>
@@ -267,7 +277,7 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <MemberQuitModal></MemberQuitModal>
@@ -419,11 +429,14 @@ export default {
       document.execCommand("copy");
       document.body.removeChild(t);
 
-      alert("현재 url 주소 복사가 완료되었습니다🌏🧡");
+      alert("현재 주소 복사가 완료되었습니다🌏🧡");
     },
     movetoNaver() {
       var link = "https://forms.gle/WJpvMqG54SUF29io8";
       window.open(link);
+    },
+    goMain() {
+      this.$router.push("/");
     },
   },
 };
@@ -445,7 +458,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-left: 130px;
-  margin-top: 150px;
+  margin-top: 50px;
 }
 .on-box > img {
   width: 300px;
@@ -456,7 +469,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin: 0 0 0 20px;
+  margin: 0 0 0 10px;
 }
 .on-btn {
   height: 60px;
@@ -469,11 +482,6 @@ export default {
   padding: 3%;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.2);
 }
-.logo-text {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-}
 .web > h1 {
   color: black;
 }
@@ -481,10 +489,18 @@ export default {
   background-color: rgb(240, 240, 240);
   align-items: center;
   text-align: center;
+  height: 100%;
   margin: 0 auto;
   max-width: 420px;
   width: 100%;
   min-height: 100%;
+}
+
+.toggle-login {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  color: red;
 }
 .bi-box-arrow-in-right {
   position: fixed;
@@ -521,5 +537,8 @@ export default {
   to {
     left: 0px;
   }
+}
+#text-onsikgo {
+  font-size: 50rem;
 }
 </style>

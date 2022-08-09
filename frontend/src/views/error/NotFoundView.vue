@@ -205,7 +205,7 @@
     </g>
   </svg>
 
-  <p id="errorText">잘못된 페이지로 접속하셨습니다.</p>
+  <p id="errorText" style="color:#000;">잘못된 페이지로 접속하셨습니다.</p>
   <a id="errorLink" href="/">Home</a>
   </main>
 
@@ -222,19 +222,18 @@ export default {
 style <style lang="sass" scoped>
 @import url('https://fonts.googleapis.com/css?family=Merriweather+Sans')
 main
-	height: 50vh
-	width: 360px
-	background: #fff
+	height: 30vh
+	width: 100%
 	display: flex
 	flex-direction: column
 	justify-content: center
 	align-items: center
 	font-family: 'Merriweather Sans', sans-serif
 	#errorText
-		font-size: 22px
+		font-size: 15px
 		margin: 14px 0
 	#errorLink
-		font-size: 20px
+		font-size: 15px
 		padding: 12px
 		border: 1px solid
 		color: #000
@@ -243,7 +242,7 @@ main
 		transition: all 0.5s ease-in-out
 		&:hover, &:active
 			color: #fff
-			background: #35d400
+			background: #000
 	#g6219
 		transform-origin: 85px 4px 
 		animation: an1 12s .5s infinite ease-out

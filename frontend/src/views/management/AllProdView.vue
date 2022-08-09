@@ -1,8 +1,15 @@
 <template>
   <div>
     <!--매장선택-->
-    <div>
-      <select id="dropdown1" class="store-name" @change="selectStore($event)">
+    <div class="selec-box">
+      <select
+        id="dropdown1"
+        class="store-name form-select"
+        @change="selectStore($event)"
+      >
+        <option id="first" :selected="this.saveName.lenght" class="opt">
+          {{ this.saveName }}
+        </option>
         <option
           :key="index"
           :value="store.storeId"
@@ -11,6 +18,22 @@
           {{ store.storeName }}
         </option>
       </select>
+      <!-- <label for="first">
+        <svg
+          v-if="this.stores.length > 1"
+          v-on="dropdown1"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          fill="currentColor"
+          class="bi bi-caret-down-fill"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+          />
+        </svg>
+      </label> -->
     </div>
     <!-- 상품 등록 & 검색 탭 -->
 
@@ -121,7 +144,7 @@
 <script>
 import AllProductList from "@/components/management/AllProductList.vue";
 import http from "@/util/http-common";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "AllProdView",
 
@@ -143,8 +166,16 @@ export default {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
-      this.stores = response.data;
-      this.storeId = response.data[0].storeId;
+      if (this.saveStore.length) {
+        console.log("여기에 사람있어요");
+        this.stores = response.data;
+        this.storeId = this.saveStore;
+      } else {
+        console.log("여긴 없어요 ㅋ");
+        this.stores = response.data;
+        this.storeId = response.data[0].storeId;
+        this.getSaveStore(this.storeId);
+      }
     });
 
     await this.selectPage(1);
@@ -153,10 +184,14 @@ export default {
   components: {
     AllProductList,
   },
+  computed: {
+    ...mapGetters("select", ["saveStore", "saveName"]),
+  },
 
   methods: {
     ...mapActions("itemStore", ["getItemId"]),
     ...mapActions("storeStore", ["getStoreId"]),
+    ...mapActions("select", ["getSaveStore"]),
     selectPage(index) {
       this.page = index - 1;
       http
@@ -165,6 +200,7 @@ export default {
           size: 4,
         })
         .then((response) => {
+          console.log(response);
           this.items = response.data.content;
           this.totalPage = response.data.totalPages;
           this.items.map(async (item, i) => {
@@ -261,7 +297,11 @@ export default {
     },
     selectStore(event) {
       this.storeId = event.target.value;
+      this.getSaveStore(event.target.value);
       this.selectPage(1);
+    },
+    click(e) {
+      console.log(e);
     },
   },
 };
@@ -269,8 +309,9 @@ export default {
 
 <style scoped>
 .store-name {
-  width: 40%;
-  font-size: 30px;
+  width: 80%;
+  font-size: 25px;
+  font-weight: 800;
   text-align: center;
   padding: 2% 0;
 }
@@ -318,5 +359,18 @@ export default {
 .non-msg > div {
   font-size: 30px;
   color: rgba(0, 0, 0, 0.2);
+}
+.opt {
+  background-color: rgba(140, 184, 131, 0.5);
+  color: white;
+}
+.selec-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.selec-box > svg {
+  margin-left: 7px;
 }
 </style>
