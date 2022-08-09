@@ -80,11 +80,11 @@ ul.tabs li{
   color: #222;
   padding: 10px 15px;
   cursor: pointer;
-  border: 1px solid #B9B9B9;
-  border-radius: 16px;
+  border: 2px solid #B9B9B9;
+  border-radius: 20px;
   width:78px;
-  height: 30px;
-  font-size: 15px;
+  height: 35px;
+  font-size: 18px;
   padding: 0;
   margin-left: 5px;
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <!-- <h1 class="mb-5">관리자 페이지</h1> -->
+    <!-- <h3 class="mb-5">관리자 페이지</h3> -->
     <!-- Tab 기능 -->
       <ul class="tabs row ">
         <li 
@@ -69,7 +69,7 @@ div {
 }
 
 .tab-content{
-  padding-top: 25px;
+  padding-top: 10px;
 }
 
 ul.tabs{
@@ -87,7 +87,7 @@ ul.tabs li{
   cursor: pointer;
   width:78px;
   height: 30px;
-  font-size: 15px;
+  font-size: 20px;
   padding: 0;
   margin-left: 5px;
   margin-top: 10px;

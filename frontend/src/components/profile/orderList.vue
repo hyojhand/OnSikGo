@@ -16,7 +16,11 @@
             <div style="text-align: start">
               <span style="color: black; font-size: 1.1rem">
                 {{ order.saleItemDto.itemDto.itemName }} </span
-              ><br />
+              >
+              <span v-if="`${order.state}` === 'WAIT'" style="font-size:0.75rem; color:gray;">주문대기</span> 
+              <span v-else-if="`${order.state}` === 'ORDER'" style="font-size:0.75rem; color:blue;">주문승인</span>
+              <span v-else-if="`${order.state}` === 'CANCEL'" style="font-size:0.75rem; color:red;">주문거절</span>
+              <br />
               <span style="color: gray; font-size: 0.8rem"
                 >매장이름:
                 {{ order.saleItemDto.saleDto.storeDto.storeName }}</span
@@ -39,7 +43,9 @@
               @click="orderCancel(order)"
             >
               주문취소</button
-            ><br /><br />
+            >
+
+            <br /><br />
             <button
               id="btn-order"
               @click="goStore(order.saleItemDto.saleDto.storeDto.storeId)"
@@ -78,9 +84,9 @@ export default {
         localStorage.getItem("access-token");
       http.patch(`/order/cancel/${order.orderId}`).then((response) => {
         if (response.status === 200) {
-          console.log(response);
+          alert("주문이 취소되었습니다")
+          this.$router.go()
         } else {
-          console.log(response);
           alert("취소 실패");
         }
       });
