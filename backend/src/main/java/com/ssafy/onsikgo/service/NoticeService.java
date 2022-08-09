@@ -30,6 +30,7 @@ public class NoticeService {
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
 
+    @Transactional
     public ResponseEntity<List<NoticeDto>> getList(HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
@@ -46,6 +47,8 @@ public class NoticeService {
         List<NoticeDto> noticeDtos = new ArrayList<>();
         UserDto userDto = findUser.get().toDto();
         for (Notice notice : notices) {
+            notice.setstate();
+            noticeRepository.save(notice);
             Order order = notice.getOrder();
             SaleItem saleItem = order.getSaleItem();
             Item item = saleItem.getItem();
@@ -66,6 +69,27 @@ public class NoticeService {
         Notice notice = findNotice.get();
         noticeRepository.delete(notice);
         return new ResponseEntity<>("알림이 삭제되었습니다.", HttpStatus.OK);
+    }
+
+    public ResponseEntity<Boolean> stateFalseCheck(HttpServletRequest request){
+        String token = request.getHeader("access-token");
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
+        String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
+        Optional<User> findUser = userRepository.findByEmail(userEmail);
+        if (!findUser.isPresent()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        List<Notice> notices = noticeRepository.findByReceivedId(findUser.get().getUserId());
+
+        for (Notice notice : notices) {
+            if(!notice.getState()){
+                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
     }
 }
 

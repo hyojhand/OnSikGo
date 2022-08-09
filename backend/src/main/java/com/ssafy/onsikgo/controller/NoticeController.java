@@ -28,4 +28,9 @@ public class NoticeController {
     public ResponseEntity<String> delete(@PathVariable Long notice_id) {
         return noticeService.delete(notice_id);
     }
+
+    @GetMapping("/state-ckeck")
+    public ResponseEntity<Boolean> stateFalseCheck(HttpServletRequest request) {
+        return noticeService.stateFalseCheck(request);
+    }
 }
