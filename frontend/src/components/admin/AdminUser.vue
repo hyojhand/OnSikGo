@@ -5,6 +5,7 @@
       :key="index"
       class="row text-start">
       <div>
+        <!-- 프로필 사진 넣기 -->
         <p>사용자명: {{ users.userName }}</p>
         <p class="text-primary">닉네임: {{ users.nickname }}</p> 
       </div>
