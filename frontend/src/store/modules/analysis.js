@@ -132,8 +132,8 @@ const analysis = {
       let chartD = {};
       let labels = new Array();
       let data = [
-        { label: "팔린 갯수", backgroundColor: "#f87979" },
-        { label: "전체 갯수", backgroundColor: "black" },
+        { label: "팔린 개수", backgroundColor: "#347C72" },
+        { label: "전체 개수", backgroundColor: "#C68353" },
       ];
       let dd = new Array();
       let ss = new Array();
@@ -152,8 +152,8 @@ const analysis = {
       let chartD = {};
       let labels = new Array();
       let data = [
-        { label: "남은 갯수", backgroundColor: "#f87979" },
-        { label: "전체 갯수", backgroundColor: "black" },
+        { label: "남은 갯수", backgroundColor: "#8cb883" },
+        { label: "전체 갯수", backgroundColor: "#c49c68" },
       ];
       let dd = new Array();
       let ss = new Array();
