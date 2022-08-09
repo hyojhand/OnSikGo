@@ -11,7 +11,7 @@
         <span class="mt-2 fw-bold">{{ storeDto.storeName }}</span>
       </div>
       <!-- 좋아요 -->
-      <div class="store-like mt-2">
+      <div v-if="userCheck" class="store-like mt-2">
         <!--좋아요 버튼-->
         <div 
           v-if="liking == 'fail'"
@@ -19,8 +19,8 @@
           <svg 
             @click="like"
             xmlns="http://www.w3.org/2000/svg" 
-            width="16" 
-            height="16" 
+            width="33" 
+            height="33" 
             fill="red" 
             class="bi bi-heart" 
             viewBox="0 0 16 16">
@@ -34,8 +34,8 @@
           <svg 
             @click="unlike"
             xmlns="http://www.w3.org/2000/svg" 
-            width="16" 
-            height="16" 
+            width="33" 
+            height="33" 
             fill="red" 
             class="bi bi-heart-fill" 
             viewBox="0 0 16 16">
@@ -97,14 +97,19 @@
       <!--리뷰입력창-->
       <div class="input-group comment">
         <input
+          v-if="userCheck"
           v-model="reviewContent"
           type="text"
           class="form-control"
-          placeholder="리뷰를 입력해주세요"
           aria-label="Input Review"
           aria-describedby="basic-addon1"
-          @keyup.enter="registerReview()"
-        />
+          @keyup.enter="registerReview()"/>
+        <input
+          v-else
+          type="text"
+          class="form-control"
+          placeholder="리뷰를 입력해주세요"
+          @click="login()"/>
         <button @click="registerReview()">
           <span class="input-group-text" id="basic-addon1">
             <i class="fa-solid fa-comment"></i>
@@ -154,6 +159,7 @@ export default {
   },
   computed: {
     ...mapGetters("storeStore", ["getStoreId"]),
+    ...mapGetters("accounts", ["userCheck"]),
   },
 
   async created() {
@@ -232,6 +238,9 @@ export default {
         }
       });
     },
+    login(){
+      this.$router.push("/login");
+    }
   },
 };
 </script>
