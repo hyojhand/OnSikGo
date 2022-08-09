@@ -44,6 +44,10 @@ public class FollowService {
         Long storeId = store_id;
         Store findStore = storeRepository.findById(storeId).get();
 
+        if(followRepository.findFollowByUserAndStore(findUser, findStore).isPresent()) {
+            return new ResponseEntity<>("이미 팔로우 중입니다.", HttpStatus.NO_CONTENT);
+        }
+
         Follow follow = Follow.builder()
                         .store(findStore)
                         .user(findUser)

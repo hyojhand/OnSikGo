@@ -2,7 +2,7 @@
   <div class="wrap-vertical">
     <Bar
       :chart-options="chartOptions"
-      :chart-data="chartData"
+      :chart-data="this.chart"
       :chart-id="chartId"
       :dataset-id-key="datasetIdKey"
       :plugins="plugins"
@@ -16,7 +16,7 @@
 
 <script>
 import { Bar } from "vue-chartjs/legacy";
-
+import { mapGetters } from "vuex";
 import {
   Chart as ChartJS,
   Title,
@@ -40,6 +40,9 @@ export default {
   name: "BarChart",
   components: {
     Bar,
+  },
+  computed: {
+    ...mapGetters("analysis", ["chart"]),
   },
   props: {
     chartId: {
@@ -71,36 +74,9 @@ export default {
       default: () => [],
     },
   },
+
   data() {
     return {
-      chartData: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
-        ],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: "#f87979",
-            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 15],
-          },
-          {
-            label: "Data two",
-            backgroundColor: "black",
-            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 18],
-          },
-        ],
-      },
       chartOptions: {
         responsive: false,
         maintainAspectRatio: false,

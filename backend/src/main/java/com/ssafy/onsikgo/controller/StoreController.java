@@ -72,4 +72,9 @@ public class StoreController {
     public ResponseEntity<List<StoreDto>> getTotal() {
         return storeService.getTotal();
     }
+
+    @PostMapping("/keyword")
+    public ResponseEntity<List<StoreDto>> getKeyword(@RequestBody SelectDto selectDto) {
+        return storeService.getKeyword(selectDto);
+    }
 }

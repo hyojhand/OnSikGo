@@ -54,6 +54,7 @@
         ></category-store>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -78,6 +79,10 @@ export default {
       type: String,
       default: "",
     },
+    all: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
@@ -85,6 +90,7 @@ export default {
       selectedTab: "",
       selectCategory: "",
       selectKeyword: "",
+      selectAll: 0,
     };
   },
   // vuex에서 현재주소 가져오기
@@ -95,7 +101,8 @@ export default {
   created() {
     this.selectCategory = this.$route.params.category;
     this.selectKeyword = this.$route.params.keyword;
-    if (this.selectCategory || this.selectKeyword) {
+    this.selectAll = this.$route.params.all;
+    if (this.selectCategory || this.selectKeyword || this.selectAll) {
       this.selectedTab = this.tabs[1];
     } else {
       this.selectedTab = this.tabs[0];
@@ -131,9 +138,10 @@ export default {
 .tab {
   font-size: 18px;
   margin-right: 5%;
+
 }
 .select > span {
-  color: black;
+  color: rgb(140, 184, 131);
 }
 .main_container .mobile {
   width: 100%;

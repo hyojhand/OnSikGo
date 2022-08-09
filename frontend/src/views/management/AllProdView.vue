@@ -3,6 +3,9 @@
     <!--매장선택-->
     <div>
       <select id="dropdown1" class="store-name" @change="selectStore($event)">
+        <option :selected="this.saveName.lenght">
+          {{ this.saveName }}
+        </option>
         <option
           :key="index"
           :value="store.storeId"
@@ -46,7 +49,7 @@
         <!-- 검색 아이콘 -->
         <button>
           <svg
-            @click="keywordSelect()"
+            @click="keywordSelect(1)"
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
@@ -82,14 +85,18 @@
       </div>
     </div>
 
-    <div class="item-container">
+    <div class="item-container" v-if="this.items.length">
       <all-product-list
         class="item-card"
         v-for="(item, index) in items"
         :key="index"
-        v-bind="item"
+        v-bind:item="item"
         :storeId="storeId"
       />
+    </div>
+    <div v-else class="non-msg">
+      <div>상품을 등록하여</div>
+      <div>Onsikgo를 시작해주세요!</div>
     </div>
     <!--페이지네이션-->
     <nav aria-label="Page navigation example">
@@ -104,9 +111,7 @@
           :key="index"
           v-bind="page"
         >
-          <a class="page-link" href="#" @click="selectPage(index)">{{
-            index
-          }}</a>
+          <a class="page-link" href="#" @click="movePage(index)">{{ index }}</a>
         </li>
         <li class="page-item">
           <a class="page-link" href="#" @click="nextPage()">Next</a>
@@ -119,7 +124,7 @@
 <script>
 import AllProductList from "@/components/management/AllProductList.vue";
 import http from "@/util/http-common";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "AllProdView",
 
@@ -127,12 +132,13 @@ export default {
     return {
       stores: [],
       store: {},
-      storeId: Number,
-      items: [],
+      storeId: null,
+      items: {},
       keyword: "",
       saleList: [],
       totalPage: Number,
       page: Number,
+      isKeyword: false,
     };
   },
 
@@ -140,8 +146,15 @@ export default {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
-      this.stores = response.data;
-      this.storeId = response.data[0].storeId;
+      if (this.saveStore.length) {
+        console.log("여기에 사람있어요");
+        this.stores = response.data;
+        this.storeId = this.saveStore;
+      } else {
+        console.log("여긴 없어요 ㅋ");
+        this.stores = response.data;
+        this.storeId = response.data[0].storeId;
+      }
     });
 
     await this.selectPage(1);
@@ -150,10 +163,14 @@ export default {
   components: {
     AllProductList,
   },
+  computed: {
+    ...mapGetters("select", ["saveStore", "saveName"]),
+  },
 
   methods: {
     ...mapActions("itemStore", ["getItemId"]),
     ...mapActions("storeStore", ["getStoreId"]),
+    ...mapActions("select", ["getSaveStore"]),
     selectPage(index) {
       this.page = index - 1;
       http
@@ -162,6 +179,7 @@ export default {
           size: 4,
         })
         .then((response) => {
+          console.log(response);
           this.items = response.data.content;
           this.totalPage = response.data.totalPages;
           this.items.map(async (item, i) => {
@@ -183,16 +201,33 @@ export default {
     nextPage() {
       if (this.page + 1 >= this.totalPage) {
         this.page = this.totalPage;
-        this.selectPage(this.page);
+        if (this.isKeyword === false) {
+          this.selectPage(this.page);
+        } else {
+          this.keywordSelect(this.page);
+        }
       } else {
         this.page = this.page + 2;
-        this.selectPage(this.page);
+        if (this.isKeyword === false) {
+          this.selectPage(this.page);
+        } else {
+          this.keywordSelect(this.page);
+        }
       }
     },
     previousPage() {
-      if (this.page - 1 < 0) this.selectPage(1);
-      else {
-        this.selectPage(this.page);
+      if (this.page - 1 < 0) {
+        if (this.isKeyword === false) {
+          this.selectPage(1);
+        } else {
+          this.keywordSelect(1);
+        }
+      } else {
+        if (this.isKeyword === false) {
+          this.selectPage(this.page);
+        } else {
+          this.keywordSelect(this.page);
+        }
       }
     },
     prodregister() {
@@ -202,23 +237,46 @@ export default {
         name: "prodRegister",
       });
     },
-    keywordSelect() {
+    keywordSelect(index) {
+      this.page = index - 1;
+      this.isKeyword = true;
       http
-        .post(`/item/list/keyword/${this.storeId}`, {
+        .post(`/item/page/keyword/${this.storeId}`, {
           keyword: this.keyword,
+          page: this.page,
+          size: 4,
         })
         .then((response) => {
-          this.items = response.data;
+          this.items = response.data.content;
+          this.totalPage = response.data.totalPages;
+          this.items.map(async (item, i) => {
+            await http.get(`/sale/${item.itemId}`).then((response) => {
+              if (response.status == 200) {
+                this.items[i] = {
+                  ...this.items[i],
+                  sale: response.data,
+                };
+              }
+            });
+            this.$forceUpdate();
+          });
         });
     },
+    movePage(index) {
+      this.page = index;
+      if (this.isKeyword == false) {
+        this.selectPage(this.page);
+      } else {
+        this.keywordSelect(this.page);
+      }
+    },
     resetItemList() {
-      this.keyword = "";
-      http.get(`/item/list/${this.storeId}`).then((response) => {
-        this.items = response.data;
-      });
+      this.isKeyword = false;
+      this.selectPage(1);
     },
     selectStore(event) {
       this.storeId = event.target.value;
+      this.getSaveStore(event.target.value);
       this.selectPage(1);
     },
   },
@@ -264,5 +322,17 @@ export default {
 }
 .nav-box {
   padding: 0;
+}
+.non-msg {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.non-msg > div {
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.2);
 }
 </style>

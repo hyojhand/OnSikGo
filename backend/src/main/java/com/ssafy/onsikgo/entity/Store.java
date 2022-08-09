@@ -4,11 +4,7 @@ import com.ssafy.onsikgo.dto.StoreDto;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,14 +17,16 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class Store {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long storeId;
 
     @Column(nullable = false)
     private String storeName; // 가게명
 
     @Column(nullable = false)
-    private String location; // 가게 주소
+    private String address; // 가게 주소
+
+    private String extraAddress;
 
     @Column(nullable = false)
     private String tel; // 가게 전화번호
@@ -71,7 +69,8 @@ public class Store {
 
     public Store update(StoreDto storeDto, HashMap<String, String> coordinate) {
         this.storeName = storeDto.getStoreName();
-        this.location = storeDto.getLocation();
+        this.address = storeDto.getAddress();
+        this.extraAddress = storeDto.getExtraAddress();
         this.tel = storeDto.getTel();
         this.storeNum = storeDto.getStoreNum();
         this.storeImgUrl = storeDto.getStoreImgUrl();
@@ -87,13 +86,16 @@ public class Store {
         this.user = user;
         return;
     }
-
+    public void updateImg(String imgsrc){
+        this.storeImgUrl = imgsrc;
+    }
     public StoreDto toDto() {
 
         return StoreDto.builder()
                 .storeId(this.storeId)
                 .storeName(this.getStoreName())
-                .location(this.getLocation())
+                .address(this.getAddress())
+                .extraAddress(this.getExtraAddress())
                 .tel(this.getTel())
                 .storeNum(this.getStoreNum())
                 .storeImgUrl(this.getStoreImgUrl())

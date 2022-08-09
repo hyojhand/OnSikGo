@@ -9,8 +9,8 @@
       <div class="img-box">
         <b-img :src="previewImg" height="150px" width="150px" />
         <div class="img-input">
-        <input @change="fileSelect" type="file" />     
-      </div>
+          <input @change="fileSelect" type="file" />
+        </div>
       </div>
       <input
         class="item-name"
@@ -67,7 +67,7 @@ export default {
       imgFile: null,
       itemDto: {},
       storeDto: {},
-      previewImg:null
+      previewImg: null,
     };
   },
   computed: {
@@ -82,7 +82,8 @@ export default {
 
     await http.get(`/item/${this.getItemId}`).then((response) => {
       this.itemDto = response.data;
-      this.previewImg = this.itemDto.itemImgUrl
+      this.previewImg = this.itemDto.itemImgUrl;
+      this.$forceUpdate();
     });
   },
 
@@ -92,14 +93,14 @@ export default {
 
       if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (e) => {
           this.previewImg = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
       } else {
         this.previewImg = null;
       }
-        this.imgFile = input.files[0];
+      this.imgFile = input.files[0];
     },
     prodchange() {
       const formData = new FormData();

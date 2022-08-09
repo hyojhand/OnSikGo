@@ -1,45 +1,40 @@
 <template>
-  <div
-    class="store-container"
-    :class="{ zerostock: saleItemDtoList.length == 0 }"
-  >
+  <div class="store-container" :class="{ zerostock: saleCount == 0 }">
     <!-- 가게 이미지 -->
 
     <img :src="`${storeImgUrl}`" class="col-3" />
 
     <!-- 가게 설명 -->
     <div class="col-5 store-case">
-      <div class="store-name" :class="{ none: saleItemDtoList.length == 0 }">
+      <div class="store-name" :class="{ none: saleCount == 0 }">
         {{ storeName }}
       </div>
       <div
+        v-if="this.distance < 3000"
         class="store-prediction"
-        :class="{ none: saleItemDtoList.length == 0 }"
+        :class="{ none: saleCount == 0 }"
       >
-        300m, 도보로 3분
+        현재 위치로 부터 {{ this.distance }} m
       </div>
-      <div
-        class="ment"
-        :class="{ none: saleItemDtoList.length == 0 }"
-        v-if="saleItemDtoList.length == 0"
-      >
+      <div v-else class="store-prediction" :class="{ none: saleCount == 0 }">
+        현재 위치로 부터 {{ this.distance / 1000 }} km
+      </div>
+      <div class="ment" :class="{ none: saleCount == 0 }" v-if="saleCount == 0">
         오늘 등록된 물품이 없어요ㅠ
       </div>
     </div>
     <!-- 물품수량 & 버튼 -->
     <div class="col-4 product-case">
-      <p class="store-product" :class="{ none: saleItemDtoList.length == 0 }">
+      <p class="store-product" :class="{ none: saleCount == 0 }">
         등록물품 :
-        <sapn
-          class="product-count"
-          :class="{ none: saleItemDtoList.length == 0 }"
-          >{{ saleItemDtoList.length }}</sapn
-        >
+        <span class="product-count" :class="{ none: saleCount == 0 }">{{
+          saleCount
+        }}</span>
         개
       </p>
       <button
         class="border-m radius-s"
-        :class="{ none: saleItemDtoList.length == 0 }"
+        :class="{ none: saleCount == 0 }"
         @click="storeDetail()"
       >
         가게보기
@@ -49,28 +44,25 @@
 </template>
 
 <script>
-import http from "@/util/http-common";
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "StoreItem",
 
   props: {
     storeId: Number,
     storeName: String,
-    location: String,
-    tel: String,
-    storeNum: String,
     storeImgUrl: String,
-    closingTime: String,
-    offDay: String,
     category: String,
     lat: String,
     lng: String,
+    saleCount: Number,
   },
-
+  computed: {
+    ...mapGetters("store", ["currentX", "currentY"]),
+  },
   data() {
     return {
-      saleItemDtoList: [],
+      distance: "",
     };
   },
   methods: {
@@ -81,15 +73,31 @@ export default {
         name: "storeView",
       });
     },
+    getdistance(lat1, lon1, lat2, lon2) {
+      if (lat1 == lat2 && lon1 == lon2) {
+        this.distance = 0;
+        return;
+      }
+      var radLat1 = (Math.PI * lat1) / 180;
+      var radLat2 = (Math.PI * lat2) / 180;
+      var theta = lon1 - lon2;
+      var radTheta = (Math.PI * theta) / 180;
+      var dist =
+        Math.sin(radLat1) * Math.sin(radLat2) +
+        Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+      if (dist > 1) dist = 1;
+
+      dist = Math.acos(dist);
+      dist = (dist * 180) / Math.PI;
+      dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+      if (dist < 100) dist = Math.round(dist / 10) * 10;
+      else dist = Math.round(dist / 100) * 100;
+      this.distance = dist;
+      return;
+    },
   },
   created() {
-    http.get(`/sale/list/${this.storeId}`).then((response) => {
-      if (response.status == 200) {
-        this.saleItemDtoList = response.data;
-        console.log(response);
-      }
-    });
-    console.log(this.saleItemDtoList);
+    this.getdistance(this.currentX, this.currentY, this.lat, this.lng);
   },
 };
 </script>
