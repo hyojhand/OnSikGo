@@ -5,7 +5,7 @@
     </div>
     <div v-if="myReviewList.length">
       <reviewList
-        v-for="(review, index) in myReviewList"
+        v-for="(review, index) in myReviewList.reverse()"
         :key="index"
         v-bind="review"
       />
@@ -32,7 +32,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("accounts", ["myReviewList"])
+    ...mapGetters("accounts", ["myReviewList"]),
   },
   created() {
     http.defaults.headers["access-token"] =
@@ -54,8 +54,8 @@ export default {
       });
   },
   methods: {
-    ...mapActions("accounts", ["getMyReviewList"])
-  }
+    ...mapActions("accounts", ["getMyReviewList"]),
+  },
 };
 </script>
 

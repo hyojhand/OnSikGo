@@ -66,9 +66,10 @@
               >
               </v-text-field>
             </form>
-            <p class="order-text">* 매장에서 '승인 완료'시 고객님에게 알림이 갑니다</p>
-            <p class="order-text">반드시 알림을 확인하고 출발해주세요.</p>
-            <p class="order-text">상품은 금일 취식 부탁드립니다</p>
+            <p class="order-text" style="font-size:0.75rem;">매장에서 '승인 완료'시 고객님에게 알림이 갑니다.</p>
+            <p class="order-text" style="font-size:0.75rem;">반드시 알림을 확인하고 출발해주세요.</p>
+            <p class="order-text" style="font-size:0.75rem;">상품은 금일 취식 부탁드립니다.</p>
+            <p class="order-text" style="font-size:0.75rem;">주문 취소는 주문 신청 후 10분이내로 가능합니다.</p>
             <button 
               class="order-button border-m radius-m" 
               @click="productOrder()"
