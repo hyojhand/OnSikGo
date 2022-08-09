@@ -7,7 +7,7 @@
           v-bind="attrs" 
           v-on="on"
           :disabled="value.orderDto.state=='ORDER' || value.orderDto.state=='CANCEL'">
-          주문확인하기
+          주문 확인
         </button>
       </template>
 
@@ -147,6 +147,12 @@ export default {
   background-color: rgb(240, 240, 240);
 }
 .notice-btn {
+  width: 110px;
+}
+.notice-btn:disabled{
+  background-color: grey;
+  opacity: 0.5;
+  color: #000;
   width: 110px;
 }
 .food-pic {
