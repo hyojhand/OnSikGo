@@ -13,17 +13,17 @@
       </ul>
     <hr class="mt-5">
       <div class="tab-content">
-      <!-- 리뷰 -->
+      <!-- 리뷰 관리 -->
         <admin-review
           class="tab-link current"
           v-if="selectedTab === tabs[0]">
         </admin-review>
-      <!-- 사용자 -->
+      <!-- 사용자 관리 -->
         <admin-user 
           class="tab-link"
           v-else-if="selectedTab === tabs[1]">
           </admin-user>
-      <!-- 가게 -->
+      <!-- 가게 관리 -->
         <admin-store class="tap-link" v-else></admin-store>
       </div>
   </div>
