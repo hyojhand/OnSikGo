@@ -6,7 +6,7 @@
           class="border-m radius-m notice-btn" 
           v-bind="attrs" 
           v-on="on"
-          :disabled="value.orderDto.state=='ORDER' || value.orderDto.state=='CANCEL'">
+          v-bind:disabled="value.orderDto.state=='ORDER' || value.orderDto.state=='CANCEL'">
           주문 확인
         </button>
       </template>
