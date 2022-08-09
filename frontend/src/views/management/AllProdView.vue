@@ -3,7 +3,7 @@
     <!--매장선택-->
     <div>
       <select id="dropdown1" class="store-name" @change="selectStore($event)">
-        <option :selected="this.saveName.lenght">
+        <option :selected="this.saveName.lenght" class="opt bg-opacity-50">
           {{ this.saveName }}
         </option>
         <option
@@ -154,6 +154,7 @@ export default {
         console.log("여긴 없어요 ㅋ");
         this.stores = response.data;
         this.storeId = response.data[0].storeId;
+        this.getSaveStore(this.storeId);
       }
     });
 
@@ -334,5 +335,9 @@ export default {
 .non-msg > div {
   font-size: 30px;
   color: rgba(0, 0, 0, 0.2);
+}
+.opt {
+  background-color: rgba(140, 184, 131, 0.5);
+  color: white;
 }
 </style>
