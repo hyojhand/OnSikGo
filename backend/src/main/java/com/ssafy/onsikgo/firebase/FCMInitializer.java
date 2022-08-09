@@ -1,4 +1,4 @@
-package com.ssafy.onsikgo.util;
+package com.ssafy.onsikgo.firebase;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
