@@ -1,16 +1,15 @@
 <template>
   <div>
-    <h1>AdminUser</h1>
     <div
       v-for="(users, index) in userList"
       :key="index"
       class="row text-start">
       <div>
-        <p>사용자명: {{ users.userName }}</p>
-        <p class="text-primary">닉네임: {{ users.nickname }}</p> 
+        <p class="fs-5 text-primary">사용자명: {{ users.userName }}</p>
+        <p>닉네임: {{ users.nickname }}</p> 
       </div>
-      <v-btn @click="deleteUser(users)" color="error" samll depressed>삭제</v-btn>
-      <hr>
+      <v-btn @click="deleteUser(users)" color="error" style="width: 100px; left:300px;" depressed>삭제</v-btn>
+      <hr class="mt-5">
     </div>
   </div>
 </template>
@@ -33,7 +32,9 @@ export default {
         .get('/user/total')
         .then((response) => {
           this.userList = response.data;
+                  console.log(response.data);
         })
+
     },
     
     deleteUser(users) {
