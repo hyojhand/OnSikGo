@@ -70,7 +70,7 @@ export default {
   name: "AddStockModal",
   props: {
     item: Object,
-    storeId: Number,
+    to: Number,
   },
   data() {
     return {
@@ -82,7 +82,7 @@ export default {
   methods: {
     prodchange() {
       http
-        .post(`/sale/${this.storeId}`, {
+        .post(`/sale/${this.to}`, {
           itemId: this.item.itemId,
           salePrice: this.salePrice,
           stock: this.stock,

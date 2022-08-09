@@ -1,6 +1,5 @@
 package com.ssafy.onsikgo.controller;
 
-import com.ssafy.onsikgo.dto.ItemDto;
 import com.ssafy.onsikgo.dto.SaleDto;
 import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.StoreDto;

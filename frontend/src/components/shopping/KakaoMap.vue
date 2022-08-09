@@ -1,6 +1,11 @@
 <template>
   <div>
     <div id="map"></div>
+    <button
+      class="map-reset-button" 
+      @click="resetmoving()">
+      <img src="https://cdn-icons-png.flaticon.com/512/6934/6934535.png" alt="" style="width:25px; height:25px;">
+    </button>
     <div class="container">
       <!-- 검색란 -->
       <div class="search-container m-1">
@@ -248,8 +253,29 @@ export default {
 
         marker.setMap(this.map);
       });
+      this.currentMarker()
     },
+    currentMarker() {
 
+      var imageSrc =
+        "https://cdn-icons.flaticon.com/png/512/3307/premium/3307717.png?token=exp=1660056081~hmac=fffde516d636b326bade7271c7941323";
+      // 마커 이미지의 이미지 크기 입니다
+      var imageSize = new kakao.maps.Size(30, 35);
+      // console.log("가게 하나의 위도 경도",store)
+
+      // 마커 이미지를 생성합니다
+      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+      var marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(
+          this.currentxLatitude,
+          this.currentLongitude
+        ), // 마커를 표시할 위치
+        // title : positions[i].title,
+        image: markerImage, // 마커 이미지
+      });
+      marker.setMap(this.map);
+    },
     // 현재 위치 찾기
     async curruntLocation() {
       this.changeaddress();
@@ -370,7 +396,6 @@ export default {
             item.distance = distance;
           });
         });
-      this.resetmoving(this.currentxLatitude, this.currentLongitude);
     },
     // 거리 구하기
     getdistance(lat1, lon1, lat2, lon2) {
@@ -394,13 +419,13 @@ export default {
 
       return dist;
     },
-    resetmoving(lat, lng) {
-      this.storexLatitude = lat;
-      this.storeLongitude = lng;
+    resetmoving() {
+      this.storexLatitude = this.currentxLatitude;
+      this.storeLongitude = this.currentLongitude;
       // 이동할 위도 경도 위치를 생성합니다
       var moveLatLon = new kakao.maps.LatLng(
-        lat,
-        lng
+        this.storexLatitude,
+        this.storeLongitude
       );
 
       // 지도 중심을 부드럽게 이동시킵니다
@@ -409,16 +434,6 @@ export default {
 
     },
     moving(item) {
-      // var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-      //   mapOption = {
-      //     center: new kakao.maps.LatLng(
-      //       this.storexLatitude,
-      //       this.storeLongitude
-      //     ), // 지도의 중심좌표
-      //     level: 3, // 지도의 확대 레벨
-      //   };
-
-      // var map = new kakao.maps.Map(mapContainer, mapOption);
       this.storexLatitude = item.saleDto.storeDto.lat;
       this.storeLongitude = item.saleDto.storeDto.lng;
       // 이동할 위도 경도 위치를 생성합니다
@@ -494,6 +509,15 @@ export default {
 }
 img {
   padding: 0;
+}
+.map-reset-button{
+  position: absolute;
+  top: 350px;
+  left: 85%;
+  background-color: #fff;
+  border-radius: 20px;
+  border: 2px solid #222;
+  margin: 0;
 }
 .product-name {
   font-size: 15px;
