@@ -219,6 +219,7 @@ export default {
   background-repeat: no-repeat;
   padding: 5px 8px;
   width: 370px;
+  height: 30px;
   background-color: #fff;
 }
 
@@ -230,5 +231,16 @@ export default {
 .index-box {
   display: flex;
   flex-direction: row;
+}
+
+.product-search {
+  padding: 0;
+  margin: 0;
+  padding-right: 10px;
+  padding-left: 15px;
+}
+.search-reset{
+  padding: 0;
+  margin: 0;
 }
 </style>
