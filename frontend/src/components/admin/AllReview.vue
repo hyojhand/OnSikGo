@@ -5,7 +5,7 @@
       :key="index"
       class="row">
       <div class="text-start mt-3">
-        <li>글쓴이: {{ review.nickname }}</li>
+        <li>작성자: {{ review.nickname }}</li>
         <li>가게명: {{ review.storeDto.storeName }}</li>
         <p class="text-primary fs-5">작성내용: {{ review.content }}</p>
       </div>

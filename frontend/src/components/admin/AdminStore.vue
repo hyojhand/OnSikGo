@@ -6,7 +6,7 @@
       class="row text-start mt-3">
       <div>
         <p class="text-primary fs-5">가게명: {{ stores.storeName }} <br></p> 
-        <p>가게주소: {{ stores.address}}</p> 
+        <p>{{ stores.address}}</p> 
       </div>
         <br>
         <v-btn @click="deleteStore(stores)" color="error" style="width: 100px; left:300px;" depressed>삭제</v-btn>
