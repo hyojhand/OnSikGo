@@ -99,7 +99,7 @@ export default {
           console.log(error);
         });
 
-      // this.$router.go();
+      this.$router.go();
     },
   },
 };
