@@ -1,5 +1,6 @@
 package com.ssafy.onsikgo.service;
 
+import com.ssafy.onsikgo.dto.SaleItemDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.entity.Follow;
 import com.ssafy.onsikgo.entity.Store;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,8 @@ public class FollowService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final TokenProvider tokenProvider;
+    private final SaleService saleService;
+
     @Transactional
     public ResponseEntity<String>register(HttpServletRequest request, Long store_id){
         String token = request.getHeader("access-token");
@@ -70,8 +74,17 @@ public class FollowService {
         List<Follow> follows = followRepository.findByUser(findUser);
         List<StoreDto> result = new ArrayList<>();
         for(Follow follow:follows){
-            result.add(follow.getStore().toDto());
+            Store store = follow.getStore();
+            List<SaleItemDto> saleItemDtos = saleService.getSaleItemList(store.getStoreId());
+            StoreDto storeDto = store.toDto();
+            storeDto.setTotalStock(0);
+            if(saleItemDtos!=null){
+                storeDto.setTotalStock(saleItemDtos.size());
+            }
+            result.add(storeDto);
         }
+
+        Collections.sort(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     @Transactional
