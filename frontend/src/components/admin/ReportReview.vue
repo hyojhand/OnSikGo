@@ -1,16 +1,16 @@
 <template>
   <div>
-    <h2>신고된 리뷰</h2>
     <div
       v-for="(report, index) in reviewList"
       :key="index"
       class="row">
-      <div class="text-start">
-        <p class="text-primary">{{ report.nickname }} : {{ report.content }}</p>
-        <p>작성한 가게명: {{ report.storeDto.storeName }}</p>
+      <div class="text-start mt-3">
+        <li>작성자명: {{ report.nickname }}</li>
+        <li>가게명: {{ report.storeDto.storeName }}</li>
+        <p class="text-primary fs-5">내용: {{ report.content }}</p>
       </div>
-        <v-btn @click="deleteReview(report)" color="error" samll depressed>삭제</v-btn>
-      <hr>
+        <v-btn @click="deleteReview(report)" color="error" style="width: 100px; left:300px;" depressed>삭제</v-btn>
+      <hr class="mt-5">
     </div>
   </div>
 </template>
@@ -33,11 +33,9 @@ export default {
         .get('/admin/reportedReviews')
         .then((response) => {
           this.reviewList = response.data;
-          console.log(response.data);
         })
     },
     deleteReview(review) {
-      console.log(review.reviewId);
       http
         .delete(`/review/${review.reviewId}`)
         .then((response) => {

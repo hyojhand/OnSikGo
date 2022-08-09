@@ -1,15 +1,14 @@
 <template>
   <div>
-    <h1>AdminReview</h1>
-      <!-- Tab 기능 -->
-      <ul class="tabs row ">
-        <li class="col" v-for="tab in tabs" 
-          v-bind:class="{active : tab === selectedTab}" 
-          :key="tab"
-          v-on:click="onClickTab(tab)">
-          <span>{{ tab }}</span>
-        </li>
-      </ul>
+    <!-- Tab 기능 -->
+    <ul class="tabs row ">
+      <li class="col" v-for="tab in tabs" 
+        v-bind:class="{choice : tab === selectedTab}" 
+        :key="tab"
+        v-on:click="onClickTab(tab)">
+        <span>{{ tab }}</span>
+      </li>
+    </ul>
 
     <div class="tab-content">
       <!-- 전체 리뷰 -->
@@ -81,12 +80,17 @@ ul.tabs li{
   color: #222;
   padding: 10px 15px;
   cursor: pointer;
-  border: 1px solid #B9B9B9;
-  border-radius: 16px;
+  border: 2px solid #B9B9B9;
+  border-radius: 20px;
   width:78px;
-  height: 30px;
-  font-size: 15px;
+  height: 35px;
+  font-size: 18px;
   padding: 0;
   margin-left: 5px;
 }
+
+.choice > span {
+  color: rgb(140, 184, 131);
+}
+
 </style>

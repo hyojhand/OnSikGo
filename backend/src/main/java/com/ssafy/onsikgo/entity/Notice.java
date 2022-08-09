@@ -3,8 +3,10 @@ package com.ssafy.onsikgo.entity;
 import com.ssafy.onsikgo.dto.NoticeDto;
 import com.ssafy.onsikgo.dto.OrderDto;
 import com.ssafy.onsikgo.dto.UserDto;
-import lombok.*;
-import org.aspectj.weaver.ast.Not;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -47,7 +49,9 @@ public class Notice {
         this.noticeState = noticeState;
         this.receivedId = receivedId;
     }
-
+    public void setstate(){
+        this.state=true;
+    }
     public NoticeDto toDto(UserDto userDto, OrderDto orderDto) {
         return NoticeDto.builder()
                 .content(this.content)

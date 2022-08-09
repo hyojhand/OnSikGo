@@ -3,9 +3,9 @@
     <div class="mt-7">
       <span style="font-size: 1.5rem; font-weight: bold">🙋‍♀️ 리뷰 🙋‍♂️</span>
     </div>
-    <div v-if="this.reviewList.length">
+    <div v-if="myReviewList.length">
       <reviewList
-        v-for="(review, index) in reviewList"
+        v-for="(review, index) in myReviewList.reverse()"
         :key="index"
         v-bind="review"
       />
@@ -20,6 +20,7 @@
 <script>
 import reviewList from "@/components/profile/reviewList.vue";
 import http from "@/util/http-common";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "MyReviewView",
   components: {
@@ -27,9 +28,11 @@ export default {
   },
   data() {
     return {
-      reviewList: [],
       nickname: "",
     };
+  },
+  computed: {
+    ...mapGetters("accounts", ["myReviewList"]),
   },
   created() {
     http.defaults.headers["access-token"] =
@@ -42,13 +45,16 @@ export default {
         console.log(this.reviewList);
         if (response.status == 200) {
           if (response.data != null) {
-            this.reviewList = response.data;
+            this.getMyReviewList(response.data);
             console.log(this.reviewList);
           } else {
             alert("리뷰가 없습니다.");
           }
         }
       });
+  },
+  methods: {
+    ...mapActions("accounts", ["getMyReviewList"]),
   },
 };
 </script>

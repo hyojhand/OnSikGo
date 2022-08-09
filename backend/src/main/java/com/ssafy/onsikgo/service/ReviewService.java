@@ -52,6 +52,9 @@ public class ReviewService {
         String createdDate = today.format(formatter);
 
         String content = map.get("content");
+        if(content.trim().isEmpty() || content == null) {
+            return new ResponseEntity<>("리뷰내용이 없습니다.", HttpStatus.NO_CONTENT);
+        }
 
         ReviewDto reviewDto = new ReviewDto();
         reviewDto.setContent(content);

@@ -3,13 +3,24 @@
     <!--마이페이지 점주 카드-->
     <div class="card" id="mypage-card">
       <!--마이페이지 매장 사진-->
-      <img
-        class="mt-5"
-        fluid
-        :src="`${store.storeImgUrl}`"
-        width="200"
-        height="150"
-      />
+      <div v-if="store.storeImgUrl == null">
+        <img
+          class="mt-5"
+          fluid
+          src="@/assets/real_logo.png"
+          width="200"
+          height="150"
+        />
+      </div>
+      <div v-else>
+        <img
+          class="mt-5"
+          fluid
+          :src="`${store.storeImgUrl}`"
+          width="200"
+          height="150"
+        />
+      </div>
 
       <div>
         <div class="mt-2">
@@ -17,7 +28,7 @@
             안녕하세요,👨‍🍳 {{ store.storeName }}입니다.
           </span>
         </div>
-        <div class="ml-7 mt-5" style="text-align: start">
+        <div class="ml-7 mt-5 mr-7" style="text-align: start">
           <span class="mypage_asset">매장 위치: </span>
           <span class="mypage">{{ store.address }}</span>
           <span class="mypage">{{ store.extraAddress }}</span
@@ -34,7 +45,7 @@
         </div>
       </div>
 
-      <div class="d-flex justify-content-end mt-5 mr-6">
+      <div class="d-flex justify-content-end mt-1 mr-6">
         <!--영업종료 버튼은 빨간색으로 하기-->
         <button
           id="mypage-button"
