@@ -33,6 +33,9 @@ public class SaleService {
 
     @Transactional
     public ResponseEntity<String> register(SaleItemDto saleItemDto, Long store_id) {
+        if(saleItemDto.getStock() <= 0 || saleItemDto.getSalePrice() <= 0) {
+            return new ResponseEntity<>("값이 0이하입니다", HttpStatus.NO_CONTENT);
+        }
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
@@ -71,7 +74,6 @@ public class SaleService {
             return new ResponseEntity<>("할인상품이 존재합니다.", HttpStatus.NO_CONTENT);
         } else {
             saleItemDto.setTotalStock(saleItemDto.getStock());
-//            Sale sale = saleRepository.findByStoreOrderByDateDesc(findStore).get(0);
 
             SaleItem saleItem = saleItemDto.toEntity(findItem,findSale.get());
             saleItemRepository.save(saleItem);
@@ -129,6 +131,7 @@ public class SaleService {
         SaleDto saleDto = findSale.get().toDto(storeDto);
         List<SaleItemDto> saleItemDtoList = new ArrayList<>();
         for(int i = 0; i < saleItemList.size(); i++) {
+            if(saleItemList.get(i).getStock() == 0) continue;
             SaleItem saleItem = saleItemList.get(i);
             ItemDto itemDto = saleItem.getItem().toDto();
             SaleItemDto saleItemDto = saleItemList.get(i).toDto(itemDto,saleDto);
@@ -140,6 +143,9 @@ public class SaleService {
 
     @Transactional
     public ResponseEntity<String> updateStock(HashMap<String,Integer> map, Long sale_item_id) {
+        if(map.get("stock") <= 0 || map.get("salePrice") <= 0) {
+            return new ResponseEntity<>("값이 0이하입니다", HttpStatus.NO_CONTENT);
+        }
 
         Optional<SaleItem> findSaleItem = saleItemRepository.findById(sale_item_id);
         if(!findSaleItem.isPresent()) {
