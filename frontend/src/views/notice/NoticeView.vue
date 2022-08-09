@@ -38,6 +38,15 @@ export default {
       // this.noticeList = response.data;
     });
   },
+  updated() {
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+    http.get("/notice").then((response) => {
+      console.log("notice", response.data);
+      this.noticeList = response.data.reverse();
+      // this.noticeList = response.data;
+    });
+  }
 };
 </script>
 
