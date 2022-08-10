@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 @Slf4j
 @RequestMapping("/api/user")
@@ -54,8 +54,9 @@ public class UserController {
     }
 
     @PostMapping("/signup/owner")
-    public ResponseEntity<String> signup(@RequestBody OwnerDto ownerDto) {
-        return userService.signupOwner(ownerDto);
+    public ResponseEntity<String> signup(@RequestPart(value = "file", required = false) MultipartFile file,
+                                         @RequestPart(value = "ownerDto", required = false) OwnerDto ownerDto) {
+        return userService.signupOwner(ownerDto, file);
     }
 
     @PostMapping("/login")
@@ -65,10 +66,10 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<String> modify(
-            @RequestPart(value = "file",required = false) MultipartFile file,
-            @RequestPart(value = "userDto",required = false) UserDto userDto,
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            @RequestPart(value = "userDto", required = false) UserDto userDto,
             HttpServletRequest request) {
-        return userService.modify(userDto,file, request);
+        return userService.modify(userDto, file, request);
     }
 
     @DeleteMapping
@@ -104,6 +105,7 @@ public class UserController {
         UserDto userDto = naverUserService.getUserInfoByAccessToken(param.get("access_token"));
         return naverUserService.login(userDto);
     }
+
     @PostMapping("/pw-find")
     public ResponseEntity<String> findPw(@RequestBody HashMap<String, String> map) {
         return userService.findPw(map);
