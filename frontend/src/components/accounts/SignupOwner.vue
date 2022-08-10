@@ -121,7 +121,7 @@
               @blur="$v.identify.$touch()"
             ></v-text-field>
             <button 
-              class="border-m radius-m address-btn" 
+              class="border-m radius-m ownernum-btn" 
               @click="checkOwner()"
               type="button">
               인증
@@ -616,17 +616,42 @@ export default {
   position: relative;
 }
 .confirm-btn {
+  right: 0px;
+  left: 183px;
+  top: 30px;
+  bottom: 3px;
   position: absolute;
+  margin: 0px;
+  padding: 1%;
+  width: 80px;
+  height: 30px;
   color: black;
-  right: 0;
-  top: 32px;
+  font-size: 13px;
+}
+.ownernum-btn{
+  right: 0px;
+  left: 200px;
+  top: 10px;
+  bottom: 3px;
+  position: absolute;
+  margin: 0px;
+  padding: 1%;
+  width: 60px;
+  height: 30px;
+  color: black;
   font-size: 13px;
 }
 .address-btn {
+  right: 0px;
+  left: 190px;
+  top: 10px;
+  bottom: 3px;
   position: absolute;
+  margin: 0px;
+  padding: 1%;
+  width: 70px;
+  height: 30px;
   color: black;
-  right: 0;
-  top: 12px;
   font-size: 13px;
 }
 .mailconfim-case {

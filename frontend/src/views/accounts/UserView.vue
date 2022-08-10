@@ -350,6 +350,7 @@ export default {
   height: 100vh;
   justify-content: flex-start;
   align-items: center;
+  
 }
 .btn-box {
   top: 5px;
