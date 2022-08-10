@@ -1,7 +1,7 @@
 <template>
   <div class="signup-box" width="100%">
     <div class="mb-5">
-      <v-list-item-title class="text-h5 mt-3 mb-5">
+      <v-list-item-title class="text-h5 mt-3 mb-5 fw-bold" style="color: rgb(140, 184, 131);">
         고객 회원 가입하기
       </v-list-item-title>
       <div class="ment-box">
@@ -26,11 +26,10 @@
             @input="$v.email.$touch()"
             @blur="$v.email.$touch()"
           ></v-text-field>
-
-          <button type="button" class="border-m radius-m confrim-btn mb-5" @click="isCheck()" >
+          <button type="button" class="border-m radius-m confrim-btn" @click="isCheck()" >
             {{ checkmsg }}
           </button>
-          <div v-if="emailfailDuple">이미 가입된 메일입니다.</div>
+          <div v-if="emailfailDuple" style="color: red; margin-top: 3px;">이미 가입된 메일 혹은 잘못된 이메일입니다.</div>
         </div>
         <!-- ------------인증 메일 보내기-------------------- -->
         <div v-if="sendMail">
@@ -50,8 +49,8 @@
               인증
             </button>
           </div>
-          <div v-if="mailconfirmDuple">인증번호 확인이 되었습니다.</div>
-          <div v-if="mailfailDuple">인증번호 확인에 실패했습니다.</div>
+          <div v-if="mailconfirmDuple" style="color: green;">인증번호 확인이 되었습니다.</div>
+          <div v-if="mailfailDuple" style="color: red;">인증번호 확인에 실패했습니다.</div>
         </div>
 
         <!-- --------비밀번호 입력------------ -->
@@ -112,8 +111,8 @@
           >
             중복확인
           </button>
-          <div v-if="nicknameDuple">사용가능한 닉네임입니다.</div>
-          <div v-if="nicknamefailDuple">중복된 닉네임이 있습니다.</div>
+          <div v-if="nicknameDuple" style="color: green;">사용가능한 닉네임입니다.</div>
+          <div v-if="nicknamefailDuple" style="color: red;">사용 불가능한 닉네임입니다.</div>
         </div>
 
         <!-- ----------회원가입 동의 체크------------ -->
@@ -227,7 +226,6 @@ export default {
       const errors = [];
       if (!this.$v.nickname.$dirty) return errors;
       this.nickname.search(/\s/) != -1 &&errors.push("닉네임은 빈 칸을 포함 할 수 없습니다.")
-
       !this.$v.nickname.maxLength &&
         errors.push("닉네임은 10글자 이내로 입력해야합니다.");
       !this.$v.nickname.required && errors.push(" ");
@@ -235,8 +233,10 @@ export default {
     },
     emailErrors() {
       const errors = [];
+      let reg_required = /.{1,10}/;
       if (!this.$v.email.$dirty) return errors;
       !this.$v.email.email && errors.push("이메일 형식이 아닙니다.");
+      !reg_required.test(this.email) && errors.push("이메일을 입력해주세요.")
       !this.$v.email.required && errors.push(" ");
       return errors;
     },
@@ -256,7 +256,7 @@ export default {
           this.time=300;
           this.rederKey+=1;
         } else {
-          this.emailfailDuple = !this.emailfailDuple;
+          this.emailfailDuple = true;
         }
       });
     },
@@ -275,7 +275,7 @@ export default {
           this.check1 = true;
           this.time = false;
         } else {
-          this.mailfailDuple = !this.mialfailDuple;
+          this.mailfailDuple = !this.mailfailDuple;
         }
       });
     },
@@ -288,11 +288,11 @@ export default {
           nickname: this.nickname
         })
         .then((response) => {
-        if (response.status == 200) {
-          this.nicknameDuple = !this.nicknameDuple;
+        if (response.status == 200 && this.nickname != "") {
+          this.nicknameDuple = true;
           this.check2 =true;
         } else {
-          this.nicknamefailDuple = !this.nicknamefailDuple;
+          this.nicknamefailDuple = true;
         }
       });
     },
@@ -352,9 +352,11 @@ export default {
   align-items: center;
 }
 .btn-box {
+  top: 5px;
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: flex-start;
+  width: 90%;
 }
 .select-btn {
   width: 100px;
@@ -382,7 +384,9 @@ export default {
 }
 .confrim-btn {
   right: 0px;
-  top: 32px;
+  /* left: 190px; */
+  top: 25px;
+  bottom: 32px;
   position: absolute;
   width: 90px;
   font-size: 13px;
