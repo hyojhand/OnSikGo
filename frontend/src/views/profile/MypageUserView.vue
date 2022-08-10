@@ -40,6 +40,7 @@
 <script>
 import regularList from "@/components/profile/regularList.vue";
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
 export default {
   name: "MypageUserView",
   components: {
@@ -71,14 +72,15 @@ export default {
     });
   },
   methods: {
+    ...mapActions("accounts", ["getReviewNickName"]),
     orderlist() {
       this.$router.push("/mypage/user/history");
     },
     reviewlist() {
       this.$router.push({
         name: "myReview",
-        params: { nickname: this.userDto.nickname },
       });
+      this.getReviewNickName(this.userDto.nickname)
     },
   },
 };
