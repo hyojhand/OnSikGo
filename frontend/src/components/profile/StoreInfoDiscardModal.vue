@@ -51,7 +51,7 @@
 
 <script>
 import http from "@/util/http-common";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "NoticeModal",
   data() {
@@ -71,6 +71,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions("select", ["resetValue"]),
     backToMypage() {
       this.dialog = false;
     },
@@ -78,6 +79,7 @@ export default {
       http.delete(`/store/${this.discardStoreId}`).then((response) => {
         if (response.status == 200) {
           alert("가게 정보 폐기 완료되었습니다!");
+          this.resetValue();
           this.$router.go();
         } else {
           alert("가게 정보 삭제에 실패했습니다.");

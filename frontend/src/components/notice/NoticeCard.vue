@@ -53,9 +53,11 @@ export default {
     createdDate: String,
     noticeState: String,
   },
-  created() {
-    this.getData();
+  async created() {
+    console.log(this.orderDto.state);
+    await this.getData();
     // console.log(this.userDto);
+    console.log(this.orderDto.state);
   },
   methods: {
     getData() {
