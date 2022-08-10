@@ -61,7 +61,7 @@
       </div>
       <hr />
     </div>
-
+    <share-sns/>
     <!-- Tab 기능 -->
     <ul class="tabs">
       <li
@@ -135,6 +135,7 @@
 import StoreKakaoMap from "@/components/shopping/StoreKakaoMap";
 import StoreProductItem from "@/components/shopping/StoreProductItem.vue";
 import StoreReview from "@/components/shopping/StoreReview.vue";
+import ShareSns from "@/components/share/ShareSns.vue";
 import http from "@/util/http-common";
 import { mapGetters } from "vuex";
 export default {
@@ -144,6 +145,7 @@ export default {
     StoreKakaoMap,
     StoreProductItem,
     StoreReview,
+    ShareSns
   },
 
   data: function () {
