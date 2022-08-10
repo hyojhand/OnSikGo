@@ -45,10 +45,10 @@ export default {
   name: "ReasonModal",
   methods: {
     ...mapActions("accounts", ["getOwnerOrderList"]),
-    twoCheckIt: function () {
+    async twoCheckIt() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-      http
+      await http
         .patch(`/order/refuse/${this.value.orderDto.orderId}`,{
           reason: this.reason
         })
@@ -63,7 +63,7 @@ export default {
             alert("거절 실패")
           }
         })
-      http
+      await http
         .get("/notice").then((response) => {
           this.getOwnerOrderList(response.data.reverse())
         });
