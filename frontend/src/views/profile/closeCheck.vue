@@ -57,7 +57,8 @@ export default {
       this.storeId = this.$route.params.storeId;
       console.log(this.storeId);
       http.put(`/store/close/${this.storeId}`).then((response) => {
-        if (response.data == "fail") {
+        console.log(response.data);
+        if (response.status == 204) {
           alert("오늘 해당 매장 정보가 없습니다!");
         } else {
           alert("매장 결산이 완료되었습니다");

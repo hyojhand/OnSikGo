@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div>
+    <div class="mt-5">
       <img :src="`${userDto.imgUrl}`" width="100" height="100" />
     </div>
 
     <div class="mt-3">
       <span
-        >{{ userDto.userName }} 님!, <br />이번 달에
+        >{{ userDto.nickname }} 님!, <br />이번 달에
         <strong id="green">온식고</strong>를 통해 <br /><strong id="green"
           >{{ this.orderPrice }}원</strong
         >의 세상을 구하셨어요!</span
@@ -59,7 +59,7 @@ export default {
 
     http.get("/user").then((response) => {
       this.userDto = response.data;
-      // console.log(this.userDto);
+      console.log(this.userDto);
     });
 
     http.get("/follow").then((response) => {

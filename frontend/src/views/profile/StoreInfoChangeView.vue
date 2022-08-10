@@ -113,15 +113,15 @@
           </b-form-group>
           <div class="container">
             <div class="row">
-              <div class="col-5">
-                <div v-if="ownercheckDuple" id="red-small">
+              <div class="col-6">
+                <span v-if="ownercheckDuple" id="red-small">
                   사업자 번호가 확인 되었습니다.
-                </div>
+                </span>
                 <div v-if="ownerfailDuple" id="red-small">
                   다시 확인해주시길 바랍니다.
                 </div>
               </div>
-              <div class="col-7">
+              <div class="col-6">
                 <div class="d-flex justify-content-end">
                   <button
                     type="button"
@@ -167,6 +167,9 @@
             chips
             required
           ></v-select>
+          <span id="red-small"
+            >연중휴무 매장이라면 선택하지 않으셔도 됩니다.</span
+          >
         </div>
         <!-- ------------카테고리셀렉트 박스----------- -->
         <div class="ml-5 mr-4 mt-3">
@@ -239,14 +242,18 @@ export default {
     http.get(`/store/${this.$route.params.storeId}`).then((response) => {
       this.storeDto = response.data;
       this.previewImg = this.storeDto.storeImgUrl;
-      console.log(this.storeDto);
-      this.storeDto.offDay.split(",").map((day) => {
-        var temp = {
-          value: day,
-          text: day,
-        };
-        this.off.push({ ...temp });
-      });
+      if (this.storeDto.offDay == "연중무휴") {
+        this.storeDto.offDay = null;
+        console.log(this.storeDto);
+      } else {
+        this.storeDto.offDay.split(",").map((day) => {
+          var temp = {
+            value: day,
+            text: day,
+          };
+          this.off.push({ ...temp });
+        });
+      }
     });
   },
   methods: {
@@ -331,9 +338,9 @@ export default {
         this.storeDto.address = this.address1;
         this.storeDto.extraAddress = this.extraAddress1;
       }
-      // console.log(this.storeDto.address);
-      // console.log(this.storeDto.extraAddress);
 
+      // 일단 this.storeDto.offDay가 "연중무휴"면
+      // this.storeDto.offDay를 비워서 ""값으로 넣고 시작
       this.storeDto.offDay = this.off.join;
       // console.log(this.storeDto.offDay);
       if (this.numCheck == true) {
@@ -372,9 +379,14 @@ export default {
           this.realoffDayList = this.storeDto.offDay;
         }
         console.log(this.realoffDayList);
+        if (this.storeDto.offDay == "") {
+          this.storeDto.offDay = "연중무휴";
+          this.realoffDayList = "연중무휴";
+        }
         this.storeOffday(this.realoffDayList);
 
         this.storeOffday(this.storeDto.offDay);
+
         const formData = new FormData();
         formData.append("file", this.imgFile);
         formData.append(

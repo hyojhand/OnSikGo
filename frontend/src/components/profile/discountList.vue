@@ -3,12 +3,17 @@
     <div v-for="(item, index) in discardStoreList" :key="index">
       <div class="container">
         <div class="row">
-          <div class="col-4">
-            <img class="dcimg" :src="`${item.itemDto.itemImgUrl}`" />
+          <div class="col-4 mt-3">
+            <img
+              class="dcimg"
+              :src="`${item.itemDto.itemImgUrl}`"
+              width="100"
+              height="100"
+            />
           </div>
-          <div class="col-7 ml-3">
+          <div class="col-7">
             <div>
-              <div class="info-box" style="font-size: 1.5rem">
+              <div class="info-box" style="font-size: 1.3rem">
                 {{ item.itemDto.itemName }}
               </div>
               <div class="info-box" style="color: gray">

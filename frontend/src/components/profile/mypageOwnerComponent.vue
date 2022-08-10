@@ -22,38 +22,39 @@
         />
       </div>
 
-      <div>
-        <div class="mt-2">
-          <span id="color-black">
-            안녕하세요,👨‍🍳 {{ store.storeName }}입니다.
-          </span>
-        </div>
-        <div class="ml-7 mt-5 mr-7" style="text-align: start">
-          <span class="mypage_asset">매장 위치: </span>
-          <span class="mypage">{{ store.address }}</span>
-          <span class="mypage">{{ store.extraAddress }}</span
-          ><br />
-          <span class="mypage_asset">문 닫는 시간: </span>
-          <span class="mypage">{{ store.closingTime }}</span
-          ><br />
-          <span class="mypage_asset">전화번호: </span>
-          <span class="mypage">{{ store.tel }}</span
-          ><br />
-          <span class="mypage_asset">매장 휴무일: </span>
-          <span class="mypage">{{ this.storeOffday }}</span
-          ><br />
-        </div>
+      <div class="mt-3">
+        <span id="color-black">
+          안녕하세요,👨‍🍳 {{ store.storeName }}입니다.
+        </span>
+      </div>
+      <div class="ml-7 mt-5 mr-7" style="text-align: start">
+        <span class="mypage_asset">매장 위치: </span>
+        <span class="mypage">{{ store.address }}</span>
+        <span class="mypage"> {{ store.extraAddress }}</span
+        ><br />
+        <span class="mypage_asset">문 닫는 시간: </span>
+        <span class="mypage">{{ store.closingTime }}</span
+        ><br />
+        <span class="mypage_asset">전화번호: </span>
+        <span class="mypage">{{ store.tel }}</span
+        ><br />
+        <span class="mypage_asset">매장 휴무일: </span>
+        <span v-if="this.storeOffday == null">연중무휴</span>
+        <span class="mypage">{{ this.storeOffday }}</span
+        ><br />
       </div>
 
       <div class="d-flex justify-content-end mt-1 mr-6">
-        <!--영업종료 버튼은 빨간색으로 하기-->
-        <button
-          id="mypage-button"
-          @click="movetoClose"
-          :disabled="this.discardStoreClose == true"
-        >
-          영업 종료 {{ discardStoreClose }}
-        </button>
+        <!--이미 영업이 종료된 메장은 disabled-->
+        <div v-if="this.discardStoreClose == true">
+          <button id="mypage-button-close" @click="movetoClose" disabled>
+            영업 끝
+          </button>
+        </div>
+        <!--아직 영업이 종료되지 않은 매장에 대한 버튼-->
+        <div v-else>
+          <button id="mypage-button" @click="movetoClose">영업 종료</button>
+        </div>
       </div>
     </div>
     <br />
@@ -160,7 +161,20 @@ export default {
   margin: 5 10;
   padding: 10 10;
   box-sizing: border-box;
-  background-color: #d07127;
+  background-color: #d46f21;
+  color: #ffffff;
+  width: 80px;
+}
+#mypage-button-close {
+  height: 30px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #807a76c6;
   color: #ffffff;
   width: 80px;
 }
@@ -173,7 +187,7 @@ export default {
   margin: 5 10;
   padding: 10 10;
   box-sizing: border-box;
-  background-color: #37a62f;
+  background-color: #64a258;
   color: #ffffff;
   width: 100px;
 }

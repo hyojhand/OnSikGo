@@ -3,11 +3,14 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "LogoutView",
+  methods: { ...mapActions("select", ["resetValue"]) },
 
   created() {
     localStorage.removeItem("access-token");
+    this.resetValue();
     this.$router.push("/");
   },
 };
