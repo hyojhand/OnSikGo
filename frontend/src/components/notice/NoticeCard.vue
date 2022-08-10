@@ -15,7 +15,12 @@
         <div class="msg-box">
           <div class="date-box">
             <div class="mr-1">주문날짜 :</div>
-            <div>{{ notice.orderDto.date }}</div>
+            <div>{{ notice.orderDto.date.slice(0,4) }}
+              .{{ notice.orderDto.date.slice(4,6) }}
+              .{{ notice.orderDto.date.slice(6,8) }}
+              {{ notice.orderDto.date.slice(8,10) }}
+              :{{ notice.orderDto.date.slice(10,12) }}  
+            </div>
           </div>
           <div v-html="`${notice.content}`"></div>
           <!-- <span class="notice">님의</span> -->
