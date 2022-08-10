@@ -1,12 +1,11 @@
 <template>
   <div>
     <!--이미지 변경 & 수정-->
-    <br />
-    <b-img :src="previewImg" height="150px" width="200px" />
-    <div class="mt-5">
-      <p class="d-flex justify-content-end">
-        <input @change="fileSelect" type="file" />
-      </p>
+    <div class="mt-8">
+      <b-img :src="previewImg" height="150px" width="200px" />
+    </div>
+    <div class="d-flex justify-content-center mt-5 ml-16">
+      <input @change="fileSelect" type="file" />
     </div>
     <br />
     <div>
@@ -34,7 +33,7 @@
           <b-form-group
             class="d-flex justify-content-between"
             id="input-group-2"
-            label="매장전화번호"
+            label="전화번호"
             label-for="input-2"
           >
             <b-form-input
@@ -53,7 +52,7 @@
           <b-form-group
             class="d-flex justify-content-between"
             id="input-group-3"
-            label="매장위치"
+            label="위치"
             label-for="input-3"
           >
             <span style="color: black" class="text-start"
@@ -67,10 +66,7 @@
             >
 
             <div class="d-flex justify-content-end mt-3">
-              <button
-                class="border-m radius-m address-btn"
-                @click="execDaumPostcode()"
-              >
+              <button id="button-info" @click="execDaumPostcode()">
                 주소 검색
               </button>
             </div>
@@ -99,7 +95,7 @@
           <b-form-group
             class="d-flex justify-content-between"
             id="input-group-4"
-            label="사업자등록번호"
+            label="사업자번호"
             label-for="input-4"
           >
             <b-form-input
@@ -114,10 +110,16 @@
           <div class="container">
             <div class="row">
               <div class="col-6">
-                <span v-if="ownercheckDuple" id="red-small">
+                <span
+                  v-if="ownercheckDuple"
+                  style="color: #66a32e; font-size: 0.75rem"
+                >
                   사업자 번호가 확인 되었습니다.
                 </span>
-                <div v-if="ownerfailDuple" id="red-small">
+                <div
+                  v-if="ownerfailDuple"
+                  style="color: rgb(222, 124, 39); font-size: 0.75rem"
+                >
                   다시 확인해주시길 바랍니다.
                 </div>
               </div>
@@ -126,7 +128,7 @@
                   <button
                     type="button"
                     @click="ownerNumcheck"
-                    class="border-m radius-m address-btn"
+                    id="button-info"
                     style="width: 100%"
                   >
                     사업자 등록번호 확인
@@ -142,7 +144,7 @@
           <b-form-group
             class="d-flex justify-content-between"
             id="input-group-5"
-            label="매장 종료 시간"
+            label="종료시간"
             label-for="input-5"
           >
             <b-form-input
@@ -187,7 +189,7 @@
           <div class="d-flex justify-content-end">
             <button
               type="submit"
-              class="border-m radius-m address-btn"
+              id="button-info-finish"
               @click="modifyStore()"
             >
               수정완료
@@ -423,5 +425,17 @@ export default {
 #red-small {
   color: rgb(222, 124, 39);
   font-size: 0.75rem;
+}
+#button-info {
+  margin: 0px 0px;
+  border: 2px solid black;
+  width: 80%;
+  border-radius: 12px;
+}
+#button-info-finish {
+  margin: 0px 0px;
+  border: 2px solid #66a32e;
+  width: 30%;
+  border-radius: 12px;
 }
 </style>
