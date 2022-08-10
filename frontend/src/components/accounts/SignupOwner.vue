@@ -46,7 +46,7 @@
                 class="border-m radius-m mailconfirm-btn" 
                 @click="checkMail()"
                 type="button">
-                확인
+                인증
               </button>
             </div>
             <div v-if="emailfailDuple" style="color: red;">인증번호 확인에 실패했습니다.</div>
@@ -205,9 +205,6 @@
         min-height="200"
       >
         <form @submit.prevent="submit" class="mb-2">
-          <!-- 가게 이미지 등록 -->
-          <p>가게 이미지 등록</p>
-          <input @change="fileSelect" type="file"/>
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
@@ -241,12 +238,18 @@
             @input = "$v.category.$touch()"
             @blur= "$v.category.$touch()"
           ></v-select>
+          <!-- 가게 이미지 등록 -->
+          <div style="margin-bottom: 5px;">
+            <p style="margin-top:3px; color: rgb(140, 184, 131);">
+              <i class="fa-solid fa-image"></i> 가게를 대표할 이미지 파일을 등록해주세요!</p>
+            <input @change="fileSelect" type="file"/>
+          </div>
         </form>
 
         <div class="sign-btn">
-          <button class="border-m radius-m" @click="e1 = 2">이전으로</button>
+          <button class="border-m radius-m mt-5" @click="e1 = 2">이전으로</button>
           <button 
-          v-if="category != false"
+          v-if="category != false && imgFile != null"
           class="border-m radius-m" 
           @click="signup()">가입하기</button>
         </div>
@@ -340,6 +343,7 @@ export default {
       time:false,
       rederKey:0,
       ownerDto: [],
+      signupfail: "",
     };
   },
 
@@ -564,11 +568,9 @@ export default {
         .post("/user/signup/owner", formData)
         .then((response) => {
           if (response.status == 200) {
-          console.log(this.ownerDto);
-          alert("회원가입이 완료 되었습니다");
           this.$router.push("/signup/complete");
           } else {
-            alert("회원가입 실패");
+            this.signupfail.push("회원 가입 실패");
           }
         })
         
