@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="title" style="justify-content:center !important">
-      <div class="fs-1 text-start" style="color:green;">OnSikGo</div>
-      <div class="font-m text-start mt-4">로그인을 통해</div>
+    <div class="title" style="margin-right: 60px !important">
+      <div class="text-start fw-bold" style="color:green; font-size: 45px;">OnSikGo</div>
+      <div class="font-m text-start" style="margin-top: 30px;">로그인을 통해</div>
       <div class="font-m text-start">함께 세상을 구해나가봐요</div>
     </div>
     <!--로그인버튼-->
@@ -31,7 +31,7 @@
       <button class="radius-m error" @click="signup()">회원 가입</button>
     </div>
 
-    <div class="find-box" style="margin-top:5%">
+    <div class="find-box" style="margin-top:5%; font-szie: 0.75rem;">
       <div>비밀번호를 잊으셨나요?</div>
       <v-dialog 
       v-model="dialog"
@@ -42,24 +42,28 @@
         <v-btn
           v-bind="attrs"
           v-on="on"
-          width="110">
+          width="110"
+          color="secondary"
+          outlined
+          rounded
+          >
           비밀번호 찾기</v-btn>
       </template>
       <v-card>
-        <v-card-title><span class="text-h5">비밀번호 찾기</span></v-card-title>
+        <v-card-title><span class="fw-bold">🔐 비밀번호 찾기</span></v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <div>
               <v-text-field
                 v-model="userName"
-                label="이름을 입력해주세요."
+                label="✔ 이름을 입력해주세요."
                 required
                 ></v-text-field>
               </div>
               <v-text-field
                 v-model="emailCheck"
-                label="이메일을 입력해주세요."
+                label="✔ 이메일을 입력해주세요."
                 required
                 @keyup.enter="checkName()"
                 ></v-text-field>
@@ -71,16 +75,15 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="find-button1" color="success" depressed @click="checkName()">
+          <v-btn rounded class="find-button1" color="success" depressed @click="checkName()">
               임시비밀번호 전송</v-btn>
-          <v-btn class="find-button2" color="error" depressed  @click="clear()">닫기</v-btn>
+          <v-btn rounded class="find-button2" color="error" depressed  @click="clear()">닫기</v-btn>
         </v-card-actions>
       </v-card>
       </v-dialog>
     </div>
-
     <!--소셜 로그인을 위한 아이콘 넣기-->
-    <social-login></social-login>
+    <social-login class="social"></social-login>
   </div>
 </template>
 
@@ -165,7 +168,7 @@ export default {
   width: 100%;
 }
 .input-box {
-  margin-top: 5%;
+  margin-top: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -225,7 +228,7 @@ button {
   width: 30%;
 }
 
-.popup {
-  width: 30%;
+.social {
+  margin-top: 30px;
 }
 </style>
