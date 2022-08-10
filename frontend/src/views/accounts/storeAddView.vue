@@ -261,7 +261,7 @@ export default {
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
-        offDay: this.off.join(),
+        offDay: this.off ? this.off.join() : "연중무휴",
         category: this.category,
       };
       const formData = new FormData();

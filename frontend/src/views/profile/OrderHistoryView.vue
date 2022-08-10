@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class="mt-5">
+    <div class="mt-10">
       <span style="font-size: 1.5rem">💌주문내역💌</span>
     </div>
-    <div v-if="this.orderList.length">
+
+    <div class="mt-4" v-if="this.orderList.length">
       <order-list
         v-for="(order, index) in orderList"
         :key="index"
@@ -11,8 +12,9 @@
       ></order-list>
     </div>
     <div v-else class="non-msg">
-      <div>아직 Onsikgo를 이용한</div>
-      <div>흔적이 없어요 ㅠ</div>
+      <div>아직 OnSikGo를 이용한</div>
+      <div>내역이 없어요 ㅠㅠ</div>
+      <div>한번 사용해보세요!</div>
     </div>
   </div>
 </template>
