@@ -58,6 +58,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters("storeStore", ["getStoreId"]),
     ...mapGetters("accounts", ["userCheck"]),
   },
 
@@ -72,6 +73,7 @@ export default {
 
   methods: {
     ...mapActions("accounts", ["getReviewNickName"]),
+    ...mapActions("store", ["getStoreReviewList"]),
     moveUserReview() {
       this.$router.push({
         name: "myReview",
@@ -88,15 +90,21 @@ export default {
       });
     },
 
-    deleteReview(reviewId) {
+    async deleteReview(reviewId) {
       this.deleteDuple = false;
-      http.delete(`/review/${reviewId}`).then((response) => {
+      await http.delete(`/review/${reviewId}`).then((response) => {
         if (response.status == 200) {
           console.log(response);
           // this.$router.go();
         }
       });
+      await http.get(`/review/store/${this.getStoreId}`).then((response) => {
+        if (response.status == 200) {
+          this.getStoreReviewList(response.data.reverse());
+        }
+      });
     },
+
   },
 };
 </script>

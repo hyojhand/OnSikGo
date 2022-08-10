@@ -145,10 +145,10 @@
             </span>
           </button>
         </div>
-        <div v-if="this.reviewList.length">
+        <div v-if="this.storeReviewList.length">
           <store-review
             class="review"
-            v-for="(reviewDto, index) in reviewList"
+            v-for="(reviewDto, index) in storeReviewList"
             :key="index"
             v-bind="reviewDto"
           />
@@ -168,7 +168,7 @@ import StoreProductItem from "@/components/shopping/StoreProductItem.vue";
 import StoreReview from "@/components/shopping/StoreReview.vue";
 import ShareSns from "@/components/share/ShareSns.vue";
 import http from "@/util/http-common";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "StoreView",
 
@@ -194,6 +194,7 @@ export default {
   computed: {
     ...mapGetters("storeStore", ["getStoreId"]),
     ...mapGetters("accounts", ["userCheck"]),
+    ...mapGetters("store", ["storeReviewList"])
   },
 
   async created() {
@@ -215,13 +216,14 @@ export default {
   },
 
   methods: {
+    ...mapActions("store", ["getStoreReviewList"]),
     onClickTab(tab) {
       this.selectedTab = tab;
     },
     selectReview() {
       http.get(`/review/store/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
-          this.reviewList = response.data.reverse();
+          this.getStoreReviewList(response.data.reverse());
         }
       });
     },
