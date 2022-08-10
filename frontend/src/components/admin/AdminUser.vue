@@ -4,11 +4,18 @@
       v-for="(users, index) in userList"
       :key="index"
       class="row text-start">
-      <div>
-        <p class="fs-5 text-primary">사용자명: {{ users.userName }}</p>
+      <div class="content">
+      <div class="detail text-start">
+        <p class="text-primary">사용자명: {{ users.userName }}</p>
         <p>닉네임: {{ users.nickname }}</p> 
       </div>
-      <v-btn @click="deleteUser(users)" color="error" style="width: 100px; left:300px;" depressed>삭제</v-btn>
+        <img
+          class="siren"
+          src="@/assets/images/trash.png"
+          @click="deleteUser(users)"
+          alt="삭제버튼이었던것.."
+        />
+      </div>
       <hr class="mt-5">
     </div>
   </div>
@@ -56,5 +63,18 @@ export default {
 </script>
 
 <style>
-
+.content{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.detail{
+  width: 320px;
+}
+.siren {
+  width: 25px;
+  height: 25px;
+}
 </style>
