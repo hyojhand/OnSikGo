@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="title" style="margin-right: 60px !important">
-      <div class="text-start fw-bold" style="color:green; font-size: 45px;">OnSikGo</div>
+      <div class="text-start fw-bold" style="color: rgb(140, 184, 131); font-size: 45px;">OnSikGo</div>
       <div class="font-m text-start" style="margin-top: 30px;">로그인을 통해</div>
       <div class="font-m text-start">함께 세상을 구해나가봐요</div>
     </div>

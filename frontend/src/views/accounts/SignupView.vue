@@ -1,7 +1,7 @@
 <template>
   <div class="signup-box" width="100%">
     <div>
-      <v-list-item-title class="text-h5 mt-3 mb-5 fw-bold" style="color: green;">
+      <v-list-item-title class="text-h5 mt-3 mb-5 fw-bold" style="color: rgb(140, 184, 131);">
         회원 가입하기
       </v-list-item-title>
       <v-list-item-subtitle class="mb-2"

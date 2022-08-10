@@ -384,21 +384,29 @@ export default {
 }
 .confrim-btn {
   right: 0px;
-  /* left: 190px; */
-  top: 25px;
-  bottom: 32px;
+  left: 190px;
+  top: 30px;
+  bottom: 3px;
   position: absolute;
-  width: 90px;
-  font-size: 13px;
+  margin: 0px;
+  padding: 1%;
+  width: 80px;
+  height: 30px;
   color: black;
+  font-size: 13px;
 }
 .name-confrim-btn {
   right: 0px;
+  left: 190px;
   top: 15px;
+  bottom: 3px;
   position: absolute;
-  width: 90px;
-  font-size: 13px;
+  margin: 0px;
+  padding: 1%;
+  width: 80px;
+  height: 30px;
   color: black;
+  font-size: 13px;
 }
 .clear {
   color: rgb(255, 82, 82);
