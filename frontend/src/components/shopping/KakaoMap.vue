@@ -1,10 +1,12 @@
 <template>
   <div>
     <div id="map"></div>
-    <button
-      class="map-reset-button" 
-      @click="resetmoving()">
-      <img src="https://cdn-icons-png.flaticon.com/512/6934/6934535.png" alt="" style="width:25px; height:25px;">
+    <button class="map-reset-button" @click="resetmoving()">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/6934/6934535.png"
+        alt=""
+        style="width: 25px; height: 25px"
+      />
     </button>
     <div class="container">
       <!-- 검색란 -->
@@ -54,60 +56,65 @@
         </button>
       </div>
     </div>
-    <div v-if="this.items.length > 0" style="padding-left: 1rem;">
+    <div v-if="this.items.length > 0" style="padding-left: 1rem">
       <div
-        class="item-card mt-3 mb-3"
+        class="mt-3 mb-3"
         v-for="(item, index) in items"
         :key="index"
         v-bind="item"
       >
-        <!-- 마커 -->
-        <!-- <div class="col-2">
+        <div class="item-card" v-if="item.stock > 0">
+          <!-- 마커 -->
+          <!-- <div class="col-2">
         <h1>{{ item.index }}</h1>
       </div> -->
 
-        <img
-          @click="moving(item)"
-          :src="item.itemDto.itemImgUrl"
-          style="cursor: pointer"
-          alt=""
-          class="product-img col-3"
-        />
+          <img
+            @click="moving(item)"
+            :src="item.itemDto.itemImgUrl"
+            style="cursor: pointer"
+            alt=""
+            class="product-img col-3"
+          />
 
-        <div class="col-6 info-case">
-          <div class="product-name">{{ item.itemDto.itemName }}</div>
-          <div class="product-location">
-            매장명 : {{ item.saleDto.storeDto.storeName }}
-          </div>
-          <div 
-            v-if="item.distance < 3000"
-            class="product-prediction">
-            현재 위치로부터 {{ item.distance }} m
-          </div>
-          <div
-            v-else
-            class="product-prediction"
-            >
-            현재 위치로부터 {{ item.distance /1000 }} km
-          </div>
-          <div class="price-case">
-            <span class="discount-price">{{ item.salePrice }}원</span>
-            <div class="product-discount">
-              🔻
-              {{
-                ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(0)
-              }}%
+          <div class="col-6 info-case">
+            <div class="product-name">{{ item.itemDto.itemName }}</div>
+            <div class="product-location">
+              {{ item.saleDto.storeDto.storeName }}
             </div>
-            <span class="price"> ({{ item.itemDto.price }}원)</span>
+            <div v-if="item.distance < 3000" class="product-prediction">
+              현재 위치로부터 {{ item.distance }} m
+            </div>
+            <div v-else class="product-prediction">
+              현재 위치로부터 {{ item.distance / 1000 }} km
+            </div>
+            <div class="product-quantity">
+              <div>재고 :</div>
+              <div class="product-number">{{ item.stock }} 개</div>
+            </div>
           </div>
-        </div>
-        <div class="col-3 stock-case">
-          <p class="product-quantity">
-            재고 : <span class="product-number">{{ item.stock }}</span> 개
-          </p>
-          <button class="order-button border-m radius-s" @click="productOrder(item)">
-            주문하기
-          </button>
+          <div class="col-3 stock-case">
+            <div>
+              <div class="price-case">
+                <div class="product-discount">
+                  <div class="price">({{ item.itemDto.price }}원)</div>
+                  🔻
+                  {{
+                    ((1 - item.salePrice / item.itemDto.price) * 100).toFixed(
+                      0
+                    )
+                  }}%
+                </div>
+              </div>
+              <div class="discount-price">{{ item.salePrice }}원</div>
+            </div>
+            <button
+              class="order-button border-m radius-s"
+              @click="productOrder(item)"
+            >
+              주문하기
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -148,14 +155,13 @@ export default {
       // 현재 위치
       navigator.geolocation.getCurrentPosition((position) => {
         (this.currentxLatitude = position.coords.latitude), // 위도
-        (this.currentLongitude = position.coords.longitude); // 경도
+          (this.currentLongitude = position.coords.longitude); // 경도
         this.storexLatitude = this.currentxLatitude;
         this.storeLongitude = this.currentLongitude;
         // 현재위치
         // console.log(this.currentLongitude, this.currentxLatitude)
         this.curruntLocation();
       });
-     
     } else {
       this.curruntLocation();
     }
@@ -253,10 +259,9 @@ export default {
 
         marker.setMap(this.map);
       });
-      this.currentMarker()
+      this.currentMarker();
     },
     currentMarker() {
-
       var imageSrc =
         "https://cdn-icons.flaticon.com/png/512/3307/premium/3307717.png?token=exp=1660056081~hmac=fffde516d636b326bade7271c7941323";
       // 마커 이미지의 이미지 크기 입니다
@@ -431,7 +436,6 @@ export default {
       // 지도 중심을 부드럽게 이동시킵니다
       // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
       this.map.panTo(moveLatLon);
-
     },
     moving(item) {
       this.storexLatitude = item.saleDto.storeDto.lat;
@@ -463,34 +467,34 @@ export default {
         image: markerImage, // 마커 이미지
       });
       var infowindow = new kakao.maps.InfoWindow({
-          content:
-            '<div class="wrap">' +
-            '    <div class="info">' +
-            '        <div class="title" >' +
-            `            ${item.saleDto.storeDto.storeName}` +
-            "        </div>" +
-            '        <div class="body">' +
-            '            <div class="desc">' +
-            `               <div class="jibun ellipsis">전화번호 : ${item.saleDto.storeDto.tel}</div>` +
-            `               <div class="jibun ellipsis">휴일 : ${item.saleDto.storeDto.offDay}</div>` +
-            `               <div class="jibun ellipsis">마감시간 : ${item.saleDto.storeDto.closingTime}</div>` +
-            "            </div>" +
-            "        </div>" +
-            "    </div>" +
-            "</div>",
-        });
-        // console.log(this.map)
+        content:
+          '<div class="wrap">' +
+          '    <div class="info">' +
+          '        <div class="title" >' +
+          `            ${item.saleDto.storeDto.storeName}` +
+          "        </div>" +
+          '        <div class="body">' +
+          '            <div class="desc">' +
+          `               <div class="jibun ellipsis">전화번호 : ${item.saleDto.storeDto.tel}</div>` +
+          `               <div class="jibun ellipsis">휴일 : ${item.saleDto.storeDto.offDay}</div>` +
+          `               <div class="jibun ellipsis">마감시간 : ${item.saleDto.storeDto.closingTime}</div>` +
+          "            </div>" +
+          "        </div>" +
+          "    </div>" +
+          "</div>",
+      });
+      // console.log(this.map)
 
-        kakao.maps.event.addListener(
-          marker,
-          "mouseover",
-          this.makeOverListener(this.map, marker, infowindow)
-        );
-        kakao.maps.event.addListener(
-          marker,
-          "mouseout",
-          this.makeOutListener(infowindow)
-        );
+      kakao.maps.event.addListener(
+        marker,
+        "mouseover",
+        this.makeOverListener(this.map, marker, infowindow)
+      );
+      kakao.maps.event.addListener(
+        marker,
+        "mouseout",
+        this.makeOutListener(infowindow)
+      );
       // 마커가 지도 위에 표시되도록 설정합니다
       marker.setMap(this.map);
     },
@@ -510,7 +514,7 @@ export default {
 img {
   padding: 0;
 }
-.map-reset-button{
+.map-reset-button {
   position: absolute;
   top: 350px;
   left: 85%;
@@ -529,7 +533,7 @@ img {
   align-items: flex-start;
   justify-content: center;
   padding: 0px;
-  padding-left: 30px;
+  padding-left: 15px;
 }
 /* 거리 에측 */
 .product-prediction {
@@ -545,31 +549,38 @@ img {
 }
 /* 상품 가격 (정가) */
 .price-case {
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 .price {
   color: rgba(0, 0, 0, 0.2);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 }
 /* 할인가 */
 .discount-price {
   font-size: 15px;
+  text-align: start;
 }
 /* 주문하기 버튼 */
 
 /* 재고 수량 글자 */
 .product-quantity {
+  display: flex;
+  align-items: center;
   padding-top: 20px;
   font-size: 13px;
+  padding: 0;
 }
 /* 재고 수량 */
 .product-number {
   color: red;
   font-weight: bolder;
+  padding-left: 3px;
+  font-size: 15px;
 }
-.product-img{
+.product-img {
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -585,9 +596,11 @@ img {
   color: #222;
 }
 .stock-case {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
   padding: 0;
   margin: 0;
 }
@@ -595,8 +608,8 @@ img {
   width: 95%;
   display: flex;
   flex-direction: row;
+  align-items: center;
   padding: 3px 0p;
-
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -610,7 +623,7 @@ img {
   padding-right: 10px;
   padding-left: 15px;
 }
-.search-reset{
+.search-reset {
   padding: 0;
   margin: 0;
 }
@@ -650,8 +663,11 @@ img {
   color: rgba(0, 0, 0, 0.3);
   font-size: 30px;
 }
-
-.order-button:hover{
+.order-button {
+  margin-top: 5px;
+  width: 100%;
+}
+.order-button:hover {
   background-color: rgb(140, 184, 131);
   color: #fff;
 }
