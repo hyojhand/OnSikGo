@@ -68,13 +68,13 @@ export default {
       this.storeCnt = this.stores.length;
       this.discardStoreId(this.storeId);
       this.discardStoreCnt(this.storeCnt);
-      console.log(this.store.offDay);
+      // console.log(this.store.offDay);
 
       if (this.store.offDay == "연중무휴") {
         this.realoffDayList = "연중무휴";
       } else {
         if (this.store.offDay.length >= 5) {
-          console.log("2개이상임");
+          // console.log("2개이상임");
           this.offDaylist_created = [];
           this.store.offDay.split(",").map((day) => {
             this.offDaylist_created.push(day);
@@ -96,11 +96,11 @@ export default {
         } else {
           this.realoffDayList = this.store.offDay;
           this.storeOffday(this.realoffDayList);
-          console.log(this.realoffDayList);
+          // console.log(this.realoffDayList);
         }
       }
 
-      console.log(this.realoffDayList);
+      // console.log(this.realoffDayList);
     });
 
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
@@ -109,7 +109,6 @@ export default {
     });
     await http.get(`/store/close/${this.storeId}`).then((response) => {
       this.getDiscardStoreClose(response.data.closed);
-      // console.log(response.data);
     });
   },
   computed: {
@@ -127,7 +126,7 @@ export default {
     ...mapActions("offdayStore", ["storeOffday"]),
     ...mapActions("select", ["getMyStore", "getStoreValue"]),
     async selectStore(event) {
-      console.log(this.offDay);
+      // console.log(this.offDay);
       this.storeId = event.target.value;
       this.getMyStore(event.target.value);
       await http.get(`/store/${this.storeId}`).then((response) => {
@@ -167,6 +166,7 @@ export default {
         this.storeImg = response.data.storeImgUrl;
       });
       await http.get(`/sale/list/${this.storeId}`).then((response) => {
+        console.log(response.data);
         this.getDsicardStoreList(response.data);
       });
       await http.get(`/store/close/${this.storeId}`).then((response) => {
@@ -174,7 +174,9 @@ export default {
         // console.log(response.data);
       });
       this.discardStoreId(this.storeId);
+      console.log(this.storeId);
       this.discardStoreName(this.storeName);
+      console.log(this.storeName);
       this.discardStoreImg(this.storeImg);
 
       await this.changeStore();
