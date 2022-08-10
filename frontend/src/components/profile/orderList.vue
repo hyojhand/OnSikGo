@@ -13,7 +13,7 @@
               style="border-radius: 50%"
             />
           </div>
-          <div class="col-6">
+          <div class="col-5">
             <div style="text-align: start; align-items: start">
               <span style="color: black; font-size: 1.1rem">
                 {{ order.saleItemDto.itemDto.itemName }}
@@ -32,7 +32,7 @@
               >
             </div>
           </div>
-          <div class="col-3 mt-2">
+          <div class="col-4 mt-2">
             <button
               v-show="`${order.state}` === 'WAIT' && `${elapsedTime}` < 10"
               id="btn-order"
@@ -50,7 +50,7 @@
             >
               가게보기</button
             ><br />
-            <div class="mt-3 d-flex justify-content-end">
+            <div class="mt-3">
               <span
                 v-if="`${order.state}` === 'WAIT'"
                 style="font-size: 0.75rem; color: gray"
