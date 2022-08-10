@@ -54,6 +54,8 @@
 <script>
 import ReasonModal from "@/components/notice/ReasonModal.vue";
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
+
 export default {
   name: "RefuseModal",
   components: { ReasonModal },
@@ -61,6 +63,7 @@ export default {
     value : null,
   },
   methods: {
+    ...mapActions("accounts", ["getOwnerOrderList"]),
     reason1() {
       this.reason = "상품 품절";
       this.id1 = true;
@@ -97,7 +100,10 @@ export default {
             alert("거절 실패")
           }
         })
-
+      http
+        .get("/notice").then((response) => {
+          this.getOwnerOrderList(response.data.reverse())
+        });
       this.dialog = false;
       this.$emit("check-it");
 

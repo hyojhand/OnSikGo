@@ -1,6 +1,10 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="parents" width="344">
+    <v-dialog 
+      v-model="parents" 
+      width="344"
+      persistent
+      >
       <template v-slot:activator="{ on, attrs }">
         <button 
           class="border-m radius-m notice-btn" 
@@ -77,6 +81,7 @@
 <script>
 import RefuseModal from "@/components/notice/RefuseModal.vue";
 import http from "@/util/http-common.js"
+import { mapActions } from "vuex"
 export default {
   name: "NoticeModal",
   components: { RefuseModal },
@@ -84,6 +89,7 @@ export default {
     value : null,
   },
   methods: {
+    ...mapActions("accounts", ["getOwnerOrderList"]),
     getUser() {
 
     },
@@ -107,7 +113,10 @@ export default {
           }
           
         })
-        this.parents = false;
+      http.get("/notice").then((response) => {
+        this.getOwnerOrderList(response.data.reverse())
+        });
+      this.parents = false;
 
     }
   },
