@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -99,7 +99,18 @@ public class UserController {
     }
 
     @PostMapping("/naver")
-    public UserDto naverLogin(@RequestBody HashMap<String, String> param) {
-        return naverUserService.getUserInfoByAccessToken(param.get("access_token"));
+    public HttpEntity<?> naverLogin(@RequestBody HashMap<String, String> param) {
+        naverUserService.getUserInfoByAccessToken(param.get("access_token"));
+        UserDto userDto = naverUserService.getUserInfoByAccessToken(param.get("access_token"));
+        return naverUserService.login(userDto);
+    }
+    @PostMapping("/pw-find")
+    public ResponseEntity<String> findPw(@RequestBody HashMap<String, String> map) {
+        return userService.findPw(map);
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<List<UserDto>> getTotal() {
+        return userService.getTotal();
     }
 }

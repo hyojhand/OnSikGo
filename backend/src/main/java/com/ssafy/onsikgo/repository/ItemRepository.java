@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    List<Item> findByStoreAndItemNameContaining(Store store, String itemName);
+    List<Item> findByStoreAndItemNameContaining(Store store, String keyword);
     Page<Item> findByStore(Store store, Pageable pageable);
+    Page<Item> findPageByStoreAndItemNameContaining(Store store, String keyword, Pageable pageable);
 }

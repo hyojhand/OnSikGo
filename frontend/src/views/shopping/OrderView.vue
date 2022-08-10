@@ -1,13 +1,6 @@
 <template>
   <div class="main_container">
     <div class="mobile" >
-      <!-- <div class="location mt-5 ">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pin-map" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>
-          <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
-        </svg>
-        <span> {{ storeLocation }} </span>
-      </div> -->
       <!-- 단일 상품 설명 -->
       <!-- 상품명, 상품이미지, 주소,현재위치에서 거리, 매장상세보기 버튼, 정가, 할인가, 재고, 한줄평-->
       <div class="product_container border-l radius-m mt-5">
@@ -63,25 +56,24 @@
             <form  class="mb-2 el-case">
               <v-text-field
                 v-model="count"
+                type="number"
+                min="1"
                 label="수량을 입력해주세요."
+                :error-messages="countErrors"
                 required
                 class="input-box mt-5"
                 color="black"
               >
               </v-text-field>
-              <v-text-field
-                v-model="count"
-                label="소요시간을 입력해주세요."
-                required
-                class="input-box mt-1"
-                color="black"
-              >
-              </v-text-field>
             </form>
-            <p class="order-text">* 매장에서 '승인 완료'시 고객님에게 알림이 갑니다</p>
-            <p class="order-text">반드시 알림을 확인하고 출발해주세요.</p>
-            <p class="order-text">상품은 금일 취식 부탁드립니다</p>
-            <button class="order-button border-m radius-m" @click="productOrder()">신청하기</button>
+            <p class="order-text" style="font-size:0.75rem;">매장에서 '승인 완료'시 고객님에게 알림이 갑니다.</p>
+            <p class="order-text" style="font-size:0.75rem;">반드시 알림을 확인하고 출발해주세요.</p>
+            <p class="order-text" style="font-size:0.75rem;">상품은 금일 취식 부탁드립니다.</p>
+            <p class="order-text" style="font-size:0.75rem;">주문 취소는 주문 신청 후 10분이내로 가능합니다.</p>
+            <button 
+              class="order-button border-m radius-m" 
+              @click="productOrder()"
+            >신청하기</button>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -91,7 +83,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import http from "@/util/http-common";
 
 export default {
@@ -109,6 +101,9 @@ export default {
       storeName : "",
       storeLocation : "",
       count : "",
+      storeId : "",
+      saleItemId: "",
+      check: false,
     }
   },
   computed: {
@@ -116,7 +111,15 @@ export default {
       "currentAddress",
       "currentItemId",
       "orderStore",
-    ])
+    ]),
+    countErrors() {
+      const errors = [];
+      if (this.count <= this.stock) {
+        return errors;
+      }
+      errors.push("재고보다 적은 수량을 입력해주세요.")
+      return errors
+    }, 
   },
   created (){
     this.findProduct()
@@ -124,31 +127,36 @@ export default {
     this.findStock()
   },
   methods: {
+    ...mapActions("storeStore", ["getStoreId"]),
     // 상품 정보 조회
     findProduct() {
       http
         .get(`/item/${this.currentItemId}`)
         .then((response) => {
+          // console.log(response.data)
           this.productName = response.data.itemName
           this.price = response.data.price
           this.itemImgUrl = response.data.itemImgUrl
           this.comment = response.data.comment
-          console.log(response.data)
+          // console.log(response.data)
         }),
       http
         .get(`/sale/${this.currentItemId}`)
         .then((response) => {
           this.stock = response.data.stock
-          this.salePrice = response.data.salePrice 
-          console.log(response.data)
+          this.salePrice = response.data.salePrice
+          this.saleItemId = response.data.saleItemId
+          // console.log(response.data)
         })
     },
     // 가게정보 조회
     findStock() {
+      // console.log(this.orderStore)
       http
         .get(`/store/${this.orderStore}`)
         .then((response) => {
           this.storeName = response.data.storeName
+          this.storeId = response.data.storeId
           this.storeLocation = response.data.location
           // console.log(response.data)
         })
@@ -167,23 +175,28 @@ export default {
     },
     //  주문하기
     productOrder() {
-      http.defaults.headers["access-token"] =
-      localStorage.getItem("access-token");
-      http
-        .post('/order', {
-          saleItemId : this.currentItemId,
-          count : this.count
-        })
-        .then((response) => {
-          console.log(response)
-        })
-      this.$router.push("/shop")
-
-      
+      if (this.count <= this.stock || this.count >= 1){
+        http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+        http
+          .post('/order', {
+            saleItemId : this.saleItemId,
+            count : this.count
+          })
+          .then((response) => {
+            console.log(response)
+          })
+        alert("주문이 접수되었습니다.")
+        this.$router.push("/mypage/user/history")
+      }
     },
     // 할때 가게정보도 추가 할 것
     detailStore() {
-        this.$router.push("/store")
+      this.getStoreId(this.storeId);
+      console.log(this.storeId)
+      this.$router.push({
+        name: "storeView",
+      });
     }
   }
 };

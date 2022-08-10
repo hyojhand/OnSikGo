@@ -1,25 +1,23 @@
 package com.ssafy.onsikgo.service;
 
-import com.ssafy.onsikgo.dto.NoticeDto;
 import com.ssafy.onsikgo.dto.OrderDto;
 import com.ssafy.onsikgo.entity.*;
 import com.ssafy.onsikgo.repository.*;
 import com.ssafy.onsikgo.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -33,7 +31,6 @@ public class OrderService {
     private final SaleItemRepository saleItemRepository;
     private final NoticeRepository noticeRepository;
     private final TokenProvider tokenProvider;
-
 //    private final EntityManager em;
 
     @Transactional
@@ -62,7 +59,7 @@ public class OrderService {
             now = now.minusDays(1);
         }
 
-        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         String date = now.format(dayFormatter);
         orderDto.setDate(date);
 
@@ -71,13 +68,13 @@ public class OrderService {
 
 //        em.flush();
 
-        String content = findUser.get().getNickname() + "님의 주문이 도착했습니다.";
+        String content = findUser.get().getNickname() + " 님의<br/>" + "주문이 도착했습니다.";
         SaleItem saleItem = order.getSaleItem();
         Sale sale = saleItem.getSale();
         Store store = sale.getStore();
         User storeUser = store.getUser();
 
-        Notice notice = new Notice(content, findUser.get(), order, storeUser.getUserId());
+        Notice notice = new Notice(content, findUser.get(), order, storeUser.getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
         return new ResponseEntity<>("주문이 등록되었습니다.", HttpStatus.OK);
@@ -127,7 +124,9 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 주문", HttpStatus.NO_CONTENT);
         }
 
-        findOrder.get().update(State.ORDER);
+
+        Integer salePrice = findOrder.get().getSaleItem().getSalePrice();
+        findOrder.get().update(State.ORDER,salePrice * findOrder.get().getCount());
         orderRepository.save(findOrder.get());
 
         SaleItem saleItem = findOrder.get().getSaleItem();
@@ -146,9 +145,9 @@ public class OrderService {
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = now.format(dayFormatter);
 
-        int money = saleItem.getSalePrice() * findOrder.get().getCount();
+        int money = findOrder.get().getOrderPrice();
         Store store = saleItem.getItem().getStore();
-        Optional<Sale> findSale = saleRepository.findByStoreAndDate(store, date);
+        Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(store, date);
         if(!findSale.isPresent()) {
             return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
         }
@@ -158,8 +157,8 @@ public class OrderService {
         findSale.get().updateTotalPrice(totalPrice);
         saleRepository.save(findSale.get());
 
-        String content = findUser.get().getNickname() + "님의 상품이 준비되었습니다.";
-        Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId());
+        String content = findSale.get().getStore().getStoreName() + " 매장의 " + "<br/>상품이 준비되었습니다.";
+        Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
         return new ResponseEntity<>("주문이 승인되었습니다.", HttpStatus.OK);
@@ -183,12 +182,12 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 주문", HttpStatus.NO_CONTENT);
         }
 
-        findOrder.get().update(State.CANCEL);
+        findOrder.get().update(State.CANCEL, 0);
         orderRepository.save(findOrder.get());
 
         String reason = map.get("reason");
-        String content = findOrder.get().getUser().getNickname() + "님의 상품이 " + reason + "의 이유로 " + "취소되었습니다.";
-        Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId());
+        String content = findOrder.get().getUser().getNickname() + " 님의 상품이<br/>" + reason + "의 이유로 " + "취소되었습니다.";
+        Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
         return new ResponseEntity<>("가게사정으로 주문이 거절되었습니다.", HttpStatus.OK);
@@ -212,7 +211,7 @@ public class OrderService {
             return new ResponseEntity<>("존재하지 않는 주문", HttpStatus.NO_CONTENT);
         }
 
-        findOrder.get().update(State.CANCEL);
+        findOrder.get().update(State.CANCEL, 0);
         orderRepository.save(findOrder.get());
 
         SaleItem saleItem = findOrder.get().getSaleItem();
@@ -220,11 +219,39 @@ public class OrderService {
         Store store = sale.getStore();
         User storeUser = store.getUser();
 
-        String content = findUser.get().getNickname() + "님이 주문을 취소했습니다.";
-        Notice notice = new Notice(content, findUser.get(), findOrder.get(), storeUser.getUserId());
+        String content = findUser.get().getNickname() + " 님이<br/>" + "주문을 취소했습니다.";
+        Notice notice = new Notice(content, findUser.get(), findOrder.get(), storeUser.getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
         return new ResponseEntity<>("사용자가 주문을 취소하였습니다.", HttpStatus.OK);
     }
 
+    public ResponseEntity<String> totalOrderPrice(HttpServletRequest request) {
+        String token = request.getHeader("access-token");
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
+        }
+
+        String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
+        Optional<User> findUser = userRepository.findByEmail(userEmail);
+        if(!findUser.isPresent()) {
+            return new ResponseEntity<>("존재하지 않는 유저", HttpStatus.NO_CONTENT);
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        LocalDateTime start = now.withDayOfMonth(1);
+        String startMonth = start.format(dayFormatter) + "0000";
+        LocalDateTime end = now.withDayOfMonth(now.toLocalDate().lengthOfMonth());
+        String endMonth = end.format(dayFormatter) + "0000";
+
+        List<Order> findMonthOrder = orderRepository.findByUserAndDateBetweenAndState(findUser.get(), startMonth, endMonth, State.ORDER);
+        int buyPrice = 0;
+        for(Order order : findMonthOrder) {
+            buyPrice += order.getOrderPrice();
+        }
+
+        return new ResponseEntity<>(String.valueOf(buyPrice), HttpStatus.OK);
+    }
 }

@@ -1,24 +1,21 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog width="500" height="800">
       <template v-slot:activator="{ on, attrs }">
-        <b-button pill variant="outline-danger" v-bind="attrs" v-on="on">
-          예 탈퇴하겠습니다
-        </b-button>
+        <button id="btn-quit" v-bind="attrs" v-on="on">탈퇴!</button>
       </template>
       <v-card>
         <v-card-title class="d-flex justify-content-center">
-          <br />
-          그래도, 우리는 <br />세상을 구하는 당신을 응원합니다! <br />
+          <div class="container">
+            그래도, 온식고는 <br />세상을 구하는 당신을 응원합니다!
+          </div>
+          <div class="img-box">
+            <img src="@/assets/logo.png" width="120" height="80" />
+          </div>
+          <div class="button-box">
+            <button id="btn-real-quit" @click="deleteUser()">안녕~!</button>
+          </div>
         </v-card-title>
-        <img
-          src="@/assets/logo.png"
-          width="120"
-          height="80"
-        /><br /><br /><br />
-        <b-button pill variant="outline-danger" @click="deleteUser()"
-          >안녕~!</b-button
-        >
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -46,13 +43,18 @@ export default {
 </script>
 
 <style scoped>
-.btn-box {
-  justify-content: center;
-}
 .reason {
-  max-width: 344px;
+  max-width: 500px;
+  height: 500px;
 }
 #green {
   color: green;
+}
+#btn-quit {
+  width: 100px;
+}
+#btn-real-quit {
+  width: 100px;
+  color: red;
 }
 </style>

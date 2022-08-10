@@ -13,7 +13,7 @@ import java.util.List;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/notice")
+@RequestMapping("/api/notice")
 @RequiredArgsConstructor
 public class NoticeController {
 
@@ -27,5 +27,10 @@ public class NoticeController {
     @DeleteMapping("/{notice_id}")
     public ResponseEntity<String> delete(@PathVariable Long notice_id) {
         return noticeService.delete(notice_id);
+    }
+
+    @GetMapping("/state-check")
+    public ResponseEntity<Boolean> stateFalseCheck(HttpServletRequest request) {
+        return noticeService.stateFalseCheck(request);
     }
 }

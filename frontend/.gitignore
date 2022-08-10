@@ -1,7 +1,7 @@
 .DS_Store
 /node_modules
 /dist
-
+/src/util
 
 # local env files
 .env.local
@@ -23,3 +23,4 @@ pnpm-debug.log*
 *.sw?
 
 *.env
+**/src/util/http-common.js

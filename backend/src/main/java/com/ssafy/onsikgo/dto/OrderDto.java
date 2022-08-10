@@ -15,6 +15,8 @@ public class OrderDto {
     private String date;
     private Integer count;
     private State state;
+    private Integer orderPrice;
+    private Long orderId;
 
     public Order toEntity(User user, SaleItem saleItem) {
         return Order.builder()
@@ -22,6 +24,7 @@ public class OrderDto {
                 .count(this.count)
                 .saleItem(saleItem)
                 .user(user)
+                .orderPrice(this.orderPrice)
                 .state(State.WAIT)
                 .build();
     }
