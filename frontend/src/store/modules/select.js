@@ -26,6 +26,9 @@ const select = {
     getStoreValue: ({ commit }, data) => {
       commit("GET_STORE_VALUE", data);
     },
+    resetValue: ({ commit }) => {
+      commit("RESET_VALUE");
+    },
   },
   mutations: {
     GET_SAVE_STORE: (state, storeId) => {
@@ -42,6 +45,13 @@ const select = {
     },
     GET_STORE_VALUE: (state, data) => {
       state.storeValue = data;
+    },
+    RESET_VALUE: (state) => {
+      state.saveStore = "";
+      state.saveName = "";
+      state.Mystore = "";
+      state.saveMyStore = "";
+      state.storeValue = {};
     },
   },
 };

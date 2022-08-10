@@ -54,7 +54,6 @@
         ></category-store>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -138,7 +137,6 @@ export default {
 .tab {
   font-size: 18px;
   margin-right: 5%;
-
 }
 .select > span {
   color: rgb(140, 184, 131);
