@@ -82,11 +82,12 @@ ul.tabs li{
   cursor: pointer;
   border: 2px solid #B9B9B9;
   border-radius: 20px;
-  width:78px;
-  height: 35px;
-  font-size: 18px;
+  width:30px;
+  height: 25px;
+  font-size: 15px;
   padding: 0;
   margin-left: 5px;
+  margin-right: 5px;
 }
 
 .choice > span {

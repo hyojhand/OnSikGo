@@ -3,10 +3,10 @@
     <div
       v-for="(stores, index) in storeList"
       :key="index"
-      class="row text-start mt-3">
+      class="row text-start">
       <div class="content">
       <div class="detail text-start">
-        <p class="text-primary">가게명: {{ stores.storeName }} <br></p> 
+        <p class="text-primary">📌 가게명: {{ stores.storeName }} <br></p> 
         <p>{{ stores.address}}</p> 
       </div>
         <img
@@ -16,7 +16,7 @@
           alt="삭제버튼이었던것.."
         />
         </div>
-        <hr class="mt-5">
+        <hr class="mt-2">
     </div>
   </div>
 </template>

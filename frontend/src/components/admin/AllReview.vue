@@ -6,8 +6,8 @@
       class="row">
       <div class="content">
       <div class="detail text-start">
-        <li>작성자: {{ review.nickname }}</li>
-        <li>가게명: {{ review.storeDto.storeName }}</li>
+        <p>😀 작성자: {{ review.nickname }}</p>
+        <p>📌 가게명: {{ review.storeDto.storeName }}</p>
         <p class="text-primary mt-2">작성내용: {{ review.content }}</p>
       </div>
         <img

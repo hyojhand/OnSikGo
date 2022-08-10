@@ -6,7 +6,7 @@
       class="row text-start">
       <div class="content">
       <div class="detail text-start">
-        <p class="text-primary">사용자명: {{ users.userName }}</p>
+        <p class="text-primary">😀 사용자명: {{ users.userName }}</p>
         <p>닉네임: {{ users.nickname }}</p> 
       </div>
         <img
@@ -16,7 +16,7 @@
           alt="삭제버튼이었던것.."
         />
       </div>
-      <hr class="mt-5">
+      <hr class="mt-2">
     </div>
   </div>
 </template>
