@@ -12,7 +12,7 @@
       </template>
 
       <v-card class="box-reason">
-        <v-card-title class="lighten-2 card-header">
+        <v-card-title class="lighten-2 text-h5 card-header">
           거절 기타 사유
         </v-card-title>
 
@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import http from "@/util/http-common"
-import { mapActions } from "vuex"
+import http from "@/util/http-common";
+import { mapActions } from "vuex";
 
 export default {
   name: "ReasonModal",
@@ -49,24 +49,23 @@ export default {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       await http
-        .patch(`/order/refuse/${this.value.orderDto.orderId}`,{
-          reason: this.reason
+        .patch(`/order/refuse/${this.value.orderDto.orderId}`, {
+          reason: this.reason,
         })
-        .then((response) =>{
+        .then((response) => {
           if (response.status === 200) {
-            console.log(response)
+            console.log(response);
             this.$router.push({
-              name: "notice"
-            })
+              name: "notice",
+            });
           } else {
-            console.log(response)
-            alert("거절 실패")
+            console.log(response);
+            alert("거절 실패");
           }
-        })
-      await http
-        .get("/notice").then((response) => {
-          this.getOwnerOrderList(response.data.reverse())
         });
+      await http.get("/notice").then((response) => {
+        this.getOwnerOrderList(response.data.reverse());
+      });
 
       this.dialog = false;
       this.$emit("two-check-it");
@@ -88,10 +87,10 @@ export default {
 .card-header {
   border-bottom: 1px solid rgba(31, 31, 31, 10%);
   width: 100%;
-  color: rgb(140, 184, 131);
 }
 .reason {
-  width: 100%;
+  width: 320px;
+  height: 30px;
   color: white;
   background-color: rgb(31, 31, 31);
 }
@@ -100,6 +99,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: black;
 }
 .input-reason {
   width: 100%;
@@ -107,7 +107,8 @@ export default {
 .btn-send {
   margin: 2%;
   width: 150px;
+  height: 30px;
   color: white;
-  background-color: rgb(140, 184, 131);
+  background-color: rgba(140, 184, 131);
 }
 </style>

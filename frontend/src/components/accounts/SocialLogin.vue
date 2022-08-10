@@ -5,7 +5,7 @@
         <img id="kakao-login-img" src="@/assets/images/kakao.png" />
       </a>
     </div>
-    <div id="naver_id_login"></div>
+    <div id="naver_id_login" style="margin-top: 25px;"></div>
   </div>
 </template>
 

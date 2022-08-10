@@ -40,14 +40,16 @@
               v-model="authNum"
               placeholder="인증번호를 입력하세요."
             />
-            <CountTimer v-if="time" :time="time" :key="rederKey"/>
-            <button
-              class="border-m radius-m mailconfirm-btn mb-5 "
-              @click="checkMail()"
-              type="button"
-            >
-              인증
-            </button>
+            <div>
+              <CountTimer v-if="time" :time="time" :key="rederKey"/>
+              <button
+                class="border-m radius-m mailconfirm-btn mb-5 "
+                @click="checkMail()"
+                type="button"
+              >
+                인증
+              </button>
+            </div>
           </div>
           <div v-if="mailconfirmDuple" style="color: green;">인증번호 확인이 되었습니다.</div>
           <div v-if="mailfailDuple" style="color: red;">인증번호 확인에 실패했습니다.</div>
@@ -124,6 +126,7 @@
           color="black"
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
+          class = "checkbox"
         ></v-checkbox>
         <!-- 가입하기 버튼 -->
         <div class="btns mb-5">
@@ -134,7 +137,7 @@
             가입하기
           </button>
         </div>
-        <div v-if="signupfailDuple">회원가입에 실패했습니다.</div>
+        <div v-if="signupfailDuple" style="color:red;">😥 회원가입에 실패했습니다.</div>
       </form>
     </v-card>
   </div>
@@ -303,6 +306,7 @@ export default {
       this.$v.$touch();
     },
     signup() {
+      this.signupfailDuple = false;
       http
         .post("/user/signup", {
           email: this.email,
@@ -315,7 +319,7 @@ export default {
           if (response.status == 200) {
             this.$router.push("/signup/complete");
           } else {
-            this.signupfailDuple = !this.signupfailDuple;
+            this.signupfailDuple = true;
           }
         });
     },
@@ -350,6 +354,7 @@ export default {
   height: 100vh;
   justify-content: flex-start;
   align-items: center;
+  
 }
 .btn-box {
   top: 5px;
@@ -384,21 +389,29 @@ export default {
 }
 .confrim-btn {
   right: 0px;
-  /* left: 190px; */
-  top: 25px;
-  bottom: 32px;
+  left: 190px;
+  top: 30px;
+  bottom: 3px;
   position: absolute;
-  width: 90px;
-  font-size: 13px;
+  margin: 0px;
+  padding: 1%;
+  width: 80px;
+  height: 30px;
   color: black;
+  font-size: 13px;
 }
 .name-confrim-btn {
   right: 0px;
+  left: 190px;
   top: 15px;
+  bottom: 3px;
   position: absolute;
-  width: 90px;
-  font-size: 13px;
+  margin: 0px;
+  padding: 1%;
+  width: 80px;
+  height: 30px;
   color: black;
+  font-size: 13px;
 }
 .clear {
   color: rgb(255, 82, 82);
@@ -413,5 +426,8 @@ export default {
 }
 .input-box {
   min-width: 266px;
+}
+.checkbox {
+  margin-left: 10%;
 }
 </style>
