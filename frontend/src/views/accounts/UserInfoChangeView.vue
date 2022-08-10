@@ -63,7 +63,11 @@
       </div>
     </div>
     <div v-else>
-      <span>소셜 로그인으로 가입한 경우 비밀번호 변경이 어렵습니다.</span>
+      <div class="mt-4">
+        <span style="color: rgb(222, 124, 39); font-size: 0.8rem"
+          >소셜 로그인으로 가입한 경우 비밀번호 변경이 어렵습니다.</span
+        >
+      </div>
     </div>
     <div class="ml-10 mr-10 mt-10">
       <div class="d-flex justify-content-end">
