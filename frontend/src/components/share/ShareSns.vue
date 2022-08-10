@@ -42,8 +42,28 @@ methods: {
 </script>
 <style scoped>
 .link-icon { 
-    position: relative; display: inline-block; width: auto;    font-size: 14px; font-weight: 500; color: #333; margin-right: 10px; padding-top: 50px; }
-.link-icon.twitter { background-image: url(https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/icon-twitter.png); background-repeat: no-repeat; }
-.link-icon.facebook { background-image: url(https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/icon-facebook.png); background-repeat: no-repeat; } 
-.link-icon.kakao { background-image: url(https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/icon-kakao.png); background-repeat: no-repeat; }
+    position: relative; 
+    display: inline-block; 
+    width: auto;    
+    font-size: 14px; 
+    font-weight: 500; 
+    color: #333; 
+    margin-right: 10px; 
+    padding-top: 50px; 
+}
+.link-icon.twitter { 
+    background-image: url(https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/icon-twitter.png); 
+    background-repeat: no-repeat; 
+    width: 50px;
+}
+.link-icon.facebook { 
+    background-image: url(https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/icon-facebook.png); 
+    background-repeat: no-repeat; 
+    width: 50px;
+} 
+.link-icon.kakao { 
+    background-image: url(https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/icon-kakao.png); 
+    background-repeat: no-repeat; 
+    width: 50px;
+}
 </style>
