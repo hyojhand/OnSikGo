@@ -5,14 +5,11 @@ import com.ssafy.onsikgo.entity.*;
 import com.ssafy.onsikgo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -36,6 +33,9 @@ public class SaleService {
 
     @Transactional
     public ResponseEntity<String> register(SaleItemDto saleItemDto, Long store_id) {
+        if(saleItemDto.getStock() <= 0 || saleItemDto.getSalePrice() <= 0) {
+            return new ResponseEntity<>("값이 0이하입니다", HttpStatus.NO_CONTENT);
+        }
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
@@ -74,7 +74,6 @@ public class SaleService {
             return new ResponseEntity<>("할인상품이 존재합니다.", HttpStatus.NO_CONTENT);
         } else {
             saleItemDto.setTotalStock(saleItemDto.getStock());
-//            Sale sale = saleRepository.findByStoreOrderByDateDesc(findStore).get(0);
 
             SaleItem saleItem = saleItemDto.toEntity(findItem,findSale.get());
             saleItemRepository.save(saleItem);
@@ -98,8 +97,13 @@ public class SaleService {
 
         return new ResponseEntity<>("세일상품 등록완료", HttpStatus.OK);
     }
-
-    public ResponseEntity<List<SaleItemDto>> getSaleItemList(Long store_id) {
+    public ResponseEntity<List<SaleItemDto>> getSaleItemDtoList(List<SaleItemDto> list) {
+        if(list==null){
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    public List<SaleItemDto> getSaleItemList(Long store_id) {
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
@@ -113,12 +117,12 @@ public class SaleService {
 
         Optional<Store> findStore = storeRepository.findById(store_id);
         if(!findStore.isPresent()) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NO_CONTENT);
+            return null;
         }
 
         Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(findStore.get(), date);
         if(!findSale.isPresent()) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NO_CONTENT);
+            return null;
         }
 
         List<SaleItem> saleItemList = saleItemRepository.findBySale(findSale.get());
@@ -127,17 +131,21 @@ public class SaleService {
         SaleDto saleDto = findSale.get().toDto(storeDto);
         List<SaleItemDto> saleItemDtoList = new ArrayList<>();
         for(int i = 0; i < saleItemList.size(); i++) {
+            if(saleItemList.get(i).getStock() == 0) continue;
             SaleItem saleItem = saleItemList.get(i);
             ItemDto itemDto = saleItem.getItem().toDto();
             SaleItemDto saleItemDto = saleItemList.get(i).toDto(itemDto,saleDto);
             saleItemDtoList.add(saleItemDto);
         }
 
-        return new ResponseEntity<>(saleItemDtoList, HttpStatus.OK);
+        return saleItemDtoList;
     }
 
     @Transactional
     public ResponseEntity<String> updateStock(HashMap<String,Integer> map, Long sale_item_id) {
+        if(map.get("stock") <= 0 || map.get("salePrice") <= 0) {
+            return new ResponseEntity<>("값이 0이하입니다", HttpStatus.NO_CONTENT);
+        }
 
         Optional<SaleItem> findSaleItem = saleItemRepository.findById(sale_item_id);
         if(!findSaleItem.isPresent()) {

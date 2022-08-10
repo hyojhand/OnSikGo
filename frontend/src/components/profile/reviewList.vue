@@ -76,6 +76,7 @@
 
 <script>
 import http from "@/util/http-common";
+import {mapActions} from "vuex"
 export default {
   name: "reviewList",
   props: {
@@ -88,13 +89,27 @@ export default {
     reviewId: Number,
   },
   methods: {
+    ...mapActions("accounts", ["getMyReviewList"]),
     reviewdelete() {
       http.delete(`/review/${this.reviewId}`).then((response) => {
         console.log(response.data);
         alert("리뷰가 삭제되었습니다.");
         // 새로고침 해야함
-        this.$router.go();
       });
+      http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+      http
+        .post("/review/user", {
+          nickname: this.$route.params.nickname,
+        })
+        .then((response) => {
+          console.log(this.reviewList);
+          if (response.status == 200) {
+            if (response.data != null) {
+              this.getMyReviewList(response.data);
+            }
+          }
+        });
     },
   },
 };
