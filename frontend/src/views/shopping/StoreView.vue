@@ -61,7 +61,7 @@
       </div>
       <hr />
     </div>
-    <ShareSns/>
+    <share-sns/>
     <!-- Tab 기능 -->
     <ul class="tabs">
       <li
