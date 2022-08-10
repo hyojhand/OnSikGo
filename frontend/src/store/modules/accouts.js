@@ -4,11 +4,13 @@ const accounts = {
       userCheck:0,
       myReviewList: [],
       ownerOrderList: [],
+      reviewNickName: "",
     },
     getters: {
       userCheck: state => state.userCheck,
       myReviewList: state => state.myReviewList,
       ownerOrderList: state => state.ownerOrderList,
+      reviewNickName: state => state.reviewNickName,
     },
     actions: {
       getUserCheck:({commit}, userCheck) => {
@@ -20,6 +22,9 @@ const accounts = {
       getOwnerOrderList:({commit}, ownerOrderList) => {
         commit("GET_OWNERORDER", ownerOrderList)
       },
+      getReviewNickName:({commit}, reviewNickName) => {
+        commit("GET_REVIEWNICKNAME", reviewNickName)
+      },
     },
     mutations: {
       GET_USERCHECK: (state, userCheck) => {
@@ -30,6 +35,9 @@ const accounts = {
       },
       GET_OWNERORDER: (state, ownerOrderList) => {
         state.ownerOrderList = ownerOrderList;
+      },
+      GET_REVIEWNICKNAME: (state, reviewNickName) => {
+        state.reviewNickName = reviewNickName;
       },
     },
   };

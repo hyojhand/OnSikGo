@@ -5,7 +5,7 @@
     </div>
     <div v-if="myReviewList.length">
       <reviewList
-        v-for="(review, index) in myReviewList.reverse()"
+        v-for="(review, index) in myReviewList"
         :key="index"
         v-bind="review"
       />
@@ -26,32 +26,24 @@ export default {
   components: {
     reviewList,
   },
-  data() {
-    return {
-      nickname: "",
-    };
-  },
   computed: {
-    ...mapGetters("accounts", ["myReviewList"]),
+    ...mapGetters("accounts", [
+      "myReviewList",
+      "reviewNickName"
+    ]),
   },
   created() {
-    http.defaults.headers["access-token"] =
-      localStorage.getItem("access-token");
+    console.log(this.reviewNickName)
     http
       .post("/review/user", {
-        nickname: this.$route.params.nickname,
+        nickname: this.reviewNickName,
       })
       .then((response) => {
-        console.log(this.reviewList);
         if (response.status == 200) {
-          if (response.data != null) {
-            this.getMyReviewList(response.data);
-            // console.log(this.reviewList);
-          } else {
-            alert("리뷰가 없습니다.");
-          }
+          this.getMyReviewList(response.data.reverse());
         }
       });
+
   },
   methods: {
     ...mapActions("accounts", ["getMyReviewList"]),
