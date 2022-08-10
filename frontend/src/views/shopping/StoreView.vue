@@ -238,6 +238,8 @@ export default {
             // alert("리뷰작성이 완료되었습니다.");
             this.reviewContent = "";
             this.selectReview();
+          } else if (response.status == 204) {
+            alert("리뷰를 입력해주세요!");
           }
         });
     },

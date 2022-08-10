@@ -1,28 +1,54 @@
 <template>
   <div>
     <form>
-      <div class="mt-5">
+      <div class="mt-8">
         <b-img :src="previewImg" height="200px" width="200px" />
         <p class="d-flex justify-content-end">
           <input @change="fileSelect" type="file" />
         </p>
+        <span style="color: rgb(222, 124, 39); font-size: 0.8rem"
+          >* 이미지 파일은 매장 추가 시 필수입니다. *</span
+        >
       </div>
 
       <!-- ------상호명 입력--------------- -->
-      <div class="ml-4 mr-4 mt-10">
-        <v-text-field
-          v-model="store"
-          label="상호명을 입력해주세요."
-          required
-          class="input-box"
-          color="black"
-        ></v-text-field>
+      <div class="mt-8">
+        <div class="row">
+          <div class="col-3 ml-1 mt-5 d-flex justify-content-center">
+            <span>매장명</span>
+          </div>
+          <div class="col-8 mr-2">
+            <v-text-field
+              v-model="store"
+              label="상호명을 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+            ></v-text-field>
+          </div>
+        </div>
       </div>
 
       <!-- -----------가게 주소 입력-------------- -->
-      <div class="container">
-        <div class="row">
-          <div class="col-9">
+
+      <div class="row">
+        <div class="col-3 d-flex justify-content-end">
+          <span>매장 주소</span>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-end mr-6">
+            <button
+              class="border-l radius-m address-btn"
+              @click="execDaumPostcode()"
+            >
+              주소 검색
+            </button>
+          </div>
+          <br />
+          <span style="color: rgb(222, 124, 39); font-size: 0.8rem"
+            >* 주소 검색을 클릭하여 주소를 선택해주세요 *</span
+          >
+          <div class="mr-6">
             <v-text-field
               v-model="address"
               label="가게 주소를 입력해주세요."
@@ -31,98 +57,119 @@
               color="black"
               type="address"
             ></v-text-field>
-          </div>
-          <div class="col-3">
-            <button
-              class="border-l radius-m address-btn"
-              @click="execDaumPostcode()"
-            >
-              주소 검색
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="ml-3 mr-4 mt-3">
-        <v-text-field
-          v-model="extraAddress"
-          label="상세 주소를 입력해주세요."
-          required
-          class="input-box"
-          color="black"
-          type="address"
-        ></v-text-field>
-      </div>
-
-      <!-- --------------사업자 등록번호 입력------------ -->
-      <div class="container">
-        <div class="row">
-          <div class="col-9">
             <v-text-field
-              v-model="identify"
-              label="사업자번호를 입력해주세요."
+              v-model="extraAddress"
+              label="상세 주소를 입력해주세요."
               required
               class="input-box"
               color="black"
+              type="address"
             ></v-text-field>
           </div>
-          <div class="col-3">
-            <button
-              @click="ownerNumcheck"
-              class="border-l radius-m address-btn"
-              type="button"
-            >
-              번호 인증
-            </button>
-          </div>
-          <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
-          <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
+        </div>
+      </div>
+
+      <!-- --------------사업자 등록번호 입력------------ -->
+
+      <div class="row">
+        <div class="col-3 mt-5 d-flex justify-content-end">
+          <span>사업자번호</span>
+        </div>
+        <div class="col-6">
+          <v-text-field
+            v-model="identify"
+            label="사업자번호를 입력해주세요."
+            required
+            class="input-box"
+            color="black"
+          ></v-text-field>
+        </div>
+        <div class="col-3 mt-4 mr-2d-flex justify-content-end">
+          <button
+            @click="ownerNumcheck"
+            class="border-l radius-m address-btn"
+            type="button"
+          >
+            번호인증
+          </button>
+        </div>
+        <div style="color: #34a623; font-size: 0.8rem" v-if="ownercheckDuple">
+          사업자 번호가 확인 되었습니다.
+        </div>
+        <div
+          style="color: rgb(222, 124, 39); font-size: 0.8rem"
+          v-if="ownerfailDuple"
+        >
+          다시 확인해주시길 바랍니다.
         </div>
       </div>
 
       <!-- -------------전화번호 입력----------- -->
-      <div class="ml-3 mr-4 mt-3">
-        <v-text-field
-          v-model="tel"
-          type="tel"
-          label="가게 전화번호를 입력해주세요."
-          required
-          class="input-box"
-          color="black"
-        ></v-text-field>
+      <div class="row">
+        <div class="col-3 ml-2 mt-5 d-flex justify-content-center">
+          <span>전화번호</span>
+        </div>
+        <div class="col-8 mr-2">
+          <v-text-field
+            v-model="tel"
+            type="tel"
+            label="가게 전화번호를 입력해주세요."
+            required
+            class="input-box"
+            color="black"
+          ></v-text-field>
+        </div>
       </div>
 
       <!-- -----------마감시간 입력----------- -->
-      <div class="ml-3 mr-4 mt-3">
-        <v-text-field
-          v-model="end"
-          type="time"
-          label="마감시간을 입력해주세요."
-          required
-          class="input-box"
-          color="black"
-        ></v-text-field>
+      <div class="row">
+        <div class="col-3 ml-2 mt-5 d-flex justify-content-center">
+          <span>마감시간</span>
+        </div>
+        <div class="col-8 mr-2">
+          <v-select
+            :items="days"
+            v-model="off"
+            label="휴무일을 입력해주세요."
+            multiple
+            chips
+          ></v-select>
+        </div>
       </div>
 
       <!-- -------------휴무일 입력---------------- -->
-      <div class="ml-3 mr-4 mt-3">
-        <v-select
-          :items="days"
-          v-model="off"
-          label="휴무일을 입력해주세요."
-          multiple
-          chips
-        ></v-select>
+      <div class="row">
+        <div class="col-3 ml-2 mt-5 d-flex justify-content-center">
+          <span>휴무일</span>
+        </div>
+        <div class="col-8">
+          <v-select
+            :items="days"
+            v-model="off"
+            label="휴무일을 입력해주세요."
+            multiple
+            chips
+          ></v-select>
+          <span style="color: rgb(222, 124, 39); font-size: 0.8rem"
+            >* 연중휴무 매장이라면 선택하지 않으셔도 됩니다. *</span
+          >
+        </div>
       </div>
 
       <!-- ------------카테고리셀렉트 박스----------- -->
-      <div class="ml-3 mr-4 mt-3">
-        <v-select
-          :items="items"
-          v-model="category"
-          label="카테고리를 선택해주세요."
-          required
-          color="black"
-        ></v-select>
+      <div class="row">
+        <div class="col-3 mt-5 d-flex ml-2 justify-content-center">
+          <span>카테고리</span>
+        </div>
+        <div class="col-8">
+          <v-select
+            :items="items"
+            v-model="category"
+            label="카테고리를 선택해주세요."
+            required
+            color="black"
+          ></v-select>
+        </div>
       </div>
     </form>
     <div class="ml-3 mr-4 mt-3 mb-10">
