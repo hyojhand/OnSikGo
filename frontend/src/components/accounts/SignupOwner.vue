@@ -41,13 +41,15 @@
                 v-model="authNum"
                 placeholder="인증번호를 입력하세요."
               />
-              <CountTimer v-if="time" :time="time" :key="rederKey"/>
-              <button 
-                class="border-m radius-m mailconfirm-btn" 
-                @click="checkMail()"
-                type="button">
-                인증
-              </button>
+              <div>
+                <CountTimer v-if="time" :time="time" :key="rederKey"/>
+                <button 
+                  class="border-m radius-m mailconfirm-btn" 
+                  @click="checkMail()"
+                  type="button">
+                  인증
+                </button>
+              </div>
             </div>
             <div v-if="emailfailDuple" style="color: red;">인증번호 확인에 실패했습니다.</div>
             <div v-if="mailconfirmDuple" style="color: green;">인증번호 확인이 되었습니다.</div>
@@ -94,8 +96,8 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 2"
+          v-bind:disabled="check1 == false"
           >
-          <!-- v-bind:disabled="check1 == false" -->
           다음으로</button>
         </div>
       </v-stepper-content>
@@ -191,9 +193,8 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 3"
-
+          v-bind:disabled="check2 == false"
           >다음으로</button>
-                    <!-- v-bind:disabled="check2 == false"  -->
         </div>
       </v-stepper-content>
 
@@ -253,6 +254,7 @@
           class="border-m radius-m" 
           @click="signup()">가입하기</button>
         </div>
+        <div v-if="signupfailDuple" style="color:red;">😥 회원가입에 실패했습니다.</div>
       </v-stepper-content>
 
       <v-stepper-header class="status-box">
@@ -323,6 +325,7 @@ export default {
       emailfailDuple: false,
       ownercheckDuple: false,
       ownerfailDuple: false,
+      signupfailDuple: false,
       items: [
         {value: 'KOREA', text: '한식'},
         {value: 'JAPAN', text: '일식'},
@@ -343,7 +346,6 @@ export default {
       time:false,
       rederKey:0,
       ownerDto: [],
-      signupfail: "",
     };
   },
 
@@ -544,6 +546,7 @@ export default {
     },
 
     signup() {
+      this.signupfailDuple = false;
       this.ownerDto = {
         email: this.email,
         password: this.password,
@@ -570,7 +573,7 @@ export default {
           if (response.status == 200) {
           this.$router.push("/signup/complete");
           } else {
-            this.signupfail.push("회원 가입 실패");
+            this.signupfailDuple = true;
           }
         })
         
