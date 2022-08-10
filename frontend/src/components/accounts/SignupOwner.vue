@@ -207,7 +207,7 @@
         <form @submit.prevent="submit" class="mb-2">
           <!-- 가게 이미지 등록 -->
           <p>가게 이미지 등록</p>
-          <!-- <input @change="fileSelect" type="file" /> -->
+          <input @change="fileSelect" type="file"/>
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
@@ -311,7 +311,7 @@ export default {
       checkmsg: "메일 인증",
       sendMail: false,
       authNum: "",
-      // imgFile: null,
+      imgFile: null,
       check1: false,
       check2: false,
       check3: false,
@@ -339,6 +339,7 @@ export default {
       ],
       time:false,
       rederKey:0,
+      ownerDto: [],
     };
   },
 
@@ -524,22 +525,22 @@ export default {
     },    
 
     // 이미지 파일 업로드
-    // fileSelect(event) {
-    //   var input = event.target;
-    //   if (input.files && input.files[0]) {
-    //     var reader = new FileReader();
-    //     reader.onload = (e) => {
-    //       this.previewImg = e.target.result;
-    //     };
-    //     reader.readAsDataURL(input.files[0]);
-    //   } else {
-    //     this.previewImg = null;
-    //   }
-    //   this.imgFile = input.files[0];
-    // },
+    fileSelect(event) {
+      var input = event.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+      this.imgFile = input.files[0];
+    },
 
     signup() {
-      http.post("/user/signup/owner", {
+      this.ownerDto = {
         email: this.email,
         password: this.password,
         userName: this.name,
@@ -550,11 +551,28 @@ export default {
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
-        offDay: this.off.join(),
+        offDay: this.off ? this.off.join() : "연중무휴",
         category: this.category,
-
-      });
-      this.$router.push("/signup/complete");
+      };
+      const formData = new FormData();
+      formData.append("file", this.imgFile);
+      formData.append(
+        "ownerDto",
+        new Blob([JSON.stringify(this.ownerDto)], { type: "application/json" })
+      );
+      http
+        .post("/user/signup/owner", formData)
+        .then((response) => {
+          if (response.status == 200) {
+          console.log(this.ownerDto);
+          alert("회원가입이 완료 되었습니다");
+          this.$router.push("/signup/complete");
+          } else {
+            alert("회원가입 실패");
+          }
+        })
+        
+      
     },
   },
 };
