@@ -10,16 +10,18 @@
               color: rgba(140, 184, 131);
               margin-bottom: 10px;
             "
-            >Onsikgo,</p
           >
+            Onsikgo,
+          </p>
           <p
             style="
               font-size: 2rem;
               font-weight: bold;
               color: rgba(140, 184, 131);
             "
-            >지구를 구하는 마지막 주문</p
           >
+            지구를 구하는 마지막 주문
+          </p>
         </div>
         <div id="div1" class="mt-5">
           <img
@@ -56,31 +58,58 @@
           style="height: 100%; width: 20%"
           class="ml-5"
         />
-        <div v-else style="font-weight:bolder">
+        <div v-else style="font-weight: bolder">
           {{ title }}
         </div>
         <v-spacer></v-spacer>
         <div class="icon-box">
           <div v-if="userCheck === 0">
             <router-link :to="{ name: 'login' }" style="text-decoration: none">
-              <p class="mt-4 mr-2 login" style="color: rgb(140, 184, 131); font-weight: bold;">로그인</p>
+              <p
+                class="mt-4 mr-2 login"
+                style="color: rgb(140, 184, 131); font-weight: bold"
+              >
+                로그인
+              </p>
             </router-link>
           </div>
           <div v-else>
             <div v-if="userCheck === 1">
-              <router-link v-if="noticeState === false" :to="{ name: 'notice' }">
-                <img src="@/assets/images/bell.png" alt="알림" style="width:24px; height:24px padding-top:5px">
+              <router-link
+                v-if="noticeState === false"
+                :to="{ name: 'notice' }"
+              >
+                <img
+                  src="@/assets/images/bell.png"
+                  alt="알림"
+                  style="width:24px; height:24px padding-top:5px"
+                />
               </router-link>
               <router-link v-else :to="{ name: 'notice' }">
-                <img src="@/assets/images/basebell.png" alt="알림" style="width:24px; height:24px padding-top:3px">
+                <img
+                  src="@/assets/images/basebell.png"
+                  alt="알림"
+                  style="width:24px; height:24px padding-top:3px"
+                />
               </router-link>
             </div>
             <div v-else>
-              <router-lin v-if="noticeState === false" :to="{ name: 'noticeUser' }">
-                <img src="@/assets/images/bell.png" alt="알림" style="width:24px; height:24px padding-top:5px">
-              </router-lin>
+              <router-link
+                v-if="noticeState === false"
+                :to="{ name: 'noticeUser' }"
+              >
+                <img
+                  src="@/assets/images/bell.png"
+                  alt="알림"
+                  style="width:24px; height:24px padding-top:5px"
+                />
+              </router-link>
               <router-link v-else :to="{ name: 'noticeUser' }">
-                <img src="@/assets/images/basebell.png" alt="알림" style="width:24px; height:24px padding-top:3px">
+                <img
+                  src="@/assets/images/basebell.png"
+                  alt="알림"
+                  style="width:24px; height:24px padding-top:3px"
+                />
               </router-link>
             </div>
           </div>
@@ -128,7 +157,9 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight: bolder">{{
+                  item.title
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -140,7 +171,9 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight: bolder">{{
+                  item.title
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -152,7 +185,9 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-weight: bolder">{{
+                  item.title
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -166,11 +201,13 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight: bolder">{{
+                item.title
+              }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <router-link :to="{ name: 'login' }">
-              <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
+            <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
           </router-link>
         </v-list>
       </v-navigation-drawer>
@@ -193,7 +230,9 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight: bolder">{{
+                item.title
+              }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <MemberQuitModal></MemberQuitModal>
@@ -213,7 +252,9 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title style="font-weight:bolder;">{{ item.title }}</v-list-item-title>
+              <v-list-item-title style="font-weight: bolder">{{
+                item.title
+              }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <MemberQuitModal></MemberQuitModal>
@@ -332,13 +373,10 @@ export default {
           this.getUserCheck(3);
         }
       });
-      http
-        .get("/notice/state-check").then((response) =>{
-          this.noticeState = response.data
-        })
+      http.get("/notice/state-check").then((response) => {
+        this.noticeState = response.data;
+      });
     }
-    
-
   },
   methods: {
     ...mapActions("accounts", ["getUserCheck"]),

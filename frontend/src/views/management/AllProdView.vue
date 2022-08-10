@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-5">
     <!--매장선택-->
     <div class="selec-box">
       <select
@@ -107,7 +107,7 @@
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center nav-box">
         <li class="page-item">
-          <a class="page-link" href="#" @click="previousPage()">Previous</a>
+          <a class="page-link" href="#" @click="previousPage()">이전으로</a>
         </li>
 
         <li
@@ -119,7 +119,7 @@
           <a class="page-link" href="#" @click="movePage(index)">{{ index }}</a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#" @click="nextPage()">Next</a>
+          <a class="page-link" href="#" @click="nextPage()">다음으로</a>
         </li>
       </ul>
     </nav>
@@ -357,5 +357,8 @@ export default {
 }
 .selec-box > svg {
   margin-left: 7px;
+}
+.page-link {
+  color: black;
 }
 </style>
