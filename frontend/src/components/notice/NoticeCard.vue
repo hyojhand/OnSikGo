@@ -2,30 +2,30 @@
   <v-card class="mx-auto card-box" max-width="344">
     <div
       :class="{
-        active: `${orderDto.state}` == 'WAIT',
+        active: `${notice.orderDto.state}` == 'WAIT',
       }"
       class="row card-box"
     >
-      <img class="img-box col-5" :src="`${userDto.imgUrl}`" alt="유저 프로필" />
+      <img class="img-box col-5" :src="`${notice.userDto.imgUrl}`" alt="유저 프로필" />
       <div class="col-7 order-box">
         <v-list-item-content>
           <v-list-item-title class="text mb-3 msg-box">
-            <span>{{ orderDto.date }}</span>
-            <span v-html="`${content}`"></span>
+            <span>{{ notice.orderDto.date }}</span>
+            <span v-html="`${notice.content}`"></span>
             <!-- <span class="notice">님의</span> -->
           </v-list-item-title>
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
-          <p v-if="`${orderDto.state}` === 'WAIT'" class="time-text">
+          <p v-if="`${notice.orderDto.state}` === 'WAIT'" class="time-text">
             주문대기
           </p>
-          <p v-else-if="`${orderDto.state}` === 'CANCEL'" class="time-text">
+          <p v-else-if="`${notice.orderDto.state}` === 'CANCEL'" class="time-text">
             주문취소
           </p>
-          <p v-else-if="`${orderDto.state}` === 'ORDER'" class="time-text">
+          <p v-else-if="`${notice.orderDto.state}` === 'ORDER'" class="time-text">
             주문완료
           </p>
-          <notice-modal :value="items"></notice-modal>
+          <notice-modal :value="notice"></notice-modal>
         </v-card-actions>
       </div>
     </div>
@@ -44,32 +44,9 @@ export default {
     };
   },
   props: {
-    content: String,
-    location: String,
-    orderDto: [],
-    receivedId: Number,
-    state: Boolean,
-    userDto: [],
-    createdDate: String,
-    noticeState: String,
-  },
-  created() {
-    this.getData();
-    // console.log(this.userDto);
+    notice: Object,
   },
   methods: {
-    getData() {
-      var temp = {
-        content: this.content,
-        location: this.location,
-        orderDto: this.orderDto,
-        receivedId: this.receivedId,
-        state: this.state,
-        userDto: this.userDto,
-        createdDate: this.createdDate,
-      };
-      this.items = temp;
-    },
     goDetail() {
       this.$router.push("/notice/detail");
     },

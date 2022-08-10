@@ -99,10 +99,10 @@ export default {
     checkIt: function () {
       this.parents = false;
     },
-    orderOk() {
+    async orderOk() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-      http
+      await http
         .patch(`/order/sign/${this.value.orderDto.orderId}`)
         .then((response) =>{
           if (response.status === 200) {
@@ -113,7 +113,7 @@ export default {
           }
           
         })
-      http.get("/notice").then((response) => {
+      await http.get("/notice").then((response) => {
         this.getOwnerOrderList(response.data.reverse())
         });
       this.parents = false;

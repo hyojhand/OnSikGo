@@ -5,7 +5,7 @@
         class="notice-card"
         v-for="(notice, index) in ownerOrderList"
         :key="index"
-        v-bind="notice"
+        :notice="notice"
       />
     </div>
     <div v-else class="non-msg">
@@ -37,7 +37,7 @@ export default {
     http.defaults.headers["access-token"] =
       localStorage.getItem("access-token");
     http.get("/notice").then((response) => {
-      // console.log("notice", response.data);
+      console.log("notice", response.data);
       this.getOwnerOrderList(response.data.reverse())
       // this.noticeList = response.data;
     });

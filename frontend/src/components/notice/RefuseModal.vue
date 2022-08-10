@@ -82,10 +82,10 @@ export default {
       this.id2 = false;
       this.id3 = true;
     },
-    checkIt: function () {
+    async checkIt() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-      http
+      await http
         .patch(`/order/refuse/${this.value.orderDto.orderId}`,{
           reason: this.reason
         })
@@ -100,7 +100,7 @@ export default {
             alert("거절 실패")
           }
         })
-      http
+      await http
         .get("/notice").then((response) => {
           this.getOwnerOrderList(response.data.reverse())
         });
