@@ -23,7 +23,7 @@
       </div>
 
       <div>
-        <div class="mt-2">
+        <div class="mt-3">
           <span id="color-black">
             안녕하세요,👨‍🍳 {{ store.storeName }}입니다.
           </span>
@@ -31,7 +31,7 @@
         <div class="ml-7 mt-5 mr-7" style="text-align: start">
           <span class="mypage_asset">매장 위치: </span>
           <span class="mypage">{{ store.address }}</span>
-          <span class="mypage">{{ store.extraAddress }}</span
+          <span class="mypage"> {{ store.extraAddress }}</span
           ><br />
           <span class="mypage_asset">문 닫는 시간: </span>
           <span class="mypage">{{ store.closingTime }}</span
@@ -40,6 +40,7 @@
           <span class="mypage">{{ store.tel }}</span
           ><br />
           <span class="mypage_asset">매장 휴무일: </span>
+          <span v-if="this.storeOffday == null">연중무휴</span>
           <span class="mypage">{{ this.storeOffday }}</span
           ><br />
         </div>
@@ -160,7 +161,7 @@ export default {
   margin: 5 10;
   padding: 10 10;
   box-sizing: border-box;
-  background-color: #d07127;
+  background-color: #d46f21;
   color: #ffffff;
   width: 80px;
 }
@@ -173,7 +174,7 @@ export default {
   margin: 5 10;
   padding: 10 10;
   box-sizing: border-box;
-  background-color: #37a62f;
+  background-color: #64a258;
   color: #ffffff;
   width: 100px;
 }
