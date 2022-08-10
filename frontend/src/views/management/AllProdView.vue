@@ -46,12 +46,13 @@
       <!-- 검색란 -->
       <div class="search-bar col-7">
         <v-text-field
+          width="120"
           v-model="keyword"
           label="상품을 입력해주세요."
           color="black"
         ></v-text-field>
         <!-- 검색 아이콘 -->
-        <button>
+        <button class="none-margin">
           <svg
             @click="keywordSelect(1)"
             xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +68,7 @@
           </svg>
         </button>
         <!-- 초기화 -->
-        <button>
+        <button class="none-margin">
           <svg
             @click="resetItemList()"
             xmlns="http://www.w3.org/2000/svg"
@@ -293,6 +294,10 @@ export default {
 </script>
 
 <style scoped>
+.none-margin {
+  margin: 0;
+  padding: 0;
+}
 .store-name {
   width: 80%;
   font-size: 25px;
