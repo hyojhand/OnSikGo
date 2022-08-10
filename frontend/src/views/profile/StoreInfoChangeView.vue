@@ -91,7 +91,7 @@
         </div>
         <br />
         <!--사업자등록번호 -->
-        <div class="ml-5 mr-4 mt-3">
+        <div class="ml-2 mr-4 mt-3">
           <b-form-group
             class="d-flex justify-content-between"
             id="input-group-4"
