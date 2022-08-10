@@ -13,7 +13,7 @@
               style="border-radius: 50%"
             />
           </div>
-          <div class="col-5">
+          <div class="col-6">
             <div style="text-align: start; align-items: start">
               <span style="color: black; font-size: 1.1rem">
                 {{ order.saleItemDto.itemDto.itemName }}
@@ -31,8 +31,25 @@
                 >수량: {{ order.count }} 개</span
               >
             </div>
+            <div class="mt-1 d-flex justify-content-end">
+              <span
+                v-if="`${order.state}` === 'WAIT'"
+                style="font-size: 0.75rem; color: gray"
+                >주문대기</span
+              >
+              <span
+                v-else-if="`${order.state}` === 'ORDER'"
+                style="font-size: 0.75rem; color: blue"
+                >주문승인</span
+              >
+              <span
+                v-else-if="`${order.state}` === 'CANCEL'"
+                style="font-size: 0.75rem; color: red"
+                >주문거절</span
+              >
+            </div>
           </div>
-          <div class="col-4 mt-2">
+          <div class="col-3 mt-2">
             <button
               v-show="`${order.state}` === 'WAIT' && `${elapsedTime}` < 10"
               id="btn-order"
@@ -50,23 +67,6 @@
             >
               가게보기</button
             ><br />
-            <div class="mt-3">
-              <span
-                v-if="`${order.state}` === 'WAIT'"
-                style="font-size: 0.75rem; color: gray"
-                >주문대기</span
-              >
-              <span
-                v-else-if="`${order.state}` === 'ORDER'"
-                style="font-size: 0.75rem; color: blue"
-                >주문승인</span
-              >
-              <span
-                v-else-if="`${order.state}` === 'CANCEL'"
-                style="font-size: 0.75rem; color: red"
-                >주문거절</span
-              >
-            </div>
           </div>
         </div>
       </div>
