@@ -48,14 +48,14 @@ export default {
     location: String,
     orderDto: [],
     receivedId: Number,
-    state: String,
+    state: Boolean,
     userDto: [],
     createdDate: String,
     noticeState: String,
   },
   created() {
     this.getData();
-    console.log(this.userDto);
+    // console.log(this.userDto);
   },
   methods: {
     getData() {

@@ -39,9 +39,12 @@
 
 <script>
 import http from "@/util/http-common"
+import { mapActions } from "vuex"
+
 export default {
   name: "ReasonModal",
   methods: {
+    ...mapActions("accounts", ["getOwnerOrderList"]),
     twoCheckIt: function () {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
@@ -60,6 +63,11 @@ export default {
             alert("거절 실패")
           }
         })
+      http
+        .get("/notice").then((response) => {
+          this.getOwnerOrderList(response.data.reverse())
+        });
+
       this.dialog = false;
       this.$emit("two-check-it");
     },
