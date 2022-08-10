@@ -263,9 +263,9 @@ export default {
     },
     currentMarker() {
       var imageSrc =
-        "https://cdn-icons.flaticon.com/png/512/3307/premium/3307717.png?token=exp=1660056081~hmac=fffde516d636b326bade7271c7941323";
+        "https://cdn-icons-png.flaticon.com/512/3480/3480405.png";
       // 마커 이미지의 이미지 크기 입니다
-      var imageSize = new kakao.maps.Size(30, 35);
+      var imageSize = new kakao.maps.Size(30, 40);
       // console.log("가게 하나의 위도 경도",store)
 
       // 마커 이미지를 생성합니다

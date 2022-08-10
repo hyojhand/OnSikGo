@@ -145,7 +145,7 @@
             </span>
           </button>
         </div>
-        <div v-if="this.storeReviewList.length">
+        <div v-if="storeReviewList.length">
           <store-review
             class="review"
             v-for="(reviewDto, index) in storeReviewList"
@@ -250,7 +250,6 @@ export default {
         localStorage.getItem("access-token");
       http.get(`/follow/find/${this.getStoreId}`).then((res) => {
         // console.log(res.data)
-        console.log("찍힘");
         this.liking = res.data;
         // console.log(this.liking)
       });
