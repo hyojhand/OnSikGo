@@ -18,8 +18,8 @@
               <svg
                 @click="like"
                 xmlns="http://www.w3.org/2000/svg"
-                width="33"
-                height="33"
+                width="25"
+                height="25"
                 fill="red"
                 class="bi bi-heart"
                 viewBox="0 0 16 16"
@@ -34,8 +34,8 @@
               <svg
                 @click="unlike"
                 xmlns="http://www.w3.org/2000/svg"
-                width="33"
-                height="33"
+                width="25"
+                height="25"
                 fill="red"
                 class="bi bi-heart-fill"
                 viewBox="0 0 16 16"
@@ -53,105 +53,110 @@
 
     <div>
       <!--지도표시부분-->
-      <div>
-        <store-kakao-map></store-kakao-map>
-      </div>
-      <div class="mt-2">
-        <div class="content">
-          <div class="row">
-            <div class="col-3">상세위치 :</div>
-            <div class="">
-              {{ " " + storeDto.address + " " + storeDto.extraAddress }}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3">전화번호:</div>
-            <div class="">
-              {{ storeDto.tel }}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3">영업시간:</div>
-            <div class="">{{ storeDto.closingTime }}</div>
-          </div>
-          <div class="row">
-            <div class="col-3">휴무일:</div>
-            <div class="">
-              {{ storeDto.offDay }}
+      <store-kakao-map></store-kakao-map>
+      <div class="content">
+        <div class="row info-text">
+          <div class="col-3">상세위치 :</div>
+          <div class="col-9 info-content adress">
+            <div>{{ storeDto.address }}</div>
+            <div>
+              {{ storeDto.extraAddress }}
             </div>
           </div>
         </div>
+        <div class="row info-text">
+          <div class="col-3">전화번호:</div>
+          <div class="col-9 info-content">
+            {{ storeDto.tel }}
+          </div>
+        </div>
+        <div class="row info-text">
+          <div class="col-3">영업시간:</div>
+          <div class="col-9 info-content">{{ storeDto.closingTime }}</div>
+        </div>
+        <div class="row info-text">
+          <div class="col-3">휴무일:</div>
+          <div class="col-9 info-content">
+            {{ storeDto.offDay }}
+          </div>
+        </div>
+        <div class="row info-text">
+          <div class="col-3">공유하기:</div>
+          <share-sns class="col-9" />
+        </div>
       </div>
-      <hr />
     </div>
-    <share-sns/>
-    <!-- Tab 기능 -->
-    <ul class="tabs">
-      <li
-        v-for="tab in tabs"
-        v-bind:class="{
-          active: tab === selectedTab,
-          select: tab === selectedTab,
-        }"
-        :key="tab"
-        v-on:click="onClickTab(tab)"
-        class="tab"
-      >
-        <span>{{ tab }}</span>
-      </li>
-    </ul>
 
-    <!-- 상품 설명란 -->
-    <div class="product mt-3" v-if="selectedTab === tabs[0]">
-      <p class="head">📃 해당 매장에서 오늘 등록된 상품</p>
-      <div v-if="this.saleItemList.length">
-        <store-product-item
-          v-for="(saleItem, index) in saleItemList"
-          :key="index"
-          v-bind="saleItem"
-        />
+    <!-- Tab 기능 -->
+    <div class="about-store">
+      <ul class="tabs mt-3">
+        <li
+          v-for="tab in tabs"
+          v-bind:class="{
+            active: tab === selectedTab,
+            select: tab === selectedTab,
+          }"
+          :key="tab"
+          v-on:click="onClickTab(tab)"
+          class="tab"
+        >
+          <div :class="{ now: tab === selectedTab }">{{ tab }}</div>
+        </li>
+      </ul>
+
+      <!-- 상품 설명란 -->
+      <div class="product mt-3" v-if="selectedTab === tabs[0]">
+        <div class="head">📃 해당 매장에서 오늘 등록된 상품</div>
+        <div v-if="this.saleItemList.length">
+          <store-product-item
+            v-for="(saleItem, index) in saleItemList"
+            :key="index"
+            v-bind="saleItem"
+          />
+        </div>
+        <div v-else class="non-msg">
+          <div>오늘은 등록된</div>
+          <div>상품이 없어요 ㅠ</div>
+        </div>
       </div>
-      <div v-else class="non-msg">
-        <div>오늘은 등록된</div>
-        <div>상품이 없어요 ㅠ</div>
-      </div>
-    </div>
-    <div class="product mt-3" v-else>
-      <p class="head">🥨 온식고 식구들의 입소문</p>
-      <!--리뷰입력창-->
-      <div class="input-group comment">
-        <input
-          v-if="userCheck"
-          v-model="reviewContent"
-          type="text"
-          class="form-control"
-          aria-label="Input Review"
-          aria-describedby="basic-addon1"
-          @keyup.enter="registerReview()"
-        />
-        <input
-          v-else
-          type="text"
-          class="form-control"
-          placeholder="리뷰를 입력해주세요"
-          @click="login()"
-        />
-        <button @click="registerReview()">
-          <span class="input-group-text" id="basic-addon1">
-            <i class="fa-solid fa-comment"></i>
-          </span>
-        </button>
-      </div>
-      <div v-if="this.reviewList.length">
-        <store-review
-          v-for="(reviewDto, index) in reviewList"
-          :key="index"
-          v-bind="reviewDto"
-        />
-      </div>
-      <div v-else class="non-msg">
-        <div>오늘은 등록된</div>
-        <div>상품이 없어요 ㅠ</div>
+      <div class="product mt-3" v-else>
+        <div class="head mb-3">🥨 온식고 식구들의 입소문</div>
+        <!--리뷰입력창-->
+        <div class="comment">
+          <input
+            v-if="userCheck"
+            v-model="reviewContent"
+            type="text"
+            class="form-control"
+            aria-label="Input Review"
+            aria-describedby="basic-addon1"
+            @keyup.enter="registerReview()"
+          />
+          <input
+            v-else
+            type="text"
+            class="form-control"
+            placeholder="리뷰를 입력해주세요"
+            @click="login()"
+          />
+          <button @click="registerReview()">
+            <span class="input-group-text" id="basic-addon1">
+              <i class="fa-solid fa-comment"></i>
+            </span>
+          </button>
+        </div>
+        <div v-if="this.reviewList.length">
+          <store-review
+            class="review"
+            v-for="(reviewDto, index) in reviewList"
+            :key="index"
+            v-bind="reviewDto"
+          />
+        </div>
+        <div v-else class="non-msg">
+          <div>아직 등록된</div>
+          <div>리뷰가 없어요 ㅠ</div>
+        </div>
       </div>
     </div>
   </div>
@@ -171,7 +176,7 @@ export default {
     StoreKakaoMap,
     StoreProductItem,
     StoreReview,
-    ShareSns
+    ShareSns,
   },
 
   data: function () {
@@ -273,16 +278,45 @@ export default {
 };
 </script>
 <style scoped>
+div {
+  padding: 0;
+}
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
 .container {
   display: flex;
   flex-direction: column;
   padding: 0;
+}
+.info-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+  margin-bottom: 2px;
+  width: 100%;
+}
+.info-content {
+  text-align: start;
 }
 .store-header {
   position: relative;
   width: 100%;
   height: 100%;
   z-index: 1;
+}
+.adress {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
 }
 .store-name {
   position: absolute;
@@ -327,15 +361,12 @@ export default {
   font-weight: bold;
 }
 
-.content {
-  text-align: start;
-  font-size: medium;
-  font-weight: 500;
-  margin: auto;
-}
-
 .comment {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 .non-msg {
   width: 100%;
@@ -364,14 +395,27 @@ export default {
   font-size: 18px;
   margin-right: 5%;
 }
+.tab:hover {
+  cursor: pointer;
+}
 .select > span {
   color: black;
 }
 .sm-font {
   font-size: 15px;
 }
-.content {
-  display: flex;
-  flex-direction: column;
+.about-store {
+  width: 100%;
+  background-color: white;
+}
+.now {
+  color: rgb(140, 184, 131);
+}
+.form-control {
+  width: 80%;
+}
+.review {
+  width: 95%;
+  margin: 0 auto;
 }
 </style>
