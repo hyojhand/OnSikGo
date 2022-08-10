@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- 상위 가게 카테고리 -->
-    <div class="row">
+    <div class="row case">
       <div
         :class="{
           select: this.tabs[0] === this.category,
@@ -375,6 +375,8 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 120px;
+  padding: 0;
 }
 
 .select > a > img {
@@ -389,8 +391,8 @@ img {
 }
 
 .container .row #category-img:hover {
-  width: 50px; /* 사진크기 조절 */
-  transform: scale(1.3, 1.3); /* 가로2배 새로 1.5배 로 커짐 */
+  width: 30px; /* 사진크기 조절 */
+  transform: scale(1.2, 1.2); /* 가로2배 새로 1.5배 로 커짐 */
   transition: transform.5s; /* 커지는 시간 */
 }
 .none-msg {
