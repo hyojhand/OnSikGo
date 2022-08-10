@@ -76,7 +76,7 @@
 
 <script>
 import http from "@/util/http-common";
-import {mapActions} from "vuex"
+import { mapGetters, mapActions} from "vuex"
 export default {
   name: "reviewList",
   props: {
@@ -88,28 +88,26 @@ export default {
     userImgUrl: String,
     reviewId: Number,
   },
+  computed: {
+    ...mapGetters("accounts", ["reviewNickName"])
+  },
   methods: {
     ...mapActions("accounts", ["getMyReviewList"]),
-    reviewdelete() {
-      http.delete(`/review/${this.reviewId}`).then((response) => {
-        console.log(response.data);
+    async reviewdelete() {
+      await http.delete(`/review/${this.reviewId}`).then((response) => {
+        console.log(response);
         alert("리뷰가 삭제되었습니다.");
         // 새로고침 해야함
       });
-      http.defaults.headers["access-token"] =
-      localStorage.getItem("access-token");
-      http
+      await http
         .post("/review/user", {
-          nickname: this.$route.params.nickname,
+          nickname: this.reviewNickName,
         })
         .then((response) => {
-          console.log(this.reviewList);
           if (response.status == 200) {
-            if (response.data != null) {
-              this.getMyReviewList(response.data);
-            }
-          }
-        });
+            this.getMyReviewList(response.data.reverse());
+        }
+      });
     },
   },
 };

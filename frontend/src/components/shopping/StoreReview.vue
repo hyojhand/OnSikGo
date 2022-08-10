@@ -29,7 +29,7 @@
 
 <script>
 import http from '@/util/http-common';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: "StoreReview",
   
@@ -68,11 +68,12 @@ export default {
   },
 
   methods: {
+    ...mapActions("accounts", ["getReviewNickName"]),
     moveUserReview() {
       this.$router.push({
         name: "myReview",
-        params: { nickname: this.nickname },
       });
+      this.getReviewNickName(this.nickname)
     },
 
     reportReview(reviewId) {
