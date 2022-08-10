@@ -17,7 +17,7 @@
               </div>
               <div class="col-8 mt-6">
                 <span
-                  >{{ userDto.nickname }}님, <br />정말
+                  >{{ userDto.userName }}님, <br />정말
                   탈퇴하시겠습니까?😢</span
                 >
               </div>
@@ -59,8 +59,6 @@ export default {
       localStorage.getItem("access-token");
     http.get("/user").then((response) => {
       this.userDto = response.data;
-      console.log(this.userDto);
-      console.log("&&");
     });
   },
   methods: {
