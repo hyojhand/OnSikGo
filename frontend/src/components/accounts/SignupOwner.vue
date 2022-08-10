@@ -1,5 +1,5 @@
 <template>
-  <v-stepper v-model="e1">
+  <v-stepper v-model="e1" style="top:25px;">
     <v-stepper-items>
       <v-stepper-content
         step="1"
@@ -28,8 +28,10 @@
               {{ checkmsg }}
             </button>
           </div>
-          <div v-if="emailDuple">이미 동록한 이메일 입니다.</div>
-          <div v-if="emailfailDuple">인증에 실패하였습니다.</div>
+          <div
+          v-if="emailDuple" 
+          style="color: red; margin-top: 3px;">
+          이미 가입된 메일 혹은 잘못된 이메일입니다.</div>
           <!-- ---------인증 메일 보내기------------ -->
           <div v-if="sendMail">
             <div class="mailconfim-case">
@@ -47,7 +49,8 @@
                 확인
               </button>
             </div>
-            <div v-if="mailconfirmDuple">인증완료 되었습니다.</div>
+            <div v-if="emailfailDuple" style="color: red;">인증번호 확인에 실패했습니다.</div>
+            <div v-if="mailconfirmDuple" style="color: green;">인증번호 확인이 되었습니다.</div>
           </div>
           <!-- -------------비밀번호 입력------------------------------------ -->
           <v-text-field
@@ -123,8 +126,8 @@
               type="button">
               인증
             </button>
-          <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
-          <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
+          <div v-if="ownercheckDuple" style="color: green;">사업자 번호가 확인 되었습니다.</div>
+          <div v-if="ownerfailDuple" style="color: red;">다시 확인해주시길 바랍니다.</div>
           </div>
           <!-- ------상호명 입력--------------- -->
           <v-text-field
@@ -136,6 +139,19 @@
             color="black"
             @input="$v.store.$touch()"
             @blur="$v.store.$touch()"
+          ></v-text-field>
+
+          <!-- -------------전화번호 입력----------- -->
+          <v-text-field
+            v-model="tel"
+            :error-messages="telErrors"
+            type="tel"
+            label="가게 전화번호를 입력해주세요."
+            required
+            class="input-box"
+            color="black"
+            @input="$v.tel.$touch()"
+            @blur="$v.tel.$touch()"
           ></v-text-field>
 
           <!-- -----------가게 주소 입력-------------- -->
@@ -175,8 +191,9 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 3"
-          v-bind:disabled="check2 == false"  
+
           >다음으로</button>
+                    <!-- v-bind:disabled="check2 == false"  -->
         </div>
       </v-stepper-content>
 
@@ -188,19 +205,9 @@
         min-height="200"
       >
         <form @submit.prevent="submit" class="mb-2">
-          <!-- -------------전화번호 입력----------- -->
-          <v-text-field
-            v-model="tel"
-            :error-messages="telErrors"
-            type="tel"
-            label="가게 전화번호를 입력해주세요."
-            required
-            class="input-box"
-            color="black"
-            @input="$v.tel.$touch()"
-            @blur="$v.tel.$touch()"
-          ></v-text-field>
-
+          <!-- 가게 이미지 등록 -->
+          <p>가게 이미지 등록</p>
+          <!-- <input @change="fileSelect" type="file" /> -->
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
@@ -304,6 +311,7 @@ export default {
       checkmsg: "메일 인증",
       sendMail: false,
       authNum: "",
+      // imgFile: null,
       check1: false,
       check2: false,
       check3: false,
@@ -515,6 +523,21 @@ export default {
       }).open();
     },    
 
+    // 이미지 파일 업로드
+    // fileSelect(event) {
+    //   var input = event.target;
+    //   if (input.files && input.files[0]) {
+    //     var reader = new FileReader();
+    //     reader.onload = (e) => {
+    //       this.previewImg = e.target.result;
+    //     };
+    //     reader.readAsDataURL(input.files[0]);
+    //   } else {
+    //     this.previewImg = null;
+    //   }
+    //   this.imgFile = input.files[0];
+    // },
+
     signup() {
       http.post("/user/signup/owner", {
         email: this.email,
@@ -529,6 +552,7 @@ export default {
         closingTime: this.end,
         offDay: this.off.join(),
         category: this.category,
+
       });
       this.$router.push("/signup/complete");
     },
