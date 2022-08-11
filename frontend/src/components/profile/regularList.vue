@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex justify-content-center">
-      <card v-if="saleItemDtoList.length == 0" id="regular-card">
+      <div v-if="saleItemDtoList.length == 0" id="regular-card">
         <div class="container">
           <div class="row">
             <div class="col-3 mt-6">
@@ -30,9 +30,9 @@
             </div>
           </div>
         </div>
-      </card>
+      </div>
 
-      <card v-else id="regular-card-nozero">
+      <div v-else id="regular-card-nozero">
         <div class="container">
           <div class="row">
             <div class="col-3 mt-6">
@@ -61,7 +61,7 @@
             </div>
           </div>
         </div>
-      </card>
+      </div>
     </div>
   </div>
 </template>

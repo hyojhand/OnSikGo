@@ -7,7 +7,7 @@
         <div class="name-case">
           <div
             class="fw-bold"
-            :class="{ 'sm-font': storeDto.storeName.size > 9 }"
+            :class="{ 'sm-font': storeNameSize > 9 }"
           >
             {{ storeDto.storeName }}
           </div>
@@ -183,11 +183,13 @@ export default {
     return {
       tabs: ["상품", "입소문"],
       selectedTab: "",
-      storeDto: Object,
+      storeDto: [],
       saleItemList: [],
       reviewContent: "",
       reviewList: [],
       liking: "",
+      storeNameSize: 0,
+      
     };
   },
 
@@ -202,6 +204,8 @@ export default {
 
     await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
+      this.storeNameSize = response.data.storeName.length
+      // console.log(this.storeNameSize);
       // console.log(this.storeDto);
     });
 
