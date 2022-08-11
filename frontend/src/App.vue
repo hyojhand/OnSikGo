@@ -236,9 +236,16 @@
             </v-list-item-content>
           </v-list-item>
           <div>
+            <div class="d-flex justify-content-center text-align-start">
+              <MemberQuitModal class="temp"></MemberQuitModal>
+            </div>
             <div class="d-flex justify-content-center text-align-center">
               <MemberQuitModal class="temp"></MemberQuitModal>
             </div>
+            <div class="d-flex justify-content-center text-align-end">
+              <MemberQuitModal class="temp"></MemberQuitModal>
+            </div>
+
             <br />
             <div class="d-flex justify-content-center text-align-center">
               <button id="button-add-toggle" @click="addstorepage">
