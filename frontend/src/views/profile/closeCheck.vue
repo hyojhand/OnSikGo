@@ -79,17 +79,49 @@ export default {
   font-size: 0.75rem;
 }
 #button-no {
-  margin: 0px 0px;
-  border: 2px solid black;
-  width: 30%;
-  border-radius: 12px;
-  color: #66a32e;
+  height: 40px;
+
+  border: none;
+
+  display: inline-block;
+
+  border-radius: 5px;
+
+  text-decoration: none;
+
+  margin: 5 10;
+
+  padding: 10 10;
+
+  box-sizing: border-box;
+
+  background-color: #66a32e;
+
+  color: #ffffff;
+
+  width: 100px;
 }
 #button-yes {
-  margin: 0px 0px;
-  border: 2px solid black;
-  width: 30%;
-  border-radius: 12px;
-  color: rgb(209, 103, 11);
+  height: 40px;
+
+  border: none;
+
+  display: inline-block;
+
+  border-radius: 5px;
+
+  text-decoration: none;
+
+  margin: 5 10;
+
+  padding: 10 10;
+
+  box-sizing: border-box;
+
+  background-color: #d97b38;
+
+  color: #ffffff;
+
+  width: 100px;
 }
 </style>

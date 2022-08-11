@@ -253,6 +253,20 @@
                 class="temp"
               ></StoreInfoDiscardModal>
             </div>
+            <div class="d-flex justify-content-start text-align-center">
+              <StoreInfoDiscardModal
+                v-if="this.discardStoreCnt >= 2"
+                :no="this.discardStoreId"
+                class="temp"
+              ></StoreInfoDiscardModal>
+            </div>
+            <div class="d-flex justify-content-end text-align-center">
+              <StoreInfoDiscardModal
+                v-if="this.discardStoreCnt >= 2"
+                :no="this.discardStoreId"
+                class="temp"
+              ></StoreInfoDiscardModal>
+            </div>
             <br />
           </div>
         </v-list>
@@ -270,7 +284,13 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <div class="d-flex justify-content-start text-align-center">
+            <MemberQuitModal class="temp"></MemberQuitModal>
+          </div>
           <div class="d-flex justify-content-center text-align-center">
+            <MemberQuitModal class="temp"></MemberQuitModal>
+          </div>
+          <div class="d-flex justify-content-end text-align-center">
             <MemberQuitModal class="temp"></MemberQuitModal>
           </div>
         </v-list>
