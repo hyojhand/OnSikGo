@@ -30,7 +30,7 @@ public class Notice {
     @Column(nullable = false)
     private Long receivedId;
 
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private NoticeState noticeState;
 
