@@ -25,10 +25,10 @@ public class Order {
     private Long orderId;
 
     @Column(nullable = false)
-    private String date; // 주문 날짜
+    private String date;
 
     @Column(nullable = false)
-    private int count; // 수량
+    private int count;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
