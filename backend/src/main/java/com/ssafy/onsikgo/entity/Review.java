@@ -20,10 +20,10 @@ public class Review {
     private Long reviewId;
 
     @Column(nullable = false)
-    private String content; // 내용
+    private String content;
 
     @Column(nullable = false)
-    private String createdDate; // 작성일
+    private String createdDate;
 
     @Column(nullable = false)
     private Boolean reported; // 신고여부
