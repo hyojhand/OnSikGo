@@ -236,11 +236,17 @@
             </v-list-item-content>
           </v-list-item>
           <div>
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center text-align-center">
               <MemberQuitModal class="temp"></MemberQuitModal>
             </div>
             <br />
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center text-align-center">
+              <button id="button-add-toggle" @click="addstorepage">
+                매장추가
+              </button>
+            </div>
+            <br />
+            <div class="d-flex justify-content-center text-align-center">
               <StoreInfoDiscardModal
                 v-if="this.discardStoreCnt >= 2"
                 :no="this.discardStoreId"
@@ -248,11 +254,6 @@
               ></StoreInfoDiscardModal>
             </div>
             <br />
-            <div class="d-flex justify-content-center">
-              <button id="button-add-toggle" @click="addstorepage">
-                매장추가
-              </button>
-            </div>
           </div>
         </v-list>
 
@@ -269,7 +270,7 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <div class="d-flex justify-content-center">
+          <div class="d-flex justify-content-center text-align-center">
             <MemberQuitModal class="temp"></MemberQuitModal>
           </div>
         </v-list>

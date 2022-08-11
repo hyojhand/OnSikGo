@@ -359,13 +359,13 @@ export default {
   border: 2px solid black;
   width: 40%;
   border-radius: 12px;
-  color: #66a32e;
+  color: black;
 }
 #button-add {
   margin: 0px 0px;
   border: 2px solid black;
   width: 100%;
   border-radius: 12px;
-  color: #66a32e;
+  color: black;
 }
 </style>

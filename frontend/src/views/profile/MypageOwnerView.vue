@@ -60,13 +60,20 @@ export default {
       if (this.saveMyStore.length) {
         this.storeId = this.myStore;
         this.store = this.storeValue;
+        this.storeName = this.store.storeName;
+        this.storeImg = this.store.storeImgUrl;
       } else {
         this.storeId = response.data[0].storeId;
         this.getMyStore(this.storeId);
         this.store = response.data[0];
+        this.storeName = this.store.storeName;
+        this.storeImg = this.store.storeImgUrl;
       }
       this.storeCnt = this.stores.length;
       this.discardStoreId(this.storeId);
+      this.discardStoreName(this.storeName);
+      this.discardStoreImg(this.storeImg);
+      console.log(this.storeId, "created됐을 때");
       this.discardStoreCnt(this.storeCnt);
       // console.log(this.store.offDay);
 
@@ -176,10 +183,11 @@ export default {
         // console.log(response.data);
       });
       this.discardStoreId(this.storeId);
-      console.log(this.storeId);
+      console.log(this.storeId, "선택된 아이디");
       this.discardStoreName(this.storeName);
-      console.log(this.storeName);
+      console.log(this.storeName, "선택된 매장");
       this.discardStoreImg(this.storeImg);
+      console.log(this.storeImg, "선택된 이미지");
 
       await this.changeStore();
     },
