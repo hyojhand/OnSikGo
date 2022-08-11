@@ -15,8 +15,10 @@
       </template>
 
       <v-card>
+        <div class="d-flex justify-content-spacebetween">
         <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e"> 주문 상세보기</v-card-title>
-
+        <button @click="off()" style="margin-left:130px;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
         <v-card
           class="mx-auto my-auto pb-3 order-info"
           max-width="350"
@@ -113,6 +115,9 @@ export default {
       });
       this.parents = false;
     },
+    off() {
+      this.parents = false;
+    }
   },
   data() {
     return {
@@ -178,8 +183,9 @@ export default {
 }
 .food-pic {
   padding: 0;
-  margin: 5px;
-  width: 250px;
+  margin: 0;
+  width: 400px;
+  height: 200px;
 }
 .noti-title {
   text-align: start;
