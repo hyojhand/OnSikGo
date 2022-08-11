@@ -16,8 +16,8 @@
 
       <v-card>
         <div class="d-flex justify-content-spacebetween">
-        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e"> 주문 상세보기</v-card-title>
-        <button @click="off()" style="margin-left:130px;"><i class="fa-solid fa-xmark"></i></button>
+        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e">주문 상세보기</v-card-title>
+        <button @click="off()" style="margin-left:120px;"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <v-card
           class="mx-auto my-auto pb-3 order-info"
@@ -39,14 +39,14 @@
             </div>
           </div>
           <div class="mx-auto card-box" max-width="300" outlined>
-            <div class="" style="margin-top:100px; margin-bottom: 100px;" >
+            <div class="" style="margin-top:50px; margin-bottom: 50px;" >
               <img
                 class="col-5 food-pic"
                 :src="`${value.orderDto.saleItemDto.itemDto.itemImgUrl}`"
                 alt="사진이었던것.."
               />
               <div class="mt-2">
-                <div class="text-m notice-msg">
+                <div class="fs-5 fw-bold notice-msg">
                   {{ value.orderDto.saleItemDto.itemDto.itemName }}
                 </div>
                 <div class="text-m notice-msg">
@@ -60,15 +60,15 @@
         <v-card-actions>
           <v-spacer></v-spacer>
               <v-card-actions>
-                <refuse-modal @check-it="checkIt" :value="value"></refuse-modal>
-              </v-card-actions>
-              <v-card-actions>
                 <button
                   class="border-m radius-l text-m btn-accept"
                   @click="orderOk()"
                 >
                   수락
                 </button>
+              </v-card-actions>
+              <v-card-actions>
+                <refuse-modal @check-it="checkIt" :value="value"></refuse-modal>
               </v-card-actions>
             </v-card-actions>
 
@@ -194,7 +194,16 @@ export default {
   color: black;
 }
 .btn-accept {
-  width: 64px;
-  height: 35px;
+  height: 40px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #368f3d;
+  color: #ffffff;
+  width: 80px;
 }
 </style>

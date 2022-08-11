@@ -12,8 +12,8 @@
       </template>
 
       <v-card class="box-reason">
-        <v-card-title class="lighten-2 text-h5 card-header">
-          거절 기타 사유
+        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e">
+        📌  거절 기타 사유
         </v-card-title>
 
         <div class="mx-auto my-auto input-reason">
@@ -105,10 +105,16 @@ export default {
   width: 100%;
 }
 .btn-send {
-  margin: 2%;
+  height: 40px;
+  border: 2px solid tomato;
+  display: inline-block;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 0px;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: tomato;
   width: 150px;
-  height: 30px;
-  color: white;
-  background-color: rgba(140, 184, 131);
 }
 </style>
