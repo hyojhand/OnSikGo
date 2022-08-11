@@ -71,7 +71,7 @@ export default {
   },
   created() {
     http.get(`/store/${this.discardStoreId}`).then((response) => {
-      console.log(this.discardStoreId);
+      // console.log(this.discardStoreId);
       this.stname = response.data.storeName;
       this.stimg = response.data.storeImgUrl;
     });
@@ -126,5 +126,6 @@ export default {
 #button-discard {
   font-weight: bolder;
   width: 100%;
+  margin: 0 0;
 }
 </style>

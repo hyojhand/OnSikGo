@@ -21,8 +21,7 @@
               <div class="info-case">
                 <div class="store-name">
                   {{ storeName }}
-                  <div class="product-location">
-                  </div>
+                  <div class="product-location"></div>
                   <div v-if="distance < 3000" class="product-prediction">
                     현재 위치로부터 {{ this.distance }} m
                   </div>
@@ -61,13 +60,14 @@
         <!-- 꿀팁 -->
         <div class="row" v-if="comment.length">
           <div class="col-4 m-1">
-            <img src="@/assets/images/cooker.png" width="90%" />쉪의 한마디
+            <span style="font-size: 0.8rem">셰프의 한마디</span
+            ><img src="@/assets/images/cooker.png" width="90%" />
           </div>
           <div
             class="col ment"
-            style="text-align: left; font-size: 12px; word-break: keep-all"
+            style="text-align: left; font-size: 1rem; word-break: keep-all"
           >
-            {{ comment }}
+            " {{ comment }} "
           </div>
         </div>
       </div>
@@ -82,10 +82,15 @@
             outlined
             min-height="450"
           >
-            <div class="order-header">주문서</div>
-            <div class="order-name">주문자 : {{ nickName }}</div>
-            <div class="order-store">매장 명 : {{ storeName }}</div>
-            <div class="order-product">상품 명 : {{ productName }}</div>
+            <div class="order-header">
+              <img src="@/assets/images/note.png" height="30" width="30" />
+              [ 주문서 ]
+              <img src="@/assets/images/note.png" height="30" width="30" />
+            </div>
+            <br />
+            <div class="order-name">주문자: {{ nickName }}</div>
+            <div class="order-store">매장명: {{ storeName }}</div>
+            <div class="order-product">상품명: {{ productName }}</div>
             <form class="mb-2 el-case">
               <v-text-field
                 v-model="count"
@@ -99,17 +104,25 @@
               >
               </v-text-field>
             </form>
-            <div class="order-text" style="font-size: 0.75rem">
-              매장에서 '승인 완료'시 고객님에게 알림이 갑니다.
+            <div class="order-text" style="color: black">
+              <img
+                width="40"
+                height="40"
+                src="@/assets/images/alert.png"
+              />필독사항
+              <img width="40" height="40" src="@/assets/images/alert.png" />
             </div>
             <div class="order-text" style="font-size: 0.75rem">
-              반드시 알림을 확인하고 출발해주세요.
+              * 매장에서 '승인 완료'시 고객님에게 알림이 갑니다.
             </div>
             <div class="order-text" style="font-size: 0.75rem">
-              상품은 금일 취식 부탁드립니다.
+              * 반드시 알림을 확인하고 출발해주세요.
             </div>
             <div class="order-text" style="font-size: 0.75rem">
-              주문 취소는 주문 신청 후 10분이내로 가능합니다.
+              * 상품은 금일 취식 부탁드립니다.
+            </div>
+            <div class="order-text" style="font-size: 0.75rem">
+              * 주문 취소는 주문 신청 후 10분이내로 가능합니다.
             </div>
           </v-stepper-content>
           <div class="btn-case">
@@ -154,7 +167,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("store", ["currentAddress", "currentItemId", "orderStore", "currentX", "currentY"]),
+    ...mapGetters("store", [
+      "currentAddress",
+      "currentItemId",
+      "orderStore",
+      "currentX",
+      "currentY",
+    ]),
     countErrors() {
       const errors = [];
       if (this.count <= this.stock) {
@@ -168,7 +187,12 @@ export default {
     this.findProduct();
     this.findUser();
     this.findStock();
-    this.getdistance(this.currentX, this.currentY, this.storelat,this.storelng)
+    this.getdistance(
+      this.currentX,
+      this.currentY,
+      this.storelat,
+      this.storelng
+    );
   },
   methods: {
     ...mapActions("storeStore", ["getStoreId"]),
@@ -196,8 +220,8 @@ export default {
         this.storeName = response.data.storeName;
         this.storeId = response.data.storeId;
         this.storeLocation = response.data.location;
-        this.storelat = response.data.lat
-        this.storelng = response.data.lng
+        this.storelat = response.data.lat;
+        this.storelng = response.data.lng;
         // console.log(response.data)
       });
     },
@@ -251,10 +275,10 @@ export default {
 
       dist = Math.acos(dist);
       dist = (dist * 180) / Math.PI;
-      dist = dist * 60 * 1.1515 * 1.609344 ;
+      dist = dist * 60 * 1.1515 * 1.609344;
       if (dist < 100) dist = Math.round(dist / 10) * 10;
       else dist = Math.round(dist / 100) * 100;
-      this.distance = dist
+      this.distance = dist;
       return dist;
     },
   },
@@ -297,15 +321,21 @@ export default {
   margin: 0;
   margin-bottom: 0.5rem;
   text-align: left;
+  color: gray;
+  font-size: 0.8rem;
 }
 .order-store {
   margin: 0;
   margin-bottom: 0.5rem;
   text-align: left;
+  color: gray;
+  font-size: 0.8rem;
 }
 .order-product {
   margin: 0;
   text-align: left;
+  color: gray;
+  font-size: 0.8rem;
 }
 .order input {
   border: 1px solid;
