@@ -61,11 +61,11 @@ export default {
 
     http.get("/user").then((response) => {
       this.userDto = response.data;
-      console.log(this.userDto);
+      // console.log(this.userDto);
     });
 
     http.get("/follow").then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       this.storeregularList = response.data;
     });
 
