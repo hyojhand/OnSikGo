@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -173,17 +174,6 @@ public class SaleService {
         findSaleItem.get().update(stock, salePrice,totalStock);
         saleItemRepository.save(findSaleItem.get());
         return new ResponseEntity<>("재고 수정완료" ,HttpStatus.OK);
-    }
-
-    /**
-     * 삭제대상
-     */
-    @Transactional
-    public ResponseEntity<String> delete(Long sale_item_id) {
-
-        SaleItem findSaleItem = saleItemRepository.findById(sale_item_id).get();
-        saleItemRepository.delete(findSaleItem);
-        return new ResponseEntity<>("재고 상품 삭제 완료" ,HttpStatus.OK);
     }
 
     public ResponseEntity<SaleItemDto> getSaleItemInfo(Long item_id) {
