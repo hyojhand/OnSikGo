@@ -20,7 +20,9 @@
     <br />
     <hr />
     <br />
-    <h5>✨ {{ userDto.userName }} 님의 단골매장</h5>
+    <span style="font-weight: bolder; font-size: 1.3rem"
+      >✨ {{ userDto.nickname }} 님의 단골매장</span
+    >
     <div v-if="this.storeregularList.length">
       <regularList
         v-for="(store, index) in storeregularList"
@@ -80,7 +82,7 @@ export default {
       this.$router.push({
         name: "myReview",
       });
-      this.getReviewNickName(this.userDto.nickname)
+      this.getReviewNickName(this.userDto.nickname);
     },
   },
 };

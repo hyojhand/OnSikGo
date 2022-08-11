@@ -30,22 +30,21 @@
               <span style="color: gray; font-size: 0.8rem"
                 >수량: {{ order.count }} 개</span
               >
-            </div>
-            <div class="mt-1 d-flex justify-content-end">
+              <br />
               <span
                 v-if="`${order.state}` === 'WAIT'"
                 style="font-size: 0.75rem; color: gray"
-                >주문대기</span
+                >[상태: 주문대기]</span
               >
               <span
                 v-else-if="`${order.state}` === 'ORDER'"
                 style="font-size: 0.75rem; color: blue"
-                >주문승인</span
+                >[상태: 주문승인]</span
               >
               <span
                 v-else-if="`${order.state}` === 'CANCEL'"
                 style="font-size: 0.75rem; color: red"
-                >주문거절</span
+                >[상태: 주문거절]</span
               >
             </div>
           </div>

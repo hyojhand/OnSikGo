@@ -110,6 +110,8 @@ export default {
     await http.get(`/store/close/${this.storeId}`).then((response) => {
       this.getDiscardStoreClose(response.data.closed);
     });
+
+    await this.changeStore();
   },
   computed: {
     ...mapGetters("select", ["saveMyStore", "myStore", "storeValue"]),
