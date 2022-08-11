@@ -2,7 +2,9 @@
   <div class="text-modal">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <button v-bind="attrs" v-on="on">매장폐기</button>
+        <button id="button-discard" v-bind="attrs" v-on="on">
+          매장정보폐기
+        </button>
       </template>
 
       <div class="card">
@@ -124,5 +126,9 @@ export default {
 }
 #text-modal {
   font-family: "IBM Plex Sans KR", sans-serif;
+}
+#button-discard {
+  font-weight: bolder;
+  width: 100%;
 }
 </style>
