@@ -1,36 +1,38 @@
 <template>
   <!--상품정렬-->
   <div>
-    <img :src="`${itemImgUrl}`" alt="IMG-PRODUCT" style="height: 150px" />
+    <img :src="`${item.itemImgUrl}`" alt="IMG-PRODUCT" style="height: 150px" />
     <div class="item-name">
-      {{ itemName }}
+      {{ item.itemName }}
     </div>
     <div class="info-container">
       <div class="item-info">
         <div class="info-box">
           <div>정상 판매가 :</div>
-          <div class="ml-1">{{ price }} 원</div>
+          <div class="ml-1">{{ item.price }} 원</div>
         </div>
         <div class="info-box">
           <div>할인 판매가 :</div>
-          <div class="ml-1">{{ saleDto.salePrice }} 원</div>
+          <div class="ml-1">{{ item.sale.salePrice }} 원</div>
         </div>
         <div class="info-box">
           <div>등록 수량 :</div>
-          <div class="ml-1">{{ saleDto.stock }} 개</div>
+          <div class="ml-1">{{ item.sale.stock }} 개</div>
         </div>
       </div>
       <button @click="prodmodify()" class="border-m radius-s my-1 edit-btn">
         정보수정
       </button>
       <add-stock-modal
-        :no="this.itemId"
-        :store="this.storeId"
+        v-if="item.sale.stock == 0"
+        :item="this.item"
+        :to="Number(this.storeId1)"
         class="stock-btn mb-1"
       ></add-stock-modal>
+
       <edit-stock-modal
-        :no="this.itemId"
-        :store="this.storeId"
+        v-else
+        :item="this.item"
         class="stock-btn"
       ></edit-stock-modal>
     </div>
@@ -38,7 +40,6 @@
 </template>
 
 <script>
-import http from "@/util/http-common";
 import EditStockModal from "@/components/management/EditStockModal.vue";
 import AddStockModal from "@/components/management/AddStockModal.vue";
 import { mapActions } from "vuex";
@@ -48,38 +49,16 @@ export default {
     AddStockModal,
     EditStockModal,
   },
-  data() {
-    return {
-      saleDto: {},
-      stock: Number,
-    };
-  },
   props: {
-    storeId: Number,
-    itemId: Number,
-    itemName: String,
-    price: Number,
-    itemImgUrl: String,
-    comment: String,
-    no: Number,
-    item: Number,
+    item: Object,
+    storeId1: Number,
   },
-
-  mounted() {
-    http.get(`/sale/${this.itemId}`).then((response) => {
-      if (response.status == 200) {
-        this.saleDto = response.data;
-        this.$forceUpdate();
-      }
-    });
-  },
-
   methods: {
     ...mapActions("itemStore", ["getItemId"]),
     ...mapActions("storeStore", ["getStoreId"]),
     prodmodify() {
-      this.getItemId(this.itemId);
-      this.getStoreId(this.storeId);
+      this.getItemId(this.item.itemId);
+      this.getStoreId(this.storeId1);
       this.$router.push({
         name: "prodChange",
       });
@@ -129,5 +108,7 @@ button {
 }
 .edit-btn {
   background-color: rgb(255, 82, 82);
+  width: 160px;
+  margin: 0;
 }
 </style>

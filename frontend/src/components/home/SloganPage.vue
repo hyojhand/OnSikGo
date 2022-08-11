@@ -30,7 +30,7 @@
       controls
       indicators
       img-width="1024"
-      img-height="480"
+      img-height="500"
       style="text-shadow: 1px 1px 2px #333; margin-top: 1rem"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
@@ -40,7 +40,7 @@
           <img
             width="90%"
             height="180px"
-            src="@/assets/images/slogan_1.jpg"
+            src="@/assets/images/onsikgo_slogan.png"
             alt="image slot"
             style="border-radius: 7px"
           />
@@ -51,7 +51,7 @@
           <img
             width="90%"
             height="180px"
-            src="@/assets/images/slogan_2.jpg"
+            src="@/assets/images/earth.jpg"
             alt="image slot"
             style="border-radius: 7px"
           />
@@ -62,7 +62,7 @@
           <img
             width="90%"
             height="180px"
-            src="@/assets/images/slogan_4.jpg"
+            src="@/assets/images/save.jpg"
             alt="image slot"
             style="border-radius: 7px"
           />
@@ -73,7 +73,7 @@
           <img
             width="90%"
             height="180px"
-            src="@/assets/images/slogan_3.jpg"
+            src="@/assets/images/donation.jpg"
             alt="image slot"
             style="border-radius: 7px"
           />

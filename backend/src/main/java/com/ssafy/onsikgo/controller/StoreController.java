@@ -1,6 +1,6 @@
 package com.ssafy.onsikgo.controller;
 
-import com.ssafy.onsikgo.dto.ItemDto;
+import com.ssafy.onsikgo.dto.SaleDto;
 import com.ssafy.onsikgo.dto.SelectDto;
 import com.ssafy.onsikgo.dto.StoreDto;
 import com.ssafy.onsikgo.service.StoreService;
@@ -16,7 +16,7 @@ import java.util.List;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/store")
+@RequestMapping("/api/store")
 @RequiredArgsConstructor
 public class StoreController {
 
@@ -62,6 +62,18 @@ public class StoreController {
         return storeService.closeStore(store_id);
     }
 
+    @GetMapping("/close/{store_id}")
+    public ResponseEntity<SaleDto> getSaleInfo(@PathVariable Long store_id) {
+        return storeService.getSaleInfo(store_id);
+    }
 
+    @GetMapping("/total")
+    public ResponseEntity<List<StoreDto>> getTotal() {
+        return storeService.getTotal();
+    }
 
+    @PostMapping("/keyword")
+    public ResponseEntity<List<StoreDto>> getKeyword(@RequestBody SelectDto selectDto) {
+        return storeService.getKeyword(selectDto);
+    }
 }

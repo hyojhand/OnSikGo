@@ -1,7 +1,57 @@
 <template>
   <div class="container">
-    <div class="row ml-2">
-      <!-- 상품이미지 -->
+    <div class="item-card">
+      <!-- 마커 -->
+      <!-- <div class="col-2">
+        <h1>{{ item.index }}</h1>
+      </div> -->
+
+      <img
+        :src="`${itemDto.itemImgUrl}`"
+        style="cursor: pointer"
+        alt=""
+        class="product-img col-3"
+      />
+
+      <div class="col-6 info-case">
+        <div class="product-name">{{ itemDto.itemName }}</div>
+        <div class="product-location">
+          {{ saleDto.storeDto.location }}
+        </div>
+        <div v-if="distance < 3000" class="product-prediction">
+          현재 위치로부터 {{ distance }} m
+        </div>
+        <div v-else class="product-prediction">
+          현재 위치로부터 {{ distance / 1000 }} km
+        </div>
+        <div class="product-quantity">
+          <div>재고 :</div>
+          <div class="product-number">{{ stock }} 개</div>
+        </div>
+      </div>
+      <div class="col-3 stock-case">
+        <div>
+          <div class="price-case">
+            <div class="product-discount">
+              <div class="price">({{ itemDto.price }})</div>
+              🔻
+              {{ ((1 - salePrice / itemDto.price) * 100).toFixed(0) }} %
+            </div>
+          </div>
+          <div class="discount-price">{{ salePrice }}원</div>
+        </div>
+        <button
+          class="order-button border-m radius-s"
+          @click="productOrder(itemId, saleDto.storeDto.storeId)"
+        >
+          주문하기
+        </button>
+      </div>
+    </div>
+
+    <!-- ---------------------- -->
+    <!-- <div class="row ml-2">
+      상품이미지
       <div class="col-3">
         <img
           :src="`${itemDto.itemImgUrl}`"
@@ -9,16 +59,16 @@
           alt=""
         />
       </div>
-      <!-- 상품 설명 -->
-      <!-- 상품 이름, 매장위치, 거리, 할인율, 정가, 할인가 -->
+      상품 설명
+      상품 이름, 매장위치, 거리, 할인율, 정가, 할인가
       <div class="col-4 ml-5">
         <div class="product-name">{{ itemDto.itemName }}</div>
         <div class="product-location">
           매장위치 : {{ saleDto.storeDto.location }}
         </div>
-        <div class="product-prediction">300m, 도보로 3분</div>
+        <div class="product-prediction">현재 위치로 부터 {{ distance }}m</div>
         <div class="product-discount">
-          {{ (1 - salePrice / itemDto.price) * 100 }} %
+          {{ ((1 - salePrice / itemDto.price) * 100).toFixed(0) }} %
         </div>
         <span class="price">{{ itemDto.price }} 원 </span>
         <svg
@@ -36,22 +86,24 @@
         </svg>
         <span class="discount-price"> {{ salePrice }} 원</span>
       </div>
-      <!-- 재고 & 주문하기 -->
+      재고 & 주문하기 
       <div class="col-3">
         <p class="product-quantity">
           재고 : <span class="product-number"> {{ stock }}</span> 개
         </p>
-        <router-link class="product-order" :to="{ name: 'orderView' }"
-          >주문하기</router-link
+        <button
+          class="border-m radius-s"
+          @click="productOrder(itemId, saleDto.storeDto.storeId)"
         >
+          주문하기
+        </button>
       </div>
-    </div>
-
-    <hr class="mt-4" style="border: 1px solid #222; margin: 3px" />
+    </div> -->
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "StoreProductItem",
   props: {
@@ -63,7 +115,59 @@ export default {
     salePrice: Number,
     itemId: Number,
   },
-  created() {},
+  data() {
+    return {
+      distance: "",
+    };
+  },
+  computed: {
+    ...mapGetters("store", ["currentX", "currentY"]),
+  },
+  created() {
+    this.distance = this.getdistance(
+      this.currentX,
+      this.currentY,
+      this.saleDto.storeDto.lat,
+      this.saleDto.storeDto.lng
+    );
+  },
+  methods: {
+    // 현재 위치 주소 vuex에 넣기
+    ...mapActions("store", ["getItemId", "getOrderStore"]),
+    getdistance(lat1, lon1, lat2, lon2) {
+      if (lat1 == lat2 && lon1 == lon2) {
+        return 0;
+      }
+      var radLat1 = (Math.PI * lat1) / 180;
+      var radLat2 = (Math.PI * lat2) / 180;
+      var theta = lon1 - lon2;
+      var radTheta = (Math.PI * theta) / 180;
+      var dist =
+        Math.sin(radLat1) * Math.sin(radLat2) +
+        Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+      if (dist > 1) dist = 1;
+
+      dist = Math.acos(dist);
+      dist = (dist * 180) / Math.PI;
+      dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+      if (dist < 100) dist = Math.round(dist / 10) * 10;
+      else dist = Math.round(dist / 100) * 100;
+
+      return dist;
+    },
+    productOrder(itemId, storeId) {
+      if (localStorage.getItem("access-token") == null) {
+        this.$router.push({
+          name: "login",
+        });
+      } else {
+        this.getItemId(itemId), this.getOrderStore(storeId);
+        this.$router.push({
+          name: "orderView",
+        });
+      }
+    },
+  },
 };
 </script>
 
@@ -83,48 +187,6 @@ export default {
   margin: 0px;
   padding: 0px;
 }
-.product-name {
-  font-size: 12px;
-  font-weight: bolder;
-}
-
-.product-location {
-  font-size: 10px;
-}
-/* 거리 에측 */
-.product-prediction {
-  font-size: 6px !important;
-  color: #b9b9b9;
-}
-/* 할인율 */
-.product-discount {
-  padding-left: 8px;
-  color: red;
-  font-weight: bolder;
-  font-size: 12px;
-}
-/* 상품 가격 (정가) */
-.price {
-  text-decoration: line-through;
-  text-decoration-color: red;
-  text-decoration-style: solid;
-  font-size: 12px;
-}
-/* 할인가 */
-.discount-price {
-  font-size: 12px;
-}
-/* 주문하기 버튼 */
-
-/* 재고 수량 글자 */
-.product-quantity {
-  padding-top: 20px;
-}
-/* 재고 수량 */
-.product-number {
-  color: red;
-  font-weight: bolder;
-}
 
 .product-order {
   background: none;
@@ -137,5 +199,89 @@ export default {
 
   font-size: 10px;
   padding: 0;
+}
+.item-card {
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 3px 0p;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+.product-img {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  padding-bottom: 5px;
+}
+.info-case {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0px;
+  padding-left: 15px;
+}
+.product-name {
+  font-size: 15px;
+  font-weight: bolder;
+}
+.product-prediction {
+  font-size: 0.75rem;
+  color: #b9b9b9;
+}
+.product-quantity {
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+  font-size: 13px;
+  padding: 0;
+}
+/* 재고 수량 */
+.product-number {
+  color: red;
+  font-weight: bolder;
+  padding-left: 3px;
+  font-size: 15px;
+}
+.stock-case {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+/* 할인율 */
+.product-discount {
+  padding-left: 3px;
+  color: red;
+  font-weight: bolder;
+  font-size: 15px;
+}
+/* 상품 가격 (정가) */
+.price-case {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.price {
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 0.85rem;
+}
+/* 할인가 */
+.discount-price {
+  font-size: 15px;
+  text-align: start;
+}
+.order-button {
+  margin-top: 5px;
+  width: 100%;
+}
+.order-button:hover {
+  background-color: rgb(140, 184, 131);
+  color: #fff;
 }
 </style>

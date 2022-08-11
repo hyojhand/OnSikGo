@@ -2,6 +2,7 @@ package com.ssafy.onsikgo.dto;
 
 import com.ssafy.onsikgo.entity.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,12 +20,15 @@ public class OwnerDto {
     private String imgUrl;
     private Role role;
     private String storeName;
-    private String location;
+    private String address;
+    private String extraAddress;
     private String tel;
     private String storeNum;
     private String closingTime;
     private String offDay;
     private Category category;
+    private String storeImgUrl;
+    private MultipartFile file;
 
     public User toUserEntity(LoginType loginType, String nickname){
 
@@ -49,12 +53,14 @@ public class OwnerDto {
 
         return Store.builder()
                 .storeName(this.getStoreName())
-                .location(this.getLocation())
+                .address(this.getAddress())
+                .extraAddress(this.getExtraAddress())
                 .tel(this.getTel())
                 .storeNum(this.getStoreNum())
                 .closingTime(this.getClosingTime())
                 .offDay(this.getOffDay())
                 .category(this.getCategory())
+                .storeImgUrl(this.getStoreImgUrl())
                 .lat(coordinate.get("lat"))
                 .lng(coordinate.get("lng"))
                 .build();

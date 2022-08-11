@@ -1,39 +1,74 @@
 <template>
   <div>
-    <b-card>
-      <b-row>
-        <b-col md="3">
-          <div id="tobecenter">
-            <img fluid src="`${storeImgUrl}`" height="50" width="50" />
+    <div class="d-flex justify-content-center">
+      <card v-if="saleItemDtoList.length == 0" id="regular-card">
+        <div class="container">
+          <div class="row">
+            <div class="col-3 mt-6">
+              <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
+            </div>
+            <div class="col-8 ml-3" id="cardText">
+              <span style="color: black">{{ storeName }}</span
+              ><br />
+              <span style="color: gray; font-size: 0.7rem"
+                >매장 위치: {{ address }} {{ extraAddress }}</span
+              ><br />
+              <span style="color: gray; font-size: 0.7rem"
+                >매장 휴무일: {{ offDay }}</span
+              ><br />
+              <span style="color: gray; font-size: 0.7rem"
+                >오늘 매장 할인 물품 개수:
+              </span>
+              <span style="color: gray; font-size: 0.7rem">
+                {{ saleItemDtoList.length }}개</span
+              >
+              <div class="d-flex justify-content-end">
+                <button class="store-moving" @click="storeDetail()">
+                  가게보기
+                </button>
+              </div>
+            </div>
           </div>
-        </b-col>
-        <b-col md="9">
-          <div class="text-align-center" id="cardInText">
-            <br />
-            <span>{{ storeName }}</span>
-            <br />
-            <span>매장 위치: {{ location }}</span>
-            <br />
-            <span>매장 휴무일: {{ offDay }}</span>
-            <br />
-            <span>오늘 매장 할인 물품 개수: {{ saleItemDtoList.length }}</span>
-            <br />
+        </div>
+      </card>
+
+      <card v-else id="regular-card-nozero">
+        <div class="container">
+          <div class="row">
+            <div class="col-3 mt-6">
+              <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
+            </div>
+            <div class="col-8 ml-3" id="cardText">
+              <span style="color: black">{{ storeName }}</span
+              ><br />
+              <span style="color: gray; font-size: 0.7rem"
+                >매장 위치: {{ address }} {{ extraAddress }}</span
+              ><br />
+              <span style="color: gray; font-size: 0.7rem"
+                >매장 휴무일: {{ offDay }}</span
+              ><br />
+              <span style="color: gray; font-size: 0.7rem"
+                >오늘 매장 할인 물품 개수:
+              </span>
+              <span style="color: rgba(140, 184, 131)">
+                {{ saleItemDtoList.length }}개</span
+              >
+              <div class="d-flex justify-content-end">
+                <button class="store-moving" @click="storeDetail()">
+                  가게보기
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="d-flex justify-content-end">
-            <router-link
-              class="store-moving"
-              :to="{ name: 'storeView', params: { storeId: this.storeId } }"
-              >가게보기</router-link
-            >
-          </div>
-        </b-col>
-      </b-row>
-    </b-card>
+        </div>
+      </card>
+    </div>
   </div>
 </template>
 
 <script>
 import http from "@/util/http-common";
+import { mapActions } from "vuex";
 export default {
   name: "regularList",
   props: {
@@ -41,7 +76,8 @@ export default {
     closingTime: String,
     lat: String,
     lng: String,
-    location: String,
+    address: String,
+    extraAddress: String,
     offDay: String,
     storeId: Number,
     storeImgUrl: null,
@@ -64,6 +100,15 @@ export default {
       }
     });
   },
+  methods: {
+    ...mapActions("storeStore", ["getStoreId"]),
+    storeDetail() {
+      this.getStoreId(this.storeId);
+      this.$router.push({
+        name: "storeView",
+      });
+    },
+  },
 };
 </script>
 
@@ -72,8 +117,36 @@ export default {
   text-decoration: line-through;
 }
 
-#cardInText {
-  text-align: left;
-  font-size: 10px;
+#cardText {
+  text-align: start;
+}
+#regular-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 10%);
+  margin: 0;
+  width: 380px;
+  background-color: #c3c7c3;
+}
+#regular-card-nozero {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 10%);
+  margin: 0;
+  width: 380px;
+}
+.store-moving {
+  height: 25px;
+  border-width: 1px;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  color: #368f3d;
+  width: 70px;
+  border-color: #368f3d;
 }
 </style>

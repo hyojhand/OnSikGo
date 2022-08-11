@@ -1,21 +1,21 @@
 <template>
   <div class="signup-box" width="100%">
     <div>
-      <v-list-item-title class="text-h5 mt-3 mb-5">
+      <v-list-item-title class="text-h5 mt-3 mb-5 fw-bold" style="color: rgb(140, 184, 131);">
         회원 가입하기
       </v-list-item-title>
       <v-list-item-subtitle class="mb-2"
-        >회원가입하시는 고객님의</v-list-item-subtitle
+        >이용을 원하시는 고객님의</v-list-item-subtitle
       >
       <v-list-item-subtitle class="mb-5"
         >유형을 선택해주세요</v-list-item-subtitle
       >
     </div>
     <v-card class="btn-box" black outlined min-width="320" min-height="170">
-      <v-btn class="select-btn" color="success" @click="goSignUser()"
+      <v-btn class="select-btn fw-bold" color="success" @click="goSignUser()"
         >고객</v-btn
       >
-      <v-btn class="select-btn" color="success" @click="goSignOwner()"
+      <v-btn class="select-btn fw-bold" color="success" @click="goSignOwner()"
         >업주</v-btn
       >
     </v-card>
@@ -41,7 +41,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 .btn-box {
@@ -49,6 +49,7 @@ export default {
   justify-content: space-evenly;
   align-items: center;
   height: 40vh;
+  margin-top: 40px;
 }
 .select-btn {
   width: 100px;

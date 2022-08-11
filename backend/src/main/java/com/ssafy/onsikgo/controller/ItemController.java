@@ -19,7 +19,7 @@ import java.util.List;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/item")
+@RequestMapping("/api/item")
 @RequiredArgsConstructor
 public class ItemController {
 
@@ -60,6 +60,11 @@ public class ItemController {
     @PostMapping("/page/{store_id}")
     public ResponseEntity<Page<ItemDto>> getListPage(@RequestBody PageDto pageDto, @PathVariable Long store_id) {
         return itemService.getListPage(pageDto,store_id);
+    }
+
+    @PostMapping("/page/keyword/{store_id}")
+    public ResponseEntity<Page<ItemDto>> getKeywordPage(@RequestBody PageDto pageDto, @PathVariable Long store_id) {
+        return itemService.getKeywordPage(pageDto,store_id);
     }
 
 

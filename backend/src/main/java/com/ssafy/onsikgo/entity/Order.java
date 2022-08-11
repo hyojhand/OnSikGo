@@ -2,14 +2,13 @@ package com.ssafy.onsikgo.entity;
 
 import com.ssafy.onsikgo.dto.OrderDto;
 import com.ssafy.onsikgo.dto.SaleItemDto;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -22,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class Order {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long orderId;
 
     @Column(nullable = false)
@@ -35,6 +34,8 @@ public class Order {
     @Column(nullable = false)
     private State state; // 주문 상태 [주문대기 WAIT, 승인완료 SUCCESS, 승인거절 FAIL]
 
+    private Integer orderPrice;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
@@ -43,12 +44,12 @@ public class Order {
     @JoinColumn(name = "saleItemId")
     private SaleItem saleItem;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
     private List<Notice> notices = new ArrayList<>();
 
-    public Order update(State state) {
+    public void update(State state, Integer orderPrice) {
         this.state = state;
-        return this;
+        this.orderPrice = orderPrice;
     }
 
     public OrderDto toDto(SaleItemDto saleItemDto) {
@@ -56,7 +57,18 @@ public class Order {
                 .date(this.date)
                 .count(this.count)
                 .state(this.state)
+                .orderPrice(this.orderPrice)
                 .saleItemDto(saleItemDto)
+                .orderId(this.orderId)
                 .build();
+    }
+
+    public Order updateNotice(String date, SaleItem saleItem,User user) {
+        this.date = date;
+        this.count = 0;
+        this.state = State.CANCEL;
+        this.saleItem = saleItem;
+        this.user = user;
+        return this;
     }
 }

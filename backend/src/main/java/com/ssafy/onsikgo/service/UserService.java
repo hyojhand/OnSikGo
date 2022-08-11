@@ -30,10 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -93,8 +90,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> checkAuthNumber(String email, String authNum) {
-        redisUtil.print();
-        if (redisUtil.getData(email)==null && !redisUtil.getData(email).equals(authNum)) {
+        if (!redisUtil.getData(email).equals(authNum)) {
             return new ResponseEntity<>("인증 번호가 일치하지 않습니다.", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("이메일 인증에 성공하였습니다.", HttpStatus.OK);
@@ -118,11 +114,14 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<String> signupOwner(OwnerDto ownerDto) {
+    public ResponseEntity<String> signupOwner(OwnerDto ownerDto, MultipartFile file) {
         ownerDto.setPassword(passwordEncoder.encode(ownerDto.getPassword()));
-        ownerDto.setImgUrl(defaultImg);
+
+        String storeImgUrl = awsS3Service.uploadImge(file);
+        ownerDto.setStoreImgUrl(storeImgUrl);
 
         String storeName = ownerDto.getStoreName();
+        ownerDto.setImgUrl(defaultImg);
         User user = ownerDto.toUserEntity(LoginType.ONSIKGO, storeName);
         userRepository.save(user);
 
@@ -271,12 +270,21 @@ public class UserService {
             mimeMessageHelper.setText(content, true);
             mailSender.send(mimeMessage);
 
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("이메일 전송에 실패했습니다. 다시 시도해주세요.", HttpStatus.NO_CONTENT);
         }
         user.get().changePw(passwordEncoder.encode(temp_pw));
         userRepository.save(user.get());
         return new ResponseEntity<>("임시 비밀번호를 이메일로 보내드렸습니다.",HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<UserDto>> getTotal() {
+        List<User> userList = userRepository.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for(User user : userList) {
+            userDtoList.add(user.toDto());
+        }
+        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 }

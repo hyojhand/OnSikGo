@@ -22,10 +22,8 @@ public class AwsS3Service {
     private final AmazonS3 amazonS3;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-    private final String defaultImg="https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
 
     public String uploadImge(MultipartFile file){
-        if(file==null)return defaultImg;
         String fileName = createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
