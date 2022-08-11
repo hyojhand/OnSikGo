@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <button v-bind="attrs" v-on="on">회원탈퇴</button>
+        <button id="quit-button" v-bind="attrs" v-on="on">회원탈퇴</button>
       </template>
 
       <v-card>
@@ -85,5 +85,9 @@ export default {
   width: 120px;
   height: 120px;
   border-radius: 50%;
+}
+#quit-button {
+  font-weight: bolder;
+  width: 100%;
 }
 </style>
