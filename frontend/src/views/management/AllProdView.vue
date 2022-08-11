@@ -105,7 +105,7 @@
     </div>
     <!--페이지네이션-->
 
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" class="mb-5">
       <ul class="pagination justify-content-center nav-box">
         <li class="page-item">
           <a class="page-link" href="#" @click="previousPage()">이전으로</a>
