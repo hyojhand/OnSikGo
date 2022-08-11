@@ -12,7 +12,7 @@
       </template>
 
       <div class="card-refuse">
-        <v-card-title class="text-h5 lighten-2"> 주문 거절 사유 </v-card-title>
+        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e">📌 주문 거절 사유 </v-card-title>
 
         <div class="mx-auto my-auto option-box">
           <v-list-item-content class="btn-box">
@@ -44,7 +44,7 @@
           </v-list-item-content>
         </div>
         <button @click="checkIt()" class="radius-l text-m btn-send">
-          사유전송하기
+          전송하기
         </button>
       </div>
     </v-dialog>
@@ -126,20 +126,36 @@ export default {
 <style scoped>
 .card-refuse {
   background-color: white;
-  height: 280px;
+  height: 380px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .btn-reject {
-  color: rgb(255, 82, 82);
-  width: 64px;
-  height: 35px;
+  height: 40px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: tomato;
+  color: #ffffff;
+  width: 80px;
 }
 .btn-send {
-  margin: 2%;
-  width: 250px;
-  height: 30px;
+  height: 40px;
+  border: 2px solid tomato;
+  display: inline-block;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 0px;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: tomato;
+  width: 150px;
 }
 .option-box {
   padding: 0 3%;
