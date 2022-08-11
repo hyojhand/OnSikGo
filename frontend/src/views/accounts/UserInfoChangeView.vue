@@ -180,28 +180,21 @@ export default {
   background-color: rgb(233, 233, 233);
 }
 #btn-check {
-  height: 30px;
-  border: none;
-  display: inline-block;
-  border-radius: 5px;
-  margin: 5 10;
-  padding: 10 10;
-  box-sizing: border-box;
-  background-color: #45a245;
-  color: #ffffff;
-  width: 70px;
+  margin: 0px 0px;
+
+  border: 2px solid black;
+
+  width: 90%;
+
+  border-radius: 12px;
 }
 #finish-btn {
-  height: 30px;
-  border: none;
-  display: inline-block;
-  border-radius: 5px;
-  text-decoration: none;
-  margin: 5 10;
-  padding: 10 10;
-  box-sizing: border-box;
-  background-color: #45a245;
-  color: #ffffff;
-  width: 150px;
+  margin: 0px 0px;
+
+  border: 2px solid black;
+
+  width: 50%;
+
+  border-radius: 12px;
 }
 </style>

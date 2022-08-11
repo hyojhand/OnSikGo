@@ -24,9 +24,9 @@
             </div>
           </div>
 
-          <div class="d-flex justify-content-around mt-6">
-            <noQuitModal></noQuitModal>
-            <button @click="backToMypage()">아니요!</button>
+          <div class="d-flex justify-content-center mt-6">
+            <noQuitModal style="width: 50%"></noQuitModal>
+            <button id="back-button" @click="backToMypage()">아니요!</button>
           </div>
         </v-card>
         <v-divider></v-divider>
@@ -89,5 +89,18 @@ export default {
 #quit-button {
   font-weight: bolder;
   width: 100%;
+}
+#back-button {
+  height: 40px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #64a258;
+  color: #ffffff;
+  width: 100px;
 }
 </style>

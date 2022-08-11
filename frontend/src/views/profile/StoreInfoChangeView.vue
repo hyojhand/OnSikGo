@@ -380,6 +380,7 @@ export default {
         } else {
           this.realoffDayList = this.storeDto.offDay;
         }
+        console.log(this.realoffDayList);
         if (this.storeDto.offDay == "") {
           this.storeDto.offDay = "연중무휴";
           this.realoffDayList = "연중무휴";
@@ -432,7 +433,7 @@ export default {
 }
 #button-info-finish {
   margin: 0px 0px;
-  border: 2px solid #66a32e;
+  border: 2px solid black;
   width: 30%;
   border-radius: 12px;
 }

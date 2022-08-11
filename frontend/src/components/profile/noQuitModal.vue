@@ -51,6 +51,16 @@ export default {
   color: green;
 }
 #btn-quit {
+  height: 40px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #d97b38;
+  color: #ffffff;
   width: 100px;
 }
 #btn-real-quit {
