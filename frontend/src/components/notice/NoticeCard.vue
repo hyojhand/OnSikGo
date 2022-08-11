@@ -11,8 +11,7 @@
       alt="유저 프로필"
     />
     <div class="col-7 order-box">
-      <div class="mb-2">
-        <div class="msg-box">
+      <div class="mb-2 msg-box">
           <div class="date-box">
             <div class="mr-1">주문날짜 :</div>
             <div>{{ notice.orderDto.date.slice(0,4) }}
@@ -23,8 +22,6 @@
             </div>
           </div>
           <div v-html="`${notice.content}`"></div>
-          <!-- <span class="notice">님의</span> -->
-        </div>
       </div>
       <v-card-actions class="btn-box">
         <p v-if="`${notice.orderDto.state}` === 'WAIT'" class="time-text wait">
@@ -74,11 +71,12 @@ export default {
 .card-box {
   display: flex;
   margin: 0 auto;
-  width: 100%;
+  /* width: 100%; */
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  background-color: rgb(240, 240, 240);
 }
 .img-box {
   margin: 0;
@@ -109,8 +107,7 @@ export default {
   color: black;
 }
 .active {
-  background-color: #fff;
-  border-radius: 20px;
+  /* background-color: #fff; */
 }
 .date-box {
   display: flex;
