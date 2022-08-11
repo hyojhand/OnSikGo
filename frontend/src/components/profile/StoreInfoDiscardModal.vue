@@ -71,7 +71,7 @@ export default {
   },
   created() {
     http.get(`/store/${this.discardStoreId}`).then((response) => {
-      console.log(this.discardStoreId);
+      // console.log(this.discardStoreId);
       this.stname = response.data.storeName;
       this.stimg = response.data.storeImgUrl;
     });
@@ -108,7 +108,7 @@ export default {
   box-sizing: border-box;
   background-color: #64a258;
   color: #ffffff;
-  width: 120px;
+  width: 150px;
 }
 #discard-btn {
   height: 40px;
@@ -116,15 +116,16 @@ export default {
   display: inline-block;
   border-radius: 5px;
   text-decoration: none;
-  margin: 0 0;
-  padding: 0 0;
+  margin: 5 10;
+  padding: 10 10;
   box-sizing: border-box;
   background-color: #d97b38;
   color: #ffffff;
-  width: 120px;
+  width: 150px;
 }
 #button-discard {
   font-weight: bolder;
   width: 100%;
+  margin: 0 0;
 }
 </style>

@@ -17,7 +17,7 @@
               </div>
               <div class="col-8 mt-6">
                 <span
-                  >{{ userDto.userName }}님, <br />정말
+                  >{{ userDto.nickname }}님, <br />정말
                   탈퇴하시겠습니까?😢</span
                 >
               </div>
@@ -89,6 +89,8 @@ export default {
 #quit-button {
   font-weight: bolder;
   width: 100%;
+  text-align: center;
+  margin: 0 0;
 }
 #back-button {
   height: 40px;

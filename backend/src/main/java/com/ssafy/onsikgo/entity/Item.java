@@ -25,14 +25,14 @@ public class Item {
     private Long itemId;
 
     @Column(nullable = false)
-    private String itemName; // 상품명
+    private String itemName;
 
     @Column(nullable = false)
-    private Integer price; // 상품가격
+    private Integer price;
 
-    private String itemImgUrl; // 상품 이미지
+    private String itemImgUrl;
 
-    private String comment; // 상품 설명(코멘트)
+    private String comment;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "storeId")

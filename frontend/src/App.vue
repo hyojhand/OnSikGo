@@ -236,21 +236,19 @@
             </v-list-item-content>
           </v-list-item>
           <div>
-            <div class="d-flex justify-content-center text-align-center">
-              <MemberQuitModal class="temp"></MemberQuitModal>
-            </div>
+            <MemberQuitModal class="temp"></MemberQuitModal>
             <br />
-            <div class="d-flex justify-content-center text-align-center">
-              <button id="button-add-toggle" @click="addstorepage">
+            <div class="ml-16 mt-5">
+              <button class="ml-6" id="button-add-toggle" @click="addstorepage">
                 매장추가
               </button>
             </div>
             <br />
-            <div class="d-flex justify-content-center text-align-center">
+            <div classs="mt-5">
               <StoreInfoDiscardModal
                 v-if="this.discardStoreCnt >= 2"
                 :no="this.discardStoreId"
-                class="temp"
+                class="temp mt-5"
               ></StoreInfoDiscardModal>
             </div>
             <br />
@@ -270,9 +268,7 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <div class="d-flex justify-content-center text-align-center">
-            <MemberQuitModal class="temp"></MemberQuitModal>
-          </div>
+          <MemberQuitModal class="temp"></MemberQuitModal>
         </v-list>
       </v-navigation-drawer>
 
@@ -523,8 +519,12 @@ export default {
 }
 #button-add-toggle {
   font-weight: bolder;
+  margin: 0 0;
 }
 .temp {
+  width: 100%;
+}
+#temp2 {
   width: 100%;
 }
 </style>

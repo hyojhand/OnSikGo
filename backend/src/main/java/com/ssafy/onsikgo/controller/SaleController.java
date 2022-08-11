@@ -35,11 +35,6 @@ public class SaleController {
         return saleService.updateStock(map,sale_item_id);
     }
 
-    @DeleteMapping("/{sale_item_id}")
-    public ResponseEntity<String> delete(@PathVariable Long sale_item_id) {
-        return saleService.delete(sale_item_id);
-    }
-
     @GetMapping("/{item_id}")
     public ResponseEntity<SaleItemDto> getSaleItemInfo(@PathVariable Long item_id) {
         return saleService.getSaleItemInfo(item_id);
