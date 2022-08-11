@@ -6,12 +6,24 @@
 import { mapActions } from "vuex";
 export default {
   name: "LogoutView",
-  methods: { ...mapActions("select", ["resetValue"]) },
+  methods: { 
+    ...mapActions("select", ["resetValue"]),
+    ...mapActions("store", ["resetStore"]),
+    ...mapActions("discardStore", ["resetDiscardStore"]),
+    ...mapActions("analysis", ["resetAnalysis"]),
+    ...mapActions("accounts", ["resetAccounts"]),
+  },
 
-  created() {
+  async created() {
     localStorage.removeItem("access-token");
-    this.resetValue();
-    this.$router.push("/");
+    // localStorage.removeItem("vuex");
+    await this.resetValue();
+    await this.resetValue();
+    await this.resetStore();
+    await this.resetDiscardStore();
+    await this.resetAnalysis();
+    await this.resetAccounts();
+    await this.$router.push("/");
   },
 };
 </script>

@@ -61,6 +61,9 @@ const store = {
       getStoreReviewList : ({commit}, storeReviewList) => {
         commit("GET_STOREREVIEWLIST", storeReviewList)
       },
+      resetStore: ({commit}) => {
+        commit("RESET_STORE")
+      }
     },
     mutations: {
       GET_ADDRESS: (state, address) => {
@@ -90,6 +93,21 @@ const store = {
       GET_STOREREVIEWLIST: (state, storeReviewList) => {
         state.storeReviewList = storeReviewList
       },
+      RESET_STORE: (state) => {
+        // 현재 주소
+        state.currentAddress = "";
+        // 위도 경도
+        state.currentX = "";
+        state.currentY = "";
+        // 주문 상품 PK
+        state.currentItemId = "";
+        // 주문 가게 PK
+        state.orderStore = "";
+        state.aroundSaleStore = [];
+        state.myStoreId = "";
+        state.likeState =  "";
+        state.storeReviewList =  [];
+      }
     },
   };
   

@@ -7,7 +7,7 @@
         <div class="name-case">
           <div
             class="fw-bold"
-            :class="{ 'sm-font': storeDto.storeName.length > 9 }"
+            :class="{ 'sm-font': storeDto.storeName.size > 9 }"
           >
             {{ storeDto.storeName }}
           </div>
@@ -183,7 +183,7 @@ export default {
     return {
       tabs: ["상품", "입소문"],
       selectedTab: "",
-      storeDto: {},
+      storeDto: Object,
       saleItemList: [],
       reviewContent: "",
       reviewList: [],

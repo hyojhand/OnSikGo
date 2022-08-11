@@ -35,6 +35,9 @@ const discardStore = {
     discardStoreCnt: ({ commit }, storeCnt) => {
       commit("DISCARD_STORE_CNT", storeCnt);
     },
+    resetDiscardStore: ({commit}) => {
+      commit("RESET_DISCARDSTORE")
+    }
   },
   mutations: {
     DISCARD_STOREID: (state, storeId) => {
@@ -56,6 +59,14 @@ const discardStore = {
     DISCARD_STORE_CNT: (state, storeCnt) => {
       state.discardStoreCnt = storeCnt;
     },
+    RESET_DISCARDSTORE: (state) => {
+      state.discardStoreId = "";
+      state.discardStoreImg = "";
+      state.discardStoreName = "";
+      state.discardStoreClose = "";
+      state.discardStoreList = [];
+      state.discardStoreCnt = "";
+    }
   },
 };
 
