@@ -386,9 +386,8 @@ export default {
           this.realoffDayList = "연중무휴";
         }
         this.storeOffday(this.realoffDayList);
-
-        this.storeOffday(this.storeDto.offDay);
-
+        this.storeDto.offDay = this.realoffDayList;
+        console.log(this.storeDto);
         const formData = new FormData();
         formData.append("file", this.imgFile);
         formData.append(
@@ -434,7 +433,7 @@ export default {
 }
 #button-info-finish {
   margin: 0px 0px;
-  border: 2px solid #66a32e;
+  border: 2px solid black;
   width: 30%;
   border-radius: 12px;
 }

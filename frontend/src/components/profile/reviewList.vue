@@ -6,8 +6,7 @@
           <div class="col-3">
             <b-img
               :src="`${storeDto.storeImgUrl}`"
-              rounded="circle"
-              width="50"
+              width="80"
               height="50"
               style="margin: 0"
             />
@@ -76,7 +75,7 @@
 
 <script>
 import http from "@/util/http-common";
-import { mapGetters, mapActions} from "vuex"
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "reviewList",
   props: {
@@ -89,7 +88,7 @@ export default {
     reviewId: Number,
   },
   computed: {
-    ...mapGetters("accounts", ["reviewNickName"])
+    ...mapGetters("accounts", ["reviewNickName"]),
   },
   methods: {
     ...mapActions("accounts", ["getMyReviewList"]),
@@ -106,8 +105,8 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.getMyReviewList(response.data.reverse());
-        }
-      });
+          }
+        });
     },
   },
 };

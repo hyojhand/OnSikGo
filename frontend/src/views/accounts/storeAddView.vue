@@ -36,11 +36,8 @@
           <span>매장 주소</span>
         </div>
         <div class="col-9">
-          <div class="d-flex justify-content-end mr-6">
-            <button
-              class="border-l radius-m address-btn"
-              @click="execDaumPostcode()"
-            >
+          <div class="d-flex justify-content-end mr-8">
+            <button id="button-address" @click="execDaumPostcode()">
               주소 검색
             </button>
           </div>
@@ -71,36 +68,48 @@
 
       <!-- --------------사업자 등록번호 입력------------ -->
 
-      <div class="row">
-        <div class="col-3 mt-5 d-flex justify-content-end">
-          <span>사업자번호</span>
-        </div>
-        <div class="col-6">
-          <v-text-field
-            v-model="identify"
-            label="사업자번호를 입력해주세요."
-            required
-            class="input-box"
-            color="black"
-          ></v-text-field>
-        </div>
-        <div class="col-3 mt-4 mr-2d-flex justify-content-end">
-          <button
-            @click="ownerNumcheck"
-            class="border-l radius-m address-btn"
-            type="button"
-          >
-            번호인증
-          </button>
-        </div>
-        <div style="color: #34a623; font-size: 0.8rem" v-if="ownercheckDuple">
-          사업자 번호가 확인 되었습니다.
-        </div>
-        <div
-          style="color: rgb(222, 124, 39); font-size: 0.8rem"
-          v-if="ownerfailDuple"
-        >
-          다시 확인해주시길 바랍니다.
+      <div class="mt-8">
+        <div class="row">
+          <div class="col-3 ml-1 mt-5 d-flex justify-content-center">
+            <span>사업자번호</span>
+          </div>
+          <div class="col-8 mr-2">
+            <v-text-field
+              v-model="identify"
+              label="사업자번호를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+            ></v-text-field>
+          </div>
+          <div class="row">
+            <div class="col-8 d-flex justify-content-end">
+              <div
+                style="color: #34a623; font-size: 0.8rem"
+                v-if="ownercheckDuple"
+              >
+                사업자 번호가 확인 되었습니다.
+              </div>
+              <div
+                style="color: rgb(222, 124, 39); font-size: 0.8rem"
+                v-if="ownerfailDuple"
+              >
+                다시 확인해주시길 바랍니다.
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="d-flex justify-content-end">
+                <button
+                  @click="ownerNumcheck"
+                  class="mr-4 mb-3"
+                  id="button-add"
+                  type="button"
+                >
+                  번호인증
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -344,4 +353,19 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#button-address {
+  margin: 0px 0px;
+  border: 2px solid black;
+  width: 40%;
+  border-radius: 12px;
+  color: black;
+}
+#button-add {
+  margin: 0px 0px;
+  border: 2px solid black;
+  width: 100%;
+  border-radius: 12px;
+  color: black;
+}
+</style>

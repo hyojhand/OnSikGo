@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="d-flex justify-content-center">
-      <card v-if="saleItemDtoList.length == 0" id="regular-card">
+      <div v-if="saleItemDtoList.length == 0" id="regular-card">
         <div class="container">
           <div class="row">
-            <div class="col-3 mt-6">
+            <div class="col-3 mt-1">
               <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
             </div>
             <div class="col-8 ml-3" id="cardText">
               <span style="color: black">{{ storeName }}</span
               ><br />
               <span style="color: gray; font-size: 0.7rem"
-                >매장 위치: {{ address }} {{ extraAddress }}</span
+                >{{ address }} {{ extraAddress }}</span
               ><br />
               <span style="color: gray; font-size: 0.7rem"
                 >매장 휴무일: {{ offDay }}</span
@@ -30,19 +30,19 @@
             </div>
           </div>
         </div>
-      </card>
+      </div>
 
-      <card v-else id="regular-card-nozero">
+      <div v-else id="regular-card-nozero">
         <div class="container">
           <div class="row">
-            <div class="col-3 mt-6">
+            <div class="col-3 mt-1">
               <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
             </div>
             <div class="col-8 ml-3" id="cardText">
               <span style="color: black">{{ storeName }}</span
               ><br />
               <span style="color: gray; font-size: 0.7rem"
-                >매장 위치: {{ address }} {{ extraAddress }}</span
+                >{{ address }} {{ extraAddress }}</span
               ><br />
               <span style="color: gray; font-size: 0.7rem"
                 >매장 휴무일: {{ offDay }}</span
@@ -61,7 +61,7 @@
             </div>
           </div>
         </div>
-      </card>
+      </div>
     </div>
   </div>
 </template>

@@ -2,7 +2,9 @@
   <div class="text-modal">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <button v-bind="attrs" v-on="on">매장폐기</button>
+        <button id="button-discard" v-bind="attrs" v-on="on">
+          매장정보폐기
+        </button>
       </template>
 
       <div class="card">
@@ -17,7 +19,6 @@
         <div class="card-box">
           <div mt-5 class="row mt-3 ml-3">
             <img
-              style="border-radius: 50%"
               width="120"
               height="150"
               class="col-5"
@@ -69,8 +70,8 @@ export default {
     ]),
   },
   created() {
-    console.log(this.discardStoreId);
     http.get(`/store/${this.discardStoreId}`).then((response) => {
+      console.log(this.discardStoreId);
       this.stname = response.data.storeName;
       this.stimg = response.data.storeImgUrl;
     });
@@ -105,7 +106,7 @@ export default {
   margin: 5 10;
   padding: 10 10;
   box-sizing: border-box;
-  background-color: #37a62f;
+  background-color: #64a258;
   color: #ffffff;
   width: 150px;
 }
@@ -118,11 +119,12 @@ export default {
   margin: 5 10;
   padding: 10 10;
   box-sizing: border-box;
-  background-color: #c47e22;
+  background-color: #d97b38;
   color: #ffffff;
   width: 150px;
 }
-#text-modal {
-  font-family: "IBM Plex Sans KR", sans-serif;
+#button-discard {
+  font-weight: bolder;
+  width: 100%;
 }
 </style>

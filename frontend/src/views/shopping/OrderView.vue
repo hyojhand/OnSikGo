@@ -22,14 +22,12 @@
                 <div class="store-name">
                   {{ storeName }}
                   <div class="product-location">
-                    이거있냐
-                    {{ this.storeLocation }}
                   </div>
                   <div v-if="distance < 3000" class="product-prediction">
-                    현재 위치로부터 {{ this.storeLocation }} m
+                    현재 위치로부터 {{ this.distance }} m
                   </div>
                   <div v-else class="product-prediction">
-                    현재 위치로부터 {{ this.storeLocation / 1000 }} km
+                    현재 위치로부터 {{ this.distance / 1000 }} km
                   </div>
                   <button
                     class="order-button border-m radius-s"
@@ -60,46 +58,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="product-name">{{ productName }}</div>
-        <div class="row">
-          <div class="col-5">
-            <img
-              class="product-image"
-              :src="`${itemImgUrl}`"
-              :alt="`${productName}`"
-            />
-          </div>
-          <div class="col product-description">
-            <div class="product-location">{{ storeName }}</div>
-            <div class="product-prediction">300m, 도보로 3분</div>
-            <button @click="detailStore(item)" class="store-moving">
-              상세보기
-            </button>
-            <div class="total-price">
-              가격 :
-              <div class="price">{{ price }}원</div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-arrow-right"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                />
-              </svg>
-              <div class="discount-price">{{ price - salePrice }}원</div>
-            </div>
-            <div style="margin-top: 0px">
-              재고
-              <div>{{ stock }}</div>
-              개
-            </div>
-          </div>
-        </div> -->
         <!-- 꿀팁 -->
         <div class="row" v-if="comment.length">
           <div class="col-4 m-1">
@@ -190,10 +148,13 @@ export default {
       storeId: "",
       saleItemId: "",
       check: false,
+      storelat: "",
+      storelng: "",
+      distance: 0,
     };
   },
   computed: {
-    ...mapGetters("store", ["currentAddress", "currentItemId", "orderStore"]),
+    ...mapGetters("store", ["currentAddress", "currentItemId", "orderStore", "currentX", "currentY"]),
     countErrors() {
       const errors = [];
       if (this.count <= this.stock) {
@@ -207,6 +168,7 @@ export default {
     this.findProduct();
     this.findUser();
     this.findStock();
+    this.getdistance(this.currentX, this.currentY, this.storelat,this.storelng)
   },
   methods: {
     ...mapActions("storeStore", ["getStoreId"]),
@@ -234,6 +196,8 @@ export default {
         this.storeName = response.data.storeName;
         this.storeId = response.data.storeId;
         this.storeLocation = response.data.location;
+        this.storelat = response.data.lat
+        this.storelng = response.data.lng
         // console.log(response.data)
       });
     },
@@ -271,6 +235,27 @@ export default {
       this.$router.push({
         name: "storeView",
       });
+    },
+    getdistance(lat1, lon1, lat2, lon2) {
+      if (lat1 == lat2 && lon1 == lon2) {
+        return 0;
+      }
+      var radLat1 = (Math.PI * lat1) / 180;
+      var radLat2 = (Math.PI * lat2) / 180;
+      var theta = lon1 - lon2;
+      var radTheta = (Math.PI * theta) / 180;
+      var dist =
+        Math.sin(radLat1) * Math.sin(radLat2) +
+        Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+      if (dist > 1) dist = 1;
+
+      dist = Math.acos(dist);
+      dist = (dist * 180) / Math.PI;
+      dist = dist * 60 * 1.1515 * 1.609344 ;
+      if (dist < 100) dist = Math.round(dist / 10) * 10;
+      else dist = Math.round(dist / 100) * 100;
+      this.distance = dist
+      return dist;
     },
   },
 };

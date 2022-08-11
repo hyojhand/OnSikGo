@@ -235,13 +235,47 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <MemberQuitModal></MemberQuitModal>
-          <StoreInfoDiscardModal
-            v-if="this.discardStoreCnt >= 2"
-            :no="this.discardStoreId"
-          ></StoreInfoDiscardModal>
-          <br /><br /><br />
-          <button @click="addstorepage">매장추가</button>
+          <div>
+            <div class="d-flex justify-content-center text-align-start">
+              <MemberQuitModal class="temp"></MemberQuitModal>
+            </div>
+            <div class="d-flex justify-content-center text-align-center">
+              <MemberQuitModal class="temp"></MemberQuitModal>
+            </div>
+            <div class="d-flex justify-content-center text-align-end">
+              <MemberQuitModal class="temp"></MemberQuitModal>
+            </div>
+
+            <br />
+            <div class="d-flex justify-content-center text-align-center">
+              <button id="button-add-toggle" @click="addstorepage">
+                매장추가
+              </button>
+            </div>
+            <br />
+            <div class="d-flex justify-content-center text-align-center">
+              <StoreInfoDiscardModal
+                v-if="this.discardStoreCnt >= 2"
+                :no="this.discardStoreId"
+                class="temp"
+              ></StoreInfoDiscardModal>
+            </div>
+            <div class="d-flex justify-content-start text-align-center">
+              <StoreInfoDiscardModal
+                v-if="this.discardStoreCnt >= 2"
+                :no="this.discardStoreId"
+                class="temp"
+              ></StoreInfoDiscardModal>
+            </div>
+            <div class="d-flex justify-content-end text-align-center">
+              <StoreInfoDiscardModal
+                v-if="this.discardStoreCnt >= 2"
+                :no="this.discardStoreId"
+                class="temp"
+              ></StoreInfoDiscardModal>
+            </div>
+            <br />
+          </div>
         </v-list>
 
         <!-- 설정 토글바 일반 유저 버전 -->
@@ -257,7 +291,15 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <MemberQuitModal></MemberQuitModal>
+          <div class="d-flex justify-content-start text-align-center">
+            <MemberQuitModal class="temp"></MemberQuitModal>
+          </div>
+          <div class="d-flex justify-content-center text-align-center">
+            <MemberQuitModal class="temp"></MemberQuitModal>
+          </div>
+          <div class="d-flex justify-content-end text-align-center">
+            <MemberQuitModal class="temp"></MemberQuitModal>
+          </div>
         </v-list>
       </v-navigation-drawer>
 
@@ -385,7 +427,7 @@ export default {
     },
 
     copyLink() {
-      let currentUrl = window.document.location.href;
+      let currentUrl = "https://i7e201.p.ssafy.io/";
 
       let t = document.createElement("textarea");
       document.body.appendChild(t);
@@ -505,5 +547,11 @@ export default {
 }
 #text-onsikgo {
   font-size: 50rem;
+}
+#button-add-toggle {
+  font-weight: bolder;
+}
+.temp {
+  width: 100%;
 }
 </style>
