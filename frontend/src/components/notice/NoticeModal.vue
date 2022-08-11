@@ -15,29 +15,29 @@
       </template>
 
       <v-card>
-        <v-card-title class="text-h5 lighten-2"> 주문 상세보기</v-card-title>
+        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e"> 주문 상세보기</v-card-title>
 
         <v-card
           class="mx-auto my-auto pb-3 order-info"
-          max-width="344"
+          max-width="350"
           outlined
         >
           <div class="account-info">
             <img
-              class="img-box col-6"
+              class="img-box col-6 mt-3 ml-2"
               :src="`${value.userDto.imgUrl}`"
               :alt="`${value.userDto.nickname}`"
             />
             <div class="col-7 mt-2 order-box">
               <v-list-item-content class="notice-box">
                 <v-list-item-title class="msg-box">
-                  <span class="text-l" v-html="`${value.content}`"></span>
+                  <span class="text-l fw-bold" v-html="`${value.content}`"></span>
                 </v-list-item-title>
               </v-list-item-content>
             </div>
           </div>
-          <v-card class="mx-auto mt-3 card-box" max-width="300" outlined>
-            <div>
+          <div class="mx-auto card-box" max-width="300" outlined>
+            <div class="" style="margin-top:100px; margin-bottom: 100px;" >
               <img
                 class="col-5 food-pic"
                 :src="`${value.orderDto.saleItemDto.itemDto.itemImgUrl}`"
@@ -47,13 +47,16 @@
                 <div class="text-m notice-msg">
                   {{ value.orderDto.saleItemDto.itemDto.itemName }}
                 </div>
-
                 <div class="text-m notice-msg">
                   {{ value.orderDto.count }} 개
                 </div>
               </div>
             </div>
             <div class="btn-box mt-2">
+            </div>
+          </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
               <v-card-actions>
                 <refuse-modal @check-it="checkIt" :value="value"></refuse-modal>
               </v-card-actions>
@@ -65,15 +68,9 @@
                   수락
                 </button>
               </v-card-actions>
-            </div>
-          </v-card>
+            </v-card-actions>
+
         </v-card>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -182,6 +179,7 @@ export default {
 .food-pic {
   padding: 0;
   margin: 5px;
+  width: 250px;
 }
 .noti-title {
   text-align: start;
