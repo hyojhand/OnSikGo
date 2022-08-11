@@ -103,9 +103,6 @@ export default {
 .notice {
   color: black;
 }
-.active {
-  /* background-color: #fff; */
-}
 .date-box {
   display: flex;
   flex-direction: row;
