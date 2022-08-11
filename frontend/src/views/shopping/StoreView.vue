@@ -82,7 +82,7 @@
         </div>
         <div class="row info-text">
           <div class="col-3">공유하기:</div>
-          <share-sns class="col-9" />
+          <share-sns class="col-9" v-bind:storeImgUrl="storeDto.storeImgUrl" v-bind:storeName="storeDto.storeName"/>
         </div>
       </div>
     </div>

@@ -16,6 +16,10 @@
 const { Kakao } = window;
 const url = "https://i7e201.p.ssafy.io";
 export default {
+  props:{
+    storeImgUrl:String,
+    storeName:String
+  },
   methods: {
     shareTwitter() {
       var sendText = "OnSikGo입니다.";
@@ -36,15 +40,16 @@ export default {
       );
     },
     shareKakao() {
+      console.log(this.storeImgUrl);
       Kakao.Link.createDefaultButton({
         container: "#btnKakao",
         objectType: "feed",
         content: {
-          title: "OnSikGo입니다.",
+          title: `OnSikGo의 ${this.storeName}`,
           description:
             "지구를 구하는 마지막 주문, 당일 폐기 예정 음식 정보 공유 사이트입니다.",
           imageUrl:
-            "https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/real_logo.png",
+            this.storeImgUrl,
           link: {
             mobileWebUrl: url,
             webUrl: url,
