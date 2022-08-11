@@ -9,8 +9,8 @@
       />
     </div>
     <div v-else class="non-msg">
-      <div>아직 들어온</div>
-      <div>주문이 없어요 ㅠ</div>
+      <div>현재 들어온</div>
+      <div>주문이 없어요</div>
     </div>
   </div>
 </template>
