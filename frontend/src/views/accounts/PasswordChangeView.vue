@@ -15,10 +15,7 @@
             />
           </div>
           <div class="col-4 d-flex justify-content-end mr-2">
-            <button
-              class="border-l radius-m address-btn"
-              @click="checkcurrentPw"
-            >
+            <button id="btn-change" @click="checkcurrentPw">
               비밀번호 확인
             </button>
           </div>
@@ -53,9 +50,7 @@
       </div>
     </div>
     <div class="d-flex justify-content-end mt-6 mr-10">
-      <button class="border-l radius-m address-btn" @click="changePw">
-        변경하기
-      </button>
+      <button id="btn-change-check" @click="changePw">변경하기</button>
     </div>
   </div>
 </template>
@@ -180,5 +175,23 @@ export default {
   outline: none;
   padding-left: 10px;
   background-color: rgb(233, 233, 233);
+}
+#btn-change {
+  margin: 0px 0px;
+
+  border: 2px solid black;
+
+  width: 80%;
+
+  border-radius: 12px;
+}
+#btn-change-check {
+  margin: 0px 0px;
+
+  border: 2px solid black;
+
+  width: 50%;
+
+  border-radius: 12px;
 }
 </style>
