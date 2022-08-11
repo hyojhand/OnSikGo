@@ -380,14 +380,13 @@ export default {
         } else {
           this.realoffDayList = this.storeDto.offDay;
         }
-        console.log(this.realoffDayList);
         if (this.storeDto.offDay == "") {
           this.storeDto.offDay = "연중무휴";
           this.realoffDayList = "연중무휴";
         }
         this.storeOffday(this.realoffDayList);
-        console.log(this.storeDto.offDay);
-
+        this.storeDto.offDay = this.realoffDayList;
+        console.log(this.storeDto);
         const formData = new FormData();
         formData.append("file", this.imgFile);
         formData.append(

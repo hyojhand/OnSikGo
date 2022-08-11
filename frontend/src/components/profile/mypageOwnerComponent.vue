@@ -40,7 +40,7 @@
         ><br />
         <span class="mypage_asset">매장 휴무일: </span>
         <span v-if="this.storeOffday == null">연중무휴</span>
-        <span class="mypage">{{ this.storeOffday }}</span
+        <span class="mypage">{{ store.offDay }}</span
         ><br />
       </div>
 
