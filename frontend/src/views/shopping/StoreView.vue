@@ -5,10 +5,7 @@
       <img :src="`${storeDto.storeImgUrl}`" alt="profile" class="store-img" />
       <div class="store-name">
         <div class="name-case">
-          <div
-            class="fw-bold"
-            :class="{ 'sm-font': storeNameSize > 9 }"
-          >
+          <div class="fw-bold" :class="{ 'sm-font': storeNameSize > 9 }">
             {{ storeDto.storeName }}
           </div>
           <!-- 좋아요 -->
@@ -56,7 +53,7 @@
       <store-kakao-map></store-kakao-map>
       <div class="content">
         <div class="row info-text">
-          <div class="col-3">상세위치 :</div>
+          <div class="col-3 title">상세위치 :</div>
           <div class="col-9 info-content adress">
             <div>{{ storeDto.address }}</div>
             <div>
@@ -65,24 +62,28 @@
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">전화번호:</div>
+          <div class="col-3 title">전화번호:</div>
           <div class="col-9 info-content">
             {{ storeDto.tel }}
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">영업시간:</div>
+          <div class="col-3 title">영업시간:</div>
           <div class="col-9 info-content">{{ storeDto.closingTime }}</div>
         </div>
         <div class="row info-text">
-          <div class="col-3">휴무일:</div>
+          <div class="col-3 title">휴무일:</div>
           <div class="col-9 info-content">
             {{ storeDto.offDay }}
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">공유하기:</div>
-          <share-sns class="col-9" v-bind:storeImgUrl="storeDto.storeImgUrl" v-bind:storeName="storeDto.storeName"/>
+          <div class="col-3 title">공유하기:</div>
+          <share-sns
+            class="col-9"
+            v-bind:storeImgUrl="storeDto.storeImgUrl"
+            v-bind:storeName="storeDto.storeName"
+          />
         </div>
       </div>
     </div>
@@ -141,7 +142,7 @@
           />
           <button @click="registerReview()">
             <span class="input-group-text" id="basic-addon1">
-              <i class="fa-solid fa-comment"></i>
+              <img src="@/assets/images/send.png" alt="" />
             </span>
           </button>
         </div>
@@ -189,14 +190,13 @@ export default {
       reviewList: [],
       liking: "",
       storeNameSize: 0,
-      
     };
   },
 
   computed: {
     ...mapGetters("storeStore", ["getStoreId"]),
     ...mapGetters("accounts", ["userCheck"]),
-    ...mapGetters("store", ["storeReviewList"])
+    ...mapGetters("store", ["storeReviewList"]),
   },
 
   async created() {
@@ -204,7 +204,7 @@ export default {
 
     await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
-      this.storeNameSize = response.data.storeName.length
+      this.storeNameSize = response.data.storeName.length;
       // console.log(this.storeNameSize);
       // console.log(this.storeDto);
     });
@@ -291,6 +291,7 @@ div {
 .content {
   width: 100%;
   display: flex;
+  margin: 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -306,13 +307,18 @@ div {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: start;
   margin: 0;
   margin-bottom: 2px;
   width: 100%;
 }
+.title {
+  padding-left: 15px;
+  font-size: 15px !important;
+}
 .info-content {
   text-align: start;
+  padding-left: 20px;
 }
 .store-header {
   position: relative;

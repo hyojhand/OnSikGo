@@ -25,7 +25,7 @@
       </div>
       <!-- Tab 기능 -->
 
-      <ul class="tabs">
+      <ul class="tabs mb-3">
         <li
           v-for="tab in tabs"
           v-bind:class="{

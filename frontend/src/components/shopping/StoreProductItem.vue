@@ -274,7 +274,7 @@ export default {
 /* 할인가 */
 .discount-price {
   font-size: 15px;
-  text-align: start;
+  text-align: end;
 }
 .order-button {
   margin-top: 5px;

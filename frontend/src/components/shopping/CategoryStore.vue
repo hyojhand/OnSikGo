@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- 상위 가게 카테고리 -->
-    <div class="row case">
+    <div class="row case bbox">
       <div
         :class="{
           select: this.tabs[0] === this.category,
@@ -57,7 +57,7 @@
       </div>
     </div>
     <!-- 하위 가게 카테고리 -->
-    <div class="row">
+    <div class="row bbox">
       <div
         :class="{
           select: this.tabs[3] === this.category,
@@ -110,7 +110,7 @@
         <p>디저트</p>
       </div>
     </div>
-    <div class="row">
+    <div class="row bbox">
       <div
         :class="{
           select: this.tabs[6] === this.category,
@@ -411,6 +411,10 @@ img {
   margin: 0;
   padding-right: 10px;
   padding-left: 15px;
+}
+.bbox {
+  width: 100%;
+  margin: 0;
 }
 .search-reset {
   padding: 0;

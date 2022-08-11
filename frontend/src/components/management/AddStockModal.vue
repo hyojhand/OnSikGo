@@ -145,7 +145,7 @@ input {
   padding: 0;
 }
 .info-box > input {
-  width: 40%;
+  width: 55%;
   padding-left: 10px;
   font-size: 20px;
 }
