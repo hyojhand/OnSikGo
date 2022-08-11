@@ -108,5 +108,7 @@ button {
 }
 .edit-btn {
   background-color: rgb(255, 82, 82);
+  width: 160px;
+  margin: 0;
 }
 </style>

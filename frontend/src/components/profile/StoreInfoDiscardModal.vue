@@ -21,11 +21,11 @@
               width="120"
               height="150"
               class="col-5"
-              :src="`${this.stimg}`"
+              :src="`${this.discardStoreImg}`"
             />
             <div class="col-6 mt-7 mr-2">
               <span style="color: black" class="text-m"
-                >"{{ this.stname }}"의 매장정보를<br />
+                >"{{ this.discardStoreName }}"의 매장정보를<br />
                 폐기하시겠습니까?</span
               >
               <br />
@@ -51,7 +51,7 @@
 
 <script>
 import http from "@/util/http-common";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "NoticeModal",
   data() {
@@ -62,15 +62,21 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("discardStore", ["discardStoreId"]),
+    ...mapGetters("discardStore", [
+      "discardStoreId",
+      "discardStoreName",
+      "discardStoreImg",
+    ]),
   },
   created() {
+    console.log(this.discardStoreId);
     http.get(`/store/${this.discardStoreId}`).then((response) => {
       this.stname = response.data.storeName;
       this.stimg = response.data.storeImgUrl;
     });
   },
   methods: {
+    ...mapActions("select", ["resetValue"]),
     backToMypage() {
       this.dialog = false;
     },
@@ -78,6 +84,7 @@ export default {
       http.delete(`/store/${this.discardStoreId}`).then((response) => {
         if (response.status == 200) {
           alert("가게 정보 폐기 완료되었습니다!");
+          this.resetValue();
           this.$router.go();
         } else {
           alert("가게 정보 삭제에 실패했습니다.");

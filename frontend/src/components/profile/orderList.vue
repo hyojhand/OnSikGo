@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="ordercard ml-5">
-      <div class="container mt-5">
+      <br />
+      <div class="container">
         <div class="row">
-          <div class="col-3 ml-3 mt-2">
+          <div class="col-3 mt-3">
             <img
               fluid
               :src="`${order.saleItemDto.itemDto.itemImgUrl}`"
@@ -12,38 +13,51 @@
               style="border-radius: 50%"
             />
           </div>
-          <div class="col-5 ml-3">
-            <div style="text-align: start">
+          <div class="col-6">
+            <div style="text-align: start; align-items: start">
               <span style="color: black; font-size: 1.1rem">
-                {{ order.saleItemDto.itemDto.itemName }} </span
-              >
-              <span v-if="`${order.state}` === 'WAIT'" style="font-size:0.75rem; color:gray;">주문대기</span> 
-              <span v-else-if="`${order.state}` === 'ORDER'" style="font-size:0.75rem; color:blue;">주문승인</span>
-              <span v-else-if="`${order.state}` === 'CANCEL'" style="font-size:0.75rem; color:red;">주문거절</span>
+                {{ order.saleItemDto.itemDto.itemName }}
+              </span>
               <br />
-              <span style="color: gray; font-size: 0.8rem"
-                >매장이름:
+              <span style="color: gray; font-size: 0.8rem">
                 {{ order.saleItemDto.saleDto.storeDto.storeName }}</span
               ><br />
               <span style="color: gray; font-size: 0.8rem"
-                >주문시각: {{ order.date.slice(0, 4) }}.{{
-                  order.date.slice(5, 6)
-                }}.{{ order.date.slice(7, 8) }}</span
+                >주문 날짜: {{ order.date.slice(0, 4) }}.{{
+                  order.date.slice(4, 6)
+                }}.{{ order.date.slice(6, 8) }}</span
               ><br />
               <span style="color: gray; font-size: 0.8rem"
                 >수량: {{ order.count }} 개</span
               >
             </div>
+            <div class="mt-1 d-flex justify-content-end">
+              <span
+                v-if="`${order.state}` === 'WAIT'"
+                style="font-size: 0.75rem; color: gray"
+                >주문대기</span
+              >
+              <span
+                v-else-if="`${order.state}` === 'ORDER'"
+                style="font-size: 0.75rem; color: blue"
+                >주문승인</span
+              >
+              <span
+                v-else-if="`${order.state}` === 'CANCEL'"
+                style="font-size: 0.75rem; color: red"
+                >주문거절</span
+              >
+            </div>
           </div>
-          <div class="col-2 ml-3 mt-2">
+          <div class="col-3 mt-2">
             <button
               v-show="`${order.state}` === 'WAIT' && `${elapsedTime}` < 10"
               id="btn-order"
               type="button"
               @click="orderCancel(order)"
             >
-              주문취소</button
-            >
+              주문취소
+            </button>
 
             <br /><br />
             <button
@@ -51,8 +65,8 @@
               @click="goStore(order.saleItemDto.saleDto.storeDto.storeId)"
               type="button"
             >
-              가게보기
-            </button>
+              가게보기</button
+            ><br />
           </div>
         </div>
       </div>
@@ -84,8 +98,8 @@ export default {
         localStorage.getItem("access-token");
       http.patch(`/order/cancel/${order.orderId}`).then((response) => {
         if (response.status === 200) {
-          alert("주문이 취소되었습니다")
-          this.$router.go()
+          alert("주문이 취소되었습니다");
+          this.$router.go();
         } else {
           alert("취소 실패");
         }
@@ -134,7 +148,6 @@ export default {
   flex-direction: row;
   align-items: center;
   border-bottom: 2px solid rgba(0, 0, 0, 10%);
-  margin: 0;
 }
 #btn-order {
   height: 25px;

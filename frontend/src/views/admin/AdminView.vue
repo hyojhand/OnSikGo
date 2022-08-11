@@ -12,7 +12,7 @@
           <span>{{ tab }}</span>
         </li>
       </ul>
-    <hr class="mt-5">
+    <hr>
       <div class="tab-content">
       <!-- 리뷰 관리 -->
         <admin-review
@@ -87,7 +87,7 @@ ul.tabs li{
   cursor: pointer;
   width:78px;
   height: 30px;
-  font-size: 20px;
+  font-size: 15px;
   padding: 0;
   margin-left: 5px;
   margin-top: 10px;

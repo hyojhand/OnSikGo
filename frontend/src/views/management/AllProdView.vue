@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-5">
     <!--매장선택-->
     <div class="selec-box">
       <select
@@ -46,12 +46,13 @@
       <!-- 검색란 -->
       <div class="search-bar col-7">
         <v-text-field
+          width="120"
           v-model="keyword"
           label="상품을 입력해주세요."
           color="black"
         ></v-text-field>
         <!-- 검색 아이콘 -->
-        <button>
+        <button class="none-margin">
           <svg
             @click="keywordSelect(1)"
             xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +68,7 @@
           </svg>
         </button>
         <!-- 초기화 -->
-        <button>
+        <button class="none-margin">
           <svg
             @click="resetItemList()"
             xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +108,7 @@
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center nav-box">
         <li class="page-item">
-          <a class="page-link" href="#" @click="previousPage()">Previous</a>
+          <a class="page-link" href="#" @click="previousPage()">이전으로</a>
         </li>
 
         <li
@@ -119,7 +120,7 @@
           <a class="page-link" href="#" @click="movePage(index)">{{ index }}</a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#" @click="nextPage()">Next</a>
+          <a class="page-link" href="#" @click="nextPage()">다음으로</a>
         </li>
       </ul>
     </nav>
@@ -293,6 +294,10 @@ export default {
 </script>
 
 <style scoped>
+.none-margin {
+  margin: 0;
+  padding: 0;
+}
 .store-name {
   width: 80%;
   font-size: 25px;
@@ -357,5 +362,8 @@ export default {
 }
 .selec-box > svg {
   margin-left: 7px;
+}
+.page-link {
+  color: black;
 }
 </style>

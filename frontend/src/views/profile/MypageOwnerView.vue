@@ -68,33 +68,39 @@ export default {
       this.storeCnt = this.stores.length;
       this.discardStoreId(this.storeId);
       this.discardStoreCnt(this.storeCnt);
-      console.log(this.store.offDay);
-      if (this.store.offDay.length >= 5) {
-        console.log("2개이상임");
-        this.offDaylist_created = [];
-        this.store.offDay.split(",").map((day) => {
-          this.offDaylist_created.push(day);
-        });
-        const daySorter = {
-          월요일: 1,
-          화요일: 2,
-          수요일: 3,
-          목요일: 4,
-          금요일: 5,
-          토요일: 6,
-          일요일: 7,
-        };
-        this.offDaylist_created.sort(function sortBydaySorter(a, b) {
-          return daySorter[a] - daySorter[b];
-        });
-        this.realoffDayList = this.offDaylist_created.join();
-        this.storeOffday(this.realoffDayList);
+      // console.log(this.store.offDay);
+
+      if (this.store.offDay == "연중무휴") {
+        this.realoffDayList = "연중무휴";
       } else {
-        this.realoffDayList = this.store.offDay;
-        this.storeOffday(this.realoffDayList);
-        console.log(this.realoffDayList);
+        if (this.store.offDay.length >= 5) {
+          // console.log("2개이상임");
+          this.offDaylist_created = [];
+          this.store.offDay.split(",").map((day) => {
+            this.offDaylist_created.push(day);
+          });
+          const daySorter = {
+            월요일: 1,
+            화요일: 2,
+            수요일: 3,
+            목요일: 4,
+            금요일: 5,
+            토요일: 6,
+            일요일: 7,
+          };
+          this.offDaylist_created.sort(function sortBydaySorter(a, b) {
+            return daySorter[a] - daySorter[b];
+          });
+          this.realoffDayList = this.offDaylist_created.join();
+          this.storeOffday(this.realoffDayList);
+        } else {
+          this.realoffDayList = this.store.offDay;
+          this.storeOffday(this.realoffDayList);
+          // console.log(this.realoffDayList);
+        }
       }
-      console.log(this.realoffDayList);
+
+      // console.log(this.realoffDayList);
     });
 
     await http.get(`/sale/list/${this.storeId}`).then((response) => {
@@ -103,7 +109,6 @@ export default {
     });
     await http.get(`/store/close/${this.storeId}`).then((response) => {
       this.getDiscardStoreClose(response.data.closed);
-      // console.log(response.data);
     });
   },
   computed: {
@@ -121,40 +126,47 @@ export default {
     ...mapActions("offdayStore", ["storeOffday"]),
     ...mapActions("select", ["getMyStore", "getStoreValue"]),
     async selectStore(event) {
+      // console.log(this.offDay);
       this.storeId = event.target.value;
       this.getMyStore(event.target.value);
       await http.get(`/store/${this.storeId}`).then((response) => {
         // console.log(response.data.offDay);
-        if (response.data.offDay.length >= 5) {
-          // console.log("ok");
-          this.offDaylist_select = [];
-          response.data.offDay.split(",").map((day) => {
-            this.offDaylist_select.push(day);
-          });
-          // console.log(offDaylist_select);
-          const daySorter = {
-            월요일: 1,
-            화요일: 2,
-            수요일: 3,
-            목요일: 4,
-            금요일: 5,
-            토요일: 6,
-            일요일: 7,
-          };
-          this.offDaylist_select.sort(function sortBydaySorter(a, b) {
-            return daySorter[a] - daySorter[b];
-          });
-          this.realoffDayList = this.offDaylist_select.join();
-          // console.log(this.realoffDayList);
+        if (response.data.offDay == "연중무휴") {
+          this.realoffDayList = "연중무휴";
         } else {
-          this.realoffDayList = response.data.offDay;
+          if (response.data.offDay.length >= 5) {
+            // console.log("ok");
+            this.offDaylist_select = [];
+            response.data.offDay.split(",").map((day) => {
+              this.offDaylist_select.push(day);
+            });
+            // console.log(offDaylist_select);
+            const daySorter = {
+              월요일: 1,
+              화요일: 2,
+              수요일: 3,
+              목요일: 4,
+              금요일: 5,
+              토요일: 6,
+              일요일: 7,
+            };
+            this.offDaylist_select.sort(function sortBydaySorter(a, b) {
+              return daySorter[a] - daySorter[b];
+            });
+            this.realoffDayList = this.offDaylist_select.join();
+            // console.log(this.realoffDayList);
+          } else {
+            this.realoffDayList = response.data.offDay;
+          }
         }
+
         // console.log(this.realoffDayList);
         this.storeOffday(this.realoffDayList);
         this.storeName = response.data.storeName;
         this.storeImg = response.data.storeImgUrl;
       });
       await http.get(`/sale/list/${this.storeId}`).then((response) => {
+        console.log(response.data);
         this.getDsicardStoreList(response.data);
       });
       await http.get(`/store/close/${this.storeId}`).then((response) => {
@@ -162,7 +174,9 @@ export default {
         // console.log(response.data);
       });
       this.discardStoreId(this.storeId);
+      console.log(this.storeId);
       this.discardStoreName(this.storeName);
+      console.log(this.storeName);
       this.discardStoreImg(this.storeImg);
 
       await this.changeStore();

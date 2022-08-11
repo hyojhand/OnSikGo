@@ -18,7 +18,7 @@
           >
           <br />
           <div class="mt-5">
-            <span style="color: black; font-size: 0.8rem"
+            <span style="color: black; font-size: 0.7rem"
               >전국푸드뱅크 홈페이지(www.foodbank1377.org)에 접속하여
               <br />기부회원으로 가입하여 기부 신청을 할 수 있습니다.</span
             >
@@ -34,7 +34,7 @@
           >
           <br />
           <div class="mt-5">
-            <span style="color: black; font-size: 0.8rem"
+            <span style="color: black; font-size: 0.7rem"
               >√ 전국단위 대규모 기부 신청 : ☎ 02-713-1377 <br />
               √ 지역단위 소규모 기부 신청 : ☎ 1688-1377
             </span>
@@ -84,8 +84,8 @@ img {
   margin: 5% 0%;
 }
 #dona_btn {
-  width: 150px;
-  height: 50px;
+  width: 50%;
+  height: 40px;
   background-color: white;
   font-size: 15px;
   font-weight: 800;

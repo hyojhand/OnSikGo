@@ -23,8 +23,8 @@
     <br />
 
     <div class="d-flex justify-content-around">
-      <button @click="noClose" class="border-l radius-m">아니오</button>
-      <button @click="realClose" class="border-l radius-m">영업종료</button>
+      <button @click="noClose" id="button-no">아니오</button>
+      <button @click="realClose" id="button-yes">영업종료</button>
     </div>
   </div>
 </template>
@@ -57,10 +57,11 @@ export default {
       this.storeId = this.$route.params.storeId;
       console.log(this.storeId);
       http.put(`/store/close/${this.storeId}`).then((response) => {
-        if (response.data == "fail") {
-          alert("오늘 해당 매장 정보가 없습니다!");
+        console.log(response.data);
+        if (response.status == 204) {
+          alert("오늘 등록된 재고가 없어 영업 종료가 불가능합니다.");
         } else {
-          alert("매장 결산이 완료되었습니다");
+          alert("매장 결산이 완료되어 데이터가 저장되고 영업 종료되었습니다.");
           this.$router.push("/mypage/owner");
         }
       });
@@ -76,5 +77,19 @@ export default {
 #red-small {
   color: rgb(222, 124, 39);
   font-size: 0.75rem;
+}
+#button-no {
+  margin: 0px 0px;
+  border: 2px solid black;
+  width: 30%;
+  border-radius: 12px;
+  color: #66a32e;
+}
+#button-yes {
+  margin: 0px 0px;
+  border: 2px solid black;
+  width: 30%;
+  border-radius: 12px;
+  color: rgb(209, 103, 11);
 }
 </style>

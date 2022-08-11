@@ -1,21 +1,28 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="parents" width="344">
+    <v-dialog v-model="parents" width="344" persistent>
       <template v-slot:activator="{ on, attrs }">
-        <button 
-          class="border-m radius-m notice-btn" 
-          v-bind="attrs" 
+        <button
+          class="border-m radius-m notice-btn"
+          v-bind="attrs"
           v-on="on"
-          v-bind:disabled="value.orderDto.state=='ORDER' || value.orderDto.state=='CANCEL'">
+          v-bind:disabled="
+            value.orderDto.state == 'ORDER' || value.orderDto.state == 'CANCEL'
+          "
+        >
           주문 확인
         </button>
       </template>
 
       <v-card>
         <v-card-title class="text-h5 lighten-2"> 주문 상세보기</v-card-title>
-        
-        <v-card class="mx-auto my-auto" max-width="344" outlined>
-          <div mt-5 class="row mt-3 ml-2">
+
+        <v-card
+          class="mx-auto my-auto pb-3 order-info"
+          max-width="344"
+          outlined
+        >
+          <div class="account-info">
             <img
               class="img-box col-6"
               :src="`${value.userDto.imgUrl}`"
@@ -29,33 +36,31 @@
               </v-list-item-content>
             </div>
           </div>
-          <v-card class="mx-auto m-3 card-box" max-width="300" outlined>
+          <v-card class="mx-auto mt-3 card-box" max-width="300" outlined>
             <div>
               <img
-                class="col-5 border-s food-pic"
+                class="col-5 food-pic"
                 :src="`${value.orderDto.saleItemDto.itemDto.itemImgUrl}`"
                 alt="사진이었던것.."
               />
               <div class="mt-2">
-                <div>
-                  <span class="text-m noti-title">제품명 : </span>
-                  <span class="text-m notice-msg">{{ value.orderDto.saleItemDto.itemDto.itemName }}</span>
+                <div class="text-m notice-msg">
+                  {{ value.orderDto.saleItemDto.itemDto.itemName }}
                 </div>
-                <div>
-                  <span class="text-m noti-title">수량 : </span>
-                  <span class="text-m notice-msg">{{value.orderDto.count}} 개</span>
+
+                <div class="text-m notice-msg">
+                  {{ value.orderDto.count }} 개
                 </div>
               </div>
             </div>
             <div class="btn-box mt-2">
               <v-card-actions>
-                <refuse-modal @check-it="checkIt" :value=value ></refuse-modal>
+                <refuse-modal @check-it="checkIt" :value="value"></refuse-modal>
               </v-card-actions>
               <v-card-actions>
                 <button
                   class="border-m radius-l text-m btn-accept"
                   @click="orderOk()"
-                  
                 >
                   수락
                 </button>
@@ -76,40 +81,41 @@
 
 <script>
 import RefuseModal from "@/components/notice/RefuseModal.vue";
-import http from "@/util/http-common.js"
+import http from "@/util/http-common.js";
+import { mapActions } from "vuex";
 export default {
   name: "NoticeModal",
   components: { RefuseModal },
   props: {
-    value : null,
+    value: null,
   },
   methods: {
-    getUser() {
-
-    },
+    ...mapActions("accounts", ["getOwnerOrderList"]),
+    getUser() {},
     accept() {
       this.parents = false;
     },
     checkIt: function () {
       this.parents = false;
     },
-    orderOk() {
+    async orderOk() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-      http
+      await http
         .patch(`/order/sign/${this.value.orderDto.orderId}`)
-        .then((response) =>{
+        .then((response) => {
           if (response.status === 200) {
-            console.log(response)
+            console.log(response);
           } else {
-            console.log(response)
-            alert("주문 실패")
+            console.log(response);
+            alert("주문 실패");
           }
-          
-        })
-        this.parents = false;
-
-    }
+        });
+      await http.get("/notice").then((response) => {
+        this.getOwnerOrderList(response.data.reverse());
+      });
+      this.parents = false;
+    },
   },
   data() {
     return {
@@ -124,6 +130,20 @@ export default {
   margin: 0;
   padding: 0;
 }
+.account-info {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.order-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
 .notice-box {
   display: flex;
   justify-content: space-evenly;
@@ -134,22 +154,26 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  padding: 0;
+  margin: 0;
 }
 .img-box {
   margin: 0 auto;
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  padding: 0;
+  margin: 0;
 }
 .btn-box {
   display: flex;
   justify-content: space-evenly;
-  background-color: rgb(240, 240, 240);
 }
 .notice-btn {
   width: 110px;
+  height: 28px;
 }
-.notice-btn:disabled{
+.notice-btn:disabled {
   background-color: grey;
   opacity: 0.5;
   color: #000;

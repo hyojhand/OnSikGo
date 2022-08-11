@@ -114,11 +114,14 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<String> signupOwner(OwnerDto ownerDto) {
+    public ResponseEntity<String> signupOwner(OwnerDto ownerDto, MultipartFile file) {
         ownerDto.setPassword(passwordEncoder.encode(ownerDto.getPassword()));
-        ownerDto.setImgUrl(defaultImg);
+
+        String storeImgUrl = awsS3Service.uploadImge(file);
+        ownerDto.setStoreImgUrl(storeImgUrl);
 
         String storeName = ownerDto.getStoreName();
+        ownerDto.setImgUrl(defaultImg);
         User user = ownerDto.toUserEntity(LoginType.ONSIKGO, storeName);
         userRepository.save(user);
 

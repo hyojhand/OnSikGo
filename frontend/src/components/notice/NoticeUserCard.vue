@@ -180,5 +180,14 @@ export default {
 }
 .notice-btn {
   width: 110px;
+  margin: 0;
+}
+.notice-btn:hover {
+  width: 110px;
+  background-color: gray;
+  opacity: 0.7;
+  color: #fff;
+  margin: 0;
+  transition: 0.7s;
 }
 </style>
