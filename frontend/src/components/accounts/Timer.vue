@@ -54,5 +54,7 @@ export default {
     margin-top: 5px;
     width: 45px;
     height: 30px;
+    position: absolute;
+    left: 174px;
 }
 </style>

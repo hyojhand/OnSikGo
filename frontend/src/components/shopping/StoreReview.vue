@@ -6,30 +6,28 @@
       <div class="name-font">{{ nickname }}</div>
     </div>
     <!--리뷰 본문 부분-->
+    <div class="col-6 content">{{ content }}</div>
 
-    <div class="col-7 content">{{ content }}</div>
-
-    <div v-if="userCheck" class="col-2">
+    <div v-if="userCheck" class="col-3">
       <!-- 리뷰 작성 유저일때 -->
-      <div v-if="userDto.nickname == nickname">
-        <img
-          class="siren"
-          src="@/assets/images/trash.png"
-          @click="deleteReview(reviewId)"
-          alt="삭제버튼이었던것.."
-        />
-        <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
-      </div>
-      <!-- 이외의 유저일때 -->
-      <div v-else class="col-2">
-        <img
-          class="siren"
-          src="@/assets/images/siren.png"
-          @click="reportReview(reviewId)"
-          alter="신고 버튼이었던것.."
-        />
-        <div v-if="reportDuple">신고가 완료되었습니다.</div>
-      </div>
+      <img
+        v-if="userDto.nickname == nickname"
+        class="siren"
+        src="@/assets/images/trash.png"
+        @click="deleteReview(reviewId)"
+        alt="삭제버튼이었던것.."
+      />
+      <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
+    </div>
+    <!-- 이외의 유저일때 -->
+    <div v-else>
+      <img
+        class="siren"
+        src="@/assets/images/siren.png"
+        @click="reportReview(reviewId)"
+        alter="신고 버튼이었던것.."
+      />
+      <div v-if="reportDuple">신고가 완료되었습니다.</div>
     </div>
   </div>
 </template>
@@ -104,7 +102,6 @@ export default {
         }
       });
     },
-
   },
 };
 </script>
@@ -124,11 +121,14 @@ div {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin: 0;
   width: 95%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 .content {
   text-align: start;
+  margin: 0;
+  margin-left: 17px;
 }
 .name-font {
   font-size: 12px;

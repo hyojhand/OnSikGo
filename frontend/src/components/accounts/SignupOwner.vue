@@ -33,7 +33,7 @@
           style="color: red; margin-top: 3px;">
           이미 가입된 메일 혹은 잘못된 이메일입니다.</div>
           <!-- ---------인증 메일 보내기------------ -->
-          <div v-if="sendMail">
+          <div class= "base-mailifirm" v-if="sendMail">
             <div class="mailconfim-case">
               <input
                 id="mail-confirm"
@@ -659,20 +659,32 @@ export default {
   color: black;
   font-size: 13px;
 }
+.base-mailifirm {
+  height: 60px;
+}
 .mailconfim-case {
   margin: 3% 0;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   color: black;
+  width: 266px;
+  height: 60px;
+  margin: 0;
+  padding: 0;
 }
 .mailconfirm-btn {
   color: black;
-  width: 70px;
+  width: 60px;
+  margin: 0;
+  padding: 0;
 }
 .mail-confirm {
   color: black;
   border-bottom: 1px solid rgba(0, 0, 0, 30%);
+  width: 200px;
+  height: 30px;
+
 }
 .input-box {
   min-width: 266px;
