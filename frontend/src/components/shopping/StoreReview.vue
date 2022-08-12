@@ -10,24 +10,26 @@
 
     <div v-if="userCheck" class="col-3">
       <!-- 리뷰 작성 유저일때 -->
-      <img
-        v-if="userDto.nickname == nickname"
-        class="siren"
-        src="@/assets/images/trash.png"
-        @click="deleteReview(reviewId)"
-        alt="삭제버튼이었던것.."
-      />
-      <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
-    </div>
-    <!-- 이외의 유저일때 -->
-    <div v-else>
-      <img
-        class="siren"
-        src="@/assets/images/siren.png"
-        @click="reportReview(reviewId)"
-        alter="신고 버튼이었던것.."
-      />
-      <div v-if="reportDuple">신고가 완료되었습니다.</div>
+      <div v-if="userDto.nickname == nickname">
+        <img
+          class="siren"
+          src="@/assets/images/trash.png"
+          @click="deleteReview(reviewId)"
+          alt="삭제버튼이었던것.."
+        />
+        <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
+      </div>
+
+      <!-- 이외의 유저일때 -->
+      <div v-else>
+        <img
+          class="siren"
+          src="@/assets/images/siren.png"
+          @click="reportReview(reviewId)"
+          alter="신고 버튼이었던것.."
+        />
+        <div v-if="reportDuple">신고가 완료되었습니다.</div>
+      </div>
     </div>
   </div>
 </template>
