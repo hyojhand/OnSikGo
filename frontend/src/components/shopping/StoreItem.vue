@@ -38,7 +38,7 @@
           개
         </p>
         <button
-          class="border-m radius-s"
+          class="border-m radius-s btn"
           :class="{ none: saleCount == 0 }"
           @click="storeDetail()"
         >
@@ -128,6 +128,13 @@ export default {
 }
 .store-product {
   font-size: 13px;
+}
+.btn {
+  margin: 0;
+  width: 80px;
+  height: 30px;
+  padding: 0;
+  font-weight: 800;
 }
 .product-case {
   display: flex;

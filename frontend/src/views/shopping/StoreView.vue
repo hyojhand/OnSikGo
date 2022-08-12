@@ -5,7 +5,7 @@
       <img :src="`${storeDto.storeImgUrl}`" alt="profile" class="store-img" />
       <div class="store-name">
         <div class="name-case">
-          <div class="fw-bold" :class="{ 'sm-font': storeNameSize > 9 }">
+          <div class="fw-bold" :class="{ 'sm-font': storeNameSize > 8 }">
             {{ storeDto.storeName }}
           </div>
           <!-- 좋아요 -->
@@ -53,7 +53,7 @@
       <store-kakao-map></store-kakao-map>
       <div class="content">
         <div class="row info-text">
-          <div class="col-3">상세위치 :</div>
+          <div class="col-3 title adtitle">상세주소 :</div>
           <div class="col-9 info-content adress">
             <div>{{ storeDto.address }}</div>
             <div>
@@ -62,23 +62,23 @@
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">전화번호:</div>
+          <div class="col-3 title">전화번호:</div>
           <div class="col-9 info-content">
             {{ storeDto.tel }}
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">영업시간:</div>
+          <div class="col-3 title">영업시간:</div>
           <div class="col-9 info-content">{{ storeDto.closingTime }}</div>
         </div>
         <div class="row info-text">
-          <div class="col-3">휴무일:</div>
+          <div class="col-3 title">휴무일:</div>
           <div class="col-9 info-content">
             {{ storeDto.offDay }}
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">공유하기:</div>
+          <div class="col-3 title">공유하기:</div>
           <share-sns
             class="col-9"
             v-bind:storeImgUrl="storeDto.storeImgUrl"
@@ -141,9 +141,12 @@
             @click="login()"
           />
           <button @click="registerReview()">
-            <span class="input-group-text" id="basic-addon1">
-              <i class="fa-solid fa-comment"></i>
-            </span>
+            <img
+              class="send"
+              id="basic-addon1"
+              src="@/assets/images/send.png"
+              alt=""
+            />
           </button>
         </div>
         <div v-if="storeReviewList.length">
@@ -288,6 +291,7 @@ div {
 .content {
   width: 100%;
   display: flex;
+  margin: 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -303,13 +307,19 @@ div {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: start;
   margin: 0;
   margin-bottom: 2px;
   width: 100%;
 }
+.title {
+  padding-left: 15px;
+  font-size: 15px !important;
+  font-weight: 800;
+}
 .info-content {
   text-align: start;
+  padding-left: 20px;
 }
 .store-header {
   position: relative;
@@ -352,7 +362,11 @@ div {
 .store-img {
   width: 100%;
 }
-
+.adtitle {
+  height: 100%;
+  vertical-align: top;
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
 .location {
   text-align: left;
   padding-bottom: 10px;
@@ -366,11 +380,15 @@ div {
 }
 
 .comment {
+  padding-left: 10px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+.comment > button {
+  background-color: white;
 }
 .non-msg {
   width: 100%;
@@ -420,6 +438,14 @@ div {
 }
 .review {
   width: 95%;
-  margin: 0 auto;
+  margin: 0;
+}
+.send {
+  width: 20px;
+  height: 20px;
+}
+#basic-addon1 {
+  height: 38px;
+  width: 40px;
 }
 </style>
