@@ -1,9 +1,13 @@
 <template>
   <div class="case">
-    <div class="store-container" :class="{ zerostock: saleCount == 0 }">
+    <div
+      class="store-container"
+      @click="storeDetail()"
+      :class="{ zerostock: saleCount == 0 }"
+    >
       <!-- 가게 이미지 -->
 
-      <img :src="`${storeImgUrl}`" class="col-3 mt-3 pb-3" />
+      <img :src="`${storeImgUrl}`" class="col-3" />
 
       <!-- 가게 설명 -->
       <div class="col-6 store-case">
@@ -37,13 +41,13 @@
           }}</span>
           개
         </p>
-        <button
+        <!-- <button
           class="border-m radius-s btn"
           :class="{ none: saleCount == 0 }"
           @click="storeDetail()"
         >
           가게보기
-        </button>
+        </button> -->
       </div>
     </div>
   </div>
@@ -121,13 +125,19 @@ export default {
   justify-content: center;
   align-items: center;
   width: 100%;
+  background-color: white;
   align-items: center;
   height: 100px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   margin: 0;
+}
+.store-container:hover {
+  cursor: pointer;
 }
 .store-product {
   font-size: 13px;
+  margin: 0;
 }
 .btn {
   margin: 0;
@@ -141,6 +151,7 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  text-align: center;
   padding: 0;
 }
 .product-count {
@@ -166,7 +177,9 @@ export default {
 }
 img {
   padding: 0;
-  height: 95px;
+  height: 90px;
+  width: 90px;
+  border-radius: 10px;
 }
 .ment {
   font-size: 13px;

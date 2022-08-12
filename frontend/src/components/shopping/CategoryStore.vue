@@ -181,11 +181,15 @@
     </div>
     <!-- 검색 결과 -->
 
-    <div v-if="this.storeList.length" style="padding-left: 1rem">
+    <div
+      v-if="this.storeList.length"
+      style="padding-left: 1rem; background-color: rgb(240, 240, 240)"
+    >
       <store-item
         v-for="(store, index) in storeList"
         :key="index"
         v-bind="store"
+        class="mb-3"
       />
     </div>
     <div v-else class="none-msg">
