@@ -1,5 +1,12 @@
 <template>
   <div>
+    <!--alert 창-->
+    <div id="confirm">
+      <div class="message">This is a warning message.</div>
+      <br />
+      <button class="yes">OK</button>
+    </div>
+
     <div id="reviews" class="ml-5">
       <div class="container">
         <div class="row mt-4">
@@ -95,7 +102,11 @@ export default {
     async reviewdelete() {
       await http.delete(`/review/${this.reviewId}`).then((response) => {
         console.log(response);
-        alert("리뷰가 삭제되었습니다.");
+        // alert창 하기
+        // alert("리뷰가 삭제되었습니다");
+        this.$alert("HELLO");
+        // this.functionAlert();
+
         // 새로고침 해야함
       });
       await http
@@ -108,6 +119,19 @@ export default {
           }
         });
     },
+    // ALERT 창
+    // functionAlert(msg, myYes) {
+    //   var confirmBox = document.querySelector("#confirm");
+    //   confirmBox.find(".message").text(msg);
+    //   confirmBox
+    //     .find(".yes")
+    //     .unbind()
+    //     .click(function () {
+    //       confirmBox.hide();
+    //     });
+    //   confirmBox.find(".yes").click(myYes);
+    //   confirmBox.show();
+    // },
   },
 };
 </script>
@@ -138,5 +162,32 @@ export default {
   background-color: #de9712;
   color: #ffffff;
   width: 50px;
+}
+/* alert창 바꾸기 */
+#confirm {
+  display: none;
+  background-color: #f3f5f6;
+  color: #000000;
+  border: 1px solid #aaa;
+  position: fixed;
+  width: 300px;
+  height: 100px;
+  left: 40%;
+  top: 40%;
+  box-sizing: border-box;
+  text-align: center;
+}
+#confirm button {
+  background-color: #ffffff;
+  display: inline-block;
+  border-radius: 12px;
+  border: 4px solid #aaa;
+  padding: 5px;
+  text-align: center;
+  width: 60px;
+  cursor: pointer;
+}
+#confirm .message {
+  text-align: left;
 }
 </style>
