@@ -6,7 +6,9 @@
       <div class="name-font">{{ nickname }}</div>
     </div>
     <!--리뷰 본문 부분-->
-    <div class="col-6 content">{{ content }}</div>
+    <div class="col-6">
+      <div class="content">{{ content }}</div>
+    </div>
 
     <div v-if="userCheck" class="col-3">
       <!-- 리뷰 작성 유저일때 -->
@@ -28,7 +30,10 @@
           @click="reportReview(reviewId)"
           alter="신고 버튼이었던것.."
         />
-        <div v-if="reportDuple">신고가 완료되었습니다.</div>
+        <div v-if="reportDuple" class="report mt-1">
+          <div>해당 리뷰를</div>
+          <div>신고하였습니다.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -69,6 +74,7 @@ export default {
     http.get("/user").then((response) => {
       this.userDto = response.data;
     });
+    console.log(this.reviewDto);
   },
 
   methods: {
@@ -144,5 +150,8 @@ button {
 .siren {
   width: 20px;
   height: 20px;
+}
+.report {
+  font-size: 8px;
 }
 </style>
