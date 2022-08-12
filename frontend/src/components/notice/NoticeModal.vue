@@ -33,7 +33,10 @@
             <div class="col-7 mt-2 order-box">
               <v-list-item-content class="notice-box">
                 <v-list-item-title class="msg-box">
-                  <span class="text-l fw-bold" v-html="`${value.content}`"></span>
+                  <span
+                    class="text-l fw-bold"
+                    v-html="`${value.content}`"
+                  ></span>
                 </v-list-item-title>
               </v-list-item-content>
             </div>
@@ -54,24 +57,22 @@
                 </div>
               </div>
             </div>
-            <div class="btn-box mt-2">
-            </div>
+            <div class="btn-box mt-2"></div>
           </div>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-              <v-card-actions>
-                <button
-                  class="border-m radius-l text-m btn-accept"
-                  @click="orderOk()"
-                >
-                  수락
-                </button>
-              </v-card-actions>
-              <v-card-actions>
-                <refuse-modal @check-it="checkIt" :value="value"></refuse-modal>
-              </v-card-actions>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-card-actions>
+              <button
+                class="border-m radius-l text-m btn-accept"
+                @click="orderOk()"
+              >
+                수락
+              </button>
             </v-card-actions>
-
+            <v-card-actions>
+              <refuse-modal @check-it="checkIt" :value="value"></refuse-modal>
+            </v-card-actions>
+          </v-card-actions>
         </v-card>
       </v-card>
     </v-dialog>
@@ -117,7 +118,7 @@ export default {
     },
     off() {
       this.parents = false;
-    }
+    },
   },
   data() {
     return {

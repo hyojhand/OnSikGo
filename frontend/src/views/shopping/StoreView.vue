@@ -244,11 +244,10 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            // alert("리뷰작성이 완료되었습니다.");
             this.reviewContent = "";
             this.selectReview();
           } else if (response.status == 204) {
-            alert("리뷰를 입력해주세요!");
+            this.$alert("리뷰를 입력해주세요!");
           }
         });
     },
@@ -267,7 +266,6 @@ export default {
       http.get(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
           this.likeCheck();
-          // alert("좋아요 눌렀음");
         }
       });
     },
@@ -277,7 +275,6 @@ export default {
       http.delete(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
           this.likeCheck();
-          // alert("좋아요 취소");
         }
       });
     },

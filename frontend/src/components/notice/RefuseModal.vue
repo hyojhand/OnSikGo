@@ -12,7 +12,9 @@
       </template>
 
       <div class="card-refuse">
-        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e">📌 주문 거절 사유 </v-card-title>
+        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e"
+          >📌 주문 거절 사유
+        </v-card-title>
 
         <div class="mx-auto my-auto option-box">
           <v-list-item-content class="btn-box">

@@ -13,7 +13,7 @@
 
       <v-card class="box-reason">
         <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e">
-        📌  거절 기타 사유
+          📌 거절 기타 사유
         </v-card-title>
 
         <div class="mx-auto my-auto input-reason">

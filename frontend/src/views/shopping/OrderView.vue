@@ -248,7 +248,7 @@ export default {
           .then((response) => {
             console.log(response);
           });
-        alert("주문이 접수되었습니다.");
+        this.$alert("주문이 접수되었습니다.");
         this.$router.push("/mypage/user/history");
       }
     },

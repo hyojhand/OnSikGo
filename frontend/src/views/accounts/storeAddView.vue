@@ -339,14 +339,16 @@ export default {
           .then((response) => {
             if (response.status == 200) {
               console.log(this.storeDto);
-              alert("매장이 추가 완료되었습니다");
+              this.$alert("매장 추가가 완료되었습니다.");
               this.$router.push("/mypage/owner");
             } else {
-              alert("매장 추가가 완료되지 않았습니다.");
+              this.$alert(
+                "매장 추가가 완료되지 않았습니다. 다시 한번 확인해주세요 :)"
+              );
             }
           });
       } else {
-        alert("사업자 등록번호를 다시 확인해주세요");
+        this.$alert("국세청에 등록된 사업자 등록번호로 입력해주세요!");
       }
     },
   },
