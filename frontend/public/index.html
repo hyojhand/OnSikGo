@@ -41,6 +41,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"
     />
+    <link rel="shortcut icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />
+
     <script
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=204f7abed9a6558eb3411fabf8202302&libraries=services,clusterer,drawing"
@@ -52,7 +56,28 @@
       src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
       charset="utf-8"
     ></script>
-    <style>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "2133650c-a9eb-4010-907d-aba7f74986f9",
+      });
+    });
+  </script>
+  <script type="text/javascript">
+      var userAgent = navigator.userAgent.toLowerCase();
+      if(userAgent.match('iphone')) { 
+        document.write('<link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />') 
+    } else if(userAgent.match('ipad')) { 
+        document.write('<link rel="apple-touch-icon" sizes="72*72" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />') 
+    } else if(userAgent.match('ipod')) { 
+        document.write('<link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />') 
+    } else if(userAgent.match('android')) { 
+        document.write('<link rel="shortcut icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-72x72.png" />') 
+    } 
+  </script>
+  <style>
       .wrap {
         text-align: left;
         font-size: 10px;
