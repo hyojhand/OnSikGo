@@ -405,7 +405,7 @@ export default {
       document.execCommand("copy");
       document.body.removeChild(t);
 
-      alert("현재 주소 복사가 완료되었습니다🌏🧡");
+      this.$alert("현재 주소 복사가 완료되었습니다🌏🧡");
     },
     movetoNaver() {
       var link = "https://forms.gle/WJpvMqG54SUF29io8";

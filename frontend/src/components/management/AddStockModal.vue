@@ -91,7 +91,7 @@ export default {
           if (response.status == 200) {
             console.log("완료");
           } else {
-            alert("등록안됨");
+            this.$alert("재고가 등록되지 않았습니다. 다시 한번 확인해주세요.");
           }
         })
         .catch((error) => {

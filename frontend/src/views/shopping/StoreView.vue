@@ -5,10 +5,7 @@
       <img :src="`${storeDto.storeImgUrl}`" alt="profile" class="store-img" />
       <div class="store-name">
         <div class="name-case">
-          <div
-            class="fw-bold"
-            :class="{ 'sm-font': storeNameSize > 9 }"
-          >
+          <div class="fw-bold" :class="{ 'sm-font': storeNameSize > 9 }">
             {{ storeDto.storeName }}
           </div>
           <!-- 좋아요 -->
@@ -82,7 +79,11 @@
         </div>
         <div class="row info-text">
           <div class="col-3">공유하기:</div>
-          <share-sns class="col-9" v-bind:storeImgUrl="storeDto.storeImgUrl" v-bind:storeName="storeDto.storeName"/>
+          <share-sns
+            class="col-9"
+            v-bind:storeImgUrl="storeDto.storeImgUrl"
+            v-bind:storeName="storeDto.storeName"
+          />
         </div>
       </div>
     </div>
@@ -189,14 +190,13 @@ export default {
       reviewList: [],
       liking: "",
       storeNameSize: 0,
-      
     };
   },
 
   computed: {
     ...mapGetters("storeStore", ["getStoreId"]),
     ...mapGetters("accounts", ["userCheck"]),
-    ...mapGetters("store", ["storeReviewList"])
+    ...mapGetters("store", ["storeReviewList"]),
   },
 
   async created() {
@@ -204,7 +204,7 @@ export default {
 
     await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
-      this.storeNameSize = response.data.storeName.length
+      this.storeNameSize = response.data.storeName.length;
       // console.log(this.storeNameSize);
       // console.log(this.storeDto);
     });
@@ -241,11 +241,10 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            // alert("리뷰작성이 완료되었습니다.");
             this.reviewContent = "";
             this.selectReview();
           } else if (response.status == 204) {
-            alert("리뷰를 입력해주세요!");
+            this.$alert("리뷰를 입력해주세요!");
           }
         });
     },
@@ -264,7 +263,6 @@ export default {
       http.get(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
           this.likeCheck();
-          // alert("좋아요 눌렀음");
         }
       });
     },
@@ -274,7 +272,6 @@ export default {
       http.delete(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
           this.likeCheck();
-          // alert("좋아요 취소");
         }
       });
     },

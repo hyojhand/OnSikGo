@@ -84,11 +84,11 @@ export default {
     deleteStore() {
       http.delete(`/store/${this.discardStoreId}`).then((response) => {
         if (response.status == 200) {
-          alert("가게 정보 폐기 완료되었습니다!");
+          this.$alert("가게 정보 폐기 완료되었습니다!");
           this.resetValue();
           this.$router.go();
         } else {
-          alert("가게 정보 삭제에 실패했습니다.");
+          this.$alert("가게 정보 삭제에 실패했습니다.");
         }
       });
     },

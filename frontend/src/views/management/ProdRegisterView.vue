@@ -95,7 +95,7 @@ export default {
           if (response.status == 200) {
             this.$router.push("/allprod");
           } else {
-            alert("상품 등록에 실패했습니다.");
+            this.$alert("상품 등록에 실패했습니다. 다시 한번 확인해주세요.");
           }
         });
     },
