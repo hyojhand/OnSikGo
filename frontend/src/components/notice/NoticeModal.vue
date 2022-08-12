@@ -104,10 +104,10 @@ export default {
         .patch(`/order/sign/${this.value.orderDto.orderId}`)
         .then((response) => {
           if (response.status === 200) {
-            console.log(response);
+            // console.log(response);
           } else {
-            console.log(response);
-            alert("주문 실패");
+            // console.log(response);
+            this.$alert("주문서 처리에 실패하였습니다.");
           }
         });
       await http.get("/notice").then((response) => {
