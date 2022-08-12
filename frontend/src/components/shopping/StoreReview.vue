@@ -6,30 +6,28 @@
       <div class="name-font">{{ nickname }}</div>
     </div>
     <!--리뷰 본문 부분-->
+    <div class="col-6 content">{{ content }}</div>
 
-    <div class="col-7 content">{{ content }}</div>
-
-    <div v-if="userCheck" class="col-2">
+    <div v-if="userCheck" class="col-3">
       <!-- 리뷰 작성 유저일때 -->
-      <div v-if="userDto.nickname == nickname">
-        <img
-          class="siren"
-          src="@/assets/images/trash.png"
-          @click="deleteReview(reviewId)"
-          alt="삭제버튼이었던것.."
-        />
-        <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
-      </div>
-      <!-- 이외의 유저일때 -->
-      <div v-else class="col-2">
-        <img
-          class="siren"
-          src="@/assets/images/siren.png"
-          @click="reportReview(reviewId)"
-          alter="신고 버튼이었던것.."
-        />
-        <div v-if="reportDuple">신고가 완료되었습니다.</div>
-      </div>
+      <img
+        v-if="userDto.nickname == nickname"
+        class="siren"
+        src="@/assets/images/trash.png"
+        @click="deleteReview(reviewId)"
+        alt="삭제버튼이었던것.."
+      />
+      <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
+    </div>
+    <!-- 이외의 유저일때 -->
+    <div v-else>
+      <img
+        class="siren"
+        src="@/assets/images/siren.png"
+        @click="reportReview(reviewId)"
+        alter="신고 버튼이었던것.."
+      />
+      <div v-if="reportDuple">신고가 완료되었습니다.</div>
     </div>
   </div>
 </template>
@@ -58,6 +56,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters("storeStore", ["getStoreId"]),
     ...mapGetters("accounts", ["userCheck"]),
   },
 
@@ -72,6 +71,7 @@ export default {
 
   methods: {
     ...mapActions("accounts", ["getReviewNickName"]),
+    ...mapActions("store", ["getStoreReviewList"]),
     moveUserReview() {
       this.$router.push({
         name: "myReview",
@@ -88,12 +88,17 @@ export default {
       });
     },
 
-    deleteReview(reviewId) {
+    async deleteReview(reviewId) {
       this.deleteDuple = false;
-      http.delete(`/review/${reviewId}`).then((response) => {
+      await http.delete(`/review/${reviewId}`).then((response) => {
         if (response.status == 200) {
           console.log(response);
           // this.$router.go();
+        }
+      });
+      await http.get(`/review/store/${this.getStoreId}`).then((response) => {
+        if (response.status == 200) {
+          this.getStoreReviewList(response.data.reverse());
         }
       });
     },
@@ -116,11 +121,14 @@ div {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin: 0;
   width: 95%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 .content {
   text-align: start;
+  margin: 0;
+  margin-left: 17px;
 }
 .name-font {
   font-size: 12px;

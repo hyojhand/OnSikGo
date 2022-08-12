@@ -5,10 +5,7 @@
       <img :src="`${storeDto.storeImgUrl}`" alt="profile" class="store-img" />
       <div class="store-name">
         <div class="name-case">
-          <div
-            class="fw-bold"
-            :class="{ 'sm-font': storeDto.storeName.length > 9 }"
-          >
+          <div class="fw-bold" :class="{ 'sm-font': storeNameSize > 8 }">
             {{ storeDto.storeName }}
           </div>
           <!-- 좋아요 -->
@@ -56,7 +53,7 @@
       <store-kakao-map></store-kakao-map>
       <div class="content">
         <div class="row info-text">
-          <div class="col-3">상세위치 :</div>
+          <div class="col-3 title adtitle">상세주소 :</div>
           <div class="col-9 info-content adress">
             <div>{{ storeDto.address }}</div>
             <div>
@@ -65,24 +62,28 @@
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">전화번호:</div>
+          <div class="col-3 title">전화번호:</div>
           <div class="col-9 info-content">
             {{ storeDto.tel }}
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">영업시간:</div>
+          <div class="col-3 title">영업시간:</div>
           <div class="col-9 info-content">{{ storeDto.closingTime }}</div>
         </div>
         <div class="row info-text">
-          <div class="col-3">휴무일:</div>
+          <div class="col-3 title">휴무일:</div>
           <div class="col-9 info-content">
             {{ storeDto.offDay }}
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">공유하기:</div>
-          <share-sns class="col-9" />
+          <div class="col-3 title">공유하기:</div>
+          <share-sns
+            class="col-9"
+            v-bind:storeImgUrl="storeDto.storeImgUrl"
+            v-bind:storeName="storeDto.storeName"
+          />
         </div>
       </div>
     </div>
@@ -140,15 +141,18 @@
             @click="login()"
           />
           <button @click="registerReview()">
-            <span class="input-group-text" id="basic-addon1">
-              <i class="fa-solid fa-comment"></i>
-            </span>
+            <img
+              class="send"
+              id="basic-addon1"
+              src="@/assets/images/send.png"
+              alt=""
+            />
           </button>
         </div>
-        <div v-if="this.reviewList.length">
+        <div v-if="storeReviewList.length">
           <store-review
             class="review"
-            v-for="(reviewDto, index) in reviewList"
+            v-for="(reviewDto, index) in storeReviewList"
             :key="index"
             v-bind="reviewDto"
           />
@@ -168,7 +172,7 @@ import StoreProductItem from "@/components/shopping/StoreProductItem.vue";
 import StoreReview from "@/components/shopping/StoreReview.vue";
 import ShareSns from "@/components/share/ShareSns.vue";
 import http from "@/util/http-common";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "StoreView",
 
@@ -183,17 +187,19 @@ export default {
     return {
       tabs: ["상품", "입소문"],
       selectedTab: "",
-      storeDto: {},
+      storeDto: [],
       saleItemList: [],
       reviewContent: "",
       reviewList: [],
       liking: "",
+      storeNameSize: 0,
     };
   },
 
   computed: {
     ...mapGetters("storeStore", ["getStoreId"]),
     ...mapGetters("accounts", ["userCheck"]),
+    ...mapGetters("store", ["storeReviewList"]),
   },
 
   async created() {
@@ -201,6 +207,8 @@ export default {
 
     await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
+      this.storeNameSize = response.data.storeName.length;
+      // console.log(this.storeNameSize);
       // console.log(this.storeDto);
     });
 
@@ -215,13 +223,14 @@ export default {
   },
 
   methods: {
+    ...mapActions("store", ["getStoreReviewList"]),
     onClickTab(tab) {
       this.selectedTab = tab;
     },
     selectReview() {
       http.get(`/review/store/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
-          this.reviewList = response.data.reverse();
+          this.getStoreReviewList(response.data.reverse());
         }
       });
     },
@@ -248,7 +257,6 @@ export default {
         localStorage.getItem("access-token");
       http.get(`/follow/find/${this.getStoreId}`).then((res) => {
         // console.log(res.data)
-        console.log("찍힘");
         this.liking = res.data;
         // console.log(this.liking)
       });
@@ -286,6 +294,7 @@ div {
 .content {
   width: 100%;
   display: flex;
+  margin: 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -301,13 +310,19 @@ div {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: start;
   margin: 0;
   margin-bottom: 2px;
   width: 100%;
 }
+.title {
+  padding-left: 15px;
+  font-size: 15px !important;
+  font-weight: 800;
+}
 .info-content {
   text-align: start;
+  padding-left: 20px;
 }
 .store-header {
   position: relative;
@@ -350,7 +365,11 @@ div {
 .store-img {
   width: 100%;
 }
-
+.adtitle {
+  height: 100%;
+  vertical-align: top;
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
 .location {
   text-align: left;
   padding-bottom: 10px;
@@ -364,11 +383,15 @@ div {
 }
 
 .comment {
+  padding-left: 10px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+.comment > button {
+  background-color: white;
 }
 .non-msg {
   width: 100%;
@@ -418,6 +441,14 @@ div {
 }
 .review {
   width: 95%;
-  margin: 0 auto;
+  margin: 0;
+}
+.send {
+  width: 20px;
+  height: 20px;
+}
+#basic-addon1 {
+  height: 38px;
+  width: 40px;
 }
 </style>

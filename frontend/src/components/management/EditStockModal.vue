@@ -25,29 +25,29 @@
 
         <form class="info-container">
           <div class="info-box row">
-            <div class="col-5">정상가</div>
+            <div class="col-5 title">정상가</div>
             <div class="col-7 price">{{ item.price }}</div>
           </div>
           <div class="info-box row">
-            <div class="col-5">할인율</div>
+            <div class="col-5 title">할인율</div>
             <div class="col-7 price">
               🔻{{ ((1 - this.salePrice / item.price) * 100).toFixed(2) }}%
             </div>
           </div>
 
           <div class="info-box row">
-            <div class="col-5">할인가</div>
+            <div class="col-4 name title">할인가</div>
             <input
-              class="col-7 content"
+              class="col-8 content"
               v-model="salePrice"
               type="text"
               placeholder="판매 금액을 입력해주세요."
             />
           </div>
           <div class="info-box row">
-            <div class="col-5">수량</div>
+            <div class="col-4 name title">수량</div>
             <input
-              class="col-7 content"
+              class="col-8 content"
               v-model="stock"
               type="number"
               placeholder="변경 수량을 입력해주세요."
@@ -101,6 +101,8 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
+  margin: 0;
+  height: 30px;
 }
 .card-title {
   border-bottom: 1px solid rgba(0, 0, 0, 20%);
@@ -141,6 +143,7 @@ input {
   margin: 5% auto;
   border-bottom: 2px solid rgba(0, 0, 0, 10%);
 }
+
 .info-container {
   display: flex;
   flex-direction: column;
@@ -152,6 +155,24 @@ input {
   align-items: center;
   width: 100%;
   padding: 0;
+}
+.info-box > div {
+  margin: 0;
+  padding: 0;
+}
+.info-box .name {
+  padding-left: 31px;
+}
+.info-box > input {
+  width: 55%;
+  padding-left: 10px;
+  font-size: 20px;
+}
+.title {
+  font-weight: 800;
+}
+.info-box > input::placeholder {
+  font-size: 10px;
 }
 .price {
   text-align: start;

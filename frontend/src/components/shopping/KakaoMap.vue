@@ -262,10 +262,9 @@ export default {
       this.currentMarker();
     },
     currentMarker() {
-      var imageSrc =
-        "https://cdn-icons.flaticon.com/png/512/3307/premium/3307717.png?token=exp=1660056081~hmac=fffde516d636b326bade7271c7941323";
+      var imageSrc = "https://cdn-icons-png.flaticon.com/512/3480/3480405.png";
       // 마커 이미지의 이미지 크기 입니다
-      var imageSize = new kakao.maps.Size(30, 35);
+      var imageSize = new kakao.maps.Size(30, 40);
       // console.log("가게 하나의 위도 경도",store)
 
       // 마커 이미지를 생성합니다
@@ -533,7 +532,7 @@ img {
   align-items: flex-start;
   justify-content: center;
   padding: 0px;
-  padding-left: 15px;
+  padding-left: 30px;
 }
 /* 거리 에측 */
 .product-prediction {
@@ -561,7 +560,7 @@ img {
 /* 할인가 */
 .discount-price {
   font-size: 15px;
-  text-align: start;
+  text-align: end;
 }
 /* 주문하기 버튼 */
 

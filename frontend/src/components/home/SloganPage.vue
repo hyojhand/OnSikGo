@@ -82,27 +82,73 @@
     </b-carousel>
   </div>
 </template>
+
+<script
+  type="text/javascript"
+  src="//dapi.kakao.com/v2/maps/sdk.js?appkey=204f7abed9a6558eb3411fabf8202302&libraries=services,clusterer,drawing"
+></script>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "SloganPage",
   data() {
     return {
       slide: 0,
+      currentLongitude: 33.452278,
+      currentxLatitude: 126.567803,
     };
   },
   computed: {
     ...mapGetters("store", ["currentAddress"]),
   },
   methods: {
+    ...mapActions("store", [
+      "getAddress",
+      "getCurrentX",
+      "getCurrentY",
+    ]),
     onSlideStart() {
       this.sliding = true;
     },
     onSlideEnd() {
       this.sliding = false;
     },
+    findaddress() {
+      if (navigator.geolocation) {
+      // 현재 위치
+      navigator.geolocation.getCurrentPosition((position) => {
+        (this.currentxLatitude = position.coords.latitude), // 위도
+        (this.currentLongitude = position.coords.longitude); // 경도
+        this.changeaddress();
+        });
+        } 
+      
+      },
+    changeaddress() {
+      var geocoder = new kakao.maps.services.Geocoder();
+
+      this.getCurrentX(this.currentxLatitude);
+      this.getCurrentY(this.currentLongitude);
+      var coord = new kakao.maps.LatLng(
+        this.currentxLatitude,
+        this.currentLongitude
+      );
+      var callback = (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          var address = result[0].address.address_name;
+          this.getAddress(address);
+          // console.log(address);
+        } else {
+          // console.log("실패");
+        }
+      };
+      geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+    },
   },
+  created() {
+    this.findaddress()
+  }
 };
 </script>
 

@@ -25,6 +25,9 @@ const accounts = {
       getReviewNickName:({commit}, reviewNickName) => {
         commit("GET_REVIEWNICKNAME", reviewNickName)
       },
+      resetAccounts:({commit}) => {
+        commit("RESET_ACCOUNT")
+      }
     },
     mutations: {
       GET_USERCHECK: (state, userCheck) => {
@@ -39,6 +42,12 @@ const accounts = {
       GET_REVIEWNICKNAME: (state, reviewNickName) => {
         state.reviewNickName = reviewNickName;
       },
+      RESET_ACCOUNT:(state) => {
+        state.userCheck = 0;
+        state.myReviewList =  [];
+        state.ownerOrderList = [];
+        state.reviewNickName = "";
+      }
     },
   };
   

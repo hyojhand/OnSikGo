@@ -25,13 +25,13 @@ public class SaleItem {
     private Long saleItemId;
 
     @Column(nullable = false)
-    private Integer stock; // 재고
+    private Integer stock;
 
     @Column(nullable = false)
-    private Integer totalStock; // 총 재고
+    private Integer totalStock;
 
     @Column(nullable = false)
-    private Integer salePrice; // 할인가
+    private Integer salePrice;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "saleId")
