@@ -5,7 +5,7 @@
       <img :src="`${storeDto.storeImgUrl}`" alt="profile" class="store-img" />
       <div class="store-name">
         <div class="name-case">
-          <div class="fw-bold" :class="{ 'sm-font': storeNameSize > 9 }">
+          <div class="fw-bold" :class="{ 'sm-font': storeNameSize > 8 }">
             {{ storeDto.storeName }}
           </div>
           <!-- 좋아요 -->
@@ -53,7 +53,7 @@
       <store-kakao-map></store-kakao-map>
       <div class="content">
         <div class="row info-text">
-          <div class="col-3 title">상세위치 :</div>
+          <div class="col-3 title adtitle">상세주소 :</div>
           <div class="col-9 info-content adress">
             <div>{{ storeDto.address }}</div>
             <div>
@@ -141,9 +141,12 @@
             @click="login()"
           />
           <button @click="registerReview()">
-            <span class="input-group-text" id="basic-addon1">
-              <img src="@/assets/images/send.png" alt="" />
-            </span>
+            <img
+              class="send"
+              id="basic-addon1"
+              src="@/assets/images/send.png"
+              alt=""
+            />
           </button>
         </div>
         <div v-if="storeReviewList.length">
@@ -315,6 +318,7 @@ div {
 .title {
   padding-left: 15px;
   font-size: 15px !important;
+  font-weight: 800;
 }
 .info-content {
   text-align: start;
@@ -361,7 +365,11 @@ div {
 .store-img {
   width: 100%;
 }
-
+.adtitle {
+  height: 100%;
+  vertical-align: top;
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
 .location {
   text-align: left;
   padding-bottom: 10px;
@@ -375,11 +383,15 @@ div {
 }
 
 .comment {
+  padding-left: 10px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+.comment > button {
+  background-color: white;
 }
 .non-msg {
   width: 100%;
@@ -429,6 +441,14 @@ div {
 }
 .review {
   width: 95%;
-  margin: 0 auto;
+  margin: 0;
+}
+.send {
+  width: 20px;
+  height: 20px;
+}
+#basic-addon1 {
+  height: 38px;
+  width: 40px;
 }
 </style>
