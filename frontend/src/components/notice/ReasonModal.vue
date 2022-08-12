@@ -54,13 +54,13 @@ export default {
         })
         .then((response) => {
           if (response.status === 200) {
-            console.log(response);
+            // console.log(response);
             this.$router.push({
               name: "notice",
             });
           } else {
-            console.log(response);
-            alert("거절 실패");
+            // console.log(response);
+            this.$alert("거절 처리에 실패하였습니다.");
           }
         });
       await http.get("/notice").then((response) => {
