@@ -16,8 +16,8 @@
 
       <v-card>
         <div class="d-flex justify-content-spacebetween">
-        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e">주문 상세보기</v-card-title>
-        <button @click="off()" style="margin-left:120px;"><i class="fa-solid fa-xmark"></i></button>
+        <v-card-title class="title lighten-2 fw-bold" style="color: #66a32e">주문 상세보기</v-card-title>
+        <button @click="off()" style="margin-left:140px;"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <v-card
           class="mx-auto my-auto pb-3 order-info"
@@ -39,7 +39,7 @@
             </div>
           </div>
           <div class="mx-auto card-box" max-width="300" outlined>
-            <div class="" style="margin-top:50px; margin-bottom: 50px;" >
+            <div style="margin-top:50px; margin-bottom: 50px;" >
               <img
                 class="col-5 food-pic"
                 :src="`${value.orderDto.saleItemDto.itemDto.itemImgUrl}`"
@@ -184,8 +184,8 @@ export default {
 .food-pic {
   padding: 0;
   margin: 0;
-  width: 400px;
-  height: 200px;
+  width: 300px;
+  height: 150px;
 }
 .noti-title {
   text-align: start;
@@ -205,5 +205,8 @@ export default {
   background-color: #368f3d;
   color: #ffffff;
   width: 80px;
+}
+.title {
+  padding: 16px 10px 16px 16px;
 }
 </style>
