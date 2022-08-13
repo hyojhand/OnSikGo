@@ -237,19 +237,25 @@ export default {
     },
     //  주문하기
     productOrder() {
-      if (this.count <= this.stock || this.count >= 1) {
-        http.defaults.headers["access-token"] =
-          localStorage.getItem("access-token");
-        http
-          .post("/order", {
-            saleItemId: this.saleItemId,
-            count: this.count,
-          })
-          .then((response) => {
-            console.log(response);
-          });
-        this.$alert("주문이 접수되었습니다.");
-        this.$router.push("/mypage/user/history");
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
+      if (isLogin == 1) {
+        this.$alert("업주께서는 이용하실수 없는 서비스입니다.");
+      } else {
+        if (this.count <= this.stock || this.count >= 1) {
+          http.defaults.headers["access-token"] =
+            localStorage.getItem("access-token");
+          http
+            .post("/order", {
+              saleItemId: this.saleItemId,
+              count: this.count,
+            })
+            .then((response) => {
+              console.log(response);
+            });
+          this.$alert("주문이 접수되었습니다.");
+          this.$router.push("/mypage/user/history");
+        }
       }
     },
     // 할때 가게정보도 추가 할 것

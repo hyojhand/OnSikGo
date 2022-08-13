@@ -298,15 +298,15 @@ const routes = [
     meta: {
       title: "주문하기",
     },
-    beforeEnter: function (to, from, next) {
-      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
-        .userCheck;
-      if (isLogin == 2) {
-        return next();
-      }
-      alert("업주께서는 이용하실수 없는 서비스입니다.");
-      // this.$alert("업주께서는 이용하실수 없는 서비스입니다.");
-    },
+    // beforeEnter: function (to, from, next) {
+    //   const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+    //     .userCheck;
+    //   if (isLogin == 2) {
+    //     return next();
+    //   }
+    //   alert("업주께서는 이용하실수 없는 서비스입니다.");
+    //   this.$alert("업주께서는 이용하실수 없는 서비스입니다.");
+    // },
     props: true,
   },
   // 가게보기
