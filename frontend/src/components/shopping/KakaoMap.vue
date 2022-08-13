@@ -63,7 +63,11 @@
         :key="index"
         v-bind="item"
       >
-        <div class="item-card" v-if="item.stock > 0">
+        <div
+          class="item-card"
+          v-if="item.stock > 0"
+          @click="productOrder(item)"
+        >
           <!-- 마커 -->
           <!-- <div class="col-2">
         <h1>{{ item.index }}</h1>
@@ -581,9 +585,10 @@ img {
 }
 .product-img {
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  width: 90px;
+  height: 90px;
   padding-bottom: 5px;
+  padding-left: 5px;
 }
 
 .product-order {
@@ -595,12 +600,13 @@ img {
   color: #222;
 }
 .stock-case {
-  height: 100%;
+  height: 95%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   padding: 0;
+  padding-right: 5px;
   margin: 0;
 }
 .item-card {
@@ -609,7 +615,9 @@ img {
   flex-direction: row;
   align-items: center;
   padding: 3px 0p;
+  background-color: white;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .search-result {
@@ -664,10 +672,16 @@ img {
 }
 .order-button {
   margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 10px;
   width: 100%;
 }
 .order-button:hover {
   background-color: rgb(140, 184, 131);
+  cursor: pointer;
   color: #fff;
+}
+.item-card:hover {
+  cursor: pointer;
 }
 </style>

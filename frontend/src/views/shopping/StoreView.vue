@@ -149,7 +149,7 @@
             />
           </button>
         </div>
-        <div v-if="storeReviewList.length">
+        <div v-if="storeReviewList.length" class="mb-5">
           <store-review
             class="review"
             v-for="(reviewDto, index) in storeReviewList"
