@@ -107,8 +107,8 @@
 
       <!-- 상품 설명란 -->
       <div class="product mt-3" v-if="selectedTab === tabs[0]">
-        <div class="head">📃 해당 매장에서 오늘 등록된 상품</div>
-        <div v-if="this.saleItemList.length">
+        <div class="head mb-2">📃 해당 매장에서 오늘 등록된 상품</div>
+        <div v-if="this.saleItemList.length" class="mb-3 case">
           <store-product-item
             v-for="(saleItem, index) in saleItemList"
             :key="index"
@@ -428,7 +428,7 @@ div {
 }
 .about-store {
   width: 100%;
-  background-color: white;
+  background-color: rgb(240, 240, 240);
 }
 .now {
   color: rgb(140, 184, 131);
