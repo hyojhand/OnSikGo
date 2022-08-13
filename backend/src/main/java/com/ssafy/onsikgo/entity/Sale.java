@@ -22,13 +22,13 @@ public class Sale {
     private Long saleId;
 
     @Column(nullable = false)
-    private Integer totalPrice; // 총 판매액
+    private Integer totalPrice;
 
     @Column(nullable = false)
-    private String date; // 날짜
+    private String date;
 
     @Column(nullable = false)
-    private Boolean closed; // 영업종료여부
+    private Boolean closed;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "storeId")

@@ -58,6 +58,9 @@ const analysis = {
     getBadChart: ({ commit }, value) => {
       commit("BAD_CHART", value);
     },
+    resetAnalysis:({commit}) => {
+      commit("RESET_ANALYSIS")
+    },
   },
   mutations: {
     GOOD_STATUS: (state) => {
@@ -168,6 +171,18 @@ const analysis = {
       chartD.datasets = data;
       state.badChart = chartD;
     },
+    RESET_ANALYSIS: (state) => {
+      state.status = true;
+      state.storeName = "";
+      state.baseStart = "";
+      state.baseEnd = "";
+      state.total= "";
+      state.wordCloud= "";
+      state.wordBad= "";
+      state.date= [];
+      state.chart= {};
+      state.badChart= [];
+    }
   },
 };
 

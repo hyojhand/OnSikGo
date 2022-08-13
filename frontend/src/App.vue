@@ -235,13 +235,24 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <MemberQuitModal></MemberQuitModal>
-          <StoreInfoDiscardModal
-            v-if="this.discardStoreCnt >= 2"
-            :no="this.discardStoreId"
-          ></StoreInfoDiscardModal>
-          <br /><br /><br />
-          <button @click="addstorepage">매장추가</button>
+          <div>
+            <MemberQuitModal class="temp"></MemberQuitModal>
+            <br />
+            <div class="ml-16 mt-5">
+              <button class="ml-6" id="button-add-toggle" @click="addstorepage">
+                매장추가
+              </button>
+            </div>
+            <br />
+            <div classs="mt-5">
+              <StoreInfoDiscardModal
+                v-if="this.discardStoreCnt >= 2"
+                :no="this.discardStoreId"
+                class="temp mt-5"
+              ></StoreInfoDiscardModal>
+            </div>
+            <br />
+          </div>
         </v-list>
 
         <!-- 설정 토글바 일반 유저 버전 -->
@@ -257,7 +268,7 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <MemberQuitModal></MemberQuitModal>
+          <MemberQuitModal class="temp"></MemberQuitModal>
         </v-list>
       </v-navigation-drawer>
 
@@ -385,7 +396,7 @@ export default {
     },
 
     copyLink() {
-      let currentUrl = window.document.location.href;
+      let currentUrl = "https://i7e201.p.ssafy.io/";
 
       let t = document.createElement("textarea");
       document.body.appendChild(t);
@@ -505,5 +516,15 @@ export default {
 }
 #text-onsikgo {
   font-size: 50rem;
+}
+#button-add-toggle {
+  font-weight: bolder;
+  margin: 0 0;
+}
+.temp {
+  width: 100%;
+}
+#temp2 {
+  width: 100%;
 }
 </style>

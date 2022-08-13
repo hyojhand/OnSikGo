@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div>
+    <div class="mt-5">
       <img :src="`${userDto.imgUrl}`" width="100" height="100" />
     </div>
 
     <div class="mt-3">
       <span
-        >{{ userDto.userName }} 님!, <br />이번 달에
+        >{{ userDto.nickname }} 님!, <br />이번 달에
         <strong id="green">온식고</strong>를 통해 <br /><strong id="green"
           >{{ this.orderPrice }}원</strong
         >의 세상을 구하셨어요!</span
@@ -20,7 +20,9 @@
     <br />
     <hr />
     <br />
-    <h5>✨ {{ userDto.userName }} 님의 단골매장</h5>
+    <span style="font-weight: bolder; font-size: 1.3rem"
+      >✨ {{ userDto.nickname }} 님의 단골매장</span
+    >
     <div v-if="this.storeregularList.length">
       <regularList
         v-for="(store, index) in storeregularList"
@@ -63,7 +65,7 @@ export default {
     });
 
     http.get("/follow").then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       this.storeregularList = response.data;
     });
 
@@ -80,7 +82,7 @@ export default {
       this.$router.push({
         name: "myReview",
       });
-      this.getReviewNickName(this.userDto.nickname)
+      this.getReviewNickName(this.userDto.nickname);
     },
   },
 };

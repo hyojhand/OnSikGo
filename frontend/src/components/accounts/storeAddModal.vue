@@ -10,6 +10,7 @@
 
         <v-card class="mx-auto my-auto card-box" max-width="344" outlined>
           <div mt-5 class="row mt-3">
+            <h1>뭐야</h1>
             <img
               class="img-box col-5"
               src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4gqX/image/wIXZfUhOPGGGZxaZ0Nsmigd1paU.jpeg"
