@@ -6,8 +6,7 @@
           <div class="col-3">
             <b-img
               :src="`${storeDto.storeImgUrl}`"
-              rounded="circle"
-              width="50"
+              width="80"
               height="50"
               style="margin: 0"
             />
@@ -76,6 +75,7 @@
 
 <script>
 import http from "@/util/http-common";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "reviewList",
   props: {
@@ -87,14 +87,26 @@ export default {
     userImgUrl: String,
     reviewId: Number,
   },
+  computed: {
+    ...mapGetters("accounts", ["reviewNickName"]),
+  },
   methods: {
-    reviewdelete() {
-      http.delete(`/review/${this.reviewId}`).then((response) => {
-        console.log(response.data);
+    ...mapActions("accounts", ["getMyReviewList"]),
+    async reviewdelete() {
+      await http.delete(`/review/${this.reviewId}`).then((response) => {
+        console.log(response);
         alert("리뷰가 삭제되었습니다.");
         // 새로고침 해야함
-        this.$router.go();
       });
+      await http
+        .post("/review/user", {
+          nickname: this.reviewNickName,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            this.getMyReviewList(response.data.reverse());
+          }
+        });
     },
   },
 };

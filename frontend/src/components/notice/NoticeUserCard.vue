@@ -11,10 +11,6 @@
       />
       <div class="col-7 order-box">
         <v-list-item-content>
-          <!-- <v-list-item-title class="text mb-3 msg-box">
-            <span>{{ userDto.userName }} </span>
-            <span class="notice">님의</span>
-          </v-list-item-title> -->
           <v-list-item-title class="text mb-3 msg-box notice"  v-html="`${content}`"
             ></v-list-item-title
           >
@@ -46,8 +42,6 @@
       <div class="col-7 order-box">
         <v-list-item-content>
           <v-list-item-title class="text mb-3 msg-box">
-            <!-- <span> {{ userDto.nickname }} </span>
-            <span class="notice">매장이</span> -->
           </v-list-item-title>
           <v-list-item-title class="text mb-3 msg-box notice"  v-html="`${content}`">
             </v-list-item-title
@@ -180,5 +174,14 @@ export default {
 }
 .notice-btn {
   width: 110px;
+  margin: 0;
+}
+.notice-btn:hover {
+  width: 110px;
+  background-color: gray;
+  opacity: 0.7;
+  color: #fff;
+  margin: 0;
+  transition: 0.7s;
 }
 </style>

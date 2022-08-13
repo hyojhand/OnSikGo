@@ -4,12 +4,19 @@
       v-for="(review, index) in reviewList"
       :key="index"
       class="row">
-      <div class="text-start mt-3">
-        <li>작성자: {{ review.nickname }}</li>
-        <li>가게명: {{ review.storeDto.storeName }}</li>
-        <p class="text-primary fs-5">작성내용: {{ review.content }}</p>
+      <div class="content">
+      <div class="detail text-start">
+        <p>😀 작성자: {{ review.nickname }}</p>
+        <p>📌 가게명: {{ review.storeDto.storeName }}</p>
+        <p class="text-primary mt-2">작성내용: {{ review.content }}</p>
       </div>
-        <v-btn @click="deleteReview(review)" color="error" style="width: 100px; left:300px;" depressed>삭제</v-btn>
+        <img
+          class="siren"
+          src="@/assets/images/trash.png"
+          @click="deleteReview(review)"
+          alt="삭제버튼이었던것.."
+        />
+        </div>
         <hr class="mt-5">
       </div>
   </div>
@@ -53,5 +60,18 @@ export default {
 </script>
 
 <style>
-
+.content{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.detail{
+  width: 320px;
+}
+.siren {
+  width: 30px;
+  height: 30px;
+}
 </style>

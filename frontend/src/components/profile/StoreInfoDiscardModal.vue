@@ -2,7 +2,9 @@
   <div class="text-modal">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <button v-bind="attrs" v-on="on">매장폐기</button>
+        <button id="button-discard" v-bind="attrs" v-on="on">
+          매장정보폐기
+        </button>
       </template>
 
       <div class="card">
@@ -17,15 +19,14 @@
         <div class="card-box">
           <div mt-5 class="row mt-3 ml-3">
             <img
-              style="border-radius: 50%"
               width="120"
               height="150"
               class="col-5"
-              :src="`${this.stimg}`"
+              :src="`${this.discardStoreImg}`"
             />
             <div class="col-6 mt-7 mr-2">
               <span style="color: black" class="text-m"
-                >"{{ this.stname }}"의 매장정보를<br />
+                >"{{ this.discardStoreName }}"의 매장정보를<br />
                 폐기하시겠습니까?</span
               >
               <br />
@@ -51,7 +52,7 @@
 
 <script>
 import http from "@/util/http-common";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "NoticeModal",
   data() {
@@ -62,15 +63,21 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("discardStore", ["discardStoreId"]),
+    ...mapGetters("discardStore", [
+      "discardStoreId",
+      "discardStoreName",
+      "discardStoreImg",
+    ]),
   },
   created() {
     http.get(`/store/${this.discardStoreId}`).then((response) => {
+      // console.log(this.discardStoreId);
       this.stname = response.data.storeName;
       this.stimg = response.data.storeImgUrl;
     });
   },
   methods: {
+    ...mapActions("select", ["resetValue"]),
     backToMypage() {
       this.dialog = false;
     },
@@ -78,6 +85,7 @@ export default {
       http.delete(`/store/${this.discardStoreId}`).then((response) => {
         if (response.status == 200) {
           alert("가게 정보 폐기 완료되었습니다!");
+          this.resetValue();
           this.$router.go();
         } else {
           alert("가게 정보 삭제에 실패했습니다.");
@@ -98,7 +106,7 @@ export default {
   margin: 5 10;
   padding: 10 10;
   box-sizing: border-box;
-  background-color: #37a62f;
+  background-color: #64a258;
   color: #ffffff;
   width: 150px;
 }
@@ -111,11 +119,13 @@ export default {
   margin: 5 10;
   padding: 10 10;
   box-sizing: border-box;
-  background-color: #c47e22;
+  background-color: #d97b38;
   color: #ffffff;
   width: 150px;
 }
-#text-modal {
-  font-family: "IBM Plex Sans KR", sans-serif;
+#button-discard {
+  font-weight: bolder;
+  width: 100%;
+  margin: 0 0;
 }
 </style>

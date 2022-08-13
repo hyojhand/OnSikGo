@@ -23,13 +23,14 @@ public class Notice {
     private Long noticeId;
 
     @Column(nullable = false)
-    private String content; // 알림 내용
+    private String content;
     @Column(nullable = false)
     private Boolean state; // 알림의 상태 [읽음, 안읽음]
 
     @Column(nullable = false)
     private Long receivedId;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private NoticeState noticeState;
 

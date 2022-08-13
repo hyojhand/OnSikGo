@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 style="color: black">✔ 비밀번호 수정 ✔</h1>
+    <div class="mt-16">
+      <span style="color: black; font-size: 1.3rem">✔ 비밀번호 수정 ✔</span>
+    </div>
     <div>
       <div class="container">
         <div class="row">
@@ -12,38 +14,43 @@
               placeholder="현재 비밀번호"
             />
           </div>
-          <div class="col-5">
-            <button @click="checkcurrentPw">현재 비밀번호 확인</button>
+          <div class="col-4 d-flex justify-content-end mr-2">
+            <button id="btn-change" @click="checkcurrentPw">
+              비밀번호 확인
+            </button>
           </div>
         </div>
       </div>
 
-      <v-text-field
-        v-model="password"
-        :error-messages="passwordErrors"
-        label="비밀번호를 입력해주세요."
-        required
-        class="input-box"
-        color="black"
-        type="password"
-        @input="$v.password.$touch()"
-        @blur="$v.password.$touch()"
-      ></v-text-field>
-
-      <v-text-field
-        class="input-box"
-        v-model="passwordConfirm"
-        :error-messages="passwordConfirmErrors"
-        label="비밀번호를 다시 입력해주세요."
-        required
-        color="black"
-        type="password"
-        @input="$v.passwordConfirm.$touch()"
-        @blur="$v.passwordConfirm.$touch()"
-      ></v-text-field>
+      <div class="ml-5 mr-5">
+        <v-text-field
+          v-model="password"
+          :error-messages="passwordErrors"
+          label="비밀번호를 입력해주세요."
+          required
+          class="input-box"
+          color="black"
+          type="password"
+          @input="$v.password.$touch()"
+          @blur="$v.password.$touch()"
+        ></v-text-field>
+      </div>
+      <div class="ml-5 mr-5">
+        <v-text-field
+          class="input-box"
+          v-model="passwordConfirm"
+          :error-messages="passwordConfirmErrors"
+          label="비밀번호를 다시 입력해주세요."
+          required
+          color="black"
+          type="password"
+          @input="$v.passwordConfirm.$touch()"
+          @blur="$v.passwordConfirm.$touch()"
+        ></v-text-field>
+      </div>
     </div>
     <div class="d-flex justify-content-end mt-6 mr-10">
-      <button @click="changePw">변경하기</button>
+      <button id="btn-change-check" @click="changePw">변경하기</button>
     </div>
   </div>
 </template>
@@ -168,5 +175,23 @@ export default {
   outline: none;
   padding-left: 10px;
   background-color: rgb(233, 233, 233);
+}
+#btn-change {
+  margin: 0px 0px;
+
+  border: 2px solid black;
+
+  width: 80%;
+
+  border-radius: 12px;
+}
+#btn-change-check {
+  margin: 0px 0px;
+
+  border: 2px solid black;
+
+  width: 50%;
+
+  border-radius: 12px;
 }
 </style>

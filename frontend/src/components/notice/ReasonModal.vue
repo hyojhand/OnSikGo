@@ -12,8 +12,8 @@
       </template>
 
       <v-card class="box-reason">
-        <v-card-title class="lighten-2 card-header">
-          거절 기타 사유
+        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e">
+        📌  거절 기타 사유
         </v-card-title>
 
         <div class="mx-auto my-auto input-reason">
@@ -38,28 +38,35 @@
 </template>
 
 <script>
-import http from "@/util/http-common"
+import http from "@/util/http-common";
+import { mapActions } from "vuex";
+
 export default {
   name: "ReasonModal",
   methods: {
-    twoCheckIt: function () {
+    ...mapActions("accounts", ["getOwnerOrderList"]),
+    async twoCheckIt() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
-      http
-        .patch(`/order/refuse/${this.value.orderDto.orderId}`,{
-          reason: this.reason
+      await http
+        .patch(`/order/refuse/${this.value.orderDto.orderId}`, {
+          reason: this.reason,
         })
-        .then((response) =>{
+        .then((response) => {
           if (response.status === 200) {
-            console.log(response)
+            console.log(response);
             this.$router.push({
-              name: "notice"
-            })
+              name: "notice",
+            });
           } else {
-            console.log(response)
-            alert("거절 실패")
+            console.log(response);
+            alert("거절 실패");
           }
-        })
+        });
+      await http.get("/notice").then((response) => {
+        this.getOwnerOrderList(response.data.reverse());
+      });
+
       this.dialog = false;
       this.$emit("two-check-it");
     },
@@ -80,10 +87,10 @@ export default {
 .card-header {
   border-bottom: 1px solid rgba(31, 31, 31, 10%);
   width: 100%;
-  color: rgb(140, 184, 131);
 }
 .reason {
-  width: 100%;
+  width: 320px;
+  height: 30px;
   color: white;
   background-color: rgb(31, 31, 31);
 }
@@ -92,14 +99,22 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: black;
 }
 .input-reason {
   width: 100%;
 }
 .btn-send {
-  margin: 2%;
+  height: 40px;
+  border: 2px solid tomato;
+  display: inline-block;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 0px;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: tomato;
   width: 150px;
-  color: white;
-  background-color: rgb(140, 184, 131);
 }
 </style>

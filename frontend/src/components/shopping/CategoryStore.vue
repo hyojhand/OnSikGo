@@ -1,32 +1,34 @@
 <template>
   <div class="container">
     <!-- 상위 가게 카테고리 -->
-    <div class="row">
-      <div 
+    <div class="row case">
+      <div
         :class="{
-              select: this.tabs[0] === this.category
+          select: this.tabs[0] === this.category,
         }"
-        class="col" id="category-img">
+        class="col"
+        id="category-img"
+      >
         <a>
           <img
-            
             class="tab"
             src="@/assets/images/all.png"
             alt="all"
             @click="selectAllList()"
           />
         </a>
-        <p >모두 보기</p>
+        <p>모두 보기</p>
       </div>
 
       <div
         :class="{
-              select: this.tabs[1] === this.category
-        }" 
-        class="col" id="category-img">
+          select: this.tabs[1] === this.category,
+        }"
+        class="col"
+        id="category-img"
+      >
         <a>
           <img
-            
             class="tab"
             src="@/assets/images/koreanfood.png"
             alt="koreanfood"
@@ -38,9 +40,11 @@
 
       <div
         :class="{
-              select: this.tabs[2] === this.category
-        }"  
-        class="col" id="category-img">
+          select: this.tabs[2] === this.category,
+        }"
+        class="col"
+        id="category-img"
+      >
         <a>
           <img
             class="tab"
@@ -54,11 +58,13 @@
     </div>
     <!-- 하위 가게 카테고리 -->
     <div class="row">
-      <div 
+      <div
         :class="{
-          select: this.tabs[3] === this.category
+          select: this.tabs[3] === this.category,
         }"
-        class="col" id="category-img">
+        class="col"
+        id="category-img"
+      >
         <a>
           <img
             class="tab"
@@ -71,12 +77,13 @@
       </div>
       <div
         :class="{
-          select: this.tabs[4] === this.category
-        }" 
-        class="col" id="category-img">
+          select: this.tabs[4] === this.category,
+        }"
+        class="col"
+        id="category-img"
+      >
         <a>
           <img
-            
             class="tab"
             src="@/assets/images/chinesefood.png"
             alt="snackbar"
@@ -87,9 +94,11 @@
       </div>
       <div
         :class="{
-          select: this.tabs[5] === this.category
-        }" 
-        class="col" id="category-img">
+          select: this.tabs[5] === this.category,
+        }"
+        class="col"
+        id="category-img"
+      >
         <a>
           <img
             class="tab"
@@ -104,11 +113,13 @@
     <div class="row">
       <div
         :class="{
-              select: this.tabs[6] === this.category
-        }" 
-        class="col" id="category-img">
+          select: this.tabs[6] === this.category,
+        }"
+        class="col"
+        id="category-img"
+      >
         <a>
-          <img 
+          <img
             class="tab"
             src="@/assets/images/westernfood.png"
             alt="ingredient"
@@ -170,7 +181,7 @@
     </div>
     <!-- 검색 결과 -->
 
-    <div v-if="this.storeList.length">
+    <div v-if="this.storeList.length" style="padding-left: 1rem">
       <store-item
         v-for="(store, index) in storeList"
         :key="index"
@@ -191,13 +202,11 @@ export default {
   name: "CategoryStore",
   data() {
     return {
-      tabs:[
-        "", "KOREA", "JAPAN", 
-        "WESTERN", "SNACK", "DESSERT", "INGREDIENT"],
+      tabs: ["", "KOREA", "JAPAN", "WESTERN", "SNACK", "DESSERT", "INGREDIENT"],
       category: "",
       storeList: [],
       keyword: "",
-      selectTab:"",
+      selectTab: "",
     };
   },
   props: ["to", "keyw"],
@@ -244,7 +253,7 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.storeList = response.data;
-            
+
             this.selectSaleCount();
           }
         });
@@ -330,8 +339,8 @@ img {
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
   height: 300px;
 }
-.col > p{
-  color : rgb(140, 184, 131);
+.col > p {
+  color: rgb(140, 184, 131);
 }
 .search-container {
   display: flex;
@@ -346,7 +355,7 @@ img {
   font-size: 12px;
   background-repeat: no-repeat;
   padding: 5px 5px;
-  width: 210px;
+  width: 170px;
   height: 30px;
   background-color: #fff;
 }
@@ -366,20 +375,24 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 120px;
+  padding: 0;
 }
-
 
 .select > a > img {
-  filter: opacity(0.5) drop-shadow(0 0 0 #D75281);
+  filter: opacity(0.5) drop-shadow(0 0 0 #d75281);
 }
-.select > p{
+.select > p {
   color: black;
   opacity: 0.4;
 }
+.search-result {
+  text-align: center;
+}
 
 .container .row #category-img:hover {
-  width: 50px; /* 사진크기 조절 */
-  transform: scale(1.3, 1.3); /* 가로2배 새로 1.5배 로 커짐 */
+  width: 30px; /* 사진크기 조절 */
+  transform: scale(1.2, 1.2); /* 가로2배 새로 1.5배 로 커짐 */
   transition: transform.5s; /* 커지는 시간 */
 }
 .none-msg {
@@ -399,7 +412,7 @@ img {
   padding-right: 10px;
   padding-left: 15px;
 }
-.search-reset{
+.search-reset {
   padding: 0;
   margin: 0;
 }

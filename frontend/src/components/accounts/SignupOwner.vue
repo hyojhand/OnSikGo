@@ -1,5 +1,5 @@
 <template>
-  <v-stepper v-model="e1">
+  <v-stepper v-model="e1" style="top:25px;">
     <v-stepper-items>
       <v-stepper-content
         step="1"
@@ -28,8 +28,10 @@
               {{ checkmsg }}
             </button>
           </div>
-          <div v-if="emailDuple">이미 동록한 이메일 입니다.</div>
-          <div v-if="emailfailDuple">인증에 실패하였습니다.</div>
+          <div
+          v-if="emailDuple" 
+          style="color: red; margin-top: 3px;">
+          이미 가입된 메일 혹은 잘못된 이메일입니다.</div>
           <!-- ---------인증 메일 보내기------------ -->
           <div v-if="sendMail">
             <div class="mailconfim-case">
@@ -39,15 +41,18 @@
                 v-model="authNum"
                 placeholder="인증번호를 입력하세요."
               />
-              <CountTimer v-if="time" :time="time" :key="rederKey"/>
-              <button 
-                class="border-m radius-m mailconfirm-btn" 
-                @click="checkMail()"
-                type="button">
-                확인
-              </button>
+              <div>
+                <CountTimer v-if="time" :time="time" :key="rederKey"/>
+                <button 
+                  class="border-m radius-m mailconfirm-btn" 
+                  @click="checkMail()"
+                  type="button">
+                  인증
+                </button>
+              </div>
             </div>
-            <div v-if="mailconfirmDuple">인증완료 되었습니다.</div>
+            <div v-if="emailfailDuple" style="color: red;">인증번호 확인에 실패했습니다.</div>
+            <div v-if="mailconfirmDuple" style="color: green;">인증번호 확인이 되었습니다.</div>
           </div>
           <!-- -------------비밀번호 입력------------------------------------ -->
           <v-text-field
@@ -91,8 +96,8 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 2"
+          v-bind:disabled="check1 == false"
           >
-          <!-- v-bind:disabled="check1 == false" -->
           다음으로</button>
         </div>
       </v-stepper-content>
@@ -118,13 +123,13 @@
               @blur="$v.identify.$touch()"
             ></v-text-field>
             <button 
-              class="border-m radius-m address-btn" 
+              class="border-m radius-m ownernum-btn" 
               @click="checkOwner()"
               type="button">
               인증
             </button>
-          <div v-if="ownercheckDuple">사업자 번호가 확인 되었습니다.</div>
-          <div v-if="ownerfailDuple">다시 확인해주시길 바랍니다.</div>
+          <div v-if="ownercheckDuple" style="color: green;">사업자 번호가 확인 되었습니다.</div>
+          <div v-if="ownerfailDuple" style="color: red;">다시 확인해주시길 바랍니다.</div>
           </div>
           <!-- ------상호명 입력--------------- -->
           <v-text-field
@@ -136,6 +141,19 @@
             color="black"
             @input="$v.store.$touch()"
             @blur="$v.store.$touch()"
+          ></v-text-field>
+
+          <!-- -------------전화번호 입력----------- -->
+          <v-text-field
+            v-model="tel"
+            :error-messages="telErrors"
+            type="tel"
+            label="가게 전화번호를 입력해주세요."
+            required
+            class="input-box"
+            color="black"
+            @input="$v.tel.$touch()"
+            @blur="$v.tel.$touch()"
           ></v-text-field>
 
           <!-- -----------가게 주소 입력-------------- -->
@@ -175,7 +193,7 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 3"
-          v-bind:disabled="check2 == false"  
+          v-bind:disabled="check2 == false"
           >다음으로</button>
         </div>
       </v-stepper-content>
@@ -188,19 +206,6 @@
         min-height="200"
       >
         <form @submit.prevent="submit" class="mb-2">
-          <!-- -------------전화번호 입력----------- -->
-          <v-text-field
-            v-model="tel"
-            :error-messages="telErrors"
-            type="tel"
-            label="가게 전화번호를 입력해주세요."
-            required
-            class="input-box"
-            color="black"
-            @input="$v.tel.$touch()"
-            @blur="$v.tel.$touch()"
-          ></v-text-field>
-
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
@@ -234,15 +239,22 @@
             @input = "$v.category.$touch()"
             @blur= "$v.category.$touch()"
           ></v-select>
+          <!-- 가게 이미지 등록 -->
+          <div style="margin-bottom: 5px;">
+            <p style="margin-top:3px; color: rgb(140, 184, 131);">
+              <i class="fa-solid fa-image"></i> 가게를 대표할 이미지 파일을 등록해주세요!</p>
+            <input @change="fileSelect" type="file"/>
+          </div>
         </form>
 
         <div class="sign-btn">
-          <button class="border-m radius-m" @click="e1 = 2">이전으로</button>
+          <button class="border-m radius-m mt-5" @click="e1 = 2">이전으로</button>
           <button 
-          v-if="category != false"
+          v-if="category != false && imgFile != null"
           class="border-m radius-m" 
           @click="signup()">가입하기</button>
         </div>
+        <div v-if="signupfailDuple" style="color:red;">😥 회원가입에 실패했습니다.</div>
       </v-stepper-content>
 
       <v-stepper-header class="status-box">
@@ -304,6 +316,7 @@ export default {
       checkmsg: "메일 인증",
       sendMail: false,
       authNum: "",
+      imgFile: null,
       check1: false,
       check2: false,
       check3: false,
@@ -312,6 +325,7 @@ export default {
       emailfailDuple: false,
       ownercheckDuple: false,
       ownerfailDuple: false,
+      signupfailDuple: false,
       items: [
         {value: 'KOREA', text: '한식'},
         {value: 'JAPAN', text: '일식'},
@@ -331,6 +345,7 @@ export default {
       ],
       time:false,
       rederKey:0,
+      ownerDto: [],
     };
   },
 
@@ -515,8 +530,24 @@ export default {
       }).open();
     },    
 
+    // 이미지 파일 업로드
+    fileSelect(event) {
+      var input = event.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+      this.imgFile = input.files[0];
+    },
+
     signup() {
-      http.post("/user/signup/owner", {
+      this.signupfailDuple = false;
+      this.ownerDto = {
         email: this.email,
         password: this.password,
         userName: this.name,
@@ -527,10 +558,26 @@ export default {
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
-        offDay: this.off.join(),
+        offDay: this.off ? this.off.join() : "연중무휴",
         category: this.category,
-      });
-      this.$router.push("/signup/complete");
+      };
+      const formData = new FormData();
+      formData.append("file", this.imgFile);
+      formData.append(
+        "ownerDto",
+        new Blob([JSON.stringify(this.ownerDto)], { type: "application/json" })
+      );
+      http
+        .post("/user/signup/owner", formData)
+        .then((response) => {
+          if (response.status == 200) {
+          this.$router.push("/signup/complete");
+          } else {
+            this.signupfailDuple = true;
+          }
+        })
+        
+      
     },
   },
 };
@@ -574,17 +621,42 @@ export default {
   position: relative;
 }
 .confirm-btn {
+  right: 0px;
+  left: 183px;
+  top: 30px;
+  bottom: 3px;
   position: absolute;
+  margin: 0px;
+  padding: 1%;
+  width: 80px;
+  height: 30px;
   color: black;
-  right: 0;
-  top: 32px;
+  font-size: 13px;
+}
+.ownernum-btn{
+  right: 0px;
+  left: 200px;
+  top: 10px;
+  bottom: 3px;
+  position: absolute;
+  margin: 0px;
+  padding: 1%;
+  width: 60px;
+  height: 30px;
+  color: black;
   font-size: 13px;
 }
 .address-btn {
+  right: 0px;
+  left: 190px;
+  top: 10px;
+  bottom: 3px;
   position: absolute;
+  margin: 0px;
+  padding: 1%;
+  width: 70px;
+  height: 30px;
   color: black;
-  right: 0;
-  top: 12px;
   font-size: 13px;
 }
 .mailconfim-case {

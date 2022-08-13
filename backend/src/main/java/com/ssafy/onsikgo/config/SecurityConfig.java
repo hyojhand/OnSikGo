@@ -58,24 +58,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/user/**").permitAll()
-                .antMatchers("/store/**").permitAll()
-                .antMatchers("/item/**").permitAll()
-                .antMatchers("/sale/**").permitAll()
-                .antMatchers("/order/**").permitAll()
-                .antMatchers("/api/v1/**").hasRole(Role.USER.name())
-                .antMatchers("/review/**").permitAll()
-                .antMatchers("/follow/**").permitAll()
-                .antMatchers("/notice/**").permitAll()
-                .antMatchers("/admin/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
+                .anyRequest().permitAll()
                 // 인증없이 접근을 허용하는 path 추가
 //                .and()
 //                .authorizeRequests()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/signup").permitAll()
-                // 나머지 요청은 모두 인증을 받는다
-                .anyRequest().authenticated()
+//                // 나머지 요청은 모두 인증을 받는다
+//                .anyRequest().authenticated()
 
 
                 // JwtFilter를 addFilterBefore로 등록했던 JwtSecurityConfig 클래스도 적용
