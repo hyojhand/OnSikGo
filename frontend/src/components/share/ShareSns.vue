@@ -65,6 +65,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: 23px;
 }
 .link-icon {
   position: relative;

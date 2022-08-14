@@ -32,6 +32,11 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;800&family=IBM+Plex+Sans+KR:wght@200;300;400;500&family=Noto+Sans+KR:wght@400;700;900&display=swap");
+      .customoverlay {position:relative;bottom:65px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
+      .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+      .customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+      .customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:10px;font-weight:bold;}
+      .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
     </style>
     <link
       rel="stylesheet"
@@ -41,9 +46,18 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"
     />
-    <link rel="shortcut icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-72x72.png" />
-    <link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />
-    <link rel="apple-touch-icon-precomposed" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />
+    <link
+      rel="shortcut icon"
+      href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png"
+    />
 
     <script
       type="text/javascript"
@@ -56,28 +70,39 @@
       src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
       charset="utf-8"
     ></script>
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-  <script>
-    window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
-      OneSignal.init({
-        appId: "2133650c-a9eb-4010-907d-aba7f74986f9",
+    <script
+      src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
+      async=""
+    ></script>
+    <script>
+      window.OneSignal = window.OneSignal || [];
+      OneSignal.push(function () {
+        OneSignal.init({
+          appId: "2133650c-a9eb-4010-907d-aba7f74986f9",
+        });
       });
-    });
-  </script>
-  <script type="text/javascript">
+    </script>
+    <script type="text/javascript">
       var userAgent = navigator.userAgent.toLowerCase();
-      if(userAgent.match('iphone')) { 
-        document.write('<link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />') 
-    } else if(userAgent.match('ipad')) { 
-        document.write('<link rel="apple-touch-icon" sizes="72*72" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />') 
-    } else if(userAgent.match('ipod')) { 
-        document.write('<link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />') 
-    } else if(userAgent.match('android')) { 
-        document.write('<link rel="shortcut icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-72x72.png" />') 
-    } 
-  </script>
-  <style>
+      if (userAgent.match("iphone")) {
+        document.write(
+          '<link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />'
+        );
+      } else if (userAgent.match("ipad")) {
+        document.write(
+          '<link rel="apple-touch-icon" sizes="72*72" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />'
+        );
+      } else if (userAgent.match("ipod")) {
+        document.write(
+          '<link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />'
+        );
+      } else if (userAgent.match("android")) {
+        document.write(
+          '<link rel="shortcut icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-72x72.png" />'
+        );
+      }
+    </script>
+    <style>
       .wrap {
         text-align: left;
         font-size: 10px;

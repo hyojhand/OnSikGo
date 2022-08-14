@@ -36,6 +36,12 @@
         >
           주문 완료
         </p>
+        <p
+          v-else-if="`${notice.orderDto.state}` === 'PICKUP'"
+          class="time-text pickup" style="color:orange"
+        >
+          수령 완료
+        </p>
         <notice-modal :value="notice"></notice-modal>
       </v-card-actions>
     </div>
