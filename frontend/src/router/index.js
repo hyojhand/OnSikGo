@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 
 // 메인뷰
 import MainView from "../views/home/MainView.vue";
+import InstructionView from "../views/home/InstructionView.vue";
 // 기부
 import DonationView from "../views/donation/DonationView.vue";
 // 회원관리
@@ -52,6 +53,14 @@ const routes = [
     component: MainView,
     meta: {
       title: "온식고",
+    },
+  },
+  {
+    path: "/instruction",
+    name: "instruction",
+    component: InstructionView,
+    meta: {
+      title: "온식고란",
     },
   },
   // 기부

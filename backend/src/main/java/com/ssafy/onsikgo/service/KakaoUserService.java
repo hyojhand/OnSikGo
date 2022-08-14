@@ -77,7 +77,7 @@ public class KakaoUserService implements SocialUserService {
         return userDto;
     }
     @Override
-    public HttpEntity<? extends Object> login(UserDto userDto) {
+    public HttpEntity<? extends Object> login(UserDto userDto,String fcm_token) {
         User user = userRepository.findByEmail(userDto.getEmail()).orElse(null);
         // 이미 가입된 이메일
         if (!user.getLoginType().toString().equals(LoginType.KAKAO.toString())) {
@@ -86,7 +86,7 @@ public class KakaoUserService implements SocialUserService {
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail(userDto.getEmail());
         loginDto.setPassword(userDto.getPassword());
-
+        loginDto.setTo(fcm_token);
         return userService.login(loginDto);
     }
 

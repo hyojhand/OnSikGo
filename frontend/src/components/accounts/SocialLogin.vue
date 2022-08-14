@@ -57,6 +57,7 @@ export default {
               "/user/kakao",
               {
                 access_token: authObj.access_token,
+                fcm_token: localStorage.getItem("fcm-token"),
               },
               {
                 headers: {
@@ -90,6 +91,7 @@ export default {
           "/user/naver",
           {
             access_token: token,
+            fcm_token: localStorage.getItem("fcm-token"),
           },
           {
             headers: {
