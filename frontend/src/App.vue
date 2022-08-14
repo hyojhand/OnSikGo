@@ -389,6 +389,7 @@ export default {
         this.noticeState = response.data;
       });
     }
+    // 주석
   },
   methods: {
     ...mapActions("accounts", ["getUserCheck"]),
