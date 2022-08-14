@@ -18,35 +18,72 @@ public class FcmService {
 
     public void send(String to) {
         String apiUrl = "https://fcm.googleapis.com/fcm/send";
-        String jsonString = null;
+//        String result = "";
+//        String jsonString = null;
+//
+//
+//        JSONObject noti = new JSONObject();
+//        noti.put("title", "온식고의 알림이 도착했습니다.");
+//        noti.put("body", "온식고를 확인해주세요!");
+//        noti.put("click_action", "https://i7e201.p.ssafy.io/");
+//
+//        JSONObject reqParams = new JSONObject();
+//        reqParams.put("notification", noti); // body에 들어갈 내용을 담는다.
+//        reqParams.put("to",to);
 
-        JSONObject noti = new JSONObject();
-        noti.put("title", "온식고의 알림이 도착했습니다.");
-        noti.put("body", "온식고를 확인해주세요!");
-        noti.put("click_action", "https://i7e201.p.ssafy.io/");
 
-        JSONObject reqParams = new JSONObject();
-        reqParams.put("notification", noti); // body에 들어갈 내용을 담는다.
-        reqParams.put("to",to);
+        String requestbody = "{\"notification\" : \"{" +
+                "\"title\" : \"온식고의 알림이 도착했습니다.\" ,\"body\" : \"온식고를 확인해주세요!\" ,\"click_action\" : \"https://i7e201.p.ssafy.io/\" "
+                + "}\" , \"to\" : \"" + to + "\" }";
 
         try {
             URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
+
+            // 전송할 header 작성
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Authorization", fcm);
             conn.setDoOutput(true);
 
-            OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
-            os.write(reqParams.toString());
-            os.flush();
+            try (OutputStream os = conn.getOutputStream()){
+                byte request_data[] = requestbody.getBytes("utf-8");
+                os.write(request_data);
+                log.info("전송완료!!");
+                os.close();
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            // 결과 확인
+//            int responseCode = conn.getResponseCode();
+//            log.debug("responseCode : " + responseCode);
+//
+//            // 요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+//            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//            String line;
+//
+//            while ((line = br.readLine()) != null) {
+//                result += line;
+//            }
 
-            JSONObject jsonObj = (JSONObject) JSONValue.parse(rd.readLine());
-            rd.close();
-            conn.disconnect();
-            log.info((String) jsonObj.get("result"));
+
+
+
+//            OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
+//            os.write(reqParams.toString());
+//            os.flush();
+//
+//            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+//
+//            JSONObject jsonObj = (JSONObject) JSONValue.parse(rd.readLine());
+//            rd.close();
+//            conn.disconnect();
+//            log.info((String) jsonObj.get("result"));
+
+
+
 
 //            StringBuffer docJson = new StringBuffer();
 //
