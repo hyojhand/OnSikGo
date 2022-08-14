@@ -30,6 +30,12 @@ import OnsikgoHowTo from "@/components/home/OnsikgoHowTo.vue";
 
 export default {
   name: "InstructionView",
+  props: {
+    tab: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       tabs: ["온식고 소개", "온식고 이용법"],
@@ -43,7 +49,12 @@ export default {
     },
   },
   created() {
-    this.selectedTab = this.tabs[0];
+    this.selectedTab = this.$route.params.tab;
+    if (this.selectedTab) {
+      this.selectedTab = this.tabs[1];
+    } else {
+      this.selectedTab = this.tabs[0];
+    }
   },
 };
 </script>

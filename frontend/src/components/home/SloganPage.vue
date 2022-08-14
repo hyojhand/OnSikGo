@@ -35,6 +35,7 @@
     >
       <v-carousel-item>
         <img
+          @click="goIntro()"
           width="95%"
           height="220px"
           src="@/assets/images/main.png"
@@ -44,6 +45,7 @@
       </v-carousel-item>
       <v-carousel-item>
         <img
+          @click="goHow()"
           width="95%"
           height="220px"
           src="@/assets/images/howto.png"
@@ -61,13 +63,17 @@
         />
       </v-carousel-item>
       <v-carousel-item>
-        <img
-          width="95%"
-          height="220px"
-          src="@/assets/images/ask.png"
-          alt="image slot"
-          style="border-radius: 7px"
-        />
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSd06jrEu_mbcrAuiuSOw5JhffJI1aboOUGJX81hHCYbPYHoNQ/viewform"
+        >
+          <img
+            width="95%"
+            height="220px"
+            src="@/assets/images/ask.png"
+            alt="image slot"
+            style="border-radius: 7px"
+          />
+        </a>
       </v-carousel-item>
     </v-carousel>
   </div>
@@ -89,6 +95,7 @@ export default {
       currentLongitude: 33.452278,
       currentxLatitude: 126.567803,
       userDto: {},
+      tab: "",
     };
   },
   computed: {
@@ -132,6 +139,18 @@ export default {
         }
       };
       geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+    },
+    goIntro() {
+      this.$router.push({
+        name: "instruction",
+        params: { tab: 0 },
+      });
+    },
+    goHow() {
+      this.$router.push({
+        name: "instruction",
+        params: { tab: 1 },
+      });
     },
   },
   created() {

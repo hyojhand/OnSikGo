@@ -33,7 +33,7 @@
       <div class="color-ment mt-3">rgb(140, 184, 131)</div>
     </div>
     <div class="intro">Onsikgo 원산지</div>
-    <div class="intro-ment">
+    <div class="intro-ment final">
       <div>FE - 김가흔, 이동근, 장창완, 최지은</div>
       <div>BE - 공지훈, 손효재</div>
       <div>감사합니다</div>
@@ -68,6 +68,10 @@ export default {
   text-align: start;
   padding-left: 20px;
   margin-bottom: 30px;
+}
+.final {
+  margin: 0;
+  padding-bottom: 30px;
 }
 .circle {
   margin: 0 auto;
