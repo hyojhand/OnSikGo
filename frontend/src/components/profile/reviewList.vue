@@ -18,7 +18,7 @@
             <span class="d-flex justify-content-center"> {{ content }}</span>
           </div>
           <div class="col-3 mt-4">
-            <div @click="reviewdelete">
+            <div v-if="nickname == nowNickname" @click="reviewdelete">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
@@ -56,6 +56,18 @@
               <!-- <b-icon @click="reviewdelete" icon="trash"></b-icon> -->
               <!-- <button @click="reviewdelete" class="btn-delete">삭제</button> -->
             </div>
+            <div v-else>
+              <img
+                class="siren"
+                src="@/assets/images/siren.png"
+                @click="reportReview(reviewId)"
+                alter="신고 버튼이었던것.."
+              />
+              <div v-if="reportDuple" class="report mt-1">
+                <div style="color:red;">신고 완료 !</div>
+
+              </div>
+            </div>
           </div>
           <div class="d-flex justify-content-end">
             <span style="color: gray; font-size: 0.8rem">
@@ -87,8 +99,23 @@ export default {
     userImgUrl: String,
     reviewId: Number,
   },
+  data() {
+    return {
+      nowNickname: "",
+      reportDuple: false,
+    }
+  },
   computed: {
     ...mapGetters("accounts", ["reviewNickName"]),
+  },
+  created() {
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+
+    http.get("/user").then((response) => {
+      this.nowNickname = response.data.nickname;
+      // console.log(response.data.nickname)
+    });
   },
   methods: {
     ...mapActions("accounts", ["getMyReviewList"]),
@@ -106,6 +133,14 @@ export default {
             this.getMyReviewList(response.data.reverse());
           }
         });
+    },
+    reportReview(reviewId) {
+      http.patch(`/review/${reviewId}`).then((response) => {
+        if (response.status == 200) {
+          console.log(response);
+          this.reportDuple = true;
+        }
+      });
     },
   },
 };
