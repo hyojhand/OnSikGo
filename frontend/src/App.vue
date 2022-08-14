@@ -307,6 +307,7 @@ export default {
       saleItemList: [],
       notlogins: [
         { title: "홈", router: "/" },
+        { title: "온식고란", router: "/instruction" },
         { title: "로그인", router: "/login" },
         { title: "회원가입", router: "/signup" },
         { title: "온식고", router: "/shop" },
@@ -314,12 +315,14 @@ export default {
 
       users: [
         { title: "홈", router: "/" },
+        { title: "온식고란", router: "/instruction" },
         { title: "로그아웃", router: "/logout" },
         { title: "마이페이지", router: "/mypage/user" },
         { title: "온식고", router: "/shop" },
       ],
       owners: [
         { title: "홈", router: "/" },
+        { title: "온식고란", router: "/instruction" },
         { title: "로그아웃", router: "/logout" },
         { title: "마이페이지", router: "/mypage/owner" },
         { title: "온식고", router: "/shop" },
@@ -336,6 +339,7 @@ export default {
       settingOwners: [{ title: "회원정보수정", router: "/userinfochange" }],
       pages: [
         "온식고",
+        "온식고란",
         "기부 페이지",
         "회원정보변경",
         "알림조회",
@@ -380,7 +384,7 @@ export default {
           this.getUserCheck(1);
         } else if (response.data.role == "USER") {
           this.getUserCheck(2);
-        } else {
+        } else if (response.data.role == "ADMIN"){
           this.getUserCheck(3);
         }
       });
@@ -405,7 +409,10 @@ export default {
       document.execCommand("copy");
       document.body.removeChild(t);
 
-      this.$alert("현재 주소 복사가 완료되었습니다🌏🧡");
+      this.$alert(
+        "친구들에게 현재 주소를 공유해보세요 :)",
+        "현재 주소 복사가 완료되었습니다🌏🧡"
+      );
     },
     movetoNaver() {
       var link = "https://forms.gle/WJpvMqG54SUF29io8";
