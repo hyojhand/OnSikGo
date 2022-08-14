@@ -1,11 +1,9 @@
 <template>
   <div class="signup-box" width="100%">
     <div>
-      <v-list-item-title class="fs-1 mb-5 fw-bold" style="color: #368f3d;">
-        Onsikgo 회원 가입
-      </v-list-item-title>
-      <v-list-item-subtitle class="mb-2"
-        >본인이 해당하시는 회원가입 유형을 선택해주세요.</v-list-item-subtitle>
+      <h1 class="mb-5"><strong style="color: #368f3d; font-size:40px;">Onsikgo</strong> 회원 가입</h1>
+      <v-list-item-subtitle class="mb-2" style="font-size:13px;"
+        >본인이 해당하는 회원가입 유형을 선택해주세요.</v-list-item-subtitle>
       <v-list-item-subtitle class="mb-5"></v-list-item-subtitle>
     </div>
 
