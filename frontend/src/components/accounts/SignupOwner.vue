@@ -207,6 +207,7 @@
         black
         outlined
         min-height="200"
+        max-width="350"
       >
         <form @submit.prevent="submit" class="mb-2">
           <!-- -----------마감시간 입력----------- -->

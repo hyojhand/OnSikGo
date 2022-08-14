@@ -1,7 +1,9 @@
 <template>
   <div class="signup-box" width="100%">
     <div>
-      <div class="text-h5 mt-3 mb-5 fw-bold" style="color: rgb(140, 184, 131);">업주 회원 가입하기</div>
+      <v-list-item-title class="mt-3 mb-5 fw-bold" style="font-size:28px;">
+        <strong style="color: #368f3d;">업주 판매자</strong>  회원가입
+      </v-list-item-title>
       <div class="ment-box mb-5">
         <v-list-item-subtitle>어서오세요!</v-list-item-subtitle>
         <v-list-item-subtitle>아래의 칸을 모두 채운다면</v-list-item-subtitle>
