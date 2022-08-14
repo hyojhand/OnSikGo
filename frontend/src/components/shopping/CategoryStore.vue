@@ -159,7 +159,7 @@
           </svg>
         </button>
         <!-- 초기화 -->
-        <button class="search-reset" @click="resetList()">
+        <!-- <button class="search-reset" @click="resetList()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -176,7 +176,7 @@
               d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"
             />
           </svg>
-        </button>
+        </button> -->
       </div>
     </div>
     <!-- 검색 결과 -->
@@ -359,7 +359,7 @@ img {
   font-size: 12px;
   background-repeat: no-repeat;
   padding: 5px 5px;
-  width: 170px;
+  width: 210px;
   height: 30px;
   background-color: #fff;
 }
@@ -419,6 +419,10 @@ img {
 .bbox {
   width: 100%;
   margin: 0;
+}
+
+.bbox > div > p {
+  letter-spacing:2px;
 }
 .search-reset {
   padding: 0;
