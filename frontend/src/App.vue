@@ -384,7 +384,7 @@ export default {
           this.getUserCheck(1);
         } else if (response.data.role == "USER") {
           this.getUserCheck(2);
-        } else {
+        } else if (response.data.role == "ADMIN"){
           this.getUserCheck(3);
         }
       });
