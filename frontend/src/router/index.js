@@ -42,7 +42,6 @@ import MyreviewView from "../views/profile/MyreviewView.vue";
 // 오류
 import NotFoundView from "../views/error/NotFoundView.vue";
 
-
 Vue.use(VueRouter);
 
 const routes = [
@@ -63,12 +62,13 @@ const routes = [
     meta: {
       title: "기부 페이지",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   //  회원관리
@@ -79,12 +79,13 @@ const routes = [
     meta: {
       title: "로그인",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 0) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -94,12 +95,13 @@ const routes = [
     meta: {
       title: "매장추가",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1 || isLogin == 3) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -109,12 +111,13 @@ const routes = [
     meta: {
       title: "로그아웃",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin !== 0) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -124,12 +127,13 @@ const routes = [
     meta: {
       title: "회원가입",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 0) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -139,12 +143,13 @@ const routes = [
     meta: {
       title: "회원가입",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 0) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -154,12 +159,13 @@ const routes = [
     meta: {
       title: "회원가입",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 0) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -169,12 +175,13 @@ const routes = [
     meta: {
       title: "가입성공",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 0) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -184,12 +191,13 @@ const routes = [
     meta: {
       title: "회원정보변경",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1 || isLogin == 2) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -199,12 +207,13 @@ const routes = [
     meta: {
       title: "회원정보변경",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1 || isLogin == 2) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -214,12 +223,13 @@ const routes = [
     meta: {
       title: "비밀번호변경",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1 || isLogin == 2) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   // 관리자 페이지
@@ -230,12 +240,13 @@ const routes = [
     meta: {
       title: "관리자 페이지",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 3) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   // 알림
@@ -246,12 +257,13 @@ const routes = [
     meta: {
       title: "알림조회",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1 || isLogin == 3) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -261,12 +273,13 @@ const routes = [
     meta: {
       title: "알림조회",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 2) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   // 메인기능
@@ -285,13 +298,15 @@ const routes = [
     meta: {
       title: "주문하기",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
-      if (isLogin == 2) {
-        return next()
-      }
-      alert("업주께서는 이용하실수 없는 서비스입니다.")
-    },
+    // beforeEnter: function (to, from, next) {
+    //   const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+    //     .userCheck;
+    //   if (isLogin == 2) {
+    //     return next();
+    //   }
+    //   alert("업주께서는 이용하실수 없는 서비스입니다.");
+    //   this.$alert("업주께서는 이용하실수 없는 서비스입니다.");
+    // },
     props: true,
   },
   // 가게보기
@@ -312,12 +327,13 @@ const routes = [
     meta: {
       title: "전체상품조회",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -327,12 +343,13 @@ const routes = [
     meta: {
       title: "상품변경",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -342,12 +359,13 @@ const routes = [
     meta: {
       title: "상품등록",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   // 마이페이지(점주)
@@ -359,12 +377,13 @@ const routes = [
       title: "마이페이지",
     },
     props: true,
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -374,12 +393,13 @@ const routes = [
     meta: {
       title: "재고분석",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -390,12 +410,13 @@ const routes = [
       title: "가게정보변경",
     },
     props: true,
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -406,12 +427,13 @@ const routes = [
       title: "영업종료 확인",
     },
     props: true,
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 1) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   // 마이페이지(사용자)
@@ -422,12 +444,13 @@ const routes = [
     meta: {
       title: "마이페이지",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 2) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -437,12 +460,13 @@ const routes = [
     meta: {
       title: "내주문조회",
     },
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 2) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {
@@ -453,12 +477,13 @@ const routes = [
       title: "내리뷰조회",
     },
     props: true,
-    beforeEnter: function(to, from, next){
-      const isLogin = JSON.parse(localStorage.getItem('vuex')).accounts.userCheck
+    beforeEnter: function (to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (isLogin == 2) {
-        return next()
+        return next();
       }
-      next("/404")
+      next("/404");
     },
   },
   {

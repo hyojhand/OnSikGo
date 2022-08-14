@@ -16,8 +16,8 @@
 
       <v-card>
         <div class="d-flex justify-content-spacebetween">
-        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e">주문 상세보기</v-card-title>
-        <button @click="off()" style="margin-left:120px;"><i class="fa-solid fa-xmark"></i></button>
+        <v-card-title class="title lighten-2 fw-bold" style="color: #66a32e">주문 상세보기</v-card-title>
+        <button @click="off()" style="margin-left:140px;"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <v-card
           class="mx-auto my-auto pb-3 order-info"
@@ -33,13 +33,16 @@
             <div class="col-7 mt-2 order-box">
               <v-list-item-content class="notice-box">
                 <v-list-item-title class="msg-box">
-                  <span class="text-l fw-bold" v-html="`${value.content}`"></span>
+                  <span
+                    class="text-l fw-bold"
+                    v-html="`${value.content}`"
+                  ></span>
                 </v-list-item-title>
               </v-list-item-content>
             </div>
           </div>
           <div class="mx-auto card-box" max-width="300" outlined>
-            <div class="" style="margin-top:50px; margin-bottom: 50px;" >
+            <div style="margin-top:50px; margin-bottom: 50px;" >
               <img
                 class="col-5 food-pic"
                 :src="`${value.orderDto.saleItemDto.itemDto.itemImgUrl}`"
@@ -54,24 +57,22 @@
                 </div>
               </div>
             </div>
-            <div class="btn-box mt-2">
-            </div>
+            <div class="btn-box mt-2"></div>
           </div>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-              <v-card-actions>
-                <button
-                  class="border-m radius-l text-m btn-accept"
-                  @click="orderOk()"
-                >
-                  수락
-                </button>
-              </v-card-actions>
-              <v-card-actions>
-                <refuse-modal @check-it="checkIt" :value="value"></refuse-modal>
-              </v-card-actions>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-card-actions>
+              <button
+                class="border-m radius-l text-m btn-accept"
+                @click="orderOk()"
+              >
+                수락
+              </button>
             </v-card-actions>
-
+            <v-card-actions>
+              <refuse-modal @check-it="checkIt" :value="value"></refuse-modal>
+            </v-card-actions>
+          </v-card-actions>
         </v-card>
       </v-card>
     </v-dialog>
@@ -104,10 +105,10 @@ export default {
         .patch(`/order/sign/${this.value.orderDto.orderId}`)
         .then((response) => {
           if (response.status === 200) {
-            console.log(response);
+            // console.log(response);
           } else {
-            console.log(response);
-            alert("주문 실패");
+            // console.log(response);
+            this.$alert("주문서 처리에 실패하였습니다.");
           }
         });
       await http.get("/notice").then((response) => {
@@ -117,7 +118,7 @@ export default {
     },
     off() {
       this.parents = false;
-    }
+    },
   },
   data() {
     return {
@@ -184,8 +185,8 @@ export default {
 .food-pic {
   padding: 0;
   margin: 0;
-  width: 400px;
-  height: 200px;
+  width: 300px;
+  height: 150px;
 }
 .noti-title {
   text-align: start;
@@ -205,5 +206,8 @@ export default {
   background-color: #368f3d;
   color: #ffffff;
   width: 80px;
+}
+.title {
+  padding: 16px 10px 16px 16px;
 }
 </style>

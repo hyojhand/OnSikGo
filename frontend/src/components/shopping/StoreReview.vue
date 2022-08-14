@@ -6,10 +6,11 @@
       <div class="name-font">{{ nickname }}</div>
     </div>
     <!--리뷰 본문 부분-->
+    <div class="col-6">
+      <div class="content">{{ content }}</div>
+    </div>
 
-    <div class="col-7 content">{{ content }}</div>
-
-    <div v-if="userCheck" class="col-2">
+    <div v-if="userCheck" class="col-3">
       <!-- 리뷰 작성 유저일때 -->
       <div v-if="userDto.nickname == nickname">
         <img
@@ -20,15 +21,19 @@
         />
         <div v-if="deleteDuple">삭제가 완료되었습니다.</div>
       </div>
+
       <!-- 이외의 유저일때 -->
-      <div v-else class="col-2">
+      <div v-else>
         <img
           class="siren"
           src="@/assets/images/siren.png"
           @click="reportReview(reviewId)"
           alter="신고 버튼이었던것.."
         />
-        <div v-if="reportDuple">신고가 완료되었습니다.</div>
+        <div v-if="reportDuple" class="report mt-1">
+          <div>해당 리뷰를</div>
+          <div>신고하였습니다.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -69,6 +74,7 @@ export default {
     http.get("/user").then((response) => {
       this.userDto = response.data;
     });
+    console.log(this.reviewDto);
   },
 
   methods: {
@@ -104,7 +110,6 @@ export default {
         }
       });
     },
-
   },
 };
 </script>
@@ -124,11 +129,14 @@ div {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin: 0;
   width: 95%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 .content {
   text-align: start;
+  margin: 0;
+  margin-left: 17px;
 }
 .name-font {
   font-size: 12px;
@@ -142,5 +150,8 @@ button {
 .siren {
   width: 20px;
   height: 20px;
+}
+.report {
+  font-size: 8px;
 }
 </style>

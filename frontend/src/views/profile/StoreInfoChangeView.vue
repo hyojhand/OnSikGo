@@ -405,12 +405,12 @@ export default {
           })
           .then((response) => {
             if (response.status == 200) {
-              alert("가게정보 수정완료");
+              this.$alert("가게 정보 수정을 완료하였습니다.");
               this.$router.push({ name: "mypageOwner" });
             }
           });
       } else {
-        alert("사업자 등록번호를 정확하게 입력해주세요");
+        this.$alert("국세청에 등록된 사업자 등록번호를 정확하게 입력해주세요.");
       }
     },
     onSubmit(event) {

@@ -115,10 +115,14 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             console.log(this.currentPassword);
-            alert("현재 비밀번호와 같습니다!");
+            this.$alert(
+              "현재 비밀번호와 같습니다! 비밀번호 수정을 계속해주세요 :)"
+            );
             this.currentPwcheck = true;
           } else {
-            alert("현재 비밀번호 다릅니다.!");
+            this.$alert(
+              "현재 비밀번호 다릅니다 :( 현재 비밀번호를 정확하게 작성해주세요!"
+            );
             if (this.currentPwcheck == true) {
               this.currentPwcheck = false;
             }
@@ -138,18 +142,18 @@ export default {
           .patch("/user/pw", { password: this.passwordConfirm })
           .then((response) => {
             if (response.status == 200) {
-              alert("비밀번호 수정이 완료되었습니다");
+              this.$alert("비밀번호 수정이 완료되었습니다!");
               this.$router.push("/userinfochange");
             } else {
-              alert("비밀번호 수정이 되지 않았습니다.");
+              this.$alert("비밀번호 수정이 되지 않았습니다.");
             }
           });
       } else if (this.password != this.passwordConfirm) {
-        alert("비밀번호가 재입력이 다릅니다");
+        this.$alert("비밀번호가 재입력이 다릅니다");
       } else if (this.currentPwcheck == false) {
-        alert("현재 비밀번호 확인 먼저 부탁드립니다.");
+        this.$alert("현재 비밀번호 확인 먼저 부탁드립니다.");
       } else if (this.password.length < 1) {
-        alert("새로운 비밀번호를 입력해주세요!");
+        this.$alert("새로운 비밀번호를 입력해주세요!");
       }
     },
   },

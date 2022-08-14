@@ -12,7 +12,9 @@
       </template>
 
       <div class="card-refuse">
-        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e">📌 주문 거절 사유 </v-card-title>
+        <v-card-title class="text-h5 lighten-2 fw-bold" style="color: #66a32e"
+          >📌 주문 거절 사유
+        </v-card-title>
 
         <div class="mx-auto my-auto option-box">
           <v-list-item-content class="btn-box">
@@ -91,13 +93,13 @@ export default {
         })
         .then((response) => {
           if (response.status === 200) {
-            console.log(response);
+            // console.log(response);
             this.$router.push({
               name: "notice",
             });
           } else {
-            console.log(response);
-            alert("거절 실패");
+            // console.log(response);
+            this.$alert("거절 사유 처리에 실패하였습니다.");
           }
         });
       await http.get("/notice").then((response) => {

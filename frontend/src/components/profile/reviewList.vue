@@ -95,8 +95,7 @@ export default {
     async reviewdelete() {
       await http.delete(`/review/${this.reviewId}`).then((response) => {
         console.log(response);
-        alert("리뷰가 삭제되었습니다.");
-        // 새로고침 해야함
+        this.$alert("리뷰가 삭제되었습니다!");
       });
       await http
         .post("/review/user", {
