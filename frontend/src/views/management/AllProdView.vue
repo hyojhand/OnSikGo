@@ -68,7 +68,7 @@
           </svg>
         </button>
         <!-- 초기화 -->
-        <button class="none-margin">
+        <!-- <button class="none-margin">
           <svg
             @click="resetItemList()"
             xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +86,7 @@
               d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"
             />
           </svg>
-        </button>
+        </button> -->
       </div>
     </div>
 
@@ -334,6 +334,7 @@ export default {
   width: 45%;
   border: 3px solid white;
   margin: 2%;
+  background-color: white;
 }
 .nav-box {
   padding: 0;
