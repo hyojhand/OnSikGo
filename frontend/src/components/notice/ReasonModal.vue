@@ -61,8 +61,9 @@ export default {
               .post("https://fcm.googleapis.com/fcm/send", {
                 notification: {
                   title: "온식고의 알림이 도착했습니다",
-                  body: "온식고를 확인해주세요!",
+                  body: "주문하신 상품이 거절되었습니다.",
                   click_action: "https://i7e201.p.ssafy.io/",
+                  icon: "@/src/assets/real_logo.png",
                 },
                 to: response.data,
               })
