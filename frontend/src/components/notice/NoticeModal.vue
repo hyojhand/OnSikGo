@@ -124,7 +124,7 @@ export default {
                   title: "온식고의 알림이 도착했습니다",
                   body: "주문하신 상품이 승인되었습니다.",
                   click_action: "https://i7e201.p.ssafy.io/",
-                  icon: "@/src/assets/real_logo.png",
+                  icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
                 },
                 to: response.data,
               })
@@ -157,7 +157,7 @@ export default {
               .post("https://fcm.googleapis.com/fcm/send", {
                 notification: {
                   title: "온식고의 알림이 도착했습니다",
-                  body: "주문하신 상품 픽업이 완료되었습니다.",
+                  body: "주문하신 상품의 픽업을 완료하였습니다.",
                   click_action: "https://i7e201.p.ssafy.io/",
                   icon: "@/src/assets/real_logo.png",
                 },
