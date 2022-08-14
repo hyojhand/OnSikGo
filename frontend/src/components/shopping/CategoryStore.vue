@@ -17,7 +17,7 @@
             @click="selectAllList()"
           />
         </a>
-        <p>모두 보기</p>
+        <p class="mt-1" style="color:#000">모두 보기</p>
       </div>
 
       <div
@@ -35,7 +35,7 @@
             @click="selectKorea()"
           />
         </a>
-        <p>한식</p>
+        <p class="mt-1" style="color:#000">한식</p>
       </div>
 
       <div
@@ -53,7 +53,7 @@
             @click="selectJapan()"
           />
         </a>
-        <p>일식</p>
+        <p class="mt-1" style="color:#000">일식</p>
       </div>
     </div>
     <!-- 하위 가게 카테고리 -->
@@ -73,7 +73,7 @@
             @click="selectWestern()"
           />
         </a>
-        <p>양식</p>
+        <p class="mt-1" style="color:#000">양식</p>
       </div>
       <div
         :class="{
@@ -90,7 +90,7 @@
             @click="selectSnack()"
           />
         </a>
-        <p>분식</p>
+        <p class="mt-1" style="color:#000">분식</p>
       </div>
       <div
         :class="{
@@ -107,7 +107,7 @@
             @click="selectDesssert()"
           />
         </a>
-        <p>디저트</p>
+        <p class="mt-1" style="color:#000">디저트</p>
       </div>
     </div>
     <div class="row bbox">
@@ -126,7 +126,7 @@
             @click="selectIngredient()"
           />
         </a>
-        <p>식자재</p>
+        <p class="mt-1" style="color:#000">식자재</p>
       </div>
       <!-- 빈 공간 채우기 -->
       <div class="col" id="category-img"></div>
