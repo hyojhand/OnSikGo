@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="ordercard ml-5">
+    <div class="ordercard ml-3">
       <br />
       <div class="container">
         <div class="row">
@@ -149,11 +149,18 @@ export default {
 
 <style scoped>
 .ordercard {
-  width: 370px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
-  border-bottom: 2px solid rgba(0, 0, 0, 10%);
+  width: 95%;
+  background-color: white;
+  align-items: center;
+  height: 130px;
+  border-radius: 10px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 #btn-order {
   height: 25px;

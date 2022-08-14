@@ -70,7 +70,7 @@
 
     <div class="container">
       <div class="font-l sales">오늘 할인 판매 상품</div>
-      <div v-if="this.discardStoreList.length">
+      <div v-if="this.discardStoreList.length" class="mt-5">
         <discount-list />
       </div>
       <div v-else class="non-msg">
@@ -202,9 +202,5 @@ export default {
 .non-msg > div {
   font-size: 30px;
   color: rgba(0, 0, 0, 0.2);
-}
-.sales {
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-  padding-bottom: 3%;
 }
 </style>
