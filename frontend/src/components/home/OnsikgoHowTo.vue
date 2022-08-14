@@ -1,10 +1,20 @@
 <template>
-  <div>온식고 이용법이 내려가면서 적힙니다.</div>
+  <div>
+    <user-flow></user-flow>
+    <owner-flow></owner-flow>
+  </div>
 </template>
 
 <script>
+import UserFlow from "@/components/home/UserFlow.vue"
+import OwnerFlow from "@/components/home/OwnerFlow.vue"
 export default {
   name: "OnsikgoHowTo",
+
+  components: {
+    UserFlow,
+    OwnerFlow,
+  }
 };
 </script>
 
