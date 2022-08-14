@@ -138,6 +138,9 @@ export default {
   font-size: 18px;
   margin-right: 5%;
 }
+.tab:hover {
+  cursor: pointer;
+}
 .select > span {
   color: rgb(140, 184, 131);
 }

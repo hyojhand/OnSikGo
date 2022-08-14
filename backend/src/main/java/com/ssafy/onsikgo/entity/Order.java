@@ -52,6 +52,10 @@ public class Order {
         this.orderPrice = orderPrice;
     }
 
+    public void updateState(State state) {
+        this.state = state;
+    }
+
     public OrderDto toDto(SaleItemDto saleItemDto) {
         return OrderDto.builder()
                 .date(this.date)

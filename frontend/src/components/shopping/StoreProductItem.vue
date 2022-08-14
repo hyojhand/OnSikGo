@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <div class="item-card">
+    <div
+      class="item-card mt-3"
+      @click="productOrder(itemId, saleDto.storeDto.storeId)"
+    >
       <!-- 마커 -->
       <!-- <div class="col-2">
         <h1>{{ item.index }}</h1>
@@ -41,7 +44,7 @@
           <div class="discount-price">{{ salePrice }}원</div>
         </div>
         <button
-          class="order-button border-m radius-s"
+          class="border-m radius-s order-button"
           @click="productOrder(itemId, saleDto.storeDto.storeId)"
         >
           주문하기
@@ -157,6 +160,7 @@ export default {
     },
     productOrder(itemId, storeId) {
       if (localStorage.getItem("access-token") == null) {
+        this.$alert("로그인이 필요합니다.");
         this.$router.push({
           name: "login",
         });
@@ -172,6 +176,13 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(240, 240, 240);
+}
 .container .row .col-4 {
   text-align: left;
   margin: 0px;
@@ -206,13 +217,16 @@ export default {
   flex-direction: row;
   align-items: center;
   padding: 3px 0p;
+  background-color: white;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 .product-img {
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  padding-bottom: 5px;
+  width: 90px;
+  height: 90px;
+  padding-bottom: 12px;
+  padding-left: 5px;
 }
 .info-case {
   display: flex;
@@ -278,10 +292,18 @@ export default {
 }
 .order-button {
   margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 10px;
   width: 100%;
+  font-size: 13px;
+  padding: 3px 10px;
 }
 .order-button:hover {
   background-color: rgb(140, 184, 131);
+  cursor: pointer;
   color: #fff;
+}
+.item-card:hover {
+  cursor: pointer;
 }
 </style>

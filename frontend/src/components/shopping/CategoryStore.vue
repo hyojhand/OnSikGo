@@ -17,7 +17,7 @@
             @click="selectAllList()"
           />
         </a>
-        <p>모두 보기</p>
+        <p class="mt-1" style="color:#000">모두 보기</p>
       </div>
 
       <div
@@ -35,7 +35,7 @@
             @click="selectKorea()"
           />
         </a>
-        <p>한식</p>
+        <p class="mt-1" style="color:#000">한식</p>
       </div>
 
       <div
@@ -53,7 +53,7 @@
             @click="selectJapan()"
           />
         </a>
-        <p>일식</p>
+        <p class="mt-1" style="color:#000">일식</p>
       </div>
     </div>
     <!-- 하위 가게 카테고리 -->
@@ -73,7 +73,7 @@
             @click="selectWestern()"
           />
         </a>
-        <p>양식</p>
+        <p class="mt-1" style="color:#000">양식</p>
       </div>
       <div
         :class="{
@@ -90,7 +90,7 @@
             @click="selectSnack()"
           />
         </a>
-        <p>분식</p>
+        <p class="mt-1" style="color:#000">분식</p>
       </div>
       <div
         :class="{
@@ -107,7 +107,7 @@
             @click="selectDesssert()"
           />
         </a>
-        <p>디저트</p>
+        <p class="mt-1" style="color:#000">디저트</p>
       </div>
     </div>
     <div class="row bbox">
@@ -126,7 +126,7 @@
             @click="selectIngredient()"
           />
         </a>
-        <p>식자재</p>
+        <p class="mt-1" style="color:#000">식자재</p>
       </div>
       <!-- 빈 공간 채우기 -->
       <div class="col" id="category-img"></div>
@@ -159,7 +159,7 @@
           </svg>
         </button>
         <!-- 초기화 -->
-        <button class="search-reset" @click="resetList()">
+        <!-- <button class="search-reset" @click="resetList()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -176,16 +176,20 @@
               d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"
             />
           </svg>
-        </button>
+        </button> -->
       </div>
     </div>
     <!-- 검색 결과 -->
 
-    <div v-if="this.storeList.length" style="padding-left: 1rem">
+    <div
+      v-if="this.storeList.length"
+      style="padding-left: 1rem; background-color: rgb(240, 240, 240)"
+    >
       <store-item
         v-for="(store, index) in storeList"
         :key="index"
         v-bind="store"
+        class="mb-3"
       />
     </div>
     <div v-else class="none-msg">
@@ -355,7 +359,7 @@ img {
   font-size: 12px;
   background-repeat: no-repeat;
   padding: 5px 5px;
-  width: 170px;
+  width: 210px;
   height: 30px;
   background-color: #fff;
 }
@@ -415,6 +419,10 @@ img {
 .bbox {
   width: 100%;
   margin: 0;
+}
+
+.bbox > div > p {
+  letter-spacing:2px;
 }
 .search-reset {
   padding: 0;

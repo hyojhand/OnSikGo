@@ -120,7 +120,7 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            alert("유저정보 수정완료");
+            this.$alert("회원 정보 수정을 완료하였습니다.");
             if (this.userDto.role === "USER") {
               this.$router.push({ name: "mypageUser" });
             } else {
@@ -140,9 +140,11 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.nicknameDuple = !this.nicknameDuple;
-            alert("중복된 닉네임이 없어 수정 완료되었습니다");
+            this.$alert("중복된 닉네임이 없어 수정 완료되었습니다");
           } else {
-            alert("중복된 닉네임이 있습니다");
+            this.$alert(
+              "중복된 닉네임이 있습니다. 다른 닉네임을 입력해주세요 :)"
+            );
           }
         });
     },
