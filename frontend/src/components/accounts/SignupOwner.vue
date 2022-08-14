@@ -96,8 +96,10 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 2"
-          v-bind:disabled="check1 == false"
+
+          style="width: 100px;"
           >
+          <!--           v-bind:disabled="check1 == false" -->
           다음으로</button>
         </div>
       </v-stepper-content>
@@ -189,12 +191,13 @@
         </form>
 
         <div class="sign-btn">
-          <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
+          <button class="border-m radius-m" style="width:100px;" @click="e1 = 1">이전으로</button>
           <button 
           class="border-m radius-m" 
           @click="e1 = 3"
-          v-bind:disabled="check2 == false"
+          style="width:100px;"
           >다음으로</button>
+          <!-- v-bind:disabled="check2 == false" -->
         </div>
       </v-stepper-content>
 
@@ -204,6 +207,7 @@
         black
         outlined
         min-height="200"
+        style="width: 350px;"
       >
         <form @submit.prevent="submit" class="mb-2">
           <!-- -----------마감시간 입력----------- -->
@@ -247,12 +251,15 @@
           </div>
         </form>
 
-        <div class="sign-btn">
-          <button class="border-m radius-m mt-5" @click="e1 = 2">이전으로</button>
+        <div class="sign-btn" style="margin-top: 40px;">
+          <button class="border-m radius-m" style="width:100px;" @click="e1 = 2">이전으로</button>
           <button 
-          v-if="category != false && imgFile != null"
+
           class="border-m radius-m" 
-          @click="signup()">가입하기</button>
+          @click="signup()"
+          style="width:100px; background-color: #368f3d; border-color: #368f3d; color: white;"
+          >가입하기</button>
+                    <!-- v-if="category != false && imgFile != null" -->
         </div>
         <div v-if="signupfailDuple" style="color:red;">😥 회원가입에 실패했습니다.</div>
       </v-stepper-content>

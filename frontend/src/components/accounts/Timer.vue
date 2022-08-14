@@ -1,5 +1,5 @@
 <template>
-    <div id="timer" style="margin-left:25px;">
+    <div id="timer" style="margin-left:15px;">
         <p :class="{'text-danger': total<=0}">
             <strong>{{minutes}}</strong>
             <strong>:</strong>

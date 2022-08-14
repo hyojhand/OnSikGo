@@ -1,7 +1,6 @@
 <template>
   <div>
-    온식고란?
-    <ul class="tabs mb-3">
+    <ul class="tabs mt-5 mb-3">
       <li
         v-for="tab in tabs"
         v-bind:class="{
@@ -31,6 +30,12 @@ import OnsikgoHowTo from "@/components/home/OnsikgoHowTo.vue";
 
 export default {
   name: "InstructionView",
+  props: {
+    tab: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       tabs: ["온식고 소개", "온식고 이용법"],
@@ -42,6 +47,14 @@ export default {
     onClickTab(tab) {
       this.selectedTab = tab;
     },
+  },
+  created() {
+    this.selectedTab = this.$route.params.tab;
+    if (this.selectedTab) {
+      this.selectedTab = this.tabs[1];
+    } else {
+      this.selectedTab = this.tabs[0];
+    }
   },
 };
 </script>
