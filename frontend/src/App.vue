@@ -1,4 +1,5 @@
 <template>
+<!-- CHECK 후 지울거에요 -->
   <div class="all">
     <div class="web">
       <div class="on-box">

@@ -1,15 +1,14 @@
 <template>
   <div class="signup-box" width="100%">
     <div>
-      <h1 class="mb-5"><strong style="color: #368f3d; font-size:40px;">Onsikgo</strong> 회원 가입</h1>
-      <v-list-item-subtitle class="mb-2" style="font-size:13px;"
+      <div class="mb-2" style="font-size:28px;"><strong style="color: #368f3d; font-size:40px;">Onsikgo</strong> 회원 가입</div>
+      <v-list-item-subtitle style="font-size:13px;"
         >본인이 해당하는 회원가입 유형을 선택해주세요.</v-list-item-subtitle>
-      <v-list-item-subtitle class="mb-5"></v-list-item-subtitle>
     </div>
 
-    <v-card class="btn-box" style="margin-top: 10px;" black outlined width="350" height="330">
-      <div class="type-box">
-        <img src="@/assets/images/buyer.png" alt="유저티콘" width="100" height="100">
+    <v-card class="btn-box" style="margin-top: 25px;" black outlined width="350" height="300">
+      <div class="type-box" style="margin-top:15px;">
+        <img src="@/assets/images/buyer.png" alt="유저티콘" width="80" height="80">
         <div class="mt-5 fw-bold fs-5">일반고객</div>
         <div class="mt-2">맛있는 음식을 픽업으로 즐기고 싶으시다면</div> 
         <div class="mb-5">일반고객으로 회원가입해주세요!</div>
@@ -17,9 +16,9 @@
           <v-btn class="select-btn fw-bold" color="success" @click="goSignUser()">일반고객 회원가입</v-btn></div>
       </div>
     </v-card>
-    <v-card class="btn-box" black outlined width="350" height="330">
-      <div class="type-box">
-        <img src="@/assets/images/seller.png" alt="유저티콘" width="100" height="100">
+    <v-card class="btn-box" black outlined width="350" height="300">
+      <div class="type-box" style="margin-top:15px;">
+        <img src="@/assets/images/seller.png" alt="유저티콘" width="80" height="80">
         <div class="mt-5 fw-bold fs-5">업주</div>
         <div class="mt-2">맛있는 음식을 제공하고 싶으시다면</div> 
         <div class="mb-5">업주로 회원가입해주세요!</div>
@@ -48,7 +47,7 @@ export default {
 .signup-box {
   display: flex;
   flex-direction: column;
-  height: 250vh;
+  /* height: 250vh; */
   justify-content: flex-start;
   align-items: center;
 }
