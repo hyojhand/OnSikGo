@@ -6,11 +6,15 @@
           class="border-m radius-m notice-btn"
           v-bind="attrs"
           v-on="on"
-          v-bind:disabled="
-            value.orderDto.state == 'ORDER' || value.orderDto.state == 'CANCEL'
-          "
+          v-if="value.orderDto.state == 'WAIT'"
         >
           주문 확인
+        </button>
+        <button
+          class="border-m radius-m notice-btn" 
+          v-else-if="value.orderDto.state == 'ORDER'"
+          @click="pickUp()">
+          픽업완료
         </button>
       </template>
 
@@ -119,6 +123,23 @@ export default {
     off() {
       this.parents = false;
     },
+    async pickUp() {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      await http
+        .patch(`/order/pickup/${this.value.orderDto.orderId}`)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log(response);
+          } else {
+            // console.log(response);
+            this.$alert("주문서 처리에 실패하였습니다.");
+          }
+        });
+      await http.get("/notice").then((response) => {
+        this.getOwnerOrderList(response.data.reverse());
+      });
+    }
   },
   data() {
     return {

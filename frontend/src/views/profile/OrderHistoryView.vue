@@ -43,7 +43,7 @@ export default {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http.get("/order").then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         this.orderList = response.data.reverse();
       });
     },
