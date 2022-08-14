@@ -191,7 +191,7 @@ export default {
       saleItemList: [],
       reviewContent: "",
       reviewList: [],
-      liking: "",
+      liking: "fail",
       storeNameSize: 0,
     };
   },
@@ -359,6 +359,7 @@ div {
 .store-like {
   margin-left: 5px;
 }
+
 /* 점없애고 가로정렬 */
 .store-img {
   width: 100%;
