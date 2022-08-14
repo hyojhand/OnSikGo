@@ -157,9 +157,10 @@ img {
   justify-content: center;
 }
 .store-name {
-  width: 40%;
+  width: 100%;
   font-size: 30px;
   text-align: center;
+  margin-bottom: 5px;
   padding: 2% 0;
   color: rgba(0, 0, 0, 60%);
 }
