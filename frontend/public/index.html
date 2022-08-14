@@ -106,14 +106,38 @@
 
   <body>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
-    <script src="https://cdn.flarelane.com/WebSDK.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+
     <script>
-      FlareLane.initialize({
-        projectId: "36ccd382-f66d-4c9d-9c4e-6550b2d83269",
-        // 사용중인 별도 이름의 ServiceWorker가 있는 경우 해당 경로
-        // serviceWorkerPath: '/otherServiceWorker.js'
-      });
+      var config = {
+        apiKey: "AIzaSyAH2b61bqynf-4o-HKOXnTi64WgWDpBPNU",
+        authDomain: "onsikgo.firebaseapp.com",
+        // databaseURL: "https://onsikgo.firebaseio.com",
+        projectId: "onsikgo",
+        storageBucket: "onsikgo.appspot.com",
+        messagingSenderId: "580899564705",
+
+        appId: "1:580899564705:web:ba803077a8a0fb894a54e0",
+        measurementId: "G-X12T9KQEVG",
+      };
+      firebase.initializeApp(config);
+
+      const messaging = firebase.messaging();
+
+      //token값 알아내기
+      messaging
+        .requestPermission()
+        .then(function () {
+          console.log("Have permission");
+          return messaging.getToken();
+        })
+        .then(function (token) {
+          localStorage.setItem("fcm-token", token);
+          console.log(token);
+        })
+        .catch(function (arr) {
+          console.log("Error Occured");
+        });
     </script>
   </body>
 </html>
