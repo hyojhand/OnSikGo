@@ -40,7 +40,7 @@
 <script>
 import http from "@/util/http-common";
 import { mapActions } from "vuex";
-
+import axios from "axios";
 export default {
   name: "ReasonModal",
   methods: {
@@ -54,7 +54,21 @@ export default {
         })
         .then((response) => {
           if (response.status === 200) {
-            // console.log(response);
+            console.log(response.data);
+            axios.defaults.headers["Authorization"] =
+              "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
+            axios
+              .post("https://fcm.googleapis.com/fcm/send", {
+                notification: {
+                  title: "온식고의 알림이 도착했습니다",
+                  body: "온식고를 확인해주세요!",
+                  click_action: "https://i7e201.p.ssafy.io/",
+                },
+                to: response.data,
+              })
+              .then((response) => {
+                console.log(response);
+              });
             this.$router.push({
               name: "notice",
             });

@@ -11,17 +11,22 @@
           주문 확인
         </button>
         <button
-          class="border-m radius-m notice-btn" 
+          class="border-m radius-m notice-btn"
           v-else-if="value.orderDto.state == 'ORDER'"
-          @click="pickUp()">
+          @click="pickUp()"
+        >
           픽업완료
         </button>
       </template>
 
       <v-card>
         <div class="d-flex justify-content-spacebetween">
-        <v-card-title class="title lighten-2 fw-bold" style="color: #66a32e">주문 상세보기</v-card-title>
-        <button @click="off()" style="margin-left:140px;"><i class="fa-solid fa-xmark"></i></button>
+          <v-card-title class="title lighten-2 fw-bold" style="color: #66a32e"
+            >주문 상세보기</v-card-title
+          >
+          <button @click="off()" style="margin-left: 140px">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
         <v-card
           class="mx-auto my-auto pb-3 order-info"
@@ -46,7 +51,7 @@
             </div>
           </div>
           <div class="mx-auto card-box" max-width="300" outlined>
-            <div style="margin-top:50px; margin-bottom: 50px;" >
+            <div style="margin-top: 50px; margin-bottom: 50px">
               <img
                 class="col-5 food-pic"
                 :src="`${value.orderDto.saleItemDto.itemDto.itemImgUrl}`"
@@ -86,6 +91,7 @@
 <script>
 import RefuseModal from "@/components/notice/RefuseModal.vue";
 import http from "@/util/http-common.js";
+import axios from "axios";
 import { mapActions } from "vuex";
 export default {
   name: "NoticeModal",
@@ -109,7 +115,21 @@ export default {
         .patch(`/order/sign/${this.value.orderDto.orderId}`)
         .then((response) => {
           if (response.status === 200) {
-            // console.log(response);
+            console.log(response);
+            axios.defaults.headers["Authorization"] =
+              "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
+            axios
+              .post("https://fcm.googleapis.com/fcm/send", {
+                notification: {
+                  title: "온식고의 알림이 도착했습니다",
+                  body: "온식고를 확인해주세요!",
+                  click_action: "https://i7e201.p.ssafy.io/",
+                },
+                to: response.data,
+              })
+              .then((response) => {
+                console.log(response);
+              });
           } else {
             // console.log(response);
             this.$alert("주문서 처리에 실패하였습니다.");
@@ -130,7 +150,20 @@ export default {
         .patch(`/order/pickup/${this.value.orderDto.orderId}`)
         .then((response) => {
           if (response.status === 200) {
-            console.log(response);
+            axios.defaults.headers["Authorization"] =
+              "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
+            axios
+              .post("https://fcm.googleapis.com/fcm/send", {
+                notification: {
+                  title: "온식고의 알림이 도착했습니다",
+                  body: "온식고를 확인해주세요!",
+                  click_action: "https://i7e201.p.ssafy.io/",
+                },
+                to: response.data,
+              })
+              .then((response) => {
+                console.log(response);
+              });
           } else {
             // console.log(response);
             this.$alert("주문서 처리에 실패하였습니다.");
@@ -139,7 +172,7 @@ export default {
       await http.get("/notice").then((response) => {
         this.getOwnerOrderList(response.data.reverse());
       });
-    }
+    },
   },
   data() {
     return {
