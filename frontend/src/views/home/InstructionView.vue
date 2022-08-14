@@ -1,7 +1,6 @@
 <template>
   <div>
-    온식고란?
-    <ul class="tabs mb-3">
+    <ul class="tabs mt-5 mb-3">
       <li
         v-for="tab in tabs"
         v-bind:class="{
@@ -42,6 +41,9 @@ export default {
     onClickTab(tab) {
       this.selectedTab = tab;
     },
+  },
+  created() {
+    this.selectedTab = this.tabs[0];
   },
 };
 </script>
