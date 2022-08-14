@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 현재 주소 -->
-    <div class="location mt-3 mb-3">
+    <!-- <div class="location mt-3 mb-3">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -20,66 +20,56 @@
         />
       </svg>
       <span> {{ currentAddress }}</span>
+    </div> -->
+    <div v-if="this.userCheck !== 0">
+      <div class="mt-4 greeting">안녕하세요 {{ userDto.nickname }}님</div>
+      <div class="mb-4 greeting">온식고를 찾아주셔서 감사합니다</div>
     </div>
-
     <!-- 슬로건 -->
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="3000"
-      controls
-      indicators
-      img-width="1024"
-      img-height="500"
-      style="text-shadow: 1px 1px 2px #333; margin-top: 1rem"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
+    <v-carousel
+      cycle
+      height="220px"
+      hide-delimiter-background
+      show-arrows-on-hover
+      class="mt-3"
     >
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/onsikgo_slogan.png"
-            alt="image slot"
-            style="border-radius: 7px"
-          />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/earth.jpg"
-            alt="image slot"
-            style="border-radius: 7px"
-          />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/save.jpg"
-            alt="image slot"
-            style="border-radius: 7px"
-          />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/donation.jpg"
-            alt="image slot"
-            style="border-radius: 7px"
-          />
-        </template>
-      </b-carousel-slide>
-    </b-carousel>
+      <v-carousel-item>
+        <img
+          width="95%"
+          height="220px"
+          src="@/assets/images/main.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+      <v-carousel-item>
+        <img
+          width="95%"
+          height="220px"
+          src="@/assets/images/howto.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+      <v-carousel-item>
+        <img
+          width="95%"
+          height="220px"
+          src="@/assets/images/ment.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+      <v-carousel-item>
+        <img
+          width="95%"
+          height="220px"
+          src="@/assets/images/ask.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+    </v-carousel>
   </div>
 </template>
 
@@ -89,6 +79,7 @@
 ></script>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import http from "@/util/http-common";
 
 export default {
   name: "SloganPage",
@@ -97,17 +88,15 @@ export default {
       slide: 0,
       currentLongitude: 33.452278,
       currentxLatitude: 126.567803,
+      userDto: {},
     };
   },
   computed: {
-    ...mapGetters("store", ["currentAddress"]),
+    // ...mapGetters("store", ["currentAddress"]),
+    ...mapGetters("accounts", ["userCheck"]),
   },
   methods: {
-    ...mapActions("store", [
-      "getAddress",
-      "getCurrentX",
-      "getCurrentY",
-    ]),
+    ...mapActions("store", ["getAddress", "getCurrentX", "getCurrentY"]),
     onSlideStart() {
       this.sliding = true;
     },
@@ -116,15 +105,14 @@ export default {
     },
     findaddress() {
       if (navigator.geolocation) {
-      // 현재 위치
-      navigator.geolocation.getCurrentPosition((position) => {
-        (this.currentxLatitude = position.coords.latitude), // 위도
-        (this.currentLongitude = position.coords.longitude); // 경도
-        this.changeaddress();
+        // 현재 위치
+        navigator.geolocation.getCurrentPosition((position) => {
+          (this.currentxLatitude = position.coords.latitude), // 위도
+            (this.currentLongitude = position.coords.longitude); // 경도
+          this.changeaddress();
         });
-        } 
-      
-      },
+      }
+    },
     changeaddress() {
       var geocoder = new kakao.maps.services.Geocoder();
 
@@ -147,8 +135,15 @@ export default {
     },
   },
   created() {
-    this.findaddress()
-  }
+    this.findaddress();
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+
+    http.get("/user").then((response) => {
+      this.userDto = response.data;
+      // console.log(this.userDto);
+    });
+  },
 };
 </script>
 
@@ -164,5 +159,11 @@ export default {
   margin-left: 5px;
   /* 밑줄 */
   border-bottom: 2px solid #8cb883;
+}
+.greeting {
+  font-size: 18px;
+  width: 100%;
+  padding-left: 5%;
+  text-align: start;
 }
 </style>

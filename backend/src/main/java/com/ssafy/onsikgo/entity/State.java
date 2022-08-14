@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum State {
-    WAIT, ORDER, CANCEL
+    WAIT, ORDER, CANCEL, PICKUP
 }

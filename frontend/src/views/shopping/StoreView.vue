@@ -48,46 +48,6 @@
       </div>
     </div>
 
-    <div>
-      <!--지도표시부분-->
-      <store-kakao-map></store-kakao-map>
-      <div class="content">
-        <div class="row info-text">
-          <div class="col-3 title adtitle">상세주소 :</div>
-          <div class="col-9 info-content adress">
-            <div>{{ storeDto.address }}</div>
-            <div>
-              {{ storeDto.extraAddress }}
-            </div>
-          </div>
-        </div>
-        <div class="row info-text">
-          <div class="col-3 title">전화번호:</div>
-          <div class="col-9 info-content">
-            {{ storeDto.tel }}
-          </div>
-        </div>
-        <div class="row info-text">
-          <div class="col-3 title">영업시간:</div>
-          <div class="col-9 info-content">{{ storeDto.closingTime }}</div>
-        </div>
-        <div class="row info-text">
-          <div class="col-3 title">휴무일:</div>
-          <div class="col-9 info-content">
-            {{ storeDto.offDay }}
-          </div>
-        </div>
-        <div class="row info-text">
-          <div class="col-3 title">공유하기:</div>
-          <share-sns
-            class="col-9"
-            v-bind:storeImgUrl="storeDto.storeImgUrl"
-            v-bind:storeName="storeDto.storeName"
-          />
-        </div>
-      </div>
-    </div>
-
     <!-- Tab 기능 -->
     <div class="about-store">
       <ul class="tabs mt-3">
@@ -107,8 +67,8 @@
 
       <!-- 상품 설명란 -->
       <div class="product mt-3" v-if="selectedTab === tabs[0]">
-        <div class="head">📃 해당 매장에서 오늘 등록된 상품</div>
-        <div v-if="this.saleItemList.length">
+        <div class="head mb-2">📃 해당 매장에서 오늘 등록된 상품</div>
+        <div v-if="this.saleItemList.length" class="mb-3 case">
           <store-product-item
             v-for="(saleItem, index) in saleItemList"
             :key="index"
@@ -120,7 +80,7 @@
           <div>상품이 없어요 ㅠ</div>
         </div>
       </div>
-      <div class="product mt-3" v-else>
+      <div class="product mt-3" v-else-if="selectedTab == tabs[1]">
         <div class="head mb-3">🥨 온식고 식구들의 입소문</div>
         <!--리뷰입력창-->
         <div class="comment">
@@ -149,7 +109,7 @@
             />
           </button>
         </div>
-        <div v-if="storeReviewList.length">
+        <div v-if="storeReviewList.length" class="mb-5">
           <store-review
             class="review"
             v-for="(reviewDto, index) in storeReviewList"
@@ -160,6 +120,46 @@
         <div v-else class="non-msg">
           <div>아직 등록된</div>
           <div>리뷰가 없어요 ㅠ</div>
+        </div>
+      </div>
+      <div class="product mt-3" v-else>
+        <!--지도표시부분-->
+        <store-kakao-map></store-kakao-map>
+        <!-- 상품 설명 -->
+        <div class="content">
+          <div class="row info-text">
+            <div class="col-3 store-title adtitle">상세주소 :</div>
+            <div class="col-9 info-content adress">
+              <div>{{ storeDto.address }}</div>
+              <div>
+                {{ storeDto.extraAddress }}
+              </div>
+            </div>
+          </div>
+          <div class="row info-text">
+            <div class="col-3 store-title">전화번호 :</div>
+            <div class="col-9 info-content">
+              {{ storeDto.tel }}
+            </div>
+          </div>
+          <div class="row info-text">
+            <div class="col-3 store-title">영업시간 :</div>
+            <div class="col-9 info-content">{{ storeDto.closingTime }}</div>
+          </div>
+          <div class="row info-text">
+            <div class="col-3 store-title">휴무일 :</div>
+            <div class="col-9 info-content">
+              {{ storeDto.offDay }}
+            </div>
+          </div>
+          <div class="row info-text">
+            <div class="col-3 store-title">공유하기 :</div>
+            <share-sns
+              class="col-9 share-icon"
+              v-bind:storeImgUrl="storeDto.storeImgUrl"
+              v-bind:storeName="storeDto.storeName"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -185,13 +185,13 @@ export default {
 
   data: function () {
     return {
-      tabs: ["상품", "입소문"],
+      tabs: ["상품", "입소문", "상세정보"],
       selectedTab: "",
       storeDto: [],
       saleItemList: [],
       reviewContent: "",
       reviewList: [],
-      liking: "",
+      liking: "fail",
       storeNameSize: 0,
     };
   },
@@ -279,6 +279,7 @@ export default {
       });
     },
     login() {
+      this.$alert("로그인이 필요합니다.");
       this.$router.push("/login");
     },
   },
@@ -312,7 +313,7 @@ div {
   margin-bottom: 2px;
   width: 100%;
 }
-.title {
+.store-title {
   padding-left: 15px;
   font-size: 15px !important;
   font-weight: 800;
@@ -358,6 +359,7 @@ div {
 .store-like {
   margin-left: 5px;
 }
+
 /* 점없애고 가로정렬 */
 .store-img {
   width: 100%;
@@ -428,7 +430,7 @@ div {
 }
 .about-store {
   width: 100%;
-  background-color: white;
+  background-color: rgb(240, 240, 240);
 }
 .now {
   color: rgb(140, 184, 131);
@@ -448,4 +450,5 @@ div {
   height: 38px;
   width: 40px;
 }
+
 </style>

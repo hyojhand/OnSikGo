@@ -105,9 +105,10 @@ button {
   flex-direction: row;
   padding-bottom: 3%;
   margin: 2% 0;
+  background-color: white;
 }
 .edit-btn {
-  background-color: rgb(255, 82, 82);
+  background-color: rgba(255, 82, 82, 0.75);
   width: 160px;
   margin: 0;
 }

@@ -530,4 +530,6 @@ export default {
 #temp2 {
   width: 100%;
 }
+#app {
+}
 </style>

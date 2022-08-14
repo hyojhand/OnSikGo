@@ -46,6 +46,11 @@
                 style="font-size: 0.75rem; color: red"
                 >[상태: 주문거절]</span
               >
+              <span
+                v-else-if="`${order.state}` === 'PICKUP'"
+                style="font-size: 0.75rem; color: orange"
+                >[상태: 수령완료]</span
+              >
             </div>
           </div>
           <div class="col-3 mt-2">
