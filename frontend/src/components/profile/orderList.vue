@@ -107,9 +107,9 @@ export default {
           axios.post("https://fcm.googleapis.com/fcm/send", {
             notification: {
               title: "온식고의 알림이 도착했습니다",
-              body: "고객의 요청으로 주문이 취소되었습니다.",
+              body: "고객님의 요청으로 주문이 취소되었습니다.",
               click_action: "https://i7e201.p.ssafy.io/",
-              icon: "@/src/assets/real_logo.png",
+              icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
             },
             to: response.data,
           });

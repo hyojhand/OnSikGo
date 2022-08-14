@@ -102,7 +102,7 @@ export default {
                   title: "온식고의 알림이 도착했습니다",
                   body: "주문하신 상품이 거절되었습니다.",
                   click_action: "https://i7e201.p.ssafy.io/",
-                  icon: "@/src/assets/real_logo.png",
+                  icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
                 },
                 to: response.data,
               })
