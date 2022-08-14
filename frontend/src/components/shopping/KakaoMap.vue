@@ -351,16 +351,23 @@ export default {
     },
     //
     productOrder(item) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (localStorage.getItem("access-token") == null) {
+        this.$alert("로그인이 필요합니다.");
         this.$router.push({
           name: "login",
         });
       } else {
-        this.getItemId(item.itemId),
-          this.getOrderStore(item.saleDto.storeDto.storeId);
-        this.$router.push({
-          name: "orderView",
-        });
+        if (isLogin == 1) {
+          this.$alert("업주께서는 이용하실수 없는 서비스입니다.");
+        } else {
+          this.getItemId(item.itemId),
+            this.getOrderStore(item.saleDto.storeDto.storeId);
+          this.$router.push({
+            name: "orderView",
+          });
+        }
       }
     },
     // 키워드 검색
