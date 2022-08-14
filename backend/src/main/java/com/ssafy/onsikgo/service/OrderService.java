@@ -80,10 +80,11 @@ public class OrderService {
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(storeUser.getEmail());
-        fcmService.send(to);
-        log.info("fcm 주문완료");
+//        fcmService.send(to);
+//        log.info("fcm 주문완료");
 
-        return new ResponseEntity<>("주문이 등록되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(to, HttpStatus.OK);
+//        return new ResponseEntity<>("주문이 등록되었습니다.", HttpStatus.OK);
     }
 
     public ResponseEntity<List<OrderDto>> getList(HttpServletRequest request) {
@@ -168,10 +169,11 @@ public class OrderService {
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(findOrder.get().getUser().getEmail());
-        fcmService.send(to);
-        log.info("fcm 주문승인완료");
+//        fcmService.send(to);
+//        log.info("fcm 주문승인완료");
 
-        return new ResponseEntity<>("주문이 승인되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(to, HttpStatus.OK);
+//        return new ResponseEntity<>("주문이 승인되었습니다.", HttpStatus.OK);
     }
 
     @Transactional
@@ -201,10 +203,11 @@ public class OrderService {
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(findOrder.get().getUser().getEmail());
-        fcmService.send(to);
-        log.info("fcm 거절완료");
+//        fcmService.send(to);
+//        log.info("fcm 거절완료");
 
-        return new ResponseEntity<>("가게사정으로 주문이 거절되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(to, HttpStatus.OK);
+//        return new ResponseEntity<>("가게사정으로 주문이 거절되었습니다.", HttpStatus.OK);
     }
 
     @Transactional
@@ -238,10 +241,11 @@ public class OrderService {
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(storeUser.getEmail());
-        fcmService.send(to);
-        log.info("fcm 취소완료");
+//        fcmService.send(to);
+//        log.info("fcm 취소완료");
 
-        return new ResponseEntity<>("사용자가 주문을 취소하였습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(to, HttpStatus.OK);
+//        return new ResponseEntity<>("사용자가 주문을 취소하였습니다.", HttpStatus.OK);
     }
 
     @Transactional
@@ -293,10 +297,11 @@ public class OrderService {
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(findOrder.get().getUser().getEmail());
-        fcmService.send(to);
-        log.info("fcm 픽업완료");
+//        fcmService.send(to);
+//        log.info("fcm 픽업완료");
 
-        return new ResponseEntity<>("주문이 승인되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(to, HttpStatus.OK);
+//        return new ResponseEntity<>("주문이 승인되었습니다.", HttpStatus.OK);
     }
 
     public ResponseEntity<String> totalOrderPrice(HttpServletRequest request) {
