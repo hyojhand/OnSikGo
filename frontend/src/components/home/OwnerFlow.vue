@@ -1,16 +1,16 @@
 <template>
   <div>
     <!-- 점주 사용법 -->
-    <p>업주</p>
+    <p class="info-title p-4">업주's 온식고 이용방법</p>
     <section>
       <div class="container">
           <div class="carousel">
-              <input type="radio" name="slides" checked="checked" id="slide-1">
-              <input type="radio" name="slides" id="slide-2">
-              <input type="radio" name="slides" id="slide-3">
-              <input type="radio" name="slides" id="slide-4">
-              <input type="radio" name="slides" id="slide-5">
-              <input type="radio" name="slides" id="slide-6">
+              <input type="radio" name="slides" checked="checked" id="ownerslide-1">
+              <input type="radio" name="slides" id="ownerslide-2">
+              <input type="radio" name="slides" id="ownerslide-3">
+              <input type="radio" name="slides" id="ownerslide-4">
+              <input type="radio" name="slides" id="ownerslide-5">
+              <input type="radio" name="slides" id="ownerslide-6">
               <ul class="carousel__slides">
                   <li class="carousel__slide">
                       <figure>
@@ -18,7 +18,7 @@
                               <img src="https://picsum.photos/id/1041/800/450" alt="">
                           </div>
                           <figcaption>
-                              소셜 로그인 & 회원가입 후 로그인
+                              온식고 사이트 회원가입 후 로그인
                               <span class="credit">로그인</span>
                           </figcaption>
                       </figure>
@@ -29,7 +29,7 @@
                               <img src="https://picsum.photos/id/1043/800/450" alt="">
                           </div>
                           <figcaption>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                              온식고를 통해 판매하고 싶은 상품 등록
                               <span class="credit">상품 등록</span>                            
                           </figcaption>
                       </figure>
@@ -40,7 +40,7 @@
                               <img src="https://picsum.photos/id/1044/800/450" alt="">
                           </div>
                           <figcaption>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                              할인가 와 재고 수량을 입력 후 상품 등록
                               <span class="credit">재고 수량 등록</span>                            
                           </figcaption>
                       </figure>
@@ -51,7 +51,7 @@
                               <img src="https://picsum.photos/id/1045/800/450" alt="">
                           </div>
                           <figcaption>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                              소비자로 부터 온 주문서 확인
                               <span class="credit">알림 확인</span>                            
                           </figcaption>
                       </figure>
@@ -62,7 +62,7 @@
                               <img src="https://picsum.photos/id/1049/800/450" alt="">
                           </div>
                           <figcaption>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                              소비자가 오기전에 미리 상품 준비
                               <span class="credit">상품 준비</span>                            
                           </figcaption>
                       </figure>
@@ -73,7 +73,7 @@
                               <img src="https://picsum.photos/id/1052/800/450" alt="">
                           </div>
                           <figcaption>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                              주문한 소비자에게 상품 전달
                               <span class="credit">상품 전달</span>                            
                           </figcaption>
                       </figure>
@@ -81,22 +81,22 @@
               </ul>    
               <ul class="carousel__thumbnails">
                   <li>
-                      <label for="slide-1"><img src="https://picsum.photos/id/1041/150/150" alt=""></label>
+                      <label for="ownerslide-1"><img src="https://picsum.photos/id/1041/150/150" alt=""></label>
                   </li>
                   <li>
-                      <label for="slide-2"><img src="https://picsum.photos/id/1043/150/150" alt=""></label>
+                      <label for="ownerslide-2"><img src="https://picsum.photos/id/1043/150/150" alt=""></label>
                   </li>
                   <li>
-                      <label for="slide-3"><img src="https://picsum.photos/id/1044/150/150" alt=""></label>
+                      <label for="ownerslide-3"><img src="https://picsum.photos/id/1044/150/150" alt=""></label>
                   </li>
                   <li>
-                      <label for="slide-4"><img src="https://picsum.photos/id/1045/150/150" alt=""></label>
+                      <label for="ownerslide-4"><img src="https://picsum.photos/id/1045/150/150" alt=""></label>
                   </li>
                   <li>
-                      <label for="slide-5"><img src="https://picsum.photos/id/1049/150/150" alt=""></label>
+                      <label for="ownerslide-5"><img src="https://picsum.photos/id/1049/150/150" alt=""></label>
                   </li>
                   <li>
-                      <label for="slide-6"><img src="https://picsum.photos/id/1052/150/150" alt=""></label>
+                      <label for="ownerslide-6"><img src="https://picsum.photos/id/1052/150/150" alt=""></label>
                   </li>
               </ul>
           </div>
@@ -110,6 +110,12 @@ export default {
   name:"OwnerFlow"
 }
 </script>
+
+<style scoped>
+  .info-title {
+    font-size: 18px;
+  }
+</style>
 
 <style lang="scss" scoped>
 @mixin aspect-ratio($width, $height) {
@@ -137,7 +143,7 @@ export default {
 
 section {
     background: #F4F4F4;
-    padding: 50px 0;
+    padding:0;
 }
 
 .container {
