@@ -133,7 +133,9 @@
           <button 
           class="border-m radius-m notice-btn" 
           @click="signup()"
-          v-if="check1 && check2 && checkbox">
+          style="margin-top: 10px; width:150px; height:40px; background-color: #368f3d; border-color: #368f3d; color: white;"
+>
+          <!-- v-if="check1 && check2 && checkbox" -->
             가입하기
           </button>
         </div>
