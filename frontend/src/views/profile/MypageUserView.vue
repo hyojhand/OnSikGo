@@ -6,7 +6,7 @@
 
     <div class="mt-3">
       <span
-        >{{ userDto.nickname }} 님!, <br />이번 달에
+        >{{ userDto.nickname }} 님! <br />이번 달에
         <strong id="green">온식고</strong>를 통해 <br /><strong id="green"
           >{{ this.orderPrice }}원</strong
         >의 세상을 구하셨어요!</span
@@ -21,7 +21,10 @@
     <hr />
     <br />
     <span style="font-weight: bolder; font-size: 1.3rem"
-      >✨ {{ userDto.nickname }} 님의 단골매장</span
+      >{{ userDto.nickname }} 님의 단골매장</span
+    ><br />
+    <span style="font-weight: light; font-size: 0.7rem; color: #d47d4a"
+      >* 클릭하시면 각 매장의 정보 페이지로 이동합니다. *</span
     >
     <div v-if="this.storeregularList.length">
       <regularList

@@ -1,18 +1,23 @@
 <template>
   <div>
-    <div class="d-flex justify-content-center">
-      <div v-if="saleItemDtoList.length == 0" id="regular-card">
+    <div class="d-flex justify-content-center mt-5">
+      <div
+        v-if="saleItemDtoList.length == 0"
+        id="regular-card"
+        @click="storeDetail()"
+      >
         <div class="container">
           <div class="row">
-            <div class="col-3 mt-1">
-              <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
+            <div class="col-2 mt-1">
+              <img fluid :src="`${storeImgUrl}`" height="75" width="80" />
             </div>
-            <div class="col-8 ml-3" id="cardText">
+            <div class="col-9 ml-6" id="cardText">
               <span style="color: black">{{ storeName }}</span
               ><br />
               <span style="color: gray; font-size: 0.7rem"
                 >{{ address }} {{ extraAddress }}</span
               ><br />
+
               <span style="color: gray; font-size: 0.7rem"
                 >매장 휴무일: {{ offDay }}</span
               ><br />
@@ -22,23 +27,18 @@
               <span style="color: gray; font-size: 0.7rem">
                 {{ saleItemDtoList.length }}개</span
               >
-              <div class="d-flex justify-content-end">
-                <button class="store-moving" @click="storeDetail()">
-                  가게보기
-                </button>
-              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div v-else id="regular-card-nozero">
+      <div v-else id="regular-card-nozero" @click="storeDetail()">
         <div class="container">
           <div class="row">
-            <div class="col-3 mt-1">
-              <img fluid :src="`${storeImgUrl}`" height="75" width="100" />
+            <div class="col-2 mt-1">
+              <img fluid :src="`${storeImgUrl}`" height="75" width="80" />
             </div>
-            <div class="col-8 ml-3" id="cardText">
+            <div class="col-9 ml-6" id="cardText">
               <span style="color: black">{{ storeName }}</span
               ><br />
               <span style="color: gray; font-size: 0.7rem"
@@ -53,11 +53,6 @@
               <span style="color: rgba(140, 184, 131)">
                 {{ saleItemDtoList.length }}개</span
               >
-              <div class="d-flex justify-content-end">
-                <button class="store-moving" @click="storeDetail()">
-                  가게보기
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -123,19 +118,35 @@ export default {
 #regular-card {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 10%);
+  width: 95%;
+  background-color: white;
+  align-items: center;
+  height: 130px;
+  border-radius: 10px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   margin: 0;
-  width: 380px;
-  background-color: #c3c7c3;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+#regular-card:hover {
+  cursor: pointer;
 }
 #regular-card-nozero {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 10%);
+  width: 95%;
+  background-color: white;
+  align-items: center;
+  height: 130px;
+  border-radius: 10px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   margin: 0;
-  width: 380px;
+}
+#regular-card-nozero:hover {
+  cursor: pointer;
 }
 .store-moving {
   height: 25px;
