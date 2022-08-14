@@ -97,10 +97,12 @@ export default {
         localStorage.getItem("access-token");
       http.patch(`/order/cancel/${order.orderId}`).then((response) => {
         if (response.status === 200) {
-          alert("주문이 취소되었습니다");
+          this.$alert("주문이 취소되었습니다. 감사합니다.");
           this.$router.go();
         } else {
-          alert("취소 실패");
+          this.$alert(
+            "주문 취소가 실패되었습니다. 다시한번 확인해주세요. * 정확한 문의는 매장으로 부탁드립니다. * "
+          );
         }
       });
     },

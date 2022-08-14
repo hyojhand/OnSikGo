@@ -25,7 +25,7 @@
       </div>
       <!-- Tab 기능 -->
 
-      <ul class="tabs">
+      <ul class="tabs mb-3">
         <li
           v-for="tab in tabs"
           v-bind:class="{
@@ -137,6 +137,9 @@ export default {
 .tab {
   font-size: 18px;
   margin-right: 5%;
+}
+.tab:hover {
+  cursor: pointer;
 }
 .select > span {
   color: rgb(140, 184, 131);

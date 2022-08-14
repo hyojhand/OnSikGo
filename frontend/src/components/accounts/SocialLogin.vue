@@ -5,7 +5,7 @@
         <img id="kakao-login-img" src="@/assets/images/kakao.png" />
       </a>
     </div>
-    <div id="naver_id_login" style="margin-top: 25px;"></div>
+    <div id="naver_id_login" style="margin-top: 25px"></div>
   </div>
 </template>
 
@@ -77,7 +77,7 @@ export default {
             });
         },
         fail: (err) => {
-          alert("다시 입력해주세요.");
+          this.$alert("다시 입력해주세요.");
           console.log(err);
         },
       });

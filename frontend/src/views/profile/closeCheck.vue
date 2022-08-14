@@ -59,9 +59,11 @@ export default {
       http.put(`/store/close/${this.storeId}`).then((response) => {
         console.log(response.data);
         if (response.status == 204) {
-          alert("오늘 등록된 재고가 없어 영업 종료가 불가능합니다.");
+          this.$alert("오늘 등록된 재고가 없어 영업 종료가 불가능합니다.");
         } else {
-          alert("매장 결산이 완료되어 데이터가 저장되고 영업 종료되었습니다.");
+          this.$alert(
+            "매장 결산이 완료되어 데이터가 저장되고 영업 종료되었습니다."
+          );
           this.$router.push("/mypage/owner");
         }
       });

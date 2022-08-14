@@ -63,7 +63,11 @@
         :key="index"
         v-bind="item"
       >
-        <div class="item-card" v-if="item.stock > 0">
+        <div
+          class="item-card"
+          v-if="item.stock > 0"
+          @click="productOrder(item)"
+        >
           <!-- 마커 -->
           <!-- <div class="col-2">
         <h1>{{ item.index }}</h1>
@@ -262,8 +266,7 @@ export default {
       this.currentMarker();
     },
     currentMarker() {
-      var imageSrc =
-        "https://cdn-icons-png.flaticon.com/512/3480/3480405.png";
+      var imageSrc = "https://cdn-icons-png.flaticon.com/512/3480/3480405.png";
       // 마커 이미지의 이미지 크기 입니다
       var imageSize = new kakao.maps.Size(30, 40);
       // console.log("가게 하나의 위도 경도",store)
@@ -348,16 +351,23 @@ export default {
     },
     //
     productOrder(item) {
+      const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
+        .userCheck;
       if (localStorage.getItem("access-token") == null) {
+        this.$alert("로그인이 필요합니다.");
         this.$router.push({
           name: "login",
         });
       } else {
-        this.getItemId(item.itemId),
-          this.getOrderStore(item.saleDto.storeDto.storeId);
-        this.$router.push({
-          name: "orderView",
-        });
+        if (isLogin == 1) {
+          this.$alert("업주께서는 이용하실수 없는 서비스입니다.");
+        } else {
+          this.getItemId(item.itemId),
+            this.getOrderStore(item.saleDto.storeDto.storeId);
+          this.$router.push({
+            name: "orderView",
+          });
+        }
       }
     },
     // 키워드 검색
@@ -533,7 +543,7 @@ img {
   align-items: flex-start;
   justify-content: center;
   padding: 0px;
-  padding-left: 15px;
+  padding-left: 30px;
 }
 /* 거리 에측 */
 .product-prediction {
@@ -561,7 +571,7 @@ img {
 /* 할인가 */
 .discount-price {
   font-size: 15px;
-  text-align: start;
+  text-align: end;
 }
 /* 주문하기 버튼 */
 
@@ -582,9 +592,10 @@ img {
 }
 .product-img {
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  width: 90px;
+  height: 90px;
   padding-bottom: 5px;
+  padding-left: 5px;
 }
 
 .product-order {
@@ -596,12 +607,13 @@ img {
   color: #222;
 }
 .stock-case {
-  height: 100%;
+  height: 95%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   padding: 0;
+  padding-right: 5px;
   margin: 0;
 }
 .item-card {
@@ -610,7 +622,9 @@ img {
   flex-direction: row;
   align-items: center;
   padding: 3px 0p;
+  background-color: white;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .search-result {
@@ -665,10 +679,16 @@ img {
 }
 .order-button {
   margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 10px;
   width: 100%;
 }
 .order-button:hover {
   background-color: rgb(140, 184, 131);
+  cursor: pointer;
   color: #fff;
+}
+.item-card:hover {
+  cursor: pointer;
 }
 </style>

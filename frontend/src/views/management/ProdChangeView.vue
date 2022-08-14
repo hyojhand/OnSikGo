@@ -117,7 +117,7 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            alert("상품정보 수정완료");
+            this.$alert("상품 정보 수정을 완료했습니다!");
             this.$router.push("/allprod/");
           }
         });

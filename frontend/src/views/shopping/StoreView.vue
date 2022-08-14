@@ -5,10 +5,7 @@
       <img :src="`${storeDto.storeImgUrl}`" alt="profile" class="store-img" />
       <div class="store-name">
         <div class="name-case">
-          <div
-            class="fw-bold"
-            :class="{ 'sm-font': storeNameSize > 9 }"
-          >
+          <div class="fw-bold" :class="{ 'sm-font': storeNameSize > 8 }">
             {{ storeDto.storeName }}
           </div>
           <!-- 좋아요 -->
@@ -56,7 +53,7 @@
       <store-kakao-map></store-kakao-map>
       <div class="content">
         <div class="row info-text">
-          <div class="col-3">상세위치 :</div>
+          <div class="col-3 title adtitle">상세주소 :</div>
           <div class="col-9 info-content adress">
             <div>{{ storeDto.address }}</div>
             <div>
@@ -65,24 +62,28 @@
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">전화번호:</div>
+          <div class="col-3 title">전화번호:</div>
           <div class="col-9 info-content">
             {{ storeDto.tel }}
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">영업시간:</div>
+          <div class="col-3 title">영업시간:</div>
           <div class="col-9 info-content">{{ storeDto.closingTime }}</div>
         </div>
         <div class="row info-text">
-          <div class="col-3">휴무일:</div>
+          <div class="col-3 title">휴무일:</div>
           <div class="col-9 info-content">
             {{ storeDto.offDay }}
           </div>
         </div>
         <div class="row info-text">
-          <div class="col-3">공유하기:</div>
-          <share-sns class="col-9" v-bind:storeImgUrl="storeDto.storeImgUrl" v-bind:storeName="storeDto.storeName"/>
+          <div class="col-3 title">공유하기:</div>
+          <share-sns
+            class="col-9"
+            v-bind:storeImgUrl="storeDto.storeImgUrl"
+            v-bind:storeName="storeDto.storeName"
+          />
         </div>
       </div>
     </div>
@@ -106,8 +107,8 @@
 
       <!-- 상품 설명란 -->
       <div class="product mt-3" v-if="selectedTab === tabs[0]">
-        <div class="head">📃 해당 매장에서 오늘 등록된 상품</div>
-        <div v-if="this.saleItemList.length">
+        <div class="head mb-2">📃 해당 매장에서 오늘 등록된 상품</div>
+        <div v-if="this.saleItemList.length" class="mb-3 case">
           <store-product-item
             v-for="(saleItem, index) in saleItemList"
             :key="index"
@@ -140,12 +141,15 @@
             @click="login()"
           />
           <button @click="registerReview()">
-            <span class="input-group-text" id="basic-addon1">
-              <i class="fa-solid fa-comment"></i>
-            </span>
+            <img
+              class="send"
+              id="basic-addon1"
+              src="@/assets/images/send.png"
+              alt=""
+            />
           </button>
         </div>
-        <div v-if="storeReviewList.length">
+        <div v-if="storeReviewList.length" class="mb-5">
           <store-review
             class="review"
             v-for="(reviewDto, index) in storeReviewList"
@@ -189,14 +193,13 @@ export default {
       reviewList: [],
       liking: "",
       storeNameSize: 0,
-      
     };
   },
 
   computed: {
     ...mapGetters("storeStore", ["getStoreId"]),
     ...mapGetters("accounts", ["userCheck"]),
-    ...mapGetters("store", ["storeReviewList"])
+    ...mapGetters("store", ["storeReviewList"]),
   },
 
   async created() {
@@ -204,7 +207,7 @@ export default {
 
     await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
-      this.storeNameSize = response.data.storeName.length
+      this.storeNameSize = response.data.storeName.length;
       // console.log(this.storeNameSize);
       // console.log(this.storeDto);
     });
@@ -241,11 +244,10 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            // alert("리뷰작성이 완료되었습니다.");
             this.reviewContent = "";
             this.selectReview();
           } else if (response.status == 204) {
-            alert("리뷰를 입력해주세요!");
+            this.$alert("리뷰를 입력해주세요!");
           }
         });
     },
@@ -264,7 +266,6 @@ export default {
       http.get(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
           this.likeCheck();
-          // alert("좋아요 눌렀음");
         }
       });
     },
@@ -274,11 +275,11 @@ export default {
       http.delete(`/follow/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
           this.likeCheck();
-          // alert("좋아요 취소");
         }
       });
     },
     login() {
+      this.$alert("로그인이 필요합니다.");
       this.$router.push("/login");
     },
   },
@@ -291,6 +292,7 @@ div {
 .content {
   width: 100%;
   display: flex;
+  margin: 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -306,13 +308,19 @@ div {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: start;
   margin: 0;
   margin-bottom: 2px;
   width: 100%;
 }
+.title {
+  padding-left: 15px;
+  font-size: 15px !important;
+  font-weight: 800;
+}
 .info-content {
   text-align: start;
+  padding-left: 20px;
 }
 .store-header {
   position: relative;
@@ -355,7 +363,11 @@ div {
 .store-img {
   width: 100%;
 }
-
+.adtitle {
+  height: 100%;
+  vertical-align: top;
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
 .location {
   text-align: left;
   padding-bottom: 10px;
@@ -369,11 +381,15 @@ div {
 }
 
 .comment {
+  padding-left: 10px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+.comment > button {
+  background-color: white;
 }
 .non-msg {
   width: 100%;
@@ -413,7 +429,7 @@ div {
 }
 .about-store {
   width: 100%;
-  background-color: white;
+  background-color: rgb(240, 240, 240);
 }
 .now {
   color: rgb(140, 184, 131);
@@ -423,6 +439,14 @@ div {
 }
 .review {
   width: 95%;
-  margin: 0 auto;
+  margin: 0;
+}
+.send {
+  width: 20px;
+  height: 20px;
+}
+#basic-addon1 {
+  height: 38px;
+  width: 40px;
 }
 </style>
