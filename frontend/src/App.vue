@@ -308,6 +308,7 @@ export default {
       saleItemList: [],
       notlogins: [
         { title: "홈", router: "/" },
+        { title: "온식고란", router: "/instruction"},
         { title: "로그인", router: "/login" },
         { title: "회원가입", router: "/signup" },
         { title: "온식고", router: "/shop" },
@@ -315,12 +316,14 @@ export default {
 
       users: [
         { title: "홈", router: "/" },
+        { title: "온식고란", router: "/instruction"},
         { title: "로그아웃", router: "/logout" },
         { title: "마이페이지", router: "/mypage/user" },
         { title: "온식고", router: "/shop" },
       ],
       owners: [
         { title: "홈", router: "/" },
+        { title: "온식고란", router: "/instruction"},
         { title: "로그아웃", router: "/logout" },
         { title: "마이페이지", router: "/mypage/owner" },
         { title: "온식고", router: "/shop" },
@@ -329,6 +332,7 @@ export default {
       ],
       admins: [
         { title: "홈", router: "/" },
+        { title: "온식고란", router: "/instruction"},
         { title: "로그아웃", router: "/logout" },
         { title: "관리자 페이지", router: "/admin" },
       ],
