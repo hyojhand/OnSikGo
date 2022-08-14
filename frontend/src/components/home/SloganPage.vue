@@ -23,63 +23,63 @@
     </div>
 
     <!-- 슬로건 -->
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="3000"
-      controls
-      indicators
-      img-width="1024"
-      img-height="500"
-      style="text-shadow: 1px 1px 2px #333; margin-top: 1rem"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-    >
-      <b-carousel-slide>
-        <template #img>
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
           <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/onsikgo_slogan.png"
+            width="100%"
+            height="220px"
+            src="@/assets/images/main.png"
             alt="image slot"
             style="border-radius: 7px"
           />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
+        </div>
+        <div class="swiper-slide">
           <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/earth.jpg"
+            width="100%"
+            height="220px"
+            src="@/assets/images/howto.png"
             alt="image slot"
             style="border-radius: 7px"
           />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
+        </div>
+        <div class="swiper-slide">
           <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/save.jpg"
+            width="100%"
+            height="220px"
+            src="@/assets/images/ment.png"
             alt="image slot"
             style="border-radius: 7px"
           />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
+        </div>
+        <div class="swiper-slide">
           <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/donation.jpg"
+            width="100%"
+            height="220px"
+            src="@/assets/images/ask.png"
             alt="image slot"
             style="border-radius: 7px"
           />
-        </template>
+        </div>
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+
+    <!-- <div class="swiper">
+      <b-carousel-slide>
+        <template #img> </template>
       </b-carousel-slide>
-    </b-carousel>
+      <b-carousel-slide>
+        <template #img> </template>
+      </b-carousel-slide>
+      <b-carousel-slide>
+        <template #img> </template>
+      </b-carousel-slide>
+      <b-carousel-slide>
+        <template #img> </template>
+      </b-carousel-slide>
+    </div> -->
   </div>
 </template>
 
@@ -97,17 +97,21 @@ export default {
       slide: 0,
       currentLongitude: 33.452278,
       currentxLatitude: 126.567803,
+      swiperOption: {
+        spaceBetween: 30,
+        centeredSlides: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+      },
     };
   },
   computed: {
     ...mapGetters("store", ["currentAddress"]),
   },
   methods: {
-    ...mapActions("store", [
-      "getAddress",
-      "getCurrentX",
-      "getCurrentY",
-    ]),
+    ...mapActions("store", ["getAddress", "getCurrentX", "getCurrentY"]),
     onSlideStart() {
       this.sliding = true;
     },
@@ -116,15 +120,14 @@ export default {
     },
     findaddress() {
       if (navigator.geolocation) {
-      // 현재 위치
-      navigator.geolocation.getCurrentPosition((position) => {
-        (this.currentxLatitude = position.coords.latitude), // 위도
-        (this.currentLongitude = position.coords.longitude); // 경도
-        this.changeaddress();
+        // 현재 위치
+        navigator.geolocation.getCurrentPosition((position) => {
+          (this.currentxLatitude = position.coords.latitude), // 위도
+            (this.currentLongitude = position.coords.longitude); // 경도
+          this.changeaddress();
         });
-        } 
-      
-      },
+      }
+    },
     changeaddress() {
       var geocoder = new kakao.maps.services.Geocoder();
 
@@ -147,8 +150,8 @@ export default {
     },
   },
   created() {
-    this.findaddress()
-  }
+    this.findaddress();
+  },
 };
 </script>
 
