@@ -405,7 +405,10 @@ export default {
       document.execCommand("copy");
       document.body.removeChild(t);
 
-      this.$alert("현재 주소 복사가 완료되었습니다🌏🧡");
+      this.$alert(
+        "친구들에게 현재 주소를 공유해보세요 :)",
+        "현재 주소 복사가 완료되었습니다🌏🧡"
+      );
     },
     movetoNaver() {
       var link = "https://forms.gle/WJpvMqG54SUF29io8";
