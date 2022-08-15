@@ -485,11 +485,23 @@ export default {
         b_no: [this.identify]
       })
       .then((response) => {
+        // 등록번호가 국세청 API 존재할 때 중복 확인
         if (response.data.match_cnt == 1) {
+          http.post("/store/check", {
+            storeNum : this.identify
+          })
+          .then ((response) => {
+            if ((response.status) == 200) {
           this.ownercheckDuple = !this.ownercheckDuple;
           this.check2 = true;
+          // 중복된 번호가 있을 때
+            } else {
+              this.$alert("이미 등록된 사업자등록번호입니다.");
+            }
+          })
+          // 등록번호가 국세청 API 존재하지 않을 때
         } else {
-          this.ownerfailDuple = !this.ownerfailDuple;
+            this.ownerfailDuple = !this.ownerfailDuple;
         }
       })
       .catch(err => {
