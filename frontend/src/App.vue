@@ -55,9 +55,9 @@
           v-if="title === '온식고'"
           src="@/assets/real_logo.png"
           alt="logo였던것.."
-          style="height: 100%; width: 20%; margin-left:45px;"
+          style="height: 100%; width: 20%; margin-left:40px;"
         />
-        <div v-else style="font-weight: bolder; margin-left: 25px;">
+        <div v-else style="font-weight: bolder; margin-left: 20px;">
           {{ title }}
         </div>
         <v-spacer></v-spacer>
