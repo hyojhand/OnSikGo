@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -75,5 +76,10 @@ public class StoreController {
     @PostMapping("/keyword")
     public ResponseEntity<List<StoreDto>> getKeyword(@RequestBody SelectDto selectDto) {
         return storeService.getKeyword(selectDto);
+    }
+
+    @PostMapping("/check")
+    public ResponseEntity<String> checkStoreNum(@RequestBody HashMap<String,String> map) {
+        return storeService.checkStoreNum(map);
     }
 }
