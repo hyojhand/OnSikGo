@@ -245,7 +245,7 @@
           <!-- 가게 이미지 등록 -->
           <div style="margin-bottom: 5px;">
             <p style="margin-top:3px; color: rgb(140, 184, 131);">
-              <i class="fa-solid fa-image"></i> 가게를 대표할 이미지 파일을 등록해주세요!</p>
+              <i class="fa-solid fa-image"></i> 가게 대표이미지를 등록해주세요.</p>
             <input @change="fileSelect" type="file"/>
           </div>
         </form>
