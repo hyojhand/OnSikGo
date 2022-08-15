@@ -47,7 +47,7 @@
         absolute
         temporary
         flat
-        class="nav-box"
+        class="nav-box mt-1"
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -56,10 +56,9 @@
           v-if="title === '온식고'"
           src="@/assets/real_logo.png"
           alt="logo였던것.."
-          style="height: 100%; width: 20%"
-          class="ml-5"
+          style="height: 100%; width: 20%; margin-left:45px;"
         />
-        <div v-else style="font-weight: bolder">
+        <div v-else style="font-weight: bolder; margin-left: 25px;">
           {{ title }}
         </div>
         <v-spacer></v-spacer>
@@ -67,9 +66,9 @@
           <div v-if="userCheck === 0">
             <router-link :to="{ name: 'login' }" style="text-decoration: none">
               <p
-                class="mt-4 mr-2 login"
+                class="mt-4 login"
                 style="color: rgb(140, 184, 131); font-weight: bold"
-              >
+              ><i class="fa fa-arrow-right-to-bracket" style="font-color: rgb(140, 184, 131)"></i>
                 로그인
               </p>
             </router-link>
@@ -158,7 +157,7 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-weight: bolder">{{
+                <v-list-item-title class="toggle-title">{{
                   item.title
                 }}</v-list-item-title>
               </v-list-item-content>
@@ -172,7 +171,7 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-weight: bolder">{{
+                <v-list-item-title class="toggle-title">{{
                   item.title
                 }}</v-list-item-title>
               </v-list-item-content>
@@ -186,7 +185,7 @@
               :to="item.router"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-weight: bolder">{{
+                <v-list-item-title class="toggle-title">{{
                   item.title
                 }}</v-list-item-title>
               </v-list-item-content>
@@ -202,7 +201,7 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title style="font-weight: bolder">{{
+              <v-list-item-title class="toggle-title">{{
                 item.title
               }}</v-list-item-title>
             </v-list-item-content>
@@ -231,7 +230,7 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title style="font-weight: bolder">{{
+              <v-list-item-title class="toggle-title">{{
                 item.title
               }}</v-list-item-title>
             </v-list-item-content>
@@ -264,7 +263,7 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title style="font-weight: bolder">{{
+              <v-list-item-title class="toggle-title">{{
                 item.title
               }}</v-list-item-title>
             </v-list-item-content>
@@ -309,32 +308,32 @@ export default {
       notlogins: [
         { title: "홈", router: "/" },
         { title: "온식고란", router: "/instruction"},
-        { title: "로그인", router: "/login" },
-        { title: "회원가입", router: "/signup" },
         { title: "온식고", router: "/shop" },
+        { title: "회원가입", router: "/signup" },
+        { title: "로그인", router: "/login" },
       ],
 
       users: [
         { title: "홈", router: "/" },
         { title: "온식고란", router: "/instruction"},
-        { title: "로그아웃", router: "/logout" },
-        { title: "마이페이지", router: "/mypage/user" },
         { title: "온식고", router: "/shop" },
+        { title: "마이페이지", router: "/mypage/user" },
+        { title: "로그아웃", router: "/logout" },
       ],
       owners: [
         { title: "홈", router: "/" },
         { title: "온식고란", router: "/instruction"},
-        { title: "로그아웃", router: "/logout" },
-        { title: "마이페이지", router: "/mypage/owner" },
         { title: "온식고", router: "/shop" },
         { title: "전체상품", router: "/allprod" },
         { title: "기부", router: "/donation" },
+        { title: "마이페이지", router: "/mypage/owner" },
+        { title: "로그아웃", router: "/logout" },
       ],
       admins: [
         { title: "홈", router: "/" },
+        { title: "관리자 페이지", router: "/admin" },
         { title: "온식고란", router: "/instruction"},
         { title: "로그아웃", router: "/logout" },
-        { title: "관리자 페이지", router: "/admin" },
       ],
 
       settingUsers: [{ title: "회원정보수정", router: "/userinfochange" }],
@@ -481,12 +480,17 @@ export default {
   width: 100%;
   min-height: 100%;
 }
-
 .toggle-login {
   position: fixed;
   bottom: 30px;
   right: 30px;
   color: red;
+}
+.toggle-title {
+  font-weight: bolder;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 5%;
 }
 .bi-box-arrow-in-right {
   position: fixed;
