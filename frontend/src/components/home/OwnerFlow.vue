@@ -114,7 +114,9 @@ export default {
 
 <style scoped>
   .info-title {
-    font-size: 18px;
+    font-size: 25px;
+    margin-bottom: 5px;
+    color: rgba(140, 184, 131, 0.8);
   }
 
   .stepper-content {
