@@ -73,8 +73,8 @@ export default {
   },
   data() {
     return {
-      salePrice: this.item.sale.salePrice,
-      stock: this.item.sale.stock,
+      salePrice: this.item.sale?.salePrice,
+      stock: this.item.sale?.stock,
     };
   },
 
