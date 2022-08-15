@@ -207,9 +207,8 @@
         black
         outlined
         min-height="200"
-        style="width: 350px;"
       >
-        <form @submit.prevent="submit" class="mb-2">
+        <form @submit.prevent="submit" class="mb-2" style="width:280px;">
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
@@ -694,6 +693,6 @@ export default {
 
 }
 .input-box {
-  min-width: 266px;
+  min-width: 263px;
 }
 </style>
