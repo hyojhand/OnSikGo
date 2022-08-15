@@ -251,11 +251,10 @@ export default {
               count: this.count,
             })
             .then((response) => {
-              console.log(response.data);
-              axios.defaults.headers["Authorization"] =
-                "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
-              axios
-                .post("https://fcm.googleapis.com/fcm/send", {
+              if (response.status === 200 && response.data != null) {
+                axios.defaults.headers["Authorization"] =
+                  "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
+                axios.post("https://fcm.googleapis.com/fcm/send", {
                   notification: {
                     title: "온식고의 알림이 도착했습니다",
                     body: "고객님의 주문이 도착했습니다.",
@@ -263,10 +262,8 @@ export default {
                     icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
                   },
                   to: response.data,
-                })
-                .then((response) => {
-                  console.log(response);
                 });
+              }
             });
           this.$alert("주문이 접수되었습니다.");
           this.$router.push("/mypage/user/history");
