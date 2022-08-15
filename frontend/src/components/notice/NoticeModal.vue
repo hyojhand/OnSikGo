@@ -114,23 +114,18 @@ export default {
       await http
         .patch(`/order/sign/${this.value.orderDto.orderId}`)
         .then((response) => {
-          if (response.status === 200) {
-            console.log(response);
+          if (response.status === 200 && response.data != null) {
             axios.defaults.headers["Authorization"] =
               "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
-            axios
-              .post("https://fcm.googleapis.com/fcm/send", {
-                notification: {
-                  title: "온식고의 알림이 도착했습니다",
-                  body: "주문하신 상품이 승인되었습니다.",
-                  click_action: "https://i7e201.p.ssafy.io/",
-                  icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
-                },
-                to: response.data,
-              })
-              .then((response) => {
-                console.log(response);
-              });
+            axios.post("https://fcm.googleapis.com/fcm/send", {
+              notification: {
+                title: "온식고의 알림이 도착했습니다",
+                body: "주문하신 상품이 승인되었습니다.",
+                click_action: "https://i7e201.p.ssafy.io/",
+                icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
+              },
+              to: response.data,
+            });
           } else {
             // console.log(response);
             this.$alert("주문서 처리에 실패하였습니다.");
@@ -150,22 +145,18 @@ export default {
       await http
         .patch(`/order/pickup/${this.value.orderDto.orderId}`)
         .then((response) => {
-          if (response.status === 200) {
+          if (response.status === 200 && response.data != null) {
             axios.defaults.headers["Authorization"] =
               "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
-            axios
-              .post("https://fcm.googleapis.com/fcm/send", {
-                notification: {
-                  title: "온식고의 알림이 도착했습니다",
-                  body: "주문하신 상품의 픽업을 완료하였습니다.",
-                  click_action: "https://i7e201.p.ssafy.io/",
-                  icon: "@/src/assets/real_logo.png",
-                },
-                to: response.data,
-              })
-              .then((response) => {
-                console.log(response);
-              });
+            axios.post("https://fcm.googleapis.com/fcm/send", {
+              notification: {
+                title: "온식고의 알림이 도착했습니다",
+                body: "주문하신 상품의 픽업을 완료하였습니다.",
+                click_action: "https://i7e201.p.ssafy.io/",
+                icon: "@/src/assets/real_logo.png",
+              },
+              to: response.data,
+            });
           } else {
             // console.log(response);
             this.$alert("주문서 처리에 실패하였습니다.");
