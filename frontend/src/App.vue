@@ -307,10 +307,11 @@ export default {
       saleItemList: [],
       notlogins: [
         { title: "홈", router: "/" },
+        { title: "로그인/회원가입", router: "/login" },
         { title: "온식고란", router: "/instruction"},
         { title: "온식고", router: "/shop" },
-        { title: "회원가입", router: "/signup" },
-        { title: "로그인", router: "/login" },
+        // { title: "회원가입", router: "/signup" },
+
       ],
 
       users: [
