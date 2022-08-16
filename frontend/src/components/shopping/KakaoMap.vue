@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 지도 -->
     <div id="map"></div>
     <button class="map-reset-button" @click="resetmoving()">
       <img
@@ -8,8 +9,8 @@
         style="width: 25px; height: 25px"
       />
     </button>
+    <!-- 검색란 -->
     <div class="container">
-      <!-- 검색란 -->
       <div class="search-container m-1">
         <input
           v-model="keyword"
@@ -56,6 +57,7 @@
         </button>
       </div>
     </div>
+    <!-- 검색 결과 -->
     <div v-if="this.items.length > 0" style="padding-left: 1rem">
       <div
         class="mt-3 mb-3"
@@ -154,16 +156,13 @@ export default {
 
   created() {
     this.productFind();
-    // console.log(this.aroundSaleStore)
+    // 현재위치 탐색
     if (navigator.geolocation) {
-      // 현재 위치
       navigator.geolocation.getCurrentPosition((position) => {
         (this.currentxLatitude = position.coords.latitude), // 위도
           (this.currentLongitude = position.coords.longitude); // 경도
         this.storexLatitude = this.currentxLatitude;
         this.storeLongitude = this.currentLongitude;
-        // 현재위치
-        // console.log(this.currentLongitude, this.currentxLatitude)
         this.curruntLocation();
       });
     } else {
