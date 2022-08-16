@@ -58,7 +58,7 @@
           alt="logo였던것.."
           style="height: 100%; width: 20%;"
         />
-        <div v-else style="font-weight: bolder;">
+        <div class="nav-title" v-else style="font-weight: bolder;">
           {{ title }}
         </div>
         <v-spacer></v-spacer>
@@ -210,9 +210,6 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <router-link :to="{ name: 'login' }">
-            <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
-          </router-link>
         </v-list>
       </v-navigation-drawer>
 
@@ -242,8 +239,8 @@
           <div>
             <MemberQuitModal class="temp"></MemberQuitModal>
             <br />
-            <div class="ml-16 mt-5">
-              <button class="ml-6" id="button-add-toggle" @click="addstorepage">
+            <div class="mt-5">
+              <button id="button-add-toggle" @click="addstorepage">
                 매장추가
               </button>
             </div>
@@ -538,12 +535,19 @@ export default {
 #button-add-toggle {
   font-weight: bolder;
   margin: 0 0;
+  text-align: start;
+  margin-left: 6%;
 }
 .temp {
   width: 100%;
 }
 #temp2 {
   width: 100%;
+}
+.nav-title{
+  position: relative;
+  top: 0%;
+  left: 0%;
 }
 // #app {
 // }
