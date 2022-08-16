@@ -80,9 +80,10 @@
                 :to="{ name: 'notice' }"
               >
                 <img
+                  class="notice-bell"
                   src="@/assets/images/bell.png"
                   alt="알림"
-                  style="width:24px; height:24px; padding-top:5px; margin-right:14px;"
+                  style="width:24px; height:24px; padding-top:5px; margin-right:14px; color:;"
                 />
               </router-link>
               <router-link v-else :to="{ name: 'notice' }">
@@ -91,6 +92,7 @@
                   alt="알림"
                   style="width:24px; height:24px; padding-top:3px; margin-right:14px;"
                 />
+                
               </router-link>
             </div>
             <div v-else>
@@ -99,6 +101,7 @@
                 :to="{ name: 'noticeUser' }"
               >
                 <img
+                  class="notice-bell"
                   src="@/assets/images/bell.png"
                   alt="알림"
                   style="width:24px; height:24px; padding-top:5px; margin-right:14px;"
@@ -500,6 +503,7 @@ export default {
   color: red;
 }
 .icon-box {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -549,6 +553,19 @@ export default {
   top: 0%;
   left: 0%;
 }
-// #app {
-// }
+.notice-bell{
+  transform-origin: top;
+  animation: bell 2s infinite linear;
+}
+@keyframes bell {
+  0%, 50%{
+    transform: rotate(0deg);
+	}
+  5%, 15%, 25%, 35%, 45% {
+    transform: rotate(13deg);
+  }
+  10%, 20%, 30%, 40% {
+    transform: rotate(-13deg);
+  }
+}
 </style>
