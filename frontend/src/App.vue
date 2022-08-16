@@ -316,24 +316,23 @@ export default {
 
       users: [
         { title: "홈", router: "/" },
-        { title: "온식고란", router: "/instruction"},
         { title: "온식고", router: "/shop" },
         { title: "마이페이지", router: "/mypage/user" },
+        { title: "온식고란", router: "/instruction"},
         { title: "로그아웃", router: "/logout" },
       ],
       owners: [
         { title: "홈", router: "/" },
-        { title: "온식고란", router: "/instruction"},
-        { title: "온식고", router: "/shop" },
-        { title: "전체상품", router: "/allprod" },
-        { title: "기부", router: "/donation" },
         { title: "마이페이지", router: "/mypage/owner" },
+        { title: "전체상품", router: "/allprod" },
+        { title: "온식고", router: "/shop" },
+        { title: "온식고란", router: "/instruction"},
+        { title: "기부", router: "/donation" },
         { title: "로그아웃", router: "/logout" },
       ],
       admins: [
         { title: "홈", router: "/" },
         { title: "관리자 페이지", router: "/admin" },
-        { title: "온식고란", router: "/instruction"},
         { title: "로그아웃", router: "/logout" },
       ],
 
