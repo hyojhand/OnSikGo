@@ -363,6 +363,7 @@ div {
 /* 점없애고 가로정렬 */
 .store-img {
   width: 100%;
+  height: 200px;
 }
 .adtitle {
   height: 100%;
