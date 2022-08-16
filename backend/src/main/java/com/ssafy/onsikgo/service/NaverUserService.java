@@ -98,7 +98,7 @@ public class NaverUserService implements SocialUserService {
 
             userDto.setRole(Role.USER);
 
-            userDto.setUserName(account.get("name").toString());
+
 
             String email = account.get("id").toString()+"NAVER@onsikgo.com";
             userDto.setEmail(email);
@@ -113,7 +113,7 @@ public class NaverUserService implements SocialUserService {
             temp_nickname = "User"+temp_nickname.substring(0, 10);
             nickname=(String)account.getOrDefault("nickname",temp_nickname);
             userDto.setNickname(nickname);
-
+            userDto.setUserName(nickname);
             String profile_image_url= (String)account.getOrDefault("profile_image",defaultImg);
             userDto.setImgUrl(profile_image_url);
 

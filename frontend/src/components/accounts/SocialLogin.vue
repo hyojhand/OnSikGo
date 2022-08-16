@@ -37,7 +37,7 @@ export default {
   mounted() {
     const naver_id_login = new window.naver_id_login(
       "0rgjMkjviFPmCTRQSJf5",
-      "http://localhost:3000/login"
+      "https://i7e201.p.ssafy.io/login"
     );
     const state = naver_id_login.getUniqState();
     naver_id_login.setState(state);
