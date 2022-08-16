@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="mt-7">
-      <span style="font-size: 1.5rem; font-weight: bold">🙋‍♀️ 리뷰 🙋‍♂️</span>
+    <div class="mt-3">
+      <div style="font-size: 1.5rem; font-weight: bold">🙋‍♀️ 리뷰 🙋‍♂️</div>
     </div>
     <div v-if="myReviewList.length">
       <reviewList
@@ -27,13 +27,9 @@ export default {
     reviewList,
   },
   computed: {
-    ...mapGetters("accounts", [
-      "myReviewList",
-      "reviewNickName"
-    ]),
+    ...mapGetters("accounts", ["myReviewList", "reviewNickName"]),
   },
   created() {
-    console.log(this.reviewNickName)
     http
       .post("/review/user", {
         nickname: this.reviewNickName,
@@ -43,7 +39,6 @@ export default {
           this.getMyReviewList(response.data.reverse());
         }
       });
-
   },
   methods: {
     ...mapActions("accounts", ["getMyReviewList"]),
