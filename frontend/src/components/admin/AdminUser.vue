@@ -39,13 +39,11 @@ export default {
         .get('/user/total')
         .then((response) => {
           this.userList = response.data;
-                  console.log(response.data);
         })
 
     },
     
     deleteUser(users) {
-      console.log(users);
       http
         .delete(`/admin/${users.email}`)
         .then((response) => {

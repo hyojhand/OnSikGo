@@ -34,7 +34,6 @@ export default {
       localStorage.getItem("access-token");
 
     http.get("/notice").then((response) => {
-      console.log(response.data);
       this.noticeList = response.data.reverse();
     });
   },

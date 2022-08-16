@@ -133,9 +133,7 @@ export default {
         if (status === kakao.maps.services.Status.OK) {
           var address = result[0].address.address_name;
           this.getAddress(address);
-          // console.log(address);
         } else {
-          // console.log("실패");
         }
       };
       geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
@@ -160,7 +158,6 @@ export default {
 
     http.get("/user").then((response) => {
       this.userDto = response.data;
-      // console.log(this.userDto);
     });
   },
 };
