@@ -93,22 +93,18 @@ export default {
           reason: this.reason,
         })
         .then((response) => {
-          if (response.status === 200) {
+          if (response.status === 200 && response.data != null) {
             axios.defaults.headers["Authorization"] =
               "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
-            axios
-              .post("https://fcm.googleapis.com/fcm/send", {
-                notification: {
-                  title: "온식고의 알림이 도착했습니다",
-                  body: "주문하신 상품이 거절되었습니다.",
-                  click_action: "https://i7e201.p.ssafy.io/",
-                  icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
-                },
-                to: response.data,
-              })
-              .then((response) => {
-                console.log(response);
-              });
+            axios.post("https://fcm.googleapis.com/fcm/send", {
+              notification: {
+                title: "온식고의 알림이 도착했습니다",
+                body: "주문하신 상품이 거절되었습니다.",
+                click_action: "https://i7e201.p.ssafy.io/",
+                icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
+              },
+              to: response.data,
+            });
             this.$router.push({
               name: "notice",
             });

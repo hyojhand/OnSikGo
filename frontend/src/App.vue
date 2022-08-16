@@ -1,5 +1,4 @@
 <template>
-<!-- CHECK 후 지울거에요 -->
   <div class="all">
     <div class="web">
       <div class="on-box">
@@ -56,9 +55,9 @@
           v-if="title === '온식고'"
           src="@/assets/real_logo.png"
           alt="logo였던것.."
-          style="height: 100%; width: 20%; margin-left:45px;"
+          style="height: 100%; width: 20%; margin-left:40px;"
         />
-        <div v-else style="font-weight: bolder; margin-left: 25px;">
+        <div v-else style="font-weight: bolder; margin-left: 20px;">
           {{ title }}
         </div>
         <v-spacer></v-spacer>
@@ -199,6 +198,7 @@
             v-for="item in notlogins"
             :key="item.title"
             :to="item.router"
+            active-class="light-green--text text--accent-4"
           >
             <v-list-item-content>
               <v-list-item-title class="toggle-title">{{
@@ -307,10 +307,11 @@ export default {
       saleItemList: [],
       notlogins: [
         { title: "홈", router: "/" },
+        { title: "로그인/회원가입", router: "/login" },
         { title: "온식고란", router: "/instruction"},
         { title: "온식고", router: "/shop" },
-        { title: "회원가입", router: "/signup" },
-        { title: "로그인", router: "/login" },
+        // { title: "회원가입", router: "/signup" },
+
       ],
 
       users: [
