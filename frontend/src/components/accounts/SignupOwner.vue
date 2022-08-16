@@ -96,10 +96,9 @@
           <button 
           class="border-m radius-m" 
           @click="e1 = 2"
-
+          v-bind:disabled="check1 == false"
           style="width: 100px;"
           >
-          <!--           v-bind:disabled="check1 == false" -->
           다음으로</button>
         </div>
       </v-stepper-content>
@@ -196,8 +195,8 @@
           class="border-m radius-m" 
           @click="e1 = 3"
           style="width:100px;"
+          v-bind:disabled="check2 == false"
           >다음으로</button>
-          <!-- v-bind:disabled="check2 == false" -->
         </div>
       </v-stepper-content>
 
@@ -257,8 +256,8 @@
           class="border-m radius-m" 
           @click="signup()"
           style="width:100px; background-color: #368f3d; border-color: #368f3d; color: white;"
+          v-if="category != false && imgFile != null"
           >가입하기</button>
-                    <!-- v-if="category != false && imgFile != null" -->
         </div>
         <div v-if="signupfailDuple" style="color:red;">😥 회원가입에 실패했습니다.</div>
       </v-stepper-content>
