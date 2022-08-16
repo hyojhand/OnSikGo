@@ -47,6 +47,7 @@
         temporary
         flat
         class="nav-box mt-1"
+        style="margin: 14px 0px 14px 0px;"
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -55,9 +56,9 @@
           v-if="title === '온식고'"
           src="@/assets/real_logo.png"
           alt="logo였던것.."
-          style="height: 100%; width: 20%; margin-left:40px;"
+          style="height: 100%; width: 20%;"
         />
-        <div v-else style="font-weight: bolder; margin-left: 20px;">
+        <div v-else style="font-weight: bolder;">
           {{ title }}
         </div>
         <v-spacer></v-spacer>
@@ -81,14 +82,14 @@
                 <img
                   src="@/assets/images/bell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:5px"
+                  style="width:24px; height:24px; padding-top:5px; margin-right:14px;"
                 />
               </router-link>
               <router-link v-else :to="{ name: 'notice' }">
                 <img
                   src="@/assets/images/basebell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:3px"
+                  style="width:24px; height:24px; padding-top:3px; margin-right:14px;"
                 />
               </router-link>
             </div>
@@ -100,14 +101,14 @@
                 <img
                   src="@/assets/images/bell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:5px"
+                  style="width:24px; height:24px; padding-top:5px; margin-right:14px;"
                 />
               </router-link>
               <router-link v-else :to="{ name: 'noticeUser' }">
                 <img
                   src="@/assets/images/basebell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:3px"
+                  style="width:24px; height:24px; padding-top:3px; margin-right:14px;"
                 />
               </router-link>
             </div>
@@ -154,6 +155,7 @@
               v-for="item in admins"
               :key="item.title"
               :to="item.router"
+            active-class="light-green--text text--accent-4"
             >
               <v-list-item-content>
                 <v-list-item-title class="toggle-title">{{
@@ -168,6 +170,7 @@
               v-for="item in users"
               :key="item.title"
               :to="item.router"
+            active-class="light-green--text text--accent-4"
             >
               <v-list-item-content>
                 <v-list-item-title class="toggle-title">{{
@@ -182,6 +185,7 @@
               v-for="item in owners"
               :key="item.title"
               :to="item.router"
+            active-class="light-green--text text--accent-4"
             >
               <v-list-item-content>
                 <v-list-item-title class="toggle-title">{{
