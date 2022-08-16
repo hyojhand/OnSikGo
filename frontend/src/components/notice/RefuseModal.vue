@@ -109,7 +109,6 @@ export default {
               name: "notice",
             });
           } else {
-            // console.log(response);
             this.$alert("거절 사유 처리에 실패하였습니다.");
           }
         });

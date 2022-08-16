@@ -40,7 +40,6 @@ export default {
       );
     },
     shareKakao() {
-      console.log(this.storeImgUrl);
       Kakao.Link.createDefaultButton({
         container: "#btnKakao",
         objectType: "feed",
