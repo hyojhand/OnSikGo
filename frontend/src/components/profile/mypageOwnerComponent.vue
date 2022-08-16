@@ -24,28 +24,28 @@
 
       <div class="mt-3">
         <span id="color-black">
-          안녕하세요,👨‍🍳 {{ store.storeName }}입니다.
+          안녕하세요<br />👨‍🍳 {{ store.storeName }}입니다.
         </span>
       </div>
       <div class="ml-7 mt-5 mr-7" style="text-align: start">
-        <span class="mypage_asset">매장 위치: </span>
+        <span class="mypage_asset">매장 위치 : </span>
         <span class="mypage">{{ store.address }}</span>
         <span class="mypage"> {{ store.extraAddress }}</span
         ><br />
-        <span class="mypage_asset">문 닫는 시간: </span>
+        <span class="mypage_asset">문 닫는 시간 : </span>
         <span class="mypage">{{ store.closingTime }}</span
         ><br />
-        <span class="mypage_asset">전화번호: </span>
+        <span class="mypage_asset">전화번호 : </span>
         <span class="mypage">{{ store.tel }}</span
         ><br />
-        <span class="mypage_asset">매장 휴무일: </span>
+        <span class="mypage_asset">매장 휴무일 : </span>
         <span v-if="this.storeOffday == null">연중무휴</span>
         <span class="mypage">{{ store.offDay }}</span
         ><br />
       </div>
 
       <div class="d-flex justify-content-end mt-1 mr-6">
-        <!--이미 영업이 종료된 메장은 disabled-->
+        <!--이미 영업이 종료된 매장은 disabled-->
         <div v-if="this.discardStoreClose == true">
           <button id="mypage-button-close" @click="movetoClose" disabled>
             영업 끝
@@ -57,21 +57,19 @@
         </div>
       </div>
     </div>
-    <br />
     <div>
-      <div class="container mt-10">
+      <div class="container my-5">
         <div class="d-flex justify-content-around">
           <button @click="dataAnalysis()" id="mypage-btn">데이터 분석</button>
           <button @click="storechange()" id="mypage-btn">정보수정</button>
         </div>
       </div>
     </div>
-    <br />
 
     <div class="container">
       <div class="font-l sales">오늘 할인 판매 상품</div>
       <div v-if="this.discardStoreList.length" class="mt-5">
-        <discount-list />
+        <discount-list class="discount" />
       </div>
       <div v-else class="non-msg">
         <div>오늘은 등록한</div>
@@ -83,7 +81,6 @@
 
 <script>
 import discountList from "@/components/profile/discountList.vue";
-// import http from "@/util/http-common";
 import { mapGetters } from "vuex";
 export default {
   name: "mypageOwnerComponent",
@@ -133,8 +130,9 @@ export default {
 
 <style>
 #mypage-card {
-  height: 400px;
-  width: 400px;
+  height: 420px;
+  width: 100%;
+  margin: 0;
   border-radius: 15px;
   display: inline-block;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
