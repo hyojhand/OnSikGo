@@ -453,5 +453,16 @@ div {
   height: 38px;
   width: 40px;
 }
+.bi-heart-fill{
+  animation: heart 0.5s linear;
+}
+@keyframes heart{
+  0%{
+    transform: rotate(0deg) scale(1.3);
+  }
+  100%{
+    transform: rotate(0deg) scale(1);
+  }
+}
 
 </style>

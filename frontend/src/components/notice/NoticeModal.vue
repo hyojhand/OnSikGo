@@ -127,7 +127,6 @@ export default {
               to: response.data,
             });
           } else {
-            // console.log(response);
             this.$alert("주문서 처리에 실패하였습니다.");
           }
         });
@@ -158,7 +157,6 @@ export default {
               to: response.data,
             });
           } else {
-            // console.log(response);
             this.$alert("주문서 처리에 실패하였습니다.");
           }
         });

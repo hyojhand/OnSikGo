@@ -74,7 +74,6 @@ export default {
     http.get("/user").then((response) => {
       this.userDto = response.data;
     });
-    console.log(this.reviewDto);
   },
 
   methods: {
@@ -91,7 +90,6 @@ export default {
     reportReview(reviewId) {
       http.patch(`/review/${reviewId}`).then((response) => {
         if (response.status == 200) {
-          console.log(response);
           this.reportDuple = true;
         }
       });
@@ -101,7 +99,6 @@ export default {
       this.deleteDuple = false;
       await http.delete(`/review/${reviewId}`).then((response) => {
         if (response.status == 200) {
-          console.log(response);
           // this.$router.go();
         }
       });

@@ -155,8 +155,6 @@ export default {
           .then((response) => {
             if (response.status == 200) {
               localStorage.setItem("access-token", response.data.token);
-              console.log("로그인성공");
-
               this.$router.push("/");
             } else {
               this.loginCheck = true;

@@ -69,8 +69,6 @@ export default {
               if (res.status == 200) {
                 localStorage.setItem("access-token", res.data.token);
                 this.$router.push("/");
-              } else {
-                console.log("로그인 실패");
               }
             })
             .catch((err) => {
@@ -103,8 +101,6 @@ export default {
           if (res.status == 200) {
             localStorage.setItem("access-token", res.data.token);
             window.close();
-          } else {
-            console.log("로그인 실패");
           }
         })
         .catch((err) => {
