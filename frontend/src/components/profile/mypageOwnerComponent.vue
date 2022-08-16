@@ -43,21 +43,19 @@
         <span class="mypage">{{ store.offDay }}</span
         ><br />
       </div>
-
-      <div class="d-flex justify-content-end mt-1 mr-6">
-        <!--이미 영업이 종료된 메장은 disabled-->
-        <div v-if="this.discardStoreClose == true">
-          <button id="mypage-button-close" @click="movetoClose" disabled>
-            영업 끝
-          </button>
-        </div>
-        <!--아직 영업이 종료되지 않은 매장에 대한 버튼-->
-        <div v-else>
-          <button id="mypage-button" @click="movetoClose">영업 종료</button>
-        </div>
-      </div>
     </div>
     <br />
+    <div class="d-flex justify-content-end mt-1 mr-6">
+      <div v-if="this.discardStoreClose == true">
+        <button id="mypage-button-close" @click="movetoClose" disabled>
+          영업 끝
+        </button>
+      </div>
+      <!--아직 영업이 종료되지 않은 매장에 대한 버튼-->
+      <div v-else>
+        <button id="mypage-button" @click="movetoClose">영업 종료</button>
+      </div>
+    </div>
     <div>
       <div class="container mt-10">
         <div class="d-flex justify-content-around">
