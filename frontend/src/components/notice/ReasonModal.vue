@@ -53,7 +53,7 @@ export default {
           reason: this.reason,
         })
         .then((response) => {
-          if (response.status === 200 && response.data != null) {
+          if (response.status === 200) {
             console.log(response.data);
             axios.defaults.headers["Authorization"] =
               "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";

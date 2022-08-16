@@ -80,13 +80,14 @@ export default {
   methods: {
     ...mapActions("accounts", ["getReviewNickName"]),
     ...mapActions("store", ["getStoreReviewList"]),
+    // 리뷰조회
     moveUserReview() {
       this.$router.push({
         name: "myReview",
       });
       this.getReviewNickName(this.nickname);
     },
-
+    // 신고
     reportReview(reviewId) {
       http.patch(`/review/${reviewId}`).then((response) => {
         if (response.status == 200) {
@@ -95,7 +96,7 @@ export default {
         }
       });
     },
-
+    // 삭제
     async deleteReview(reviewId) {
       this.deleteDuple = false;
       await http.delete(`/review/${reviewId}`).then((response) => {

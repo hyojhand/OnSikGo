@@ -2,7 +2,6 @@
   <div class="main_container">
     <div class="mobile">
       <!-- 현재 주소 -->
-
       <div class="location">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +23,6 @@
         <span> {{ currentAddress }}</span>
       </div>
       <!-- Tab 기능 -->
-
       <ul class="tabs mb-3">
         <li
           v-for="tab in tabs"
@@ -39,13 +37,14 @@
           <span>{{ tab }}</span>
         </li>
       </ul>
-      <!-- test용 -->
       <!-- 지도 or Category Store -->
       <div class="tab-content">
+        <!-- 지도 & 상품 검색-->
         <kakao-map
           class="tab-link currnet"
           v-if="selectedTab === tabs[0]"
         ></kakao-map>
+        <!-- 가게 카테고리 -->
         <category-store
           class="tab-link"
           v-else
@@ -69,6 +68,7 @@ export default {
     KakaoMap,
     CategoryStore,
   },
+  // 어디에 쓰는 건지 모르겠다
   props: {
     category: {
       type: String,
@@ -108,6 +108,7 @@ export default {
     }
   },
   methods: {
+    // 탭
     onClickTab(tab) {
       this.selectedTab = tab;
     },

@@ -47,6 +47,7 @@
         temporary
         flat
         class="nav-box mt-1"
+        style="margin: 14px 0px 14px 0px;"
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -55,9 +56,9 @@
           v-if="title === '온식고'"
           src="@/assets/real_logo.png"
           alt="logo였던것.."
-          style="height: 100%; width: 20%; margin-left:40px;"
+          style="height: 100%; width: 20%;"
         />
-        <div v-else style="font-weight: bolder; margin-left: 20px;">
+        <div class="nav-title" v-else style="font-weight: bolder;">
           {{ title }}
         </div>
         <v-spacer></v-spacer>
@@ -81,14 +82,14 @@
                 <img
                   src="@/assets/images/bell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:5px"
+                  style="width:24px; height:24px; padding-top:5px; margin-right:14px;"
                 />
               </router-link>
               <router-link v-else :to="{ name: 'notice' }">
                 <img
                   src="@/assets/images/basebell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:3px"
+                  style="width:24px; height:24px; padding-top:3px; margin-right:14px;"
                 />
               </router-link>
             </div>
@@ -100,14 +101,14 @@
                 <img
                   src="@/assets/images/bell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:5px"
+                  style="width:24px; height:24px; padding-top:5px; margin-right:14px;"
                 />
               </router-link>
               <router-link v-else :to="{ name: 'noticeUser' }">
                 <img
                   src="@/assets/images/basebell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:3px"
+                  style="width:24px; height:24px; padding-top:3px; margin-right:14px;"
                 />
               </router-link>
             </div>
@@ -154,6 +155,7 @@
               v-for="item in admins"
               :key="item.title"
               :to="item.router"
+            active-class="light-green--text text--accent-4"
             >
               <v-list-item-content>
                 <v-list-item-title class="toggle-title">{{
@@ -168,6 +170,7 @@
               v-for="item in users"
               :key="item.title"
               :to="item.router"
+            active-class="light-green--text text--accent-4"
             >
               <v-list-item-content>
                 <v-list-item-title class="toggle-title">{{
@@ -182,6 +185,7 @@
               v-for="item in owners"
               :key="item.title"
               :to="item.router"
+            active-class="light-green--text text--accent-4"
             >
               <v-list-item-content>
                 <v-list-item-title class="toggle-title">{{
@@ -206,9 +210,6 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <router-link :to="{ name: 'login' }">
-            <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
-          </router-link>
         </v-list>
       </v-navigation-drawer>
 
@@ -238,8 +239,8 @@
           <div>
             <MemberQuitModal class="temp"></MemberQuitModal>
             <br />
-            <div class="ml-16 mt-5">
-              <button class="ml-6" id="button-add-toggle" @click="addstorepage">
+            <div class="mt-5">
+              <button id="button-add-toggle" @click="addstorepage">
                 매장추가
               </button>
             </div>
@@ -316,24 +317,23 @@ export default {
 
       users: [
         { title: "홈", router: "/" },
-        { title: "온식고란", router: "/instruction"},
         { title: "온식고", router: "/shop" },
         { title: "마이페이지", router: "/mypage/user" },
+        { title: "온식고란", router: "/instruction"},
         { title: "로그아웃", router: "/logout" },
       ],
       owners: [
         { title: "홈", router: "/" },
-        { title: "온식고란", router: "/instruction"},
-        { title: "온식고", router: "/shop" },
-        { title: "전체상품", router: "/allprod" },
-        { title: "기부", router: "/donation" },
         { title: "마이페이지", router: "/mypage/owner" },
+        { title: "전체상품", router: "/allprod" },
+        { title: "온식고", router: "/shop" },
+        { title: "온식고란", router: "/instruction"},
+        { title: "기부", router: "/donation" },
         { title: "로그아웃", router: "/logout" },
       ],
       admins: [
         { title: "홈", router: "/" },
         { title: "관리자 페이지", router: "/admin" },
-        { title: "온식고란", router: "/instruction"},
         { title: "로그아웃", router: "/logout" },
       ],
 
@@ -535,12 +535,19 @@ export default {
 #button-add-toggle {
   font-weight: bolder;
   margin: 0 0;
+  text-align: start;
+  margin-left: 6%;
 }
 .temp {
   width: 100%;
 }
 #temp2 {
   width: 100%;
+}
+.nav-title{
+  position: relative;
+  top: 0%;
+  left: 0%;
 }
 // #app {
 // }

@@ -79,6 +79,7 @@ export default {
   display: flex;
   text-align: start;
   font-size: 0.7rem;
+  
 }
 .img-box {
   margin: 0 auto;
@@ -89,8 +90,9 @@ export default {
 #quit-button {
   font-weight: bolder;
   width: 100%;
-  text-align: center;
+  text-align: start;
   margin: 0 0;
+  margin-left: 6%;
 }
 #back-button {
   height: 40px;

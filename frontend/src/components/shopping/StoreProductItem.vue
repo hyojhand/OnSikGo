@@ -4,18 +4,14 @@
       class="item-card mt-3"
       @click="productOrder(itemId, saleDto.storeDto.storeId)"
     >
-      <!-- 마커 -->
-      <!-- <div class="col-2">
-        <h1>{{ item.index }}</h1>
-      </div> -->
-
+      <!-- 상품이미지 -->
       <img
         :src="`${itemDto.itemImgUrl}`"
         style="cursor: pointer"
         alt=""
         class="product-img col-3"
       />
-
+      <!-- 상품 설명 -->
       <div class="col-6 info-case">
         <div class="product-name">{{ itemDto.itemName }}</div>
         <div class="product-location">
@@ -32,6 +28,7 @@
           <div class="product-number">{{ stock }} 개</div>
         </div>
       </div>
+      <!-- 상품 가격 및 주문하기 버튼 -->
       <div class="col-3 stock-case">
         <div>
           <div class="price-case">
@@ -51,57 +48,6 @@
         </button>
       </div>
     </div>
-
-    <!-- ---------------------- -->
-    <!-- <div class="row ml-2">
-      상품이미지
-      <div class="col-3">
-        <img
-          :src="`${itemDto.itemImgUrl}`"
-          style="widght: 80px; height: 80px"
-          alt=""
-        />
-      </div>
-      상품 설명
-      상품 이름, 매장위치, 거리, 할인율, 정가, 할인가
-      <div class="col-4 ml-5">
-        <div class="product-name">{{ itemDto.itemName }}</div>
-        <div class="product-location">
-          매장위치 : {{ saleDto.storeDto.location }}
-        </div>
-        <div class="product-prediction">현재 위치로 부터 {{ distance }}m</div>
-        <div class="product-discount">
-          {{ ((1 - salePrice / itemDto.price) * 100).toFixed(0) }} %
-        </div>
-        <span class="price">{{ itemDto.price }} 원 </span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-arrow-right"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-          />
-        </svg>
-        <span class="discount-price"> {{ salePrice }} 원</span>
-      </div>
-      재고 & 주문하기 
-      <div class="col-3">
-        <p class="product-quantity">
-          재고 : <span class="product-number"> {{ stock }}</span> 개
-        </p>
-        <button
-          class="border-m radius-s"
-          @click="productOrder(itemId, saleDto.storeDto.storeId)"
-        >
-          주문하기
-        </button>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -137,6 +83,7 @@ export default {
   methods: {
     // 현재 위치 주소 vuex에 넣기
     ...mapActions("store", ["getItemId", "getOrderStore"]),
+    // 거리 계산
     getdistance(lat1, lon1, lat2, lon2) {
       if (lat1 == lat2 && lon1 == lon2) {
         return 0;
@@ -158,6 +105,7 @@ export default {
 
       return dist;
     },
+    // 주문하기
     productOrder(itemId, storeId) {
       if (localStorage.getItem("access-token") == null) {
         this.$alert("로그인이 필요합니다.");
