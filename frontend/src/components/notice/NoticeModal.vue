@@ -114,7 +114,7 @@ export default {
       await http
         .patch(`/order/sign/${this.value.orderDto.orderId}`)
         .then((response) => {
-          if (response.status === 200 && response.data != null) {
+          if (response.status === 200) {
             axios.defaults.headers["Authorization"] =
               "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
             axios.post("https://fcm.googleapis.com/fcm/send", {
@@ -145,7 +145,7 @@ export default {
       await http
         .patch(`/order/pickup/${this.value.orderDto.orderId}`)
         .then((response) => {
-          if (response.status === 200 && response.data != null) {
+          if (response.status === 200) {
             axios.defaults.headers["Authorization"] =
               "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
             axios.post("https://fcm.googleapis.com/fcm/send", {
