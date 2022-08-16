@@ -322,9 +322,25 @@ export default {
         )
         .then((response) => {
           if (response.data.match_cnt == 1) {
-            this.ownercheckDuple = true;
-            this.ownerfailDuple = false;
-            this.numCheck = true;
+            http
+              .post("/store/check", {
+                storeNum: this.identify,
+              })
+              .then((response) => {
+                if (response.status == 200) {
+                  this.ownercheckDuple = true;
+                  this.ownerfailDuple = false;
+                  this.numCheck = true;
+                } else {
+                  this.$alert(
+                    "이미 등록된 사업자등록번호입니다.",
+                    "사업자등록번호 중복 예방"
+                  );
+                  this.ownercheckDuple = false;
+                  this.ownerfailDuple = true;
+                  this.numCheck = false;
+                }
+              });
           } else {
             this.ownercheckDuple = false;
             this.ownerfailDuple = true;
