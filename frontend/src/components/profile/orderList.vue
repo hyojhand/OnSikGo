@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="ordercard ml-3">
-      <br />
       <div class="container">
         <div class="row">
           <div class="col-3 mt-3">
@@ -15,45 +14,47 @@
           </div>
           <div class="col-6">
             <div style="text-align: start; align-items: start">
-              <span style="color: black; font-size: 1.1rem">
+              <div style="color: black; font-size: 1.1rem">
                 {{ order.saleItemDto.itemDto.itemName }}
-              </span>
-              <br />
-              <span style="color: gray; font-size: 0.8rem">
-                {{ order.saleItemDto.saleDto.storeDto.storeName }}</span
-              ><br />
-              <span style="color: gray; font-size: 0.8rem"
-                >주문 날짜: {{ order.date.slice(0, 4) }}.{{
+              </div>
+              <div style="color: gray; font-size: 0.8rem">
+                {{ order.saleItemDto.saleDto.storeDto.storeName }}
+              </div>
+              <div style="color: gray; font-size: 0.8rem">
+                주문 날짜: {{ order.date.slice(0, 4) }}.{{
                   order.date.slice(4, 6)
-                }}.{{ order.date.slice(6, 8) }}</span
-              ><br />
-              <span style="color: gray; font-size: 0.8rem"
-                >수량: {{ order.count }} 개</span
-              >
-              <br />
-              <span
+                }}.{{ order.date.slice(6, 8) }}
+              </div>
+              <div style="color: gray; font-size: 0.8rem">
+                수량: {{ order.count }} 개
+              </div>
+              <div
                 v-if="`${order.state}` === 'WAIT'"
                 style="font-size: 0.75rem; color: gray"
-                >[상태: 주문대기]</span
               >
-              <span
+                [상태: 주문대기]
+              </div>
+              <div
                 v-else-if="`${order.state}` === 'ORDER'"
                 style="font-size: 0.75rem; color: blue"
-                >[상태: 주문승인]</span
               >
-              <span
+                [상태: 주문승인]
+              </div>
+              <div
                 v-else-if="`${order.state}` === 'CANCEL'"
                 style="font-size: 0.75rem; color: red"
-                >[상태: 주문거절]</span
               >
-              <span
+                [상태: 주문거절]
+              </div>
+              <div
                 v-else-if="`${order.state}` === 'PICKUP'"
                 style="font-size: 0.75rem; color: orange"
-                >[상태: 수령완료]</span
               >
+                [상태: 수령완료]
+              </div>
             </div>
           </div>
-          <div class="col-3 mt-2">
+          <div class="col-3 mt-2 btn-box">
             <button
               v-show="`${order.state}` === 'WAIT' && `${elapsedTime}` < 10"
               id="btn-order"
@@ -63,14 +64,13 @@
               주문취소
             </button>
 
-            <br /><br />
             <button
               id="btn-order"
               @click="goStore(order.saleItemDto.saleDto.storeDto.storeId)"
               type="button"
             >
-              가게보기</button
-            ><br />
+              가게보기
+            </button>
           </div>
         </div>
       </div>
@@ -184,5 +184,10 @@ export default {
   color: #ffffff;
   width: 70px;
   font-size: 0.75rem;
+}
+.btn-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 </style>
