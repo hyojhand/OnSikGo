@@ -232,7 +232,7 @@ export default {
       if (isLogin == 1) {
         this.$alert("업주께서는 이용하실수 없는 서비스입니다.");
       } else {
-        if (this.count <= this.stock || this.count >= 1) {
+        if (this.count <= this.stock && this.count >= 1) {
           http.defaults.headers["access-token"] =
             localStorage.getItem("access-token");
           http
@@ -257,6 +257,8 @@ export default {
             });
           this.$alert("주문이 접수되었습니다.");
           this.$router.push("/mypage/user/history");
+        } else {
+          this.$alert("주문을 다시 확인해주세요");
         }
       }
     },
