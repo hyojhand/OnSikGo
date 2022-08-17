@@ -101,13 +101,8 @@
             placeholder="리뷰를 입력해주세요"
             @click="login()"
           />
-          <button @click="registerReview()">
-            <img
-              class="send"
-              id="basic-addon1"
-              src="@/assets/images/send.png"
-              alt=""
-            />
+          <button @click="registerReview()" class="p-0">
+            <img id="basic-addon1" src="@/assets/images/send.png" alt="" />
           </button>
         </div>
         <div v-if="storeReviewList.length" class="mb-5">
@@ -129,7 +124,7 @@
         <store-kakao-map></store-kakao-map>
         <!-- 상품 설명 -->
         <div class="content">
-          <div class="row info-text">
+          <div class="row info-text mt-3">
             <div class="col-3 store-title adtitle">상세주소 :</div>
             <div class="col-9 info-content adress">
               <div>{{ storeDto.address }}</div>
@@ -157,7 +152,7 @@
           <div class="row info-text">
             <div class="col-3 store-title">공유하기 :</div>
             <share-sns
-              class="col-9 share-icon"
+              class="col-9 share-icon mt-3"
               v-bind:storeImgUrl="storeDto.storeImgUrl"
               v-bind:storeName="storeDto.storeName"
             />
@@ -385,12 +380,11 @@ div {
 }
 
 .comment {
-  padding-left: 10px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 .comment > button {
   background-color: white;
@@ -445,24 +439,20 @@ div {
   width: 95%;
   margin: 0;
 }
-.send {
-  width: 20px;
-  height: 20px;
-}
 #basic-addon1 {
   height: 38px;
   width: 40px;
+  background-color: rgb(240, 240, 240);
 }
-.bi-heart-fill{
+.bi-heart-fill {
   animation: heart 0.5s linear;
 }
-@keyframes heart{
-  0%{
+@keyframes heart {
+  0% {
     transform: rotate(0deg) scale(1.3);
   }
-  100%{
+  100% {
     transform: rotate(0deg) scale(1);
   }
 }
-
 </style>
