@@ -11,10 +11,7 @@
         :alt="`${orderDto.saleItemDto.itemDto.itemName}`"
       />
       <div class="col-7 order-box">
-        <v-list-item-title
-          class="text mb-3 msg-box notice"
-          v-html="`${content}`"
-        ></v-list-item-title>
+        <div class="text mb-3 msg-box notice" v-html="`${content}`"></div>
 
         <v-card-actions class="btn-box mb-1">
           <p class="time-text" v-if="elapsedTime < 60">
@@ -148,6 +145,8 @@ export default {
 .msg-box {
   text-align: start;
   width: 100%;
+  word-break: normal;
+  font-size: 14px;
 }
 .card-box {
   display: flex;
@@ -156,6 +155,7 @@ export default {
 .order-box {
   display: flex;
   flex-direction: column;
+  padding-left: 0;
 }
 .btn-box {
   max-height: 75px;
