@@ -324,7 +324,7 @@ public class OrderService {
         LocalDateTime end = now.withDayOfMonth(now.toLocalDate().lengthOfMonth());
         String endMonth = end.format(dayFormatter) + "0000";
 
-        List<Order> findMonthOrder = orderRepository.findByUserAndDateBetweenAndState(findUser.get(), startMonth, endMonth, State.ORDER);
+        List<Order> findMonthOrder = orderRepository.findByUserAndDateBetweenAndState(findUser.get(), startMonth, endMonth, State.PICKUP);
         int buyPrice = 0;
         for(Order order : findMonthOrder) {
             buyPrice += order.getOrderPrice();
