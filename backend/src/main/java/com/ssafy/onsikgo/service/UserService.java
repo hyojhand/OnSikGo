@@ -84,7 +84,7 @@ public class UserService {
             return new ResponseEntity<>("이메일 전송에 실패했습니다. 다시 시도해주세요.", HttpStatus.NO_CONTENT);
         }
         // 5분 동안만 인증번호 저장
-        redisUtil.setDataExpire(email, authNumber, 60 * 5L);
+        redisUtil.setDataExpire(email, authNumber, 60 * 7L);
 
         return new ResponseEntity<>("인증번호를 전송했습니다. 메일을 확인해주세요.", HttpStatus.OK);
     }
