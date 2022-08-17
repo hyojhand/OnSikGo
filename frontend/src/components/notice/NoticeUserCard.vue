@@ -1,8 +1,9 @@
 <template>
-  <v-card 
+  <v-card
     v-if="`${elapsedTime}` < 1440"
-    class="mx-auto card-box" 
-    max-width="344">
+    class="mx-auto card-box"
+    max-width="344"
+  >
     <div class="row card-box" v-if="`${noticeState}` == 'ORDER'">
       <img
         class="img-box col-5"
@@ -10,23 +11,19 @@
         :alt="`${orderDto.saleItemDto.itemDto.itemName}`"
       />
       <div class="col-7 order-box">
-        <v-list-item-content>
-          <v-list-item-title class="text mb-3 msg-box notice"  v-html="`${content}`"
-            ></v-list-item-title
-          >
-        </v-list-item-content>
+        <v-list-item-title
+          class="text mb-3 msg-box notice"
+          v-html="`${content}`"
+        ></v-list-item-title>
+
         <v-card-actions class="btn-box mb-1">
-          <p 
-            class="time-text"
-            v-if="elapsedTime < 60"
-          >{{ elapsedTime }}분 전
+          <p class="time-text" v-if="elapsedTime < 60">
+            {{ elapsedTime }}분 전
           </p>
-          <p
-            class="time-text"
-            v-else
-          >{{ (elapsedTime / 60).toFixed(0) }}시간 전
+          <p class="time-text" v-else>
+            {{ (elapsedTime / 60).toFixed(0) }}시간 전
           </p>
-          <button class="border-m radius-m notice-btn" @click="gohistory()">
+          <button class="radius-m notice-btn" @click="gohistory()">
             주문 보러가기
           </button>
         </v-card-actions>
@@ -41,25 +38,22 @@
       />
       <div class="col-7 order-box">
         <v-list-item-content>
-          <v-list-item-title class="text mb-3 msg-box">
-          </v-list-item-title>
-          <v-list-item-title class="text mb-3 msg-box notice"  v-html="`${content}`">
-            </v-list-item-title
+          <v-list-item-title class="text mb-3 msg-box"> </v-list-item-title>
+          <v-list-item-title
+            class="text mb-3 msg-box notice"
+            v-html="`${content}`"
           >
+          </v-list-item-title>
         </v-list-item-content>
         <v-card-actions class="btn-box mb-1">
-          <p 
-            class="time-text"
-            v-if="elapsedTime < 60"
-          >{{ elapsedTime }}분 전
+          <p class="time-text" v-if="elapsedTime < 60">
+            {{ elapsedTime }}분 전
           </p>
-          <p
-            class="time-text"
-            v-else
-          >{{ (elapsedTime / 60).toFixed(0) }}시간 전
+          <p class="time-text" v-else>
+            {{ (elapsedTime / 60).toFixed(0) }}시간 전
           </p>
-          <button class="border-m radius-m notice-btn" @click="gostore()">
-            정보 보러가기
+          <button class="radius-m notice-btn gostore" @click="gostore()">
+            가게 보러가기
           </button>
         </v-card-actions>
       </div>
@@ -83,7 +77,7 @@ export default {
     noticeState: String,
   },
   created() {
-    this.nowDate()
+    this.nowDate();
   },
 
   methods: {
@@ -98,26 +92,33 @@ export default {
       });
     },
     nowDate() {
-      var today = new Date()
+      var today = new Date();
 
       var year = today.getFullYear();
-      var month = ('0' + (today.getMonth() + 1)).slice(-2);
-      var day = ('0' + today.getDate()).slice(-2);
-      var hours = ('0' + today.getHours()).slice(-2); 
-      var minutes = ('0' + today.getMinutes()).slice(-2); 
+      var month = ("0" + (today.getMonth() + 1)).slice(-2);
+      var day = ("0" + today.getDate()).slice(-2);
+      var hours = ("0" + today.getHours()).slice(-2);
+      var minutes = ("0" + today.getMinutes()).slice(-2);
 
-      var orderyear= this.orderDto.date.slice(0,4)
-      var ordermonth = this.orderDto.date.slice(4,6)
-      var orderday = this.orderDto.date.slice(6,8)
-      var orderhours = this.orderDto.date.slice(8,10)
-      var orderminutes = this.orderDto.date.slice(10,12)
+      var orderyear = this.orderDto.date.slice(0, 4);
+      var ordermonth = this.orderDto.date.slice(4, 6);
+      var orderday = this.orderDto.date.slice(6, 8);
+      var orderhours = this.orderDto.date.slice(8, 10);
+      var orderminutes = this.orderDto.date.slice(10, 12);
 
-      const nowdate = new Date(year, month, day, hours, minutes,0)
-      const orderdate = new Date(orderyear, ordermonth, orderday, orderhours, orderminutes,0)
+      const nowdate = new Date(year, month, day, hours, minutes, 0);
+      const orderdate = new Date(
+        orderyear,
+        ordermonth,
+        orderday,
+        orderhours,
+        orderminutes,
+        0
+      );
 
-      const elapsedTime = (nowdate.getTime() - orderdate.getTime()) / 60000
-      this.nowTime = year + month + day + hours + minutes
-      this.elapsedTime = elapsedTime
+      const elapsedTime = (nowdate.getTime() - orderdate.getTime()) / 60000;
+      this.nowTime = year + month + day + hours + minutes;
+      this.elapsedTime = elapsedTime;
     },
   },
   data() {
@@ -139,13 +140,14 @@ export default {
   border-bottom: 2px solid rgba(0, 0, 0, 10%);
 }
 .img-box {
-  margin: 0 auto;
+  margin: 0 auto 0 0;
   width: 120px;
   height: 120px;
   border-radius: 50%;
 }
 .msg-box {
   text-align: start;
+  width: 100%;
 }
 .card-box {
   display: flex;
@@ -175,6 +177,9 @@ export default {
 .notice-btn {
   width: 110px;
   margin: 0;
+  background-color: #de9712;
+  opacity: 0.8;
+  color: white;
 }
 .notice-btn:hover {
   width: 110px;
@@ -183,5 +188,8 @@ export default {
   color: #fff;
   margin: 0;
   transition: 0.7s;
+}
+.gostore {
+  background-color: rgba(107, 133, 65, 0.8);
 }
 </style>
