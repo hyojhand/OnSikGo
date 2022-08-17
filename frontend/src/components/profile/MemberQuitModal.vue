@@ -17,7 +17,7 @@
               </div>
               <div class="col-8 mt-6">
                 <span
-                  >{{ userDto.nickname }}님, <br />정말
+                  >{{ this.userDto.nickname }}님, <br />정말
                   탈퇴하시겠습니까?😢</span
                 >
               </div>
@@ -79,7 +79,6 @@ export default {
   display: flex;
   text-align: start;
   font-size: 0.7rem;
-  
 }
 .img-box {
   margin: 0 auto;
