@@ -1,8 +1,8 @@
 <template>
   <div class="signup-box" width="100%">
     <div class="mb-5">
-      <v-list-item-title class="text-h5 mt-3 mb-5 fw-bold" style="color: rgb(140, 184, 131);">
-        고객 회원 가입하기
+      <v-list-item-title class="mt-3 mb-5 fw-bold" style="font-size:28px;">
+        <strong style="color: #368f3d;">일반 고객</strong>  회원가입
       </v-list-item-title>
       <div class="ment-box">
         <v-list-item-subtitle>어서오세요!</v-list-item-subtitle>
@@ -46,6 +46,7 @@
                 class="border-m radius-m mailconfirm-btn mb-5 "
                 @click="checkMail()"
                 type="button"
+                style="margin-left:20px;"
               >
                 인증
               </button>
@@ -133,7 +134,9 @@
           <button 
           class="border-m radius-m notice-btn" 
           @click="signup()"
-          v-if="check1 && check2 && checkbox">
+          style="margin-top: 10px; width:150px; height:40px; background-color: #368f3d; border-color: #368f3d; color: white;"
+          v-if="check1 && check2 && checkbox"
+          >
             가입하기
           </button>
         </div>

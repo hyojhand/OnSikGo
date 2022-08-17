@@ -142,7 +142,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import http from "@/util/http-common";
-
+import axios from "axios";
 export default {
   name: "OrderView",
   data() {
@@ -199,30 +199,25 @@ export default {
     // 상품 정보 조회
     findProduct() {
       http.get(`/item/${this.currentItemId}`).then((response) => {
-        // console.log(response.data)
         this.productName = response.data.itemName;
         this.price = response.data.price;
         this.itemImgUrl = response.data.itemImgUrl;
         this.comment = response.data.comment;
-        // console.log(response.data)
       }),
         http.get(`/sale/${this.currentItemId}`).then((response) => {
           this.stock = response.data.stock;
           this.salePrice = response.data.salePrice;
           this.saleItemId = response.data.saleItemId;
-          // console.log(response.data)
         });
     },
     // 가게정보 조회
     findStock() {
-      // console.log(this.orderStore)
       http.get(`/store/${this.orderStore}`).then((response) => {
         this.storeName = response.data.storeName;
         this.storeId = response.data.storeId;
         this.storeLocation = response.data.location;
         this.storelat = response.data.lat;
         this.storelng = response.data.lng;
-        // console.log(response.data)
       });
     },
     // 유저 조회
@@ -232,7 +227,6 @@ export default {
       http.get("/user").then((response) => {
         this.userName = response.data.userName;
         this.nickName = response.data.nickname;
-        // console.log(response.data)
       });
     },
     //  주문하기
@@ -251,7 +245,19 @@ export default {
               count: this.count,
             })
             .then((response) => {
-              console.log(response);
+              if (response.status === 200) {
+                axios.defaults.headers["Authorization"] =
+                  "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
+                axios.post("https://fcm.googleapis.com/fcm/send", {
+                  notification: {
+                    title: "온식고의 알림이 도착했습니다",
+                    body: "고객님의 주문이 도착했습니다.",
+                    click_action: "https://i7e201.p.ssafy.io/",
+                    icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
+                  },
+                  to: response.data,
+                });
+              }
             });
           this.$alert("주문이 접수되었습니다.");
           this.$router.push("/mypage/user/history");
@@ -261,7 +267,6 @@ export default {
     // 할때 가게정보도 추가 할 것
     detailStore() {
       this.getStoreId(this.storeId);
-      console.log(this.storeId);
       this.$router.push({
         name: "storeView",
       });

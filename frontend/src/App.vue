@@ -25,6 +25,7 @@
         </div>
         <div id="div1" class="mt-5">
           <img
+            class="main-logo"
             src="@/assets/real_logo.png"
             width="350"
             height="300"
@@ -46,7 +47,8 @@
         absolute
         temporary
         flat
-        class="nav-box"
+        class="nav-box mt-1"
+        style="margin: 14px 0px 14px 0px;"
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -55,10 +57,9 @@
           v-if="title === '온식고'"
           src="@/assets/real_logo.png"
           alt="logo였던것.."
-          style="height: 100%; width: 20%"
-          class="ml-5"
+          style="height: 100%; width: 20%;"
         />
-        <div v-else style="font-weight: bolder">
+        <div class="nav-title" v-else style="font-weight: bolder;">
           {{ title }}
         </div>
         <v-spacer></v-spacer>
@@ -66,9 +67,9 @@
           <div v-if="userCheck === 0">
             <router-link :to="{ name: 'login' }" style="text-decoration: none">
               <p
-                class="mt-4 mr-2 login"
+                class="mt-4 login"
                 style="color: rgb(140, 184, 131); font-weight: bold"
-              >
+              ><i class="fa fa-arrow-right-to-bracket" style="font-color: rgb(140, 184, 131)"></i>
                 로그인
               </p>
             </router-link>
@@ -80,17 +81,19 @@
                 :to="{ name: 'notice' }"
               >
                 <img
+                  class="notice-bell"
                   src="@/assets/images/bell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:5px"
+                  style="width:24px; height:24px; padding-top:5px; margin-right:14px; color:;"
                 />
               </router-link>
               <router-link v-else :to="{ name: 'notice' }">
                 <img
                   src="@/assets/images/basebell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:3px"
+                  style="width:24px; height:24px; padding-top:3px; margin-right:14px;"
                 />
+                
               </router-link>
             </div>
             <div v-else>
@@ -99,16 +102,17 @@
                 :to="{ name: 'noticeUser' }"
               >
                 <img
+                  class="notice-bell"
                   src="@/assets/images/bell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:5px"
+                  style="width:24px; height:24px; padding-top:5px; margin-right:14px;"
                 />
               </router-link>
               <router-link v-else :to="{ name: 'noticeUser' }">
                 <img
                   src="@/assets/images/basebell.png"
                   alt="알림"
-                  style="width:24px; height:24px padding-top:3px"
+                  style="width:24px; height:24px; padding-top:3px; margin-right:14px;"
                 />
               </router-link>
             </div>
@@ -155,9 +159,10 @@
               v-for="item in admins"
               :key="item.title"
               :to="item.router"
+            active-class="light-green--text text--accent-4"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-weight: bolder">{{
+                <v-list-item-title class="toggle-title">{{
                   item.title
                 }}</v-list-item-title>
               </v-list-item-content>
@@ -169,9 +174,10 @@
               v-for="item in users"
               :key="item.title"
               :to="item.router"
+            active-class="light-green--text text--accent-4"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-weight: bolder">{{
+                <v-list-item-title class="toggle-title">{{
                   item.title
                 }}</v-list-item-title>
               </v-list-item-content>
@@ -183,9 +189,10 @@
               v-for="item in owners"
               :key="item.title"
               :to="item.router"
+            active-class="light-green--text text--accent-4"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-weight: bolder">{{
+                <v-list-item-title class="toggle-title">{{
                   item.title
                 }}</v-list-item-title>
               </v-list-item-content>
@@ -199,16 +206,14 @@
             v-for="item in notlogins"
             :key="item.title"
             :to="item.router"
+            active-class="light-green--text text--accent-4"
           >
             <v-list-item-content>
-              <v-list-item-title style="font-weight: bolder">{{
+              <v-list-item-title class="toggle-title">{{
                 item.title
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <router-link :to="{ name: 'login' }">
-            <i class="fa-solid fa-arrow-right-to-bracket toggle-login"></i>
-          </router-link>
         </v-list>
       </v-navigation-drawer>
 
@@ -230,7 +235,7 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title style="font-weight: bolder">{{
+              <v-list-item-title class="toggle-title">{{
                 item.title
               }}</v-list-item-title>
             </v-list-item-content>
@@ -238,8 +243,8 @@
           <div>
             <MemberQuitModal class="temp"></MemberQuitModal>
             <br />
-            <div class="ml-16 mt-5">
-              <button class="ml-6" id="button-add-toggle" @click="addstorepage">
+            <div class="mt-5">
+              <button id="button-add-toggle" @click="addstorepage">
                 매장추가
               </button>
             </div>
@@ -263,7 +268,7 @@
             :to="item.router"
           >
             <v-list-item-content>
-              <v-list-item-title style="font-weight: bolder">{{
+              <v-list-item-title class="toggle-title">{{
                 item.title
               }}</v-list-item-title>
             </v-list-item-content>
@@ -307,29 +312,33 @@ export default {
       saleItemList: [],
       notlogins: [
         { title: "홈", router: "/" },
-        { title: "로그인", router: "/login" },
-        { title: "회원가입", router: "/signup" },
+        { title: "로그인/회원가입", router: "/login" },
+        { title: "온식고란", router: "/instruction"},
         { title: "온식고", router: "/shop" },
+        // { title: "회원가입", router: "/signup" },
+
       ],
 
       users: [
         { title: "홈", router: "/" },
-        { title: "로그아웃", router: "/logout" },
-        { title: "마이페이지", router: "/mypage/user" },
         { title: "온식고", router: "/shop" },
+        { title: "마이페이지", router: "/mypage/user" },
+        { title: "온식고란", router: "/instruction"},
+        { title: "로그아웃", router: "/logout" },
       ],
       owners: [
         { title: "홈", router: "/" },
-        { title: "로그아웃", router: "/logout" },
         { title: "마이페이지", router: "/mypage/owner" },
-        { title: "온식고", router: "/shop" },
         { title: "전체상품", router: "/allprod" },
+        { title: "온식고", router: "/shop" },
+        { title: "온식고란", router: "/instruction"},
         { title: "기부", router: "/donation" },
+        { title: "로그아웃", router: "/logout" },
       ],
       admins: [
         { title: "홈", router: "/" },
-        { title: "로그아웃", router: "/logout" },
         { title: "관리자 페이지", router: "/admin" },
+        { title: "로그아웃", router: "/logout" },
       ],
 
       settingUsers: [{ title: "회원정보수정", router: "/userinfochange" }],
@@ -338,6 +347,7 @@ export default {
         "온식고",
         "기부 페이지",
         "회원정보변경",
+        "온식고란",
         "알림조회",
         "상품조회",
         "주문하기",
@@ -380,7 +390,7 @@ export default {
           this.getUserCheck(1);
         } else if (response.data.role == "USER") {
           this.getUserCheck(2);
-        } else {
+        } else if (response.data.role == "ADMIN"){
           this.getUserCheck(3);
         }
       });
@@ -388,6 +398,7 @@ export default {
         this.noticeState = response.data;
       });
     }
+    // 주석
   },
   methods: {
     ...mapActions("accounts", ["getUserCheck"]),
@@ -405,14 +416,17 @@ export default {
       document.execCommand("copy");
       document.body.removeChild(t);
 
-      this.$alert("현재 주소 복사가 완료되었습니다🌏🧡");
+      this.$alert(
+        "친구들에게 현재 주소를 공유해보세요 :)",
+        "현재 주소 복사가 완료되었습니다🌏🧡"
+      );
     },
     movetoNaver() {
       var link = "https://forms.gle/WJpvMqG54SUF29io8";
       window.open(link);
     },
     goMain() {
-      this.$router.push("/");
+      this.$router.push("/").catch(() => {});
     },
   },
 };
@@ -471,12 +485,17 @@ export default {
   width: 100%;
   min-height: 100%;
 }
-
 .toggle-login {
   position: fixed;
   bottom: 30px;
   right: 30px;
   color: red;
+}
+.toggle-title {
+  font-weight: bolder;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 5%;
 }
 .bi-box-arrow-in-right {
   position: fixed;
@@ -485,6 +504,7 @@ export default {
   color: red;
 }
 .icon-box {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -520,13 +540,36 @@ export default {
 #button-add-toggle {
   font-weight: bolder;
   margin: 0 0;
+  text-align: start;
+  margin-left: 6%;
 }
 .temp {
   width: 100%;
 }
+.main-logo{
+  cursor: pointer;
+}
 #temp2 {
   width: 100%;
 }
-#app {
+.nav-title{
+  position: relative;
+  top: 0%;
+  left: 0%;
+}
+.notice-bell{
+  transform-origin: top;
+  animation: bell 2s infinite linear;
+}
+@keyframes bell {
+  0%, 50%{
+    transform: rotate(0deg);
+	}
+  5%, 15%, 25%, 35%, 45% {
+    transform: rotate(13deg);
+  }
+  10%, 20%, 30%, 40% {
+    transform: rotate(-13deg);
+  }
 }
 </style>

@@ -253,6 +253,16 @@ public class StoreService {
         return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
     }
 
+    public ResponseEntity<String> checkStoreNum(HashMap<String, String> map) {
+        String storeNum = map.get("storeNum");
+        Optional<Store> findStoreNum = storeRepository.findByStoreNum(storeNum);
+        if(findStoreNum.isPresent()) {
+            log.info("이미존재하는 사업자번호");
+           return new ResponseEntity<>("사업자등록번호가 중복됩니다.",HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>("사용가능한 사업자등록번호입니다." , HttpStatus.OK);
+    }
+
     // 좌표 가져오는 메서드
     public HashMap<String, String> getCoordinate(String fullAddress) {
 
@@ -322,4 +332,5 @@ public class StoreService {
         }
         return new ResponseEntity<>(getSortList(storeList), HttpStatus.OK);
     }
+
 }

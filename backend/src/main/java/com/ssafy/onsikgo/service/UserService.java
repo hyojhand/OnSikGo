@@ -145,6 +145,10 @@ public class UserService {
         HttpHeaders httpHeaders = new HttpHeaders();
         // 생성한 토큰을 Response 헤더에 넣어주고,
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+        if(loginDto.getTo() != null) {
+            redisUtil.setData(loginDto.getEmail(), loginDto.getTo());
+        }
         
 //         TokenDto에도 넣어서 RequestBody로 리턴해준다
         return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);

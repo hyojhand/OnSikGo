@@ -1,30 +1,38 @@
 <template>
   <div>
-    <div id="reviews" class="ml-5">
+    <div id="reviews" class="mt-4 ml-2">
       <div class="container">
-        <div class="row mt-4">
-          <div class="col-3">
-            <b-img
+        <div class="row">
+          <div class="col-3 mt-4">
+            <img
               :src="`${storeDto.storeImgUrl}`"
               width="80"
               height="50"
               style="margin: 0"
             />
-            <div>
-              <span>{{ storeDto.storeName }}</span>
+          </div>
+          <div class="col-6">
+            <div class="d-flex justify-content-start">
+              <div style="font-size: 0.7rem; color: gray">
+                {{ storeDto.storeName }}
+              </div>
+            </div>
+            <div class="mt-3">
+              <div class="content">{{ content }}</div>
             </div>
           </div>
-          <div class="col-6 mt-4">
-            <span class="d-flex justify-content-center"> {{ content }}</span>
-          </div>
-          <div class="col-3 mt-4">
-            <div @click="reviewdelete">
+          <div class="col-3 case">
+            <div
+              class="trash"
+              v-if="nickname == nowNickname"
+              @click="reviewdelete"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
                 y="0px"
-                width="30"
-                height="30"
+                width="20"
+                height="20"
                 viewBox="0 0 100 100"
                 style="fill: #000000"
               >
@@ -53,19 +61,26 @@
                   d="M59.5 45c-.276 0-.5-.224-.5-.5v-2c0-.276.224-.5.5-.5s.5.224.5.5v2C60 44.776 59.776 45 59.5 45zM38 76c-1.654 0-3-1.346-3-3V38c0-1.654 1.346-3 3-3s3 1.346 3 3v35C41 74.654 39.654 76 38 76zM38 36c-1.103 0-2 .897-2 2v35c0 1.103.897 2 2 2s2-.897 2-2V38C40 36.897 39.103 36 38 36z"
                 ></path>
               </svg>
-              <!-- <b-icon @click="reviewdelete" icon="trash"></b-icon> -->
-              <!-- <button @click="reviewdelete" class="btn-delete">삭제</button> -->
+            </div>
+            <div v-else class="siren-case">
+              <img
+                class="siren"
+                src="@/assets/images/siren.png"
+                @click="reportReview(reviewId)"
+                alter="신고 버튼이었던것.."
+              />
+              <div v-if="reportDuple" class="report mt-1">
+                <div style="color: red">신고 완료 !</div>
+              </div>
             </div>
           </div>
-          <div class="d-flex justify-content-end">
-            <span style="color: gray; font-size: 0.8rem">
-              {{ createdDate.slice(2, 4) }}.{{ createdDate.slice(4, 6) }}.{{
-                createdDate.slice(6, 8)
-              }}
-              {{ createdDate.slice(8, 10) }}:{{
-                createdDate.slice(10, 12)
-              }}</span
-            >
+        </div>
+        <div class="d-flex justify-content-end">
+          <div style="color: gray; font-size: 0.8rem">
+            {{ createdDate.slice(2, 4) }}.{{ createdDate.slice(4, 6) }}.{{
+              createdDate.slice(6, 8)
+            }}
+            {{ createdDate.slice(8, 10) }}:{{ createdDate.slice(10, 12) }}
           </div>
         </div>
       </div>
@@ -87,14 +102,27 @@ export default {
     userImgUrl: String,
     reviewId: Number,
   },
+  data() {
+    return {
+      nowNickname: "",
+      reportDuple: false,
+    };
+  },
   computed: {
     ...mapGetters("accounts", ["reviewNickName"]),
+  },
+  created() {
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+
+    http.get("/user").then((response) => {
+      this.nowNickname = response.data.nickname;
+    });
   },
   methods: {
     ...mapActions("accounts", ["getMyReviewList"]),
     async reviewdelete() {
-      await http.delete(`/review/${this.reviewId}`).then((response) => {
-        console.log(response);
+      await http.delete(`/review/${this.reviewId}`).then(() => {
         this.$alert("리뷰가 삭제되었습니다!");
       });
       await http
@@ -107,23 +135,30 @@ export default {
           }
         });
     },
+    reportReview(reviewId) {
+      http.patch(`/review/${reviewId}`).then((response) => {
+        if (response.status == 200) {
+          this.reportDuple = true;
+        }
+      });
+    },
   },
 };
 </script>
 <style scoped>
-#text {
-  font-size: 1rem;
-  font-style: bold;
-  color: black;
-  text-align: start;
-}
 #reviews {
-  width: 370px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
-  border-bottom: 2px solid rgba(0, 0, 0, 10%);
+  width: 95%;
+  background-color: white;
+  align-items: center;
+  height: 100px;
+  border-radius: 10px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   margin: 0;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 .btn-delete {
   height: 30px;
@@ -137,5 +172,21 @@ export default {
   background-color: #de9712;
   color: #ffffff;
   width: 50px;
+}
+.siren {
+  width: 20px;
+  height: 20px;
+}
+.siren-case {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.content {
+  margin: 0;
+}
+.trash {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

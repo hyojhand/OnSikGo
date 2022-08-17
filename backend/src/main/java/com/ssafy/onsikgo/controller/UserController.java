@@ -96,14 +96,16 @@ public class UserController {
     public HttpEntity<?> kakaoLogin(@RequestBody HashMap<String, String> param) {
         kakaoUserService.getUserInfoByAccessToken(param.get("access_token"));
         UserDto userDto = kakaoUserService.getUserInfoByAccessToken(param.get("access_token"));
-        return kakaoUserService.login(userDto);
+        String fcm_token = param.get("fcm_token");
+        return kakaoUserService.login(userDto,fcm_token);
     }
 
     @PostMapping("/naver")
     public HttpEntity<?> naverLogin(@RequestBody HashMap<String, String> param) {
         naverUserService.getUserInfoByAccessToken(param.get("access_token"));
         UserDto userDto = naverUserService.getUserInfoByAccessToken(param.get("access_token"));
-        return naverUserService.login(userDto);
+        String fcm_token = param.get("fcm_token");
+        return naverUserService.login(userDto,fcm_token);
     }
 
     @PostMapping("/pw-find")

@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <!-- 상위 가게 카테고리 -->
+    <!-- 상단 가게 카테고리 -->
     <div class="row">
       <div class="col" id="category-img">
         <a>
           <img src="@/assets/images/all.png" alt="all" @click="selectAll()" />
         </a>
-        <p>모두 보기</p>
+        <p class="mt-1">모두보기</p>
       </div>
 
       <div class="col" id="category-img">
@@ -17,7 +17,7 @@
             @click="selectKorea()"
           />
         </a>
-        <p>한식</p>
+        <p class="mt-1">한식</p>
       </div>
 
       <div class="col" id="category-img">
@@ -28,10 +28,10 @@
             @click="selectJapan()"
           />
         </a>
-        <p>일식</p>
+        <p class="mt-1">일식</p>
       </div>
     </div>
-    <!-- 하위 가게 카테고리 -->
+    <!-- 중단 가게 카테고리 -->
     <div class="row">
       <div class="col" id="category-img">
         <a>
@@ -41,7 +41,7 @@
             @click="selectWestern()"
           />
         </a>
-        <p>양식</p>
+        <p class="mt-1">양식</p>
       </div>
       <div class="col" id="category-img">
         <a>
@@ -51,7 +51,7 @@
             @click="selectSnack()"
           />
         </a>
-        <p>분식</p>
+        <p class="mt-1">분식</p>
       </div>
       <div class="col" id="category-img">
         <a>
@@ -61,9 +61,10 @@
             @click="selectDesssert()"
           />
         </a>
-        <p>디저트</p>
+        <p class="mt-1">디저트</p>
       </div>
     </div>
+    <!-- 하단 가게 카테고리 -->
     <div class="row">
       <div class="col" id="category-img">
         <a
@@ -73,7 +74,7 @@
             @click="selectIngredient()"
           />
         </a>
-        <p>식자재</p>
+        <p class="mt-1">식자재</p>
       </div>
       <!-- 빈 공간 채우기 -->
       <div class="col" id="category-img"></div>
@@ -102,25 +103,6 @@
             >
               <path
                 d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-              />
-            </svg>
-          </button>
-          <!-- 초기화 -->
-          <button class="search-reset" @click="reset()">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="black"
-              class="bi bi-arrow-clockwise"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"
-              />
-              <path
-                d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"
               />
             </svg>
           </button>
@@ -183,9 +165,6 @@ export default {
       this.category = "WESTERN";
       this.sendParams();
     },
-    reset() {
-      this.keyword = "";
-    },
   },
 };
 </script>
@@ -202,7 +181,9 @@ export default {
   width: 70px;
   height: 70px;
 }
-
+.container .row .col p {
+  letter-spacing: 3px;
+}
 .location {
   text-align: left;
   padding-bottom: 10px;
@@ -224,8 +205,8 @@ export default {
 }
 
 .container .row #category-img:hover {
-  width: 50px; /* 사진크기 조절 */
-  transform: scale(1.3, 1.3); /* 가로2배 새로 1.5배 로 커짐 */
+  width: 30px; /* 사진크기 조절 */
+  transform: scale(1.2, 1.2); /* 가로2배 새로 1.5배 로 커짐 */
   transition: transform.5s; /* 커지는 시간 */
 }
 .index-box {
@@ -239,7 +220,7 @@ export default {
   padding-right: 10px;
   padding-left: 15px;
 }
-.search-reset{
+.search-reset {
   padding: 0;
   margin: 0;
 }

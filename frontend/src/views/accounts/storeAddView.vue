@@ -294,11 +294,26 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response.data);
           if (response.data.match_cnt == 1) {
-            this.ownercheckDuple = true;
-            this.ownerfailDuple = false;
-            this.numCheck = true;
+            http
+              .post("/store/check", {
+                storeNum: this.identify,
+              })
+              .then((response) => {
+                if (response.status == 200) {
+                  this.ownercheckDuple = true;
+                  this.ownerfailDuple = false;
+                  this.numCheck = true;
+                } else {
+                  this.$alert(
+                    "이미 등록된 사업자등록번호입니다.",
+                    "사업자등록번호 중복 예방"
+                  );
+                  this.ownercheckDuple = false;
+                  this.ownerfailDuple = true;
+                  this.numCheck = false;
+                }
+              });
           } else {
             this.ownercheckDuple = false;
             this.ownerfailDuple = true;
@@ -329,7 +344,6 @@ export default {
       if (this.numCheck == true) {
         http.defaults.headers["access-token"] =
           localStorage.getItem("access-token");
-        console.log(this.storeDto);
         http
           .post("/store/register", formData, {
             headers: {
@@ -338,7 +352,6 @@ export default {
           })
           .then((response) => {
             if (response.status == 200) {
-              console.log(this.storeDto);
               this.$alert("매장 추가가 완료되었습니다.");
               this.$router.push("/mypage/owner");
             } else {

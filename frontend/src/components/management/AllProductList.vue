@@ -13,18 +13,18 @@
         </div>
         <div class="info-box">
           <div>할인 판매가 :</div>
-          <div class="ml-1">{{ item.sale.salePrice }} 원</div>
+          <div class="ml-1">{{ item.sale?.salePrice }} 원</div>
         </div>
         <div class="info-box">
           <div>등록 수량 :</div>
-          <div class="ml-1">{{ item.sale.stock }} 개</div>
+          <div class="ml-1">{{ item.sale?.stock }} 개</div>
         </div>
       </div>
       <button @click="prodmodify()" class="border-m radius-s my-1 edit-btn">
         정보수정
       </button>
       <add-stock-modal
-        v-if="item.sale.stock == 0"
+        v-if="item.sale?.stock == 0"
         :item="this.item"
         :to="Number(this.storeId1)"
         class="stock-btn mb-1"
@@ -105,9 +105,10 @@ button {
   flex-direction: row;
   padding-bottom: 3%;
   margin: 2% 0;
+  background-color: white;
 }
 .edit-btn {
-  background-color: rgb(255, 82, 82);
+  background-color: rgba(255, 82, 82, 0.75);
   width: 160px;
   margin: 0;
 }

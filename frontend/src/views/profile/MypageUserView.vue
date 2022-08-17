@@ -4,26 +4,26 @@
       <img :src="`${userDto.imgUrl}`" width="100" height="100" />
     </div>
 
-    <div class="mt-3">
+    <div class="my-5">
       <span
-        >{{ userDto.nickname }} 님!, <br />이번 달에
+        >{{ userDto.nickname }} 님! <br />이번 달에
         <strong id="green">온식고</strong>를 통해 <br /><strong id="green"
           >{{ this.orderPrice }}원</strong
         >의 세상을 구하셨어요!</span
       >
     </div>
-    <br /><br />
-    <div id="space-even">
-      <button @click="orderlist()" id="mypage-btn">주문내역</button>
-      <button @click="reviewlist()" id="mypage-btn">리뷰내역</button>
+    <div class="space-even">
+      <button @click="orderlist()" class="mypage-btn">주문내역</button>
+      <button @click="reviewlist()" class="mypage-btn">리뷰내역</button>
     </div>
-    <br />
-    <hr />
-    <br />
-    <span style="font-weight: bolder; font-size: 1.3rem"
-      >✨ {{ userDto.nickname }} 님의 단골매장</span
-    >
+    <div style="font-weight: bolder; font-size: 1.3rem" class="store">
+      {{ userDto.nickname }} 님의 단골매장
+    </div>
+
     <div v-if="this.storeregularList.length">
+      <span style="font-weight: light; font-size: 0.7rem; color: #d47d4a"
+        >* 클릭하시면 각 매장의 정보 페이지로 이동합니다. *</span
+      >
       <regularList
         v-for="(store, index) in storeregularList"
         :key="index"
@@ -35,7 +35,6 @@
       <div>단골 매장을</div>
       <div>등록해보는건 어떨까요?</div>
     </div>
-    <br />
   </div>
 </template>
 
@@ -61,11 +60,9 @@ export default {
 
     http.get("/user").then((response) => {
       this.userDto = response.data;
-      // console.log(this.userDto);
     });
 
     http.get("/follow").then((response) => {
-      // console.log(response.data);
       this.storeregularList = response.data;
     });
 
@@ -92,11 +89,11 @@ export default {
 #green {
   color: green;
 }
-#space-even {
+.space-even {
   display: flex;
   justify-content: space-evenly;
 }
-#mypage-btn {
+.mypage-btn {
   height: 40px;
   border: none;
   display: inline-block;
@@ -120,5 +117,8 @@ export default {
 .non-msg > div {
   font-size: 30px;
   color: rgba(0, 0, 0, 0.2);
+}
+.store {
+  margin-top: 30px;
 }
 </style>

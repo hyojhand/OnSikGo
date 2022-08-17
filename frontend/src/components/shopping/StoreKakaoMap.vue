@@ -65,6 +65,23 @@ export default {
       });
       // 마커가 지도 위에 표시되도록 설정합니다
       marker.setMap(map);
+      var content = '<div class="customoverlay">' +
+    `  <a href="https://map.kakao.com/link/map/${this.mark[0]},${this.mark[1]}" target="_blank">` +
+    '    <span class="title" style="font-weight:bold;">길찾기</span>' +
+    '  </a>' +
+    '</div>';
+
+      // 커스텀 오버레이가 표시될 위치입니다 
+      var position = new kakao.maps.LatLng(this.mark[0], this.mark[1]);  
+
+      // 커스텀 오버레이를 생성합니다
+      var customOverlay = new kakao.maps.CustomOverlay({
+          map: map,
+          position: position,
+          content: content,
+          yAnchor: 1 
+      });
+      console.log(customOverlay)
     },
 
 

@@ -154,7 +154,6 @@
               placeholder="매장 종료시간"
               required
             ></b-form-input>
-            <!-- <b-form-timepicker v-model="value" locale="ko"></b-form-timepicker> -->
           </b-form-group>
         </div>
         <br />
@@ -246,7 +245,6 @@ export default {
       this.previewImg = this.storeDto.storeImgUrl;
       if (this.storeDto.offDay == "연중무휴") {
         this.storeDto.offDay = null;
-        console.log(this.storeDto);
       } else {
         this.storeDto.offDay.split(",").map((day) => {
           var temp = {
@@ -322,9 +320,25 @@ export default {
         )
         .then((response) => {
           if (response.data.match_cnt == 1) {
-            this.ownercheckDuple = true;
-            this.ownerfailDuple = false;
-            this.numCheck = true;
+            http
+              .post("/store/check", {
+                storeNum: this.identify,
+              })
+              .then((response) => {
+                if (response.status == 200) {
+                  this.ownercheckDuple = true;
+                  this.ownerfailDuple = false;
+                  this.numCheck = true;
+                } else {
+                  this.$alert(
+                    "이미 등록된 사업자등록번호입니다.",
+                    "사업자등록번호 중복 예방"
+                  );
+                  this.ownercheckDuple = false;
+                  this.ownerfailDuple = true;
+                  this.numCheck = false;
+                }
+              });
           } else {
             this.ownercheckDuple = false;
             this.ownerfailDuple = true;
@@ -344,7 +358,6 @@ export default {
       // 일단 this.storeDto.offDay가 "연중무휴"면
       // this.storeDto.offDay를 비워서 ""값으로 넣고 시작
       this.storeDto.offDay = this.off.join;
-      // console.log(this.storeDto.offDay);
       if (this.numCheck == true) {
         http.defaults.headers["access-token"] =
           localStorage.getItem("access-token");
@@ -380,14 +393,12 @@ export default {
         } else {
           this.realoffDayList = this.storeDto.offDay;
         }
-        console.log(this.realoffDayList);
         if (this.storeDto.offDay == "") {
           this.storeDto.offDay = "연중무휴";
           this.realoffDayList = "연중무휴";
         }
         this.storeOffday(this.realoffDayList);
         this.storeDto.offDay = this.realoffDayList;
-        console.log(this.storeDto);
         const formData = new FormData();
         formData.append("file", this.imgFile);
         formData.append(
@@ -396,7 +407,7 @@ export default {
             type: "application/json",
           })
         );
-        console.log(formData);
+
         http
           .put(`/store/${this.storeDto.storeId}`, formData, {
             headers: {

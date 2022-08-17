@@ -127,5 +127,7 @@ export default {
   font-weight: bolder;
   width: 100%;
   margin: 0 0;
+  text-align: start;
+  margin-left: 6%;
 }
 </style>

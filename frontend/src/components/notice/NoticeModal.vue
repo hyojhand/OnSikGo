@@ -6,18 +6,27 @@
           class="border-m radius-m notice-btn"
           v-bind="attrs"
           v-on="on"
-          v-bind:disabled="
-            value.orderDto.state == 'ORDER' || value.orderDto.state == 'CANCEL'
-          "
+          v-if="value.orderDto.state == 'WAIT'"
         >
           주문 확인
+        </button>
+        <button
+          class="border-m radius-m notice-btn"
+          v-else-if="value.orderDto.state == 'ORDER'"
+          @click="pickUp()"
+        >
+          픽업완료
         </button>
       </template>
 
       <v-card>
         <div class="d-flex justify-content-spacebetween">
-        <v-card-title class="title lighten-2 fw-bold" style="color: #66a32e">주문 상세보기</v-card-title>
-        <button @click="off()" style="margin-left:140px;"><i class="fa-solid fa-xmark"></i></button>
+          <v-card-title class="title lighten-2 fw-bold" style="color: #66a32e"
+            >주문 상세보기</v-card-title
+          >
+          <button @click="off()" style="margin-left: 140px">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
         <v-card
           class="mx-auto my-auto pb-3 order-info"
@@ -42,7 +51,7 @@
             </div>
           </div>
           <div class="mx-auto card-box" max-width="300" outlined>
-            <div style="margin-top:50px; margin-bottom: 50px;" >
+            <div style="margin-top: 50px; margin-bottom: 50px">
               <img
                 class="col-5 food-pic"
                 :src="`${value.orderDto.saleItemDto.itemDto.itemImgUrl}`"
@@ -82,6 +91,7 @@
 <script>
 import RefuseModal from "@/components/notice/RefuseModal.vue";
 import http from "@/util/http-common.js";
+import axios from "axios";
 import { mapActions } from "vuex";
 export default {
   name: "NoticeModal",
@@ -105,9 +115,18 @@ export default {
         .patch(`/order/sign/${this.value.orderDto.orderId}`)
         .then((response) => {
           if (response.status === 200) {
-            // console.log(response);
+            axios.defaults.headers["Authorization"] =
+              "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
+            axios.post("https://fcm.googleapis.com/fcm/send", {
+              notification: {
+                title: "온식고의 알림이 도착했습니다",
+                body: "주문하신 상품이 승인되었습니다.",
+                click_action: "https://i7e201.p.ssafy.io/",
+                icon: "https://i7e201.p.ssafy.io/img/real_logo.136f0457.png",
+              },
+              to: response.data,
+            });
           } else {
-            // console.log(response);
             this.$alert("주문서 처리에 실패하였습니다.");
           }
         });
@@ -118,6 +137,32 @@ export default {
     },
     off() {
       this.parents = false;
+    },
+    async pickUp() {
+      http.defaults.headers["access-token"] =
+        localStorage.getItem("access-token");
+      await http
+        .patch(`/order/pickup/${this.value.orderDto.orderId}`)
+        .then((response) => {
+          if (response.status === 200) {
+            axios.defaults.headers["Authorization"] =
+              "key=AAAAh0BP7KE:APA91bG7iSEIgwr2OAGSSxZveLwHi7eu7D_IHj_PGCB7BGOJp7BDHHdcqzb1ALmWCHAu6YKEMiIOABiED36j86onF__SUhcoDFk-V5fHtCqQUVD7HmhF_V7AltjIbHEToGvv7ULj0roP";
+            axios.post("https://fcm.googleapis.com/fcm/send", {
+              notification: {
+                title: "온식고의 알림이 도착했습니다",
+                body: "주문하신 상품의 픽업을 완료하였습니다.",
+                click_action: "https://i7e201.p.ssafy.io/",
+                icon: "@/src/assets/real_logo.png",
+              },
+              to: response.data,
+            });
+          } else {
+            this.$alert("주문서 처리에 실패하였습니다.");
+          }
+        });
+      await http.get("/notice").then((response) => {
+        this.getOwnerOrderList(response.data.reverse());
+      });
     },
   },
   data() {

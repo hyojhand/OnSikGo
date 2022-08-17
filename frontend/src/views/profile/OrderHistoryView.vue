@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="mt-10">
-      <span style="font-size: 1.5rem">💌주문내역💌</span>
+    <div class="mt-5">
+      <div style="font-size: 1.5rem">💌 주문내역 💌</div>
     </div>
 
     <div class="mt-4" v-if="this.orderList.length">
@@ -43,7 +43,6 @@ export default {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http.get("/order").then((response) => {
-        console.log(response.data);
         this.orderList = response.data.reverse();
       });
     },

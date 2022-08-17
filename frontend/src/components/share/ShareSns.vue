@@ -40,7 +40,6 @@ export default {
       );
     },
     shareKakao() {
-      console.log(this.storeImgUrl);
       Kakao.Link.createDefaultButton({
         container: "#btnKakao",
         objectType: "feed",
@@ -65,6 +64,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: 23px;
 }
 .link-icon {
   position: relative;

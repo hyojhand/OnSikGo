@@ -97,6 +97,7 @@
           class="border-m radius-m" 
           @click="e1 = 2"
           v-bind:disabled="check1 == false"
+          style="width: 100px;"
           >
           다음으로</button>
         </div>
@@ -189,10 +190,11 @@
         </form>
 
         <div class="sign-btn">
-          <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
+          <button class="border-m radius-m" style="width:100px;" @click="e1 = 1">이전으로</button>
           <button 
           class="border-m radius-m" 
           @click="e1 = 3"
+          style="width:100px;"
           v-bind:disabled="check2 == false"
           >다음으로</button>
         </div>
@@ -205,7 +207,7 @@
         outlined
         min-height="200"
       >
-        <form @submit.prevent="submit" class="mb-2">
+        <form @submit.prevent="submit" class="mb-2" style="width:280px;">
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
@@ -242,17 +244,20 @@
           <!-- 가게 이미지 등록 -->
           <div style="margin-bottom: 5px;">
             <p style="margin-top:3px; color: rgb(140, 184, 131);">
-              <i class="fa-solid fa-image"></i> 가게를 대표할 이미지 파일을 등록해주세요!</p>
+              <i class="fa-solid fa-image"></i> 가게 대표이미지를 등록해주세요.</p>
             <input @change="fileSelect" type="file"/>
           </div>
         </form>
 
-        <div class="sign-btn">
-          <button class="border-m radius-m mt-5" @click="e1 = 2">이전으로</button>
+        <div class="sign-btn" style="margin-top: 40px;">
+          <button class="border-m radius-m" style="width:100px;" @click="e1 = 2">이전으로</button>
           <button 
-          v-if="category != false && imgFile != null"
+
           class="border-m radius-m" 
-          @click="signup()">가입하기</button>
+          @click="signup()"
+          style="width:100px; background-color: #368f3d; border-color: #368f3d; color: white;"
+          v-if="category != false && imgFile != null"
+          >가입하기</button>
         </div>
         <div v-if="signupfailDuple" style="color:red;">😥 회원가입에 실패했습니다.</div>
       </v-stepper-content>
@@ -479,11 +484,23 @@ export default {
         b_no: [this.identify]
       })
       .then((response) => {
+        // 등록번호가 국세청 API 존재할 때 중복 확인
         if (response.data.match_cnt == 1) {
+          http.post("/store/check", {
+            storeNum : this.identify
+          })
+          .then ((response) => {
+            if ((response.status) == 200) {
           this.ownercheckDuple = !this.ownercheckDuple;
           this.check2 = true;
+          // 중복된 번호가 있을 때
+            } else {
+              this.$alert("이미 등록된 사업자등록번호입니다.");
+            }
+          })
+          // 등록번호가 국세청 API 존재하지 않을 때
         } else {
-          this.ownerfailDuple = !this.ownerfailDuple;
+            this.ownerfailDuple = !this.ownerfailDuple;
         }
       })
       .catch(err => {
@@ -687,6 +704,6 @@ export default {
 
 }
 .input-box {
-  min-width: 266px;
+  min-width: 263px;
 }
 </style>
