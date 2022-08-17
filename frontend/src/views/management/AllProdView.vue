@@ -50,6 +50,7 @@
           v-model="keyword"
           label="상품을 입력해주세요."
           color="black"
+          @keyup.enter="keywordSelect(1)"
         ></v-text-field>
         <!-- 검색 아이콘 -->
         <button class="none-margin">
@@ -67,29 +68,9 @@
             />
           </svg>
         </button>
-        <!-- 초기화 -->
-        <!-- <button class="none-margin">
-          <svg
-            @click="resetItemList()"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            fill="currentColor"
-            class="bi bi-arrow-clockwise"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"
-            />
-            <path
-              d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"
-            />
-          </svg>
-        </button> -->
       </div>
     </div>
-
+    <!-- 상품 리스트 -->
     <div class="item-container" v-if="this.items.length">
       <all-product-list
         class="item-card"
@@ -153,11 +134,9 @@ export default {
       localStorage.getItem("access-token");
     await http.get("/store/list").then((response) => {
       if (this.saveStore.length) {
-        console.log("여기에 사람있어요");
         this.stores = response.data;
         this.storeId = this.saveStore;
       } else {
-        console.log("여긴 없어요 ㅋ");
         this.stores = response.data;
         this.storeId = response.data[0].storeId;
         this.getSaveStore(this.storeId);
@@ -186,7 +165,6 @@ export default {
           size: 4,
         })
         .then((response) => {
-          console.log(response);
           this.items = response.data.content;
           this.totalPage = response.data.totalPages;
           this.items.map(async (item, i) => {
@@ -277,17 +255,10 @@ export default {
         this.keywordSelect(this.page);
       }
     },
-    resetItemList() {
-      this.isKeyword = false;
-      this.selectPage(1);
-    },
     selectStore(event) {
       this.storeId = event.target.value;
       this.getSaveStore(event.target.value);
       this.selectPage(1);
-    },
-    click(e) {
-      console.log(e);
     },
   },
 };

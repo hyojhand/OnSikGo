@@ -5,10 +5,6 @@
       <!-- 상품명, 상품이미지, 주소,현재위치에서 거리, 매장상세보기 버튼, 정가, 할인가, 재고, 한줄평-->
       <div class="product_container border-l radius-m mt-5">
         <div class="item-card">
-          <!-- 마커 -->
-          <!-- <div class="col-2">
-        <h1>{{ item.index }}</h1>
-      </div> -->
           <div class="product-name pt-3">{{ productName }}</div>
           <div class="pro-info pt-3">
             <img
@@ -236,7 +232,7 @@ export default {
       if (isLogin == 1) {
         this.$alert("업주께서는 이용하실수 없는 서비스입니다.");
       } else {
-        if (this.count <= this.stock || this.count >= 1) {
+        if (this.count <= this.stock && this.count >= 1) {
           http.defaults.headers["access-token"] =
             localStorage.getItem("access-token");
           http
@@ -261,6 +257,8 @@ export default {
             });
           this.$alert("주문이 접수되었습니다.");
           this.$router.push("/mypage/user/history");
+        } else {
+          this.$alert("주문을 다시 확인해주세요");
         }
       }
     },
@@ -299,19 +297,11 @@ export default {
 <style scoped>
 .main_container {
   width: 100%;
-  height: 100%;
 }
 .main_container .mobile {
   width: 80%;
   margin: 0 auto;
 }
-/* 주소 위치 */
-/* .main_container .mobile .location {
-  margin-left: 1.5rem;
-  text-align: left;
-  font-size: 15px;
-} */
-/* 거리 예측 */
 .product-prediction {
   padding: 0px;
   font-size: 8px;
@@ -320,7 +310,6 @@ export default {
   margin-left: 3rem;
   color: #b9b9b9;
 }
-
 .order {
   color: black;
 }
@@ -364,7 +353,6 @@ export default {
   margin-bottom: 0.5rem;
   text-align: left;
 }
-
 .item-card {
   width: 100%;
   display: flex;
