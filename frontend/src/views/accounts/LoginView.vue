@@ -155,7 +155,7 @@ export default {
           .then((response) => {
             if (response.status == 200) {
               localStorage.setItem("access-token", response.data.token);
-              this.$router.push("/");
+              this.$router.push("/").catch(() => {});
             } else {
               this.loginCheck = true;
             }

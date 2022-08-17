@@ -187,12 +187,10 @@
       messaging
         .requestPermission()
         .then(function () {
-          console.log("Have permission");
           return messaging.getToken();
         })
         .then(function (token) {
           localStorage.setItem("fcm-token", token);
-          console.log(token);
         })
         .catch(function (arr) {
           console.log("Error Occured");
