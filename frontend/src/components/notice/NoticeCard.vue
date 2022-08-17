@@ -12,13 +12,18 @@
     />
     <div class="col-7 order-box">
       <div class="mb-2 msg-box">
-          <div class="date-box">
-            <div class="mr-1">주문일 :</div>
-            <div>{{ notice.orderDto.date.slice(0,4) }}.{{ notice.orderDto.date.slice(4,6) }}.{{ notice.orderDto.date.slice(6,8) }}
-              {{ notice.orderDto.date.slice(8,10) }}:{{ notice.orderDto.date.slice(10,12) }}  
-            </div>
+        <div class="date-box">
+          <div class="mr-1">주문일 :</div>
+          <div>
+            {{ notice.orderDto.date.slice(0, 4) }}.{{
+              notice.orderDto.date.slice(4, 6)
+            }}.{{ notice.orderDto.date.slice(6, 8) }}
+            {{ notice.orderDto.date.slice(8, 10) }}:{{
+              notice.orderDto.date.slice(10, 12)
+            }}
           </div>
-          <div v-html="`${notice.content}`"></div>
+        </div>
+        <div v-html="`${notice.content}`"></div>
       </div>
       <v-card-actions class="btn-box">
         <p v-if="`${notice.orderDto.state}` === 'WAIT'" class="time-text wait">
@@ -38,7 +43,8 @@
         </p>
         <p
           v-else-if="`${notice.orderDto.state}` === 'PICKUP'"
-          class="time-text pickup" style="color:orange"
+          class="time-text pickup"
+          style="color: orange"
         >
           수령 완료
         </p>
@@ -73,12 +79,12 @@ export default {
 <style scoped>
 .card-box {
   display: flex;
-  margin: 0 auto;
+  margin: 0 auto 5px 0;
   /* width: 100%; */
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background-color: rgb(240, 240, 240);
 }
 .img-box {
