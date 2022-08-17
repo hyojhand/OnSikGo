@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 탭 기능 -->
     <ul class="tabs mt-5 mb-3">
       <li
         v-for="tab in tabs"

@@ -3,7 +3,6 @@
     <!-- 사용자 사용법 -->
     <v-stepper v-model="e1">
      <p class="info-title pt-3">소비자's 온식고 이용방법</p>
-  
       <v-stepper-items>
         <v-stepper-content class="stepper-content" step="1">
           <img src="@/assets/images/step_1.png" alt="" style="width:100%;">
@@ -17,7 +16,6 @@
             로그인
           </v-btn>
         </v-stepper-content>
-  
         <v-stepper-content class="stepper-content" step="2">
           <img src="@/assets/images/step_2.png" alt="" style="width:100%;">
           <p class="pb-3">카테고리를 선택 후 상품을 올린 가게 또는 상품을 쇼핑합니다.</p>
@@ -29,7 +27,6 @@
             상품 확인
           </v-btn>
         </v-stepper-content>
-  
         <v-stepper-content class="stepper-content" step="3">
           <img src="@/assets/images/step_3.png" alt="" style="width:100%;">
           <p class="pb-3">원하시는 상품이 있으시면 해당 상품을 선택합니다.</p>
@@ -49,7 +46,6 @@
             class="info-btn"
             color="primary"
             @click="e1 = 5"
-            
           >
             주문 요청
           </v-btn>
@@ -68,33 +64,19 @@
         </v-stepper-content>
       </v-stepper-items>
       <v-stepper-header>
-        <v-stepper-step
-          step="1"
-        >
+        <v-stepper-step step="1">
         </v-stepper-step>
         <v-divider></v-divider>
-
-        <v-stepper-step
-          step="2"
-        >
+        <v-stepper-step step="2">
         </v-stepper-step>
-  
         <v-divider></v-divider>
-  
-        <v-stepper-step 
-          step="3"
-        >
+        <v-stepper-step step="3">
         </v-stepper-step>
-
         <v-divider></v-divider>
-  
-        <v-stepper-step 
-          step="4">
+        <v-stepper-step step="4">
         </v-stepper-step>
-
         <v-divider></v-divider>
-        <v-stepper-step 
-          step="5">
+        <v-stepper-step  step="5">
         </v-stepper-step>
       </v-stepper-header>
     </v-stepper>

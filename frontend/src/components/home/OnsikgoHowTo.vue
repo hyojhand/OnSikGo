@@ -10,7 +10,6 @@ import UserFlow from "@/components/home/UserFlow.vue"
 import OwnerFlow from "@/components/home/OwnerFlow.vue"
 export default {
   name: "OnsikgoHowTo",
-
   components: {
     UserFlow,
     OwnerFlow,
