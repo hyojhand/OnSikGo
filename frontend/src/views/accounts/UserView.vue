@@ -1,8 +1,8 @@
 <template>
   <div class="signup-box" width="100%">
     <div class="mb-5">
-      <v-list-item-title class="mt-3 mb-5 fw-bold" style="font-size:28px;">
-        <strong style="color: #368f3d;">일반 고객</strong>  회원가입
+      <v-list-item-title class="mt-3 mb-5 fw-bold" style="font-size: 28px">
+        <strong style="color: #368f3d">일반 고객</strong> 회원가입
       </v-list-item-title>
       <div class="ment-box">
         <v-list-item-subtitle>어서오세요!</v-list-item-subtitle>
@@ -26,10 +26,16 @@
             @input="$v.email.$touch()"
             @blur="$v.email.$touch()"
           ></v-text-field>
-          <button type="button" class="border-m radius-m confrim-btn" @click="isCheck()" >
+          <button
+            type="button"
+            class="border-m radius-m confrim-btn"
+            @click="isCheck()"
+          >
             {{ checkmsg }}
           </button>
-          <div v-if="emailfailDuple" style="color: red; margin-top: 3px;">이미 가입된 메일 혹은 잘못된 이메일입니다.</div>
+          <div v-if="emailfailDuple" style="color: red; margin-top: 3px">
+            이미 가입된 메일 혹은 잘못된 이메일입니다.
+          </div>
         </div>
         <!-- ------------인증 메일 보내기-------------------- -->
         <div class="base-mailifirm" v-if="sendMail">
@@ -41,19 +47,23 @@
               placeholder="인증번호를 입력하세요."
             />
             <div>
-              <CountTimer v-if="time" :time="time" :key="rederKey"/>
+              <CountTimer v-if="time" :time="time" :key="rederKey" />
               <button
-                class="border-m radius-m mailconfirm-btn mb-5 "
+                class="border-m radius-m mailconfirm-btn mb-5"
                 @click="checkMail()"
                 type="button"
-                style="margin-left:20px;"
+                style="margin-left: 20px"
               >
                 인증
               </button>
             </div>
           </div>
-          <div v-if="mailconfirmDuple" style="color: green;">인증번호 확인이 되었습니다.</div>
-          <div v-if="mailfailDuple" style="color: red;">인증번호 확인에 실패했습니다.</div>
+          <div v-if="mailconfirmDuple" style="color: green">
+            인증번호 확인이 되었습니다.
+          </div>
+          <div v-if="mailfailDuple" style="color: red">
+            인증번호 확인에 실패했습니다.
+          </div>
         </div>
 
         <!-- --------비밀번호 입력------------ -->
@@ -114,8 +124,12 @@
           >
             중복확인
           </button>
-          <div v-if="nicknameDuple" style="color: green;">사용가능한 닉네임입니다.</div>
-          <div v-if="nicknamefailDuple" style="color: red;">사용 불가능한 닉네임입니다.</div>
+          <div v-if="nicknameDuple" style="color: green">
+            사용가능한 닉네임입니다.
+          </div>
+          <div v-if="nicknamefailDuple" style="color: red">
+            사용 불가능한 닉네임입니다.
+          </div>
         </div>
 
         <!-- ----------회원가입 동의 체크------------ -->
@@ -127,20 +141,29 @@
           color="black"
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
-          class = "checkbox"
+          class="checkbox"
         ></v-checkbox>
         <!-- 가입하기 버튼 -->
         <div class="btns mb-5">
-          <button 
-          class="border-m radius-m notice-btn" 
-          @click="signup()"
-          style="margin-top: 10px; width:150px; height:40px; background-color: #368f3d; border-color: #368f3d; color: white;"
-          v-if="check1 && check2 && checkbox"
+          <button
+            class="border-m radius-m notice-btn"
+            @click="signup()"
+            style="
+              margin-top: 10px;
+              width: 150px;
+              height: 40px;
+              background-color: #368f3d;
+              border-color: #368f3d;
+              color: white;
+            "
+            v-if="check1 && check2 && checkbox"
           >
             가입하기
           </button>
         </div>
-        <div v-if="signupfailDuple" style="color:red;">😥 회원가입에 실패했습니다.</div>
+        <div v-if="signupfailDuple" style="color: red">
+          😥 회원가입에 실패했습니다.
+        </div>
       </form>
     </v-card>
   </div>
@@ -155,7 +178,7 @@ import CountTimer from "@/components/accounts/Timer.vue";
 
 export default {
   components: {
-    CountTimer
+    CountTimer,
   },
   mixins: [validationMixin],
   name: "UserView",
@@ -192,7 +215,7 @@ export default {
     check1: false,
     check2: false,
     time: false,
-    rederKey:0,
+    rederKey: 0,
   }),
 
   computed: {
@@ -203,11 +226,13 @@ export default {
       return errors;
     },
     nameErrors() {
-      var pattern_name = /^[가-힣]{2,10}$/
+      var pattern_name = /^[가-힣]{2,10}$/;
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
-      this.name.search(/\s/) != -1 &&errors.push("이름은 빈 칸을 포함 할 수 없습니다.")
-      !pattern_name.test(this.name)&&errors.push("2글자 이상의 한글 이름을 입력해주세요.");
+      this.name.search(/\s/) != -1 &&
+        errors.push("이름은 빈 칸을 포함 할 수 없습니다.");
+      !pattern_name.test(this.name) &&
+        errors.push("2글자 이상의 한글 이름을 입력해주세요.");
       !this.$v.name.maxLength &&
         errors.push("이름은 10글자 이내로 입력해야합니다.");
       !this.$v.name.required && errors.push(" ");
@@ -215,9 +240,11 @@ export default {
     },
     passwordErrors() {
       const errors = [];
-      const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
-      if (!this.$v.password.$dirty) return errors; 
-      !validatePassword.test(this.password) && errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
+      const validatePassword =
+        /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
+      if (!this.$v.password.$dirty) return errors;
+      !validatePassword.test(this.password) &&
+        errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
       !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
       !this.$v.password.required && errors.push(" ");
       return errors;
@@ -231,7 +258,8 @@ export default {
     nicknameErrors() {
       const errors = [];
       if (!this.$v.nickname.$dirty) return errors;
-      this.nickname.search(/\s/) != -1 &&errors.push("닉네임은 빈 칸을 포함 할 수 없습니다.")
+      this.nickname.search(/\s/) != -1 &&
+        errors.push("닉네임은 빈 칸을 포함 할 수 없습니다.");
       !this.$v.nickname.maxLength &&
         errors.push("닉네임은 10글자 이내로 입력해야합니다.");
       !this.$v.nickname.required && errors.push(" ");
@@ -242,7 +270,7 @@ export default {
       let reg_required = /.{1,10}/;
       if (!this.$v.email.$dirty) return errors;
       !this.$v.email.email && errors.push("이메일 형식이 아닙니다.");
-      !reg_required.test(this.email) && errors.push("이메일을 입력해주세요.")
+      !reg_required.test(this.email) && errors.push("이메일을 입력해주세요.");
       !this.$v.email.required && errors.push(" ");
       return errors;
     },
@@ -253,18 +281,18 @@ export default {
       this.emailfailDuple = false;
       http
         .post("/user/email", {
-          email: this.email
+          email: this.email,
         })
         .then((response) => {
-        if (response.status == 200) {
-          this.sendMail = true;
-          this.checkmsg = "재전송";
-          this.time=300;
-          this.rederKey+=1;
-        } else {
-          this.emailfailDuple = true;
-        }
-      });
+          if (response.status == 200) {
+            this.sendMail = true;
+            this.checkmsg = "재전송";
+            this.time = 420;
+            this.rederKey += 1;
+          } else {
+            this.emailfailDuple = true;
+          }
+        });
     },
     // 인증번호 확인
     checkMail() {
@@ -276,14 +304,14 @@ export default {
           authNum: this.authNum,
         })
         .then((response) => {
-        if ((response.status) == 200) {
-          this.mailconfirmDuple = !this.mailconfirmDuple;
-          this.check1 = true;
-          this.time = false;
-        } else {
-          this.mailfailDuple = !this.mailfailDuple;
-        }
-      });
+          if (response.status == 200) {
+            this.mailconfirmDuple = !this.mailconfirmDuple;
+            this.check1 = true;
+            this.time = false;
+          } else {
+            this.mailfailDuple = !this.mailfailDuple;
+          }
+        });
     },
     // 닉네임 중복 확인
     nicknameCheck() {
@@ -291,16 +319,16 @@ export default {
       this.nicknamefailDuple = false;
       http
         .post("/user/nickname", {
-          nickname: this.nickname
+          nickname: this.nickname,
         })
         .then((response) => {
-        if (response.status == 200 && this.nickname != "") {
-          this.nicknameDuple = true;
-          this.check2 =true;
-        } else {
-          this.nicknamefailDuple = true;
-        }
-      });
+          if (response.status == 200 && this.nickname != "") {
+            this.nicknameDuple = true;
+            this.check2 = true;
+          } else {
+            this.nicknamefailDuple = true;
+          }
+        });
     },
     tempgo() {
       this.$router.push("/signup/complete");
@@ -366,7 +394,6 @@ export default {
   height: 100vh;
   justify-content: flex-start;
   align-items: center;
-  
 }
 .btn-box {
   top: 5px;
