@@ -6,6 +6,7 @@
           v-bind="attrs"
           class="border-m radius-s text-m reason"
           v-on="on"
+          @click="setValue()"
         >
           수량변경
         </button>
@@ -77,15 +78,17 @@ export default {
       stock: this.item.sale?.stock,
     };
   },
-
   methods: {
     stockchange() {
       http.put(`/sale/${this.item.sale.saleItemId}`, {
         salePrice: this.salePrice,
         stock: this.stock,
       });
-
       this.$router.go();
+    },
+    setValue() {
+      this.salePrice = this.item.sale?.salePrice;
+      this.stock = this.item.sale?.stock;
     },
   },
 };
@@ -95,7 +98,8 @@ export default {
 .reason {
   display: flex;
   color: white;
-  background-color: rgba(0, 0, 0, 20%);
+  background-color: #d46f21;
+  opacity: 0.6;
   width: 100%;
   flex-direction: row;
   justify-content: center;

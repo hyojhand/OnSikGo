@@ -35,7 +35,7 @@
           ></v-text-field>
         </form>
 
-        <button @click="register" class="border-m radius-m notice-btn">
+        <button @click="register()" class="border-m radius-m notice-btn">
           등록
         </button>
       </div>
@@ -129,6 +129,9 @@ export default {
 }
 .notice-btn {
   width: 110px;
+  height: 31px;
+  color: white;
+  background-color: rgba(140, 184, 131);
 }
 .info-box {
   display: flex;
