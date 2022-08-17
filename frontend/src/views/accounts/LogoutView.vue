@@ -23,7 +23,7 @@ export default {
     await this.resetDiscardStore();
     await this.resetAnalysis();
     await this.resetAccounts();
-    await this.$router.push("/");
+    await this.$router.push("/").catch(() => {});
   },
 };
 </script>

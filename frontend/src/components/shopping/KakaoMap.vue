@@ -216,7 +216,6 @@ export default {
           "https://cdn4.iconfinder.com/data/icons/food-delivery-service-3/100/food_delivery_gps_mark_service_boy_online-256.png";
         // 마커 이미지의 이미지 크기 입니다
         var imageSize = new kakao.maps.Size(40, 45);
-        // console.log("가게 하나의 위도 경도",store)
 
         // 마커 이미지를 생성합니다
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -247,7 +246,6 @@ export default {
             "    </div>" +
             "</div>",
         });
-        // console.log(this.map)
 
         kakao.maps.event.addListener(
           marker,
@@ -268,7 +266,6 @@ export default {
       var imageSrc = "https://cdn-icons-png.flaticon.com/512/3480/3480405.png";
       // 마커 이미지의 이미지 크기 입니다
       var imageSize = new kakao.maps.Size(30, 40);
-      // console.log("가게 하나의 위도 경도",store)
 
       // 마커 이미지를 생성합니다
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -303,8 +300,6 @@ export default {
         if (status === kakao.maps.services.Status.OK) {
           var address = result[0].address.address_name;
           this.getAddress(address);
-        } else {
-          console.log("실패");
         }
       };
       geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
@@ -376,7 +371,6 @@ export default {
           keyword: this.keyword,
         })
         .then((response) => {
-          console.log(response);
           this.items = response.data;
           this.items.forEach((item) => {
             var distance;
@@ -492,7 +486,6 @@ export default {
           "    </div>" +
           "</div>",
       });
-      // console.log(this.map)
 
       kakao.maps.event.addListener(
         marker,

@@ -3,7 +3,6 @@
     <!-- 점주 사용법 -->
     <v-stepper v-model="e1">
      <p class="info-title pt-3">업주's 온식고 이용방법</p>
-  
       <v-stepper-items>
         <v-stepper-content class="stepper-content" step="1">
           <img src="@/assets/images/ownerstep_1.png" alt="" style="width:100%;">
@@ -67,34 +66,21 @@
           </v-btn>
         </v-stepper-content>
       </v-stepper-items>
+      <!-- 순서 -->
       <v-stepper-header>
-        <v-stepper-step
-          step="1"
-        >
+        <v-stepper-step step="1">
         </v-stepper-step>
         <v-divider></v-divider>
-
-        <v-stepper-step
-          step="2"
-        >
+        <v-stepper-step step="2">
         </v-stepper-step>
-  
         <v-divider></v-divider>
-  
-        <v-stepper-step 
-          step="3"
-        >
+        <v-stepper-step step="3">
         </v-stepper-step>
-
         <v-divider></v-divider>
-  
-        <v-stepper-step 
-          step="4">
+        <v-stepper-step step="4">
         </v-stepper-step>
-
         <v-divider></v-divider>
-        <v-stepper-step 
-          step="5">
+        <v-stepper-step step="5">
         </v-stepper-step>
       </v-stepper-header>
     </v-stepper>

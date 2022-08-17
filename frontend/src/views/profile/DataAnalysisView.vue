@@ -148,7 +148,6 @@ export default {
       })
       .then((response) => {
         this.storeValue = response.data;
-        console.log(this.storeValue.good);
         this.getTotal(this.storeValue);
         this.getWordCloud(this.storeValue.good);
         // this.getWordBad(this.storeValue.good);

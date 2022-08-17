@@ -199,30 +199,25 @@ export default {
     // 상품 정보 조회
     findProduct() {
       http.get(`/item/${this.currentItemId}`).then((response) => {
-        // console.log(response.data)
         this.productName = response.data.itemName;
         this.price = response.data.price;
         this.itemImgUrl = response.data.itemImgUrl;
         this.comment = response.data.comment;
-        // console.log(response.data)
       }),
         http.get(`/sale/${this.currentItemId}`).then((response) => {
           this.stock = response.data.stock;
           this.salePrice = response.data.salePrice;
           this.saleItemId = response.data.saleItemId;
-          // console.log(response.data)
         });
     },
     // 가게정보 조회
     findStock() {
-      // console.log(this.orderStore)
       http.get(`/store/${this.orderStore}`).then((response) => {
         this.storeName = response.data.storeName;
         this.storeId = response.data.storeId;
         this.storeLocation = response.data.location;
         this.storelat = response.data.lat;
         this.storelng = response.data.lng;
-        // console.log(response.data)
       });
     },
     // 유저 조회
@@ -232,7 +227,6 @@ export default {
       http.get("/user").then((response) => {
         this.userName = response.data.userName;
         this.nickName = response.data.nickname;
-        // console.log(response.data)
       });
     },
     //  주문하기
@@ -273,7 +267,6 @@ export default {
     // 할때 가게정보도 추가 할 것
     detailStore() {
       this.getStoreId(this.storeId);
-      console.log(this.storeId);
       this.$router.push({
         name: "storeView",
       });
