@@ -45,7 +45,6 @@ public class NoticeService {
 
         List<Notice> notices = noticeRepository.findByReceivedId(findUser.get().getUserId());
         List<NoticeDto> noticeDtos = new ArrayList<>();
-        UserDto userDto = findUser.get().toDto();
         for (Notice notice : notices) {
             notice.setstate();
             noticeRepository.save(notice);

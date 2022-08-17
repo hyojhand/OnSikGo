@@ -213,8 +213,6 @@ public class StoreService {
         findSale.get().updateClosed();
         saleRepository.save(findSale.get());
 
-
-
         return new ResponseEntity<>("가게 결산이 완료되었습니다.", HttpStatus.OK);
     }
 

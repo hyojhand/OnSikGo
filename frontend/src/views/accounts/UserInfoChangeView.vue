@@ -17,7 +17,7 @@
             </div>
             <div class="col-8">
               <div class="d-flex justify-content-start ml-5">
-                <span id="black">{{ userDto.email }}</span>
+                <span id="black">{{this.userDto.loginType == 'ONSIKGO'?this.userDto.email:this.userDto.loginType+"로 로그인"}}</span>
               </div>
             </div>
           </div>
@@ -96,7 +96,6 @@ export default {
 
     await http.get("/user").then((response) => {
       this.userDto = response.data;
-      console.log(this.userDto.loginType);
       this.previewImg = this.userDto.imgUrl;
       this.role = response.data.role;
     });

@@ -80,6 +80,7 @@
           <div>상품이 없어요 ㅠ</div>
         </div>
       </div>
+      <!-- 리뷰 -->
       <div class="product mt-3" v-else-if="selectedTab == tabs[1]">
         <div class="head mb-3">🥨 온식고 식구들의 입소문</div>
         <!--리뷰입력창-->
@@ -100,13 +101,8 @@
             placeholder="리뷰를 입력해주세요"
             @click="login()"
           />
-          <button @click="registerReview()">
-            <img
-              class="send"
-              id="basic-addon1"
-              src="@/assets/images/send.png"
-              alt=""
-            />
+          <button @click="registerReview()" class="p-0">
+            <img id="basic-addon1" src="@/assets/images/send.png" alt="" />
           </button>
         </div>
         <div v-if="storeReviewList.length" class="mb-5">
@@ -122,12 +118,13 @@
           <div>리뷰가 없어요 ㅠ</div>
         </div>
       </div>
+      <!-- 상세 정보 -->
       <div class="product mt-3" v-else>
         <!--지도표시부분-->
         <store-kakao-map></store-kakao-map>
         <!-- 상품 설명 -->
         <div class="content">
-          <div class="row info-text">
+          <div class="row info-text mt-3">
             <div class="col-3 store-title adtitle">상세주소 :</div>
             <div class="col-9 info-content adress">
               <div>{{ storeDto.address }}</div>
@@ -155,7 +152,7 @@
           <div class="row info-text">
             <div class="col-3 store-title">공유하기 :</div>
             <share-sns
-              class="col-9 share-icon"
+              class="col-9 share-icon mt-3"
               v-bind:storeImgUrl="storeDto.storeImgUrl"
               v-bind:storeName="storeDto.storeName"
             />
@@ -204,22 +201,18 @@ export default {
 
   async created() {
     this.selectedTab = this.tabs[0];
-
+    // 가게 정보 가져오기
     await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
       this.storeNameSize = response.data.storeName.length;
-      // console.log(this.storeNameSize);
-      // console.log(this.storeDto);
     });
-
+    // 할인상품 가져오기
     await http.get(`/sale/list/${this.getStoreId}`).then((response) => {
       this.saleItemList = response.data;
-      // console.log(response.data);
     });
 
     await this.selectReview();
     await this.likeCheck();
-    // await console.log(this.likeState)
   },
 
   methods: {
@@ -227,6 +220,7 @@ export default {
     onClickTab(tab) {
       this.selectedTab = tab;
     },
+    // 리뷰조회
     selectReview() {
       http.get(`/review/store/${this.getStoreId}`).then((response) => {
         if (response.status == 200) {
@@ -234,6 +228,7 @@ export default {
         }
       });
     },
+    // 리뷰입력
     registerReview() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
@@ -251,15 +246,15 @@ export default {
           }
         });
     },
+    // 좋아요 상태체크
     likeCheck() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
       http.get(`/follow/find/${this.getStoreId}`).then((res) => {
-        // console.log(res.data)
         this.liking = res.data;
-        // console.log(this.liking)
       });
     },
+    // 좋아요
     like() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
@@ -269,6 +264,7 @@ export default {
         }
       });
     },
+    // 좋아요 취소
     unlike() {
       http.defaults.headers["access-token"] =
         localStorage.getItem("access-token");
@@ -278,6 +274,7 @@ export default {
         }
       });
     },
+    // 로그인창으로
     login() {
       this.$alert("로그인이 필요합니다.");
       this.$router.push("/login");
@@ -363,6 +360,7 @@ div {
 /* 점없애고 가로정렬 */
 .store-img {
   width: 100%;
+  height: 200px;
 }
 .adtitle {
   height: 100%;
@@ -382,12 +380,11 @@ div {
 }
 
 .comment {
-  padding-left: 10px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 .comment > button {
   background-color: white;
@@ -442,13 +439,20 @@ div {
   width: 95%;
   margin: 0;
 }
-.send {
-  width: 20px;
-  height: 20px;
-}
 #basic-addon1 {
   height: 38px;
   width: 40px;
+  background-color: rgb(240, 240, 240);
 }
-
+.bi-heart-fill {
+  animation: heart 0.5s linear;
+}
+@keyframes heart {
+  0% {
+    transform: rotate(0deg) scale(1.3);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
 </style>

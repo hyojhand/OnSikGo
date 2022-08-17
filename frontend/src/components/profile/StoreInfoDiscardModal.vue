@@ -17,16 +17,17 @@
           </div>
         </div>
         <div class="card-box">
-          <div mt-5 class="row mt-3 ml-3">
+          <div class="row mt-3 case">
             <img
-              width="120"
+              width="100%"
               height="150"
               class="col-5"
               :src="`${this.discardStoreImg}`"
             />
-            <div class="col-6 mt-7 mr-2">
+            <div class="col-6 mt-7 mr-2 p-0">
               <span style="color: black" class="text-m"
-                >"{{ this.discardStoreName }}"의 매장정보를<br />
+                >"{{ this.discardStoreName }}"<br />
+                매장정보를<br />
                 폐기하시겠습니까?</span
               >
               <br />
@@ -127,5 +128,11 @@ export default {
   font-weight: bolder;
   width: 100%;
   margin: 0 0;
+  text-align: start;
+  margin-left: 6%;
+}
+.case {
+  width: 100%;
+  margin: auto;
 }
 </style>

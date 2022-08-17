@@ -114,7 +114,6 @@ export default {
         .post("/user/pw-check", { password: this.currentPassword })
         .then((response) => {
           if (response.status == 200) {
-            console.log(this.currentPassword);
             this.$alert(
               "현재 비밀번호와 같습니다! 비밀번호 수정을 계속해주세요 :)"
             );

@@ -154,7 +154,6 @@
               placeholder="매장 종료시간"
               required
             ></b-form-input>
-            <!-- <b-form-timepicker v-model="value" locale="ko"></b-form-timepicker> -->
           </b-form-group>
         </div>
         <br />
@@ -246,7 +245,6 @@ export default {
       this.previewImg = this.storeDto.storeImgUrl;
       if (this.storeDto.offDay == "연중무휴") {
         this.storeDto.offDay = null;
-        console.log(this.storeDto);
       } else {
         this.storeDto.offDay.split(",").map((day) => {
           var temp = {
@@ -360,7 +358,6 @@ export default {
       // 일단 this.storeDto.offDay가 "연중무휴"면
       // this.storeDto.offDay를 비워서 ""값으로 넣고 시작
       this.storeDto.offDay = this.off.join;
-      // console.log(this.storeDto.offDay);
       if (this.numCheck == true) {
         http.defaults.headers["access-token"] =
           localStorage.getItem("access-token");
@@ -396,14 +393,12 @@ export default {
         } else {
           this.realoffDayList = this.storeDto.offDay;
         }
-        console.log(this.realoffDayList);
         if (this.storeDto.offDay == "") {
           this.storeDto.offDay = "연중무휴";
           this.realoffDayList = "연중무휴";
         }
         this.storeOffday(this.realoffDayList);
         this.storeDto.offDay = this.realoffDayList;
-        console.log(this.storeDto);
         const formData = new FormData();
         formData.append("file", this.imgFile);
         formData.append(
@@ -412,7 +407,7 @@ export default {
             type: "application/json",
           })
         );
-        console.log(formData);
+
         http
           .put(`/store/${this.storeDto.storeId}`, formData, {
             headers: {

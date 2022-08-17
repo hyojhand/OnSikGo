@@ -6,9 +6,7 @@
       :class="{ zerostock: saleCount == 0 }"
     >
       <!-- 가게 이미지 -->
-
       <img :src="`${storeImgUrl}`" class="col-3" />
-
       <!-- 가게 설명 -->
       <div class="col-6 store-case">
         <div class="store-name" :class="{ none: saleCount == 0 }">
@@ -41,13 +39,6 @@
           }}</span>
           개
         </p>
-        <!-- <button
-          class="border-m radius-s btn"
-          :class="{ none: saleCount == 0 }"
-          @click="storeDetail()"
-        >
-          가게보기
-        </button> -->
       </div>
     </div>
   </div>
@@ -76,13 +67,16 @@ export default {
     };
   },
   methods: {
+    // Vuex
     ...mapActions("storeStore", ["getStoreId"]),
+    // 상세가게보기로 이동
     storeDetail() {
       this.getStoreId(this.storeId);
       this.$router.push({
         name: "storeView",
       });
     },
+    // 거리 계산
     getdistance(lat1, lon1, lat2, lon2) {
       if (lat1 == lat2 && lon1 == lon2) {
         this.distance = 0;

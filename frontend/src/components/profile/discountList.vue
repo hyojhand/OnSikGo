@@ -36,12 +36,6 @@
               :salePric="item.salePrice"
               :storeId="item.saleDto.storeDto.storeId"
             ></edit-discard-modal>
-            <!-- <div>
-              <edit-stock-modal
-                :item="item.itemDto"
-                :storeId="item.saleDto.storeDto.storeId"
-              ></edit-stock-modal>
-            </div> -->
           </div>
         </div>
       </div>
@@ -72,7 +66,7 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 95%;
+  width: 100%;
   background-color: white;
   align-items: center;
   height: 170px;

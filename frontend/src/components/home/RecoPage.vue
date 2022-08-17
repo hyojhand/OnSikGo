@@ -9,18 +9,30 @@
     >
       <v-carousel-item>
         <img
+          @click="detailStore()"
           width="95%"
           height="220px"
-          src="@/assets/images/recommend_1.jpg"
+          src="@/assets/images/dduk.png"
           alt="image slot"
           style="border-radius: 7px"
         />
       </v-carousel-item>
       <v-carousel-item>
         <img
+          @click="detailStore()"
           width="95%"
           height="220px"
-          src="@/assets/images/recommend_2.jpg"
+          src="@/assets/images/fish.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+      <v-carousel-item>
+        <img
+          @click="detailStore()"
+          width="95%"
+          height="220px"
+          src="@/assets/images/sundae.png"
           alt="image slot"
           style="border-radius: 7px"
         />
@@ -30,6 +42,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "RecoPage",
   data() {
@@ -38,11 +51,18 @@ export default {
     };
   },
   methods: {
+    ...mapActions("storeStore", ["getStoreId"]),
     onSlideStart() {
       this.sliding = true;
     },
     onSlideEnd() {
       this.sliding = false;
+    },
+    detailStore() {
+      this.getStoreId(16);
+      this.$router.push({
+        name: "storeView",
+      });
     },
   },
 };

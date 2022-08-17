@@ -37,7 +37,7 @@ export default {
   mounted() {
     const naver_id_login = new window.naver_id_login(
       "0rgjMkjviFPmCTRQSJf5",
-      "http://localhost:3000/login"
+      "https://i7e201.p.ssafy.io/login"
     );
     const state = naver_id_login.getUniqState();
     naver_id_login.setState(state);
@@ -69,8 +69,6 @@ export default {
               if (res.status == 200) {
                 localStorage.setItem("access-token", res.data.token);
                 this.$router.push("/");
-              } else {
-                console.log("로그인 실패");
               }
             })
             .catch((err) => {
@@ -103,8 +101,6 @@ export default {
           if (res.status == 200) {
             localStorage.setItem("access-token", res.data.token);
             window.close();
-          } else {
-            console.log("로그인 실패");
           }
         })
         .catch((err) => {
