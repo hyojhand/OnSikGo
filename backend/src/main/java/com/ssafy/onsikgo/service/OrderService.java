@@ -34,7 +34,6 @@ public class OrderService {
     private final TokenProvider tokenProvider;
 
     private final RedisUtil redisUtil;
-    private final FcmService fcmService;
 
     @Transactional
     public ResponseEntity<String> order(OrderDto orderDto, HttpServletRequest request) {
@@ -80,11 +79,8 @@ public class OrderService {
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(storeUser.getEmail());
-//        fcmService.send(to);
-//        log.info("fcm 주문완료");
 
         return new ResponseEntity<>(to, HttpStatus.OK);
-//        return new ResponseEntity<>("주문이 등록되었습니다.", HttpStatus.OK);
     }
 
     public ResponseEntity<List<OrderDto>> getList(HttpServletRequest request) {
@@ -152,28 +148,19 @@ public class OrderService {
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = now.format(dayFormatter);
 
-//        int money = findOrder.get().getOrderPrice();
         Store store = saleItem.getItem().getStore();
         Optional<Sale> findSale = saleRepository.findByStoreAndDateAndClosedFalse(store, date);
         if(!findSale.isPresent()) {
             return new ResponseEntity<>("해당하는 날짜의 판매정보가 없습니다.", HttpStatus.NOT_FOUND);
         }
-//
-//        Integer totalPrice = findSale.get().getTotalPrice();
-//        totalPrice += money;
-//        findSale.get().updateTotalPrice(totalPrice);
-//        saleRepository.save(findSale.get());
 
         String content = findSale.get().getStore().getStoreName() + " 매장의 " + "<br/>상품이 준비되었습니다.";
         Notice notice = new Notice(content, findUser.get(), findOrder.get(), findOrder.get().getUser().getUserId(), NoticeState.ORDER);
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(findOrder.get().getUser().getEmail());
-//        fcmService.send(to);
-//        log.info("fcm 주문승인완료");
 
         return new ResponseEntity<>(to, HttpStatus.OK);
-//        return new ResponseEntity<>("주문이 승인되었습니다.", HttpStatus.OK);
     }
 
     @Transactional
@@ -203,11 +190,8 @@ public class OrderService {
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(findOrder.get().getUser().getEmail());
-//        fcmService.send(to);
-//        log.info("fcm 거절완료");
 
         return new ResponseEntity<>(to, HttpStatus.OK);
-//        return new ResponseEntity<>("가게사정으로 주문이 거절되었습니다.", HttpStatus.OK);
     }
 
     @Transactional
@@ -241,11 +225,8 @@ public class OrderService {
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(storeUser.getEmail());
-//        fcmService.send(to);
-//        log.info("fcm 취소완료");
 
         return new ResponseEntity<>(to, HttpStatus.OK);
-//        return new ResponseEntity<>("사용자가 주문을 취소하였습니다.", HttpStatus.OK);
     }
 
     @Transactional
@@ -297,11 +278,8 @@ public class OrderService {
         noticeRepository.save(notice);
 
         String to = redisUtil.getData(findOrder.get().getUser().getEmail());
-//        fcmService.send(to);
-//        log.info("fcm 픽업완료");
 
         return new ResponseEntity<>(to, HttpStatus.OK);
-//        return new ResponseEntity<>("주문이 승인되었습니다.", HttpStatus.OK);
     }
 
     public ResponseEntity<String> totalOrderPrice(HttpServletRequest request) {

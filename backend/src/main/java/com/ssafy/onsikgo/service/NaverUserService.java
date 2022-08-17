@@ -98,8 +98,6 @@ public class NaverUserService implements SocialUserService {
 
             userDto.setRole(Role.USER);
 
-
-
             String email = account.get("id").toString()+"NAVER@onsikgo.com";
             userDto.setEmail(email);
             userDto.setPassword(account.get("id").toString());
