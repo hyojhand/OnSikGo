@@ -25,6 +25,7 @@
         </div>
         <div id="div1" class="mt-5">
           <img
+            class="main-logo"
             src="@/assets/real_logo.png"
             width="350"
             height="300"
@@ -425,7 +426,7 @@ export default {
       window.open(link);
     },
     goMain() {
-      this.$router.push("/");
+      this.$router.push("/").catch(() => {});
     },
   },
 };
@@ -544,6 +545,9 @@ export default {
 }
 .temp {
   width: 100%;
+}
+.main-logo{
+  cursor: pointer;
 }
 #temp2 {
   width: 100%;
