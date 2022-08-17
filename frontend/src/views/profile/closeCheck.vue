@@ -41,11 +41,8 @@ export default {
   },
   async created() {
     await http.get(`/store/${this.$route.params.storeId}`).then((response) => {
-      console.log(response.data);
       this.storeName = response.data.storeName;
-      console.log(this.storeName);
     });
-
     // await http
     //   .get(`sale/list/${this.$route.params.storeId}`)
     //   .then((response) => {
@@ -55,9 +52,7 @@ export default {
   methods: {
     realClose() {
       this.storeId = this.$route.params.storeId;
-      console.log(this.storeId);
       http.put(`/store/close/${this.storeId}`).then((response) => {
-        console.log(response.data);
         if (response.status == 204) {
           this.$alert("오늘 등록된 재고가 없어 영업 종료가 불가능합니다.");
         } else {
@@ -82,48 +77,28 @@ export default {
 }
 #button-no {
   height: 40px;
-
   border: none;
-
   display: inline-block;
-
   border-radius: 5px;
-
   text-decoration: none;
-
   margin: 5 10;
-
   padding: 10 10;
-
   box-sizing: border-box;
-
   background-color: #66a32e;
-
   color: #ffffff;
-
   width: 100px;
 }
 #button-yes {
   height: 40px;
-
   border: none;
-
   display: inline-block;
-
   border-radius: 5px;
-
   text-decoration: none;
-
   margin: 5 10;
-
   padding: 10 10;
-
   box-sizing: border-box;
-
   background-color: #d97b38;
-
   color: #ffffff;
-
   width: 100px;
 }
 </style>

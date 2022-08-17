@@ -110,6 +110,7 @@ button {
 .edit-btn {
   background-color: rgba(255, 82, 82, 0.75);
   width: 160px;
+  height: 30px;
   margin: 0;
 }
 </style>
