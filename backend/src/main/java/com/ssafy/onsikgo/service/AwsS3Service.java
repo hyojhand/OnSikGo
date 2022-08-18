@@ -52,4 +52,9 @@ public class AwsS3Service {
     private String getFileUrl(String fileName){
         return amazonS3.getUrl(bucket,fileName).toString();
     }
+    public void delete(String url){
+        String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
+        log.info(fileName+" 삭제");
+        amazonS3.deleteObject(bucket,fileName);
+    }
 }

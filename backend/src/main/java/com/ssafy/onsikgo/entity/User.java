@@ -1,9 +1,7 @@
 package com.ssafy.onsikgo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ssafy.onsikgo.dto.UserDto;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class User {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
 
     @Column(nullable = false)
@@ -42,22 +40,25 @@ public class User {
     @Column(nullable = false)
     private Role role; // 사용자 역할 [USER, OWNER]
 
+    @Column(nullable = false)
+    private Long ban; // 신고횟수
+
     @OneToMany(mappedBy = "user")
     private Set<Authority> authorities;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Store> stores = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Notice> notices = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Follow> follows = new ArrayList<>();
 
     public User update(String nickname, String imgUrl) {
@@ -66,9 +67,25 @@ public class User {
         return this;
     }
 
+    public void updateBan(Long count) {
+        this.ban = count;
+    }
+
     public User changePw(String password) {
         this.password = password;
         return this;
+    }
+
+    public UserDto toDto() {
+        return UserDto.builder()
+                .email(this.email)
+                .nickname(this.nickname)
+                .userName(this.userName)
+                .imgUrl(this.imgUrl)
+                .role(this.role)
+                .loginType(this.loginType.toString())
+                .ban(this.ban)
+                .build();
     }
 
 }

@@ -21,17 +21,17 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class SaleItem {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long saleItemId;
 
     @Column(nullable = false)
-    private Integer stock; // 재고
+    private Integer stock;
 
     @Column(nullable = false)
-    private Integer totalStock; // 총 재고
+    private Integer totalStock;
 
     @Column(nullable = false)
-    private Integer salePrice; // 할인가
+    private Integer salePrice;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "saleId")
@@ -41,7 +41,7 @@ public class SaleItem {
     @JoinColumn(name = "itemId")
     private Item item;
 
-    @OneToMany(mappedBy = "saleItem")
+    @OneToMany(mappedBy = "saleItem" , cascade = CascadeType.REMOVE)
     private List<Order> orders = new ArrayList<>();
 
     public SaleItemDto toDto(ItemDto itemDto, SaleDto saleDto) {
@@ -55,8 +55,24 @@ public class SaleItem {
                 .build();
     }
 
-    public SaleItem update(Integer stock) {
+    public SaleItemDto toSaleItemDto() {
+        return SaleItemDto.builder()
+                .saleItemId(this.saleItemId)
+                .stock(this.stock)
+                .totalStock(this.totalStock)
+                .salePrice(this.salePrice)
+                .build();
+    }
+
+    public SaleItem updateStock(Integer stock) {
         this.stock = stock;
+        return this;
+    }
+
+    public SaleItem update(Integer stock, Integer salePrice,Integer totalStock) {
+        this.stock = stock;
+        this.salePrice = salePrice;
+        this.totalStock = totalStock;
         return this;
     }
 }

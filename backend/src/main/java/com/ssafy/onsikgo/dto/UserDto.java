@@ -23,7 +23,8 @@ public class UserDto {
     private String imgUrl;
     private MultipartFile file;
     private Role role;
-
+    private String loginType;
+    private Long ban;
     public User toEntity(LoginType loginType){
 
         Authority authority = Authority.builder()
@@ -37,8 +38,9 @@ public class UserDto {
                 .imgUrl(this.getImgUrl())
                 .nickname(this.getNickname())
                 .authorities(Collections.singleton(authority))
-                .role(Role.USER)
+                .role(this.role)
                 .loginType(loginType)
+                .ban(this.ban)
                 .build();
     }
 }

@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -23,19 +25,33 @@ public class OrderController {
         return orderService.order(orderDto, request);
     }
 
+    @GetMapping
+    public ResponseEntity<List<OrderDto>> getList(HttpServletRequest request) {
+        return orderService.getList(request);
+    }
+
     @PatchMapping("/sign/{order_id}")
-    public ResponseEntity<String> signOrder(@PathVariable Long order_id) {
-        return orderService.signOrder(order_id);
+    public ResponseEntity<String> signOrder(@PathVariable Long order_id,HttpServletRequest request) {
+        return orderService.signOrder(order_id,request);
     }
 
     @PatchMapping("/refuse/{order_id}")
-    public ResponseEntity<String> refuseOrder(@RequestBody HashMap<String, String> map, @PathVariable Long order_id) {
-        return orderService.refuseOrder(map, order_id);
+    public ResponseEntity<String> refuseOrder(@RequestBody HashMap<String, String> map, @PathVariable Long order_id, HttpServletRequest request) {
+        return orderService.refuseOrder(map, order_id, request);
     }
 
     @PatchMapping("/cancel/{order_id}")
-    public ResponseEntity<String> cancelOrder(@PathVariable Long order_id) {
-        return orderService.cancelOrder(order_id);
+    public ResponseEntity<String> cancelOrder(@PathVariable Long order_id, HttpServletRequest request) {
+        return orderService.cancelOrder(order_id, request);
     }
 
+    @GetMapping("/price")
+    public ResponseEntity<String> totalOrderPrice(HttpServletRequest request) {
+        return orderService.totalOrderPrice(request);
+    }
+
+    @PatchMapping("/pickup/{order_id}")
+    public ResponseEntity<String> pickupOrder(@PathVariable Long order_id,HttpServletRequest request) {
+        return orderService.pickupOrder(order_id,request);
+    }
 }

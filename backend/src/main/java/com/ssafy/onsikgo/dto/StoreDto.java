@@ -4,7 +4,6 @@ import com.ssafy.onsikgo.entity.Category;
 import com.ssafy.onsikgo.entity.Store;
 import lombok.*;
 
-import java.time.LocalTime;
 import java.util.HashMap;
 
 @Getter
@@ -12,10 +11,12 @@ import java.util.HashMap;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StoreDto {
+public class StoreDto implements Comparable<StoreDto>{
 
+    private Long storeId;
     private String storeName;
-    private String location;
+    private String address;
+    private String extraAddress;
     private String tel;
     private String storeNum;
     private String storeImgUrl;
@@ -24,13 +25,23 @@ public class StoreDto {
     private Category category;
     private String lat;
     private String lng;
+    private int totalStock;
 
+    @Override
+    public int compareTo(StoreDto o) {
+        return this.totalStock > o.getTotalStock() ? -1 : 1;
+    }
+
+    public void updateTotalStock(int count){
+        this.totalStock+=count;
+    }
 
     public Store toEntity(HashMap<String,String> coordinate) {
 
         return Store.builder()
                 .storeName(this.getStoreName())
-                .location(this.getLocation())
+                .address(this.getAddress())
+                .extraAddress(this.getExtraAddress())
                 .tel(this.getTel())
                 .storeNum(this.getStoreNum())
                 .storeImgUrl(this.getStoreImgUrl())

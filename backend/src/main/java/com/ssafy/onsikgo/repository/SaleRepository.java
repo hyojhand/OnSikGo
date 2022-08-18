@@ -9,7 +9,8 @@ import java.util.Optional;
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
-    List<Sale> findByStoreOrderByDateDesc(Store store);
+//    List<Sale> findByStoreOrderByDateDesc(Store store);
     Optional<Sale> findByStoreAndDate(Store store, String date);
-
+    Optional<Sale> findByStoreAndDateAndClosedFalse(Store store, String date);
+    List<Sale> findByStoreAndDateBetween(Store store, String startDate, String endDate);
 }
