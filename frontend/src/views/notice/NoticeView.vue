@@ -39,6 +39,7 @@ export default {
     http.get("/notice").then((response) => {
       this.getOwnerOrderList(response.data.reverse());
     });
+    
   },
   methods: {
     // 현재 위치 주소 vuex에 넣기

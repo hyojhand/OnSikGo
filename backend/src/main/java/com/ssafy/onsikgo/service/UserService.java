@@ -5,7 +5,10 @@ import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.TokenDto;
 import com.ssafy.onsikgo.dto.UserDto;
 import com.ssafy.onsikgo.entity.LoginType;
+import com.ssafy.onsikgo.entity.Notice;
+import com.ssafy.onsikgo.entity.NoticeState;
 import com.ssafy.onsikgo.entity.User;
+import com.ssafy.onsikgo.repository.NoticeRepository;
 import com.ssafy.onsikgo.repository.UserRepository;
 import com.ssafy.onsikgo.security.JwtFilter;
 import com.ssafy.onsikgo.security.TokenProvider;
@@ -45,6 +48,7 @@ public class UserService {
     private final AwsS3Service awsS3Service;
     private final JavaMailSenderImpl mailSender;
     private final StoreService storeService;
+    private final NoticeRepository noticeRepository;
 
     private final RedisUtil redisUtil;
     private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
@@ -290,5 +294,28 @@ public class UserService {
             userDtoList.add(user.toDto());
         }
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<String> report(Long notice_id) {
+        Optional<Notice> findNotice = noticeRepository.findById(notice_id);
+        if(!findNotice.isPresent()) {
+            return new ResponseEntity<>("알림이 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        findNotice.get().updateNoticeState(NoticeState.BAN);
+        noticeRepository.save(findNotice.get());
+
+        Long user_id = findNotice.get().getUser().getUserId();
+        Optional<User> findUser = userRepository.findById(user_id);
+        if(!findUser.isPresent()) {
+            return new ResponseEntity<>("유저가 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        Long banCount = findUser.get().getBan() + 1;
+        findUser.get().updateBan(banCount);
+        userRepository.save(findUser.get());
+
+        return new ResponseEntity<>("신고가 완료되었습니다.", HttpStatus.OK);
     }
 }
