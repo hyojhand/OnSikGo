@@ -39,19 +39,23 @@ public class OrderService {
     public ResponseEntity<String> order(OrderDto orderDto, HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
-            return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("유효하지 않는 토큰", HttpStatus.NOT_FOUND);
         }
 
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
         Optional<User> findUser = userRepository.findByEmail(userEmail);
         if(!findUser.isPresent()) {
-            return new ResponseEntity<>("존재하지 않는 유저", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("존재하지 않는 유저", HttpStatus.NOT_FOUND);
+        }
+
+        if(findUser.get().getBan() >= 5) {
+            return new ResponseEntity<>("신고횟수가 5회 이상입니다.", HttpStatus.NO_CONTENT);
         }
 
         Long saleItemId = orderDto.getSaleItemId();
         Optional<SaleItem> findSaleItem = saleItemRepository.findById(saleItemId);
         if(!findSaleItem.isPresent()) {
-            return new ResponseEntity<>("존재하지 않는 판매상품", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("존재하지 않는 판매상품", HttpStatus.NOT_FOUND);
         }
 
         LocalDateTime now = LocalDateTime.now();

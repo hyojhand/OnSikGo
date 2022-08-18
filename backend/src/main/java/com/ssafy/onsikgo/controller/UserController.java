@@ -117,4 +117,9 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getTotal() {
         return userService.getTotal();
     }
+
+    @PostMapping("/ban/{notice_id}")
+    public ResponseEntity<String> report(@PathVariable Long notice_id) {
+        return userService.report(notice_id);
+    }
 }

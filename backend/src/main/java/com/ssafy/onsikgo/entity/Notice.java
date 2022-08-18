@@ -53,6 +53,10 @@ public class Notice {
     public void setstate(){
         this.state=true;
     }
+
+    public void updateNoticeState(NoticeState noticeState) {
+        this.noticeState = noticeState;
+    }
     public NoticeDto toDto(UserDto userDto, OrderDto orderDto) {
         return NoticeDto.builder()
                 .content(this.content)
@@ -61,6 +65,7 @@ public class Notice {
                 .userDto(userDto)
                 .orderDto(orderDto)
                 .noticeState(this.noticeState)
+                .noticeId(this.noticeId)
                 .build();
     }
 
