@@ -6,7 +6,8 @@
       <v-stepper-items>
         <v-stepper-content class="stepper-content" step="1">
           <img src="@/assets/images/step_1.png" alt="" style="width:100%;">
-          <p class="pb-3"> 소셜 로그인 또는 온식고 회원가입후 로그인으로 접속합니다.</p>
+          <p class="pb-1 mb-0">소셜 로그인 또는 온식고 회원가입후</p>
+          <p class="pb-3">로그인으로 접속합니다.</p>
           <v-btn
             class="info-btn"
             color="primary"
@@ -18,7 +19,8 @@
         </v-stepper-content>
         <v-stepper-content class="stepper-content" step="2">
           <img src="@/assets/images/step_2.png" alt="" style="width:100%;">
-          <p class="pb-3">카테고리를 선택 후 상품을 올린 가게 또는 상품을 쇼핑합니다.</p>
+          <p class="pb-1 mb-0">카테고리를 선택 후 </p>
+          <p class="pb-3">상품을 올린 가게 또는 상품을 쇼핑합니다.</p>
           <v-btn
             class="info-btn"
             color="primary"
@@ -29,7 +31,8 @@
         </v-stepper-content>
         <v-stepper-content class="stepper-content" step="3">
           <img src="@/assets/images/step_3.png" alt="" style="width:100%;">
-          <p class="pb-3">원하시는 상품이 있으시면 해당 상품을 선택합니다.</p>
+          <p class="pb-1 mb-0">원하시는 상품이 있으시면 </p>
+          <p class="pb-3">해당 상품을 선택합니다.</p>
           <v-btn
             class="info-btn"
             color="primary"
@@ -41,7 +44,8 @@
 
         <v-stepper-content class="stepper-content" step="4">
           <img src="@/assets/images/step_4.png" alt="" style="width:100%;">
-          <p class="pb-3">원하시는 수량을 선택 후 주문하기를 클릭합니다.</p>
+          <p class="pb-1 mb-0">원하시는 수량을 선택 후 </p>
+          <p class="pb-3">주문하기를 클릭합니다.</p>
           <v-btn
             class="info-btn"
             color="primary"
@@ -53,7 +57,8 @@
 
         <v-stepper-content class="stepper-content" step="5">
           <img src="@/assets/images/step_5.png" alt="" style="width:100%;">
-          <p class="pb-3">주문 승인 알림을 확인 후 상품을 픽업하러 갑니다.</p>
+          <p class="pb-1 mb-0">주문 승인 알림을 확인 후 </p>
+          <p class="pb-3">상품을 픽업하러 갑니다.</p>
           <v-btn
             class="info-btn"
             color="primary"

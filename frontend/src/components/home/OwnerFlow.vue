@@ -6,7 +6,8 @@
       <v-stepper-items>
         <v-stepper-content class="stepper-content" step="1">
           <img src="@/assets/images/ownerstep_1.png" alt="" style="width:100%;">
-          <p class="pb-3"> 온식고 회원가입후 로그인으로 접속합니다.</p>
+          <p class="pb-1 mb-0"> 온식고 회원가입후.</p>
+          <p class="pb-3">로그인으로 접속합니다.</p>
           <v-btn
             class="info-btn"
             color="primary"
@@ -19,7 +20,8 @@
   
         <v-stepper-content class="stepper-content" step="2">
           <img src="@/assets/images/ownerstep_2.png" alt="" style="width:100%;">
-          <p class="pb-3">상품 이미지, 이름, 정상가, 특이사항을 입력후 등록합니다.</p>
+          <p class="pb-1 mb-0">상품 이미지, 이름, 정상가, 특이사항을</p>
+          <p class="pb-3">입력후 등록합니다.</p>
           <v-btn
             class="info-btn"
             color="primary"
@@ -31,7 +33,8 @@
   
         <v-stepper-content class="stepper-content" step="3">
           <img src="@/assets/images/ownerstep_3.png" alt="" style="width:100%;">
-          <p class="pb-3">할인 상품의 할인가와 수량을 입력후 등록합니다.</p>
+          <p class="pb-1 mb-0">할인 상품의 할인가와 수량을</p>
+          <p class="pb-3">입력후 등록합니다.</p>
           <v-btn
             class="info-btn"
             color="primary"
@@ -43,7 +46,8 @@
 
         <v-stepper-content class="stepper-content" step="4">
           <img src="@/assets/images/ownerstep_4.png" alt="" style="width:100%;">
-          <p class="pb-3">소비자로부터 온 주문서에서 상품명과 수량을 확인합니다.</p>
+          <p class="pb-1 mb-0">소비자로부터 온 주문서에서</p>
+          <p class="pb-3">상품명과 수량을 확인합니다.</p>
           <v-btn
             class="info-btn"
             color="primary"
