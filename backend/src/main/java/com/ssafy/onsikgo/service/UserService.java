@@ -5,7 +5,10 @@ import com.ssafy.onsikgo.dto.OwnerDto;
 import com.ssafy.onsikgo.dto.TokenDto;
 import com.ssafy.onsikgo.dto.UserDto;
 import com.ssafy.onsikgo.entity.LoginType;
+import com.ssafy.onsikgo.entity.Notice;
+import com.ssafy.onsikgo.entity.NoticeState;
 import com.ssafy.onsikgo.entity.User;
+import com.ssafy.onsikgo.repository.NoticeRepository;
 import com.ssafy.onsikgo.repository.UserRepository;
 import com.ssafy.onsikgo.security.JwtFilter;
 import com.ssafy.onsikgo.security.TokenProvider;
@@ -25,13 +28,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Random;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -46,6 +48,7 @@ public class UserService {
     private final AwsS3Service awsS3Service;
     private final JavaMailSenderImpl mailSender;
     private final StoreService storeService;
+    private final NoticeRepository noticeRepository;
 
     private final RedisUtil redisUtil;
     private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
@@ -55,10 +58,10 @@ public class UserService {
             log.info("이미존재하는 이메일");
             return new ResponseEntity<>("이미 존재하는 이메일입니다.", HttpStatus.NO_CONTENT);
         }
-        return sendEmail(email);
+        return sendAuthEmail(email);
     }
 
-    public ResponseEntity<String> sendEmail(String email) {
+    public ResponseEntity<String> sendAuthEmail(String email) {
         Random rand = new Random();
         String authNumber = String.valueOf(rand.nextInt(999999));
 
@@ -82,10 +85,10 @@ public class UserService {
 
         } catch (MessagingException e) {
             e.printStackTrace();
-            return new ResponseEntity<>("이메일 인증에 실패했습니다. 다시 시도해주세요.", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("이메일 전송에 실패했습니다. 다시 시도해주세요.", HttpStatus.NO_CONTENT);
         }
         // 5분 동안만 인증번호 저장
-        redisUtil.setDataExpire(email, authNumber, 60 * 5L);
+        redisUtil.setDataExpire(email, authNumber, 60 * 7L);
 
         return new ResponseEntity<>("인증번호를 전송했습니다. 메일을 확인해주세요.", HttpStatus.OK);
     }
@@ -115,11 +118,14 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<String> signupOwner(OwnerDto ownerDto) {
+    public ResponseEntity<String> signupOwner(OwnerDto ownerDto, MultipartFile file) {
         ownerDto.setPassword(passwordEncoder.encode(ownerDto.getPassword()));
-        ownerDto.setImgUrl(defaultImg);
+
+        String storeImgUrl = awsS3Service.uploadImge(file);
+        ownerDto.setStoreImgUrl(storeImgUrl);
 
         String storeName = ownerDto.getStoreName();
+        ownerDto.setImgUrl(defaultImg);
         User user = ownerDto.toUserEntity(LoginType.ONSIKGO, storeName);
         userRepository.save(user);
 
@@ -143,6 +149,10 @@ public class UserService {
         HttpHeaders httpHeaders = new HttpHeaders();
         // 생성한 토큰을 Response 헤더에 넣어주고,
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+        if(loginDto.getTo() != null) {
+            redisUtil.setData(loginDto.getEmail(), loginDto.getTo());
+        }
         
 //         TokenDto에도 넣어서 RequestBody로 리턴해준다
         return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
@@ -206,7 +216,7 @@ public class UserService {
 
         return new ResponseEntity<>("비밀번호 확인완료", HttpStatus.OK);
     }
-
+    @Transactional
     public ResponseEntity<String> pwChange(LoginDto loginDto, HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
@@ -234,5 +244,78 @@ public class UserService {
         UserDto userDto = findUser.toDto();
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
+    @Transactional
+    public ResponseEntity<String>findPw(HashMap<String,String>map){
+        String userName = map.get("userName");
+        String email = map.get("email");
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if(!user.isPresent() || !user.get().getUserName().equals(userName)){
+            return new ResponseEntity<>("일치하는 계정이 없습니다. 이메일과 이름을 다시 확인해주세요.",HttpStatus.NO_CONTENT);
+        }
+        if(!user.get().getLoginType().toString().equals("ONSIKGO")){
+            return new ResponseEntity<>(user.get().getLoginType().toString()+"로 로그인해주세요.",HttpStatus.NO_CONTENT);
+        }
+        String temp_pw = UUID.randomUUID().toString().replaceAll("-", "");
+        temp_pw = temp_pw.substring(0, 10);
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
+
+        String setFrom = "onsikgoinfo@naver.com";
+        String toMail = email;
+        String title = "임시 비밀번호 발급 이메일 입니다.";
+        String content = "OnSikGo를 방문해주셔서 감사합니다." +
+                "<br><br>" +
+                "임시 비밀번호는 "+ temp_pw  + "입니다." +
+                "<br>" +
+                "해당 비밀번호로 로그인해주세요.";
+        try {
+            mimeMessageHelper.setFrom(setFrom);
+            mimeMessageHelper.setTo(toMail);
+            mimeMessageHelper.setSubject(title);
+            mimeMessageHelper.setText(content, true);
+            mailSender.send(mimeMessage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("이메일 전송에 실패했습니다. 다시 시도해주세요.", HttpStatus.NO_CONTENT);
+        }
+        user.get().changePw(passwordEncoder.encode(temp_pw));
+        userRepository.save(user.get());
+        return new ResponseEntity<>("임시 비밀번호를 이메일로 보내드렸습니다.",HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<UserDto>> getTotal() {
+        List<User> userList = userRepository.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for(User user : userList) {
+            userDtoList.add(user.toDto());
+        }
+        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<String> report(Long notice_id) {
+        Optional<Notice> findNotice = noticeRepository.findById(notice_id);
+        if(!findNotice.isPresent()) {
+            return new ResponseEntity<>("알림이 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        findNotice.get().updateNoticeState(NoticeState.BAN);
+        noticeRepository.save(findNotice.get());
+
+        Long user_id = findNotice.get().getUser().getUserId();
+        Optional<User> findUser = userRepository.findById(user_id);
+        if(!findUser.isPresent()) {
+            return new ResponseEntity<>("유저가 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        Long banCount = findUser.get().getBan() + 1;
+        findUser.get().updateBan(banCount);
+        userRepository.save(findUser.get());
+
+        return new ResponseEntity<>("신고가 완료되었습니다.", HttpStatus.OK);
     }
 }

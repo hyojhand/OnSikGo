@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ import java.util.Optional;
 public class NaverUserService implements SocialUserService {
     private final UserRepository userRepository;
     private final UserService userService;
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
 
     @Override
     @Transactional
@@ -72,7 +74,7 @@ public class NaverUserService implements SocialUserService {
         return userDto;
     }
     @Override
-    public HttpEntity<? extends Object> login(UserDto userDto) {
+    public HttpEntity<? extends Object> login(UserDto userDto,String fcm_token) {
         User user = userRepository.findByEmail(userDto.getEmail()).orElse(null);
         // 이미 가입된 이메일
         if (!user.getLoginType().toString().equals(LoginType.NAVER.toString())) {
@@ -81,6 +83,7 @@ public class NaverUserService implements SocialUserService {
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail(userDto.getEmail());
         loginDto.setPassword(userDto.getPassword());
+        loginDto.setTo(fcm_token);
 
         return userService.login(loginDto);
     }
@@ -94,11 +97,23 @@ public class NaverUserService implements SocialUserService {
             JSONObject account = (JSONObject) jsonObj.get("response");
 
             userDto.setRole(Role.USER);
-            userDto.setUserName(account.get("name").toString());
-            userDto.setEmail(account.get("email").toString());
-            userDto.setNickname(account.get("nickname").toString());
-            userDto.setImgUrl(account.get("profile_image").toString());
+
+            String email = account.get("id").toString()+"NAVER@onsikgo.com";
+            userDto.setEmail(email);
             userDto.setPassword(account.get("id").toString());
+
+            Optional user = userRepository.findByEmail(email);
+            if(user.isPresent()){
+                return userDto;
+            }
+            String nickname;
+            String temp_nickname = UUID.randomUUID().toString().replaceAll("-", "");
+            temp_nickname = "User"+temp_nickname.substring(0, 10);
+            nickname=(String)account.getOrDefault("nickname",temp_nickname);
+            userDto.setNickname(nickname);
+            userDto.setUserName(nickname);
+            String profile_image_url= (String)account.getOrDefault("profile_image",defaultImg);
+            userDto.setImgUrl(profile_image_url);
 
         } catch (ParseException e) {
             e.printStackTrace();

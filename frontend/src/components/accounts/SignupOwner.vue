@@ -1,5 +1,5 @@
 <template>
-  <v-stepper v-model="e1">
+  <v-stepper v-model="e1" style="top: 25px">
     <v-stepper-items>
       <v-stepper-content
         step="1"
@@ -8,7 +8,7 @@
         outlined
         min-height="450"
       >
-        <form class="mb-2 el-case">
+        <form @submit.prevent="submit" class="mb-2 el-case">
           <!-- 메일 입력하기 -->
           <div class="position-box">
             <v-text-field
@@ -21,12 +21,19 @@
               @input="$v.email.$touch()"
               @blur="$v.email.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m confirm-btn" @click="isCheck()">
+            <button
+              class="border-m radius-m confirm-btn"
+              @click="isCheck()"
+              type="button"
+            >
               {{ checkmsg }}
             </button>
           </div>
+          <div v-if="emailDuple" style="color: red; margin-top: 3px">
+            이미 가입된 메일 혹은 잘못된 이메일입니다.
+          </div>
           <!-- ---------인증 메일 보내기------------ -->
-          <div v-if="sendMail">
+          <div class="base-mailifirm" v-if="sendMail">
             <div class="mailconfim-case">
               <input
                 id="mail-confirm"
@@ -34,9 +41,22 @@
                 v-model="authNum"
                 placeholder="인증번호를 입력하세요."
               />
-              <button class="border-m radius-m mailconfirm-btn" @click="checkMail()">
-                확인하기
-              </button>
+              <div>
+                <CountTimer v-if="time" :time="time" :key="rederKey" />
+                <button
+                  class="border-m radius-m mailconfirm-btn"
+                  @click="checkMail()"
+                  type="button"
+                >
+                  인증
+                </button>
+              </div>
+            </div>
+            <div v-if="emailfailDuple" style="color: red">
+              인증번호 확인에 실패했습니다.
+            </div>
+            <div v-if="mailconfirmDuple" style="color: green">
+              인증번호 확인이 되었습니다.
             </div>
           </div>
           <!-- -------------비밀번호 입력------------------------------------ -->
@@ -48,6 +68,7 @@
             class="input-box"
             color="black"
             type="password"
+            style="margin-top: 20px"
             @input="$v.password.$touch()"
             @blur="$v.password.$touch()"
           ></v-text-field>
@@ -78,11 +99,14 @@
           ></v-text-field>
         </form>
         <div class="next-btn">
-          <button 
-          class="border-m radius-m" 
-          @click="e1 = 2" 
+          <button
+            class="border-m radius-m"
+            @click="e1 = 2"
+            v-bind:disabled="check1 == false"
+            style="width: 100px"
           >
-          다음으로</button>
+            다음으로
+          </button>
         </div>
       </v-stepper-content>
 
@@ -93,58 +117,7 @@
         outlined
         min-height="200"
       >
-        <form class="mb-2">
-          <!-- ------상호명 입력--------------- -->
-          <v-text-field
-            v-model="store"
-            :error-messages="storeErrors"
-            label="상호명을 입력해주세요."
-            required
-            class="input-box"
-            color="black"
-            @input="$v.store.$touch()"
-            @blur="$v.store.$touch()"
-          ></v-text-field>
-          <!-- -----------가게 주소 에러 생략----------------- -->
-          <!-- <v-text-field
-            v-model="address"
-            :error-messages="adressErrors"
-            label="가게 주소를 입력해주세요."
-            required
-            class="input-box"
-            color="black"
-            type="address"
-            @input="$v.address.$touch()"
-            @blur="$v.address.$touch()"
-          ></v-text-field> -->
-
-          <!-- -----------가게 주소 입력-------------- -->
-          <div class="position-box">
-            <v-text-field
-              v-model="address"
-              label="가게 주소를 입력해주세요."
-              required
-              class="input-box"
-              color="black"
-              type="address"
-              @input="$v.address.$touch()"
-              @blur="$v.address.$touch()"
-            ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="execDaumPostcode()">
-              주소 검색
-            </button>
-          </div>
-            <v-text-field
-              v-model="extraAddress"
-              label="상세 주소를 입력해주세요."
-              required
-              class="input-box"
-              color="black"
-              type="address"
-              @input="$v.address.$touch()"
-              @blur="$v.address.$touch()"
-            ></v-text-field>
-
+        <form @submit.prevent="submit" class="mb-2">
           <!-- --------------사업자 등록번호 입력------------ -->
           <div class="position-box">
             <v-text-field
@@ -157,29 +130,32 @@
               @input="$v.identify.$touch()"
               @blur="$v.identify.$touch()"
             ></v-text-field>
-            <button class="border-m radius-m address-btn" @click="checkOwner()">
-              등록하기
+            <button
+              class="border-m radius-m ownernum-btn"
+              @click="checkOwner()"
+              type="button"
+            >
+              인증
             </button>
+            <div v-if="ownercheckDuple" style="color: green">
+              사업자 번호가 확인 되었습니다.
+            </div>
+            <div v-if="ownerfailDuple" style="color: red">
+              다시 확인해주시길 바랍니다.
+            </div>
           </div>
-        </form>
+          <!-- ------상호명 입력--------------- -->
+          <v-text-field
+            v-model="store"
+            :error-messages="storeErrors"
+            label="상호명을 입력해주세요."
+            required
+            class="input-box"
+            color="black"
+            @input="$v.store.$touch()"
+            @blur="$v.store.$touch()"
+          ></v-text-field>
 
-        <div class="sign-btn">
-          <button class="border-m radius-m" @click="e1 = 1">이전으로</button>
-          <button 
-          class="border-m radius-m" 
-          @click="e1 = 3" 
-          >다음으로</button>
-        </div>
-      </v-stepper-content>
-
-      <v-stepper-content
-        step="3"
-        class="btn-box mt-3"
-        black
-        outlined
-        min-height="200"
-      >
-        <form class="mb-2">
           <!-- -------------전화번호 입력----------- -->
           <v-text-field
             v-model="tel"
@@ -193,6 +169,66 @@
             @blur="$v.tel.$touch()"
           ></v-text-field>
 
+          <!-- -----------가게 주소 입력-------------- -->
+          <div class="position-box">
+            <v-text-field
+              v-model="address"
+              label="가게 주소를 입력해주세요."
+              required
+              class="input-box"
+              color="black"
+              type="address"
+              @input="$v.address.$touch()"
+              @blur="$v.address.$touch()"
+              v-bind:disabled="true"
+            ></v-text-field>
+            <button
+              class="border-m radius-m address-btn"
+              @click="execDaumPostcode()"
+              type="button"
+            >
+              주소 검색
+            </button>
+          </div>
+          <v-text-field
+            v-model="extraAddress"
+            label="상세 주소를 입력해주세요."
+            required
+            class="input-box"
+            color="black"
+            type="address"
+            @input="$v.address.$touch()"
+            @blur="$v.address.$touch()"
+          ></v-text-field>
+        </form>
+
+        <div class="sign-btn">
+          <button
+            class="border-m radius-m"
+            style="width: 100px"
+            @click="e1 = 1"
+          >
+            이전으로
+          </button>
+          <button
+            class="border-m radius-m"
+            @click="e1 = 3"
+            style="width: 100px"
+            v-bind:disabled="check2 == false"
+          >
+            다음으로
+          </button>
+        </div>
+      </v-stepper-content>
+
+      <v-stepper-content
+        step="3"
+        class="btn-box mt-3"
+        black
+        outlined
+        min-height="200"
+      >
+        <form @submit.prevent="submit" class="mb-2" style="width: 280px">
           <!-- -----------마감시간 입력----------- -->
           <v-text-field
             v-model="end"
@@ -213,25 +249,51 @@
             label="휴무일을 입력해주세요."
             multiple
             chips
-            @input = "$v.off.$touch()"
-            @blur= "$v.off.$touch()"
           ></v-select>
 
           <!-- ------------카테고리셀렉트 박스----------- -->
           <v-select
             :items="items"
-            v-model = "category"
+            v-model="category"
             label="카테고리를 선택해주세요."
             required
             color="black"
-            @input = "$v.category.$touch()"
-            @blur= "$v.category.$touch()"
+            @input="$v.category.$touch()"
+            @blur="$v.category.$touch()"
           ></v-select>
+          <!-- 가게 이미지 등록 -->
+          <div style="margin-bottom: 5px">
+            <p style="margin-top: 3px; color: rgb(140, 184, 131)">
+              <i class="fa-solid fa-image"></i> 가게 대표이미지를 등록해주세요.
+            </p>
+            <input @change="fileSelect" type="file" />
+          </div>
         </form>
 
-        <div class="sign-btn">
-          <button class="border-m radius-m" @click="e1 = 2">이전으로</button>
-          <button class="border-m radius-m" @click="signup()">가입하기</button>
+        <div class="sign-btn" style="margin-top: 40px">
+          <button
+            class="border-m radius-m"
+            style="width: 100px"
+            @click="e1 = 2"
+          >
+            이전으로
+          </button>
+          <button
+            class="border-m radius-m"
+            @click="signup()"
+            style="
+              width: 100px;
+              background-color: #368f3d;
+              border-color: #368f3d;
+              color: white;
+            "
+            v-if="category != false && imgFile != null"
+          >
+            가입하기
+          </button>
+        </div>
+        <div v-if="signupfailDuple" style="color: red">
+          😥 회원가입에 실패했습니다.
         </div>
       </v-stepper-content>
 
@@ -267,8 +329,12 @@ import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
 import minLength from "vuelidate/lib/validators/minLength";
 import http from "@/util/http-common";
-
+import axios from "axios";
+import CountTimer from "@/components/accounts/Timer.vue";
 export default {
+  components: {
+    CountTimer,
+  },
   mixins: [validationMixin],
   name: "SignupOwner",
   data() {
@@ -287,30 +353,39 @@ export default {
       end: "",
       category: "",
       off: "",
-      checkmsg: "메일 인증하기",
+      checkmsg: "메일 인증",
       sendMail: false,
       authNum: "",
+      imgFile: null,
       check1: false,
       check2: false,
+      check3: false,
+      emailDuple: false,
+      mailconfirmDuple: false,
+      emailfailDuple: false,
+      ownercheckDuple: false,
+      ownerfailDuple: false,
+      signupfailDuple: false,
       items: [
-        {value: 'KOREA', text: '한식'},
-        {value: 'JAPAN', text: '일식'},
-        {value: 'WESTERN', text: '양식'},
-        {value: 'SNACK', text: '분식'},
-        {value: 'DESSERT', text: '디저트'},
-        {value: 'INGREDIENT', text: '식자재'},
+        { value: "KOREA", text: "한식" },
+        { value: "JAPAN", text: "일식" },
+        { value: "WESTERN", text: "양식" },
+        { value: "SNACK", text: "분식" },
+        { value: "DESSERT", text: "디저트" },
+        { value: "INGREDIENT", text: "식자재" },
       ],
-      // days: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
-      // offDay: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
       days: [
-        {value: '월', text: '월요일'},
-        {value: '화', text: '화요일'},
-        {value: '수', text: '수요일'},
-        {value: '목', text: '목요일'},
-        {value: '금', text: '금요일'},
-        {value: '토', text: '토요일'},
-        {value: '일', text: '일요일'},
+        { value: "월", text: "월요일" },
+        { value: "화", text: "화요일" },
+        { value: "수", text: "수요일" },
+        { value: "목", text: "목요일" },
+        { value: "금", text: "금요일" },
+        { value: "토", text: "토요일" },
+        { value: "일", text: "일요일" },
       ],
+      time: false,
+      rederKey: 0,
+      ownerDto: [],
     };
   },
 
@@ -331,15 +406,24 @@ export default {
   computed: {
     nameErrors() {
       const errors = [];
+      var pattern_name = /^[가-힣]{2,10}$/;
       if (!this.$v.name.$dirty) return errors;
+      this.name.search(/\s/) != -1 &&
+        errors.push("이름은 빈 칸을 포함 할 수 없습니다.");
+      !pattern_name.test(this.name) &&
+        errors.push("2글자 이상의 한글 이름을 입력해주세요.");
       !this.$v.name.maxLength && errors.push(" ");
       !this.$v.name.required && errors.push(" ");
       return errors;
     },
     passwordErrors() {
       const errors = [];
+      const validatePassword =
+        /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
       if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.minLength && errors.push(" ");
+      !validatePassword.test(this.password) &&
+        errors.push("영문+숫자+특수기호로 구성하여야 합니다.(8-16자)");
+      !this.$v.password.minLength && errors.push("8자 이상 입력해야합니다.");
       !this.$v.password.required && errors.push(" ");
       return errors;
     },
@@ -362,21 +446,20 @@ export default {
       !this.$v.store.required && errors.push(" ");
       return errors;
     },
-    // addressErrors() {
-    //   const errors = [];
-    //   if (!this.$v.address.$dirty) return errors;
-    //   !this.$v.address.required && errors.push(" ");
-    //   return errors;
-    // },
+
     telErrors() {
       const errors = [];
       if (!this.$v.tel.$dirty) return errors;
+      var pattern_num = /[0-9]/;
+      !pattern_num.test(this.tel) && errors.push("숫자만 입력해 주세요.");
       !this.$v.tel.required && errors.push(" ");
       return errors;
     },
     identifyErrors() {
       const errors = [];
       if (!this.$v.identify.$dirty) return errors;
+      var pattern_num = /[0-9]/;
+      !pattern_num.test(this.identify) && errors.push("숫자만 입력해 주세요.");
       !this.$v.identify.required && errors.push(" ");
       return errors;
     },
@@ -394,6 +477,81 @@ export default {
     },
   },
   methods: {
+    // 이메일 중복 확인 및 인증 번호 전송
+    isCheck() {
+      this.emailDuple = false;
+      http
+        .post("/user/email", {
+          email: this.email,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            this.sendMail = true;
+            this.checkmsg = "재전송";
+            this.time = 420;
+            this.rederKey += 1;
+          } else {
+            this.emailDuple = !this.emailDuple;
+          }
+        });
+    },
+    // 인증번호 확인
+    checkMail() {
+      this.mailconfirmDuple = false;
+      this.emailfailDuple = false;
+      http
+        .post("/user/emailAuthNumber", {
+          email: this.email,
+          authNum: this.authNum,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            this.mailconfirmDuple = !this.mailconfirmDuple;
+            this.check1 = true;
+            this.time = false;
+          } else {
+            this.emailfailDuple = !this.emailfailDuple;
+          }
+        });
+    },
+
+    // 사업자 등록번호 인증
+    checkOwner() {
+      this.ownercheckDuple = false;
+      this.ownerfailDuple = false;
+      axios
+        .post(
+          "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=%2BA5hdMZjFvEJER4a%2F4qYT0AD4oO2hJdzyUeFv99ZKQnpprgGdTATL6XcUvXcvv0StLZAgpe9CvB8gVD03bS72Q%3D%3D&returnType=JSON",
+          {
+            b_no: [this.identify],
+          }
+        )
+        .then((response) => {
+          // 등록번호가 국세청 API 존재할 때 중복 확인
+          if (response.data.match_cnt == 1) {
+            http
+              .post("/store/check", {
+                storeNum: this.identify,
+              })
+              .then((response) => {
+                if (response.status == 200) {
+                  this.ownercheckDuple = !this.ownercheckDuple;
+                  this.check2 = true;
+                  // 중복된 번호가 있을 때
+                } else {
+                  this.$alert("이미 등록된 사업자등록번호입니다.");
+                }
+              });
+            // 등록번호가 국세청 API 존재하지 않을 때
+          } else {
+            this.ownerfailDuple = !this.ownerfailDuple;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
@@ -407,7 +565,7 @@ export default {
             // 사용자가 지번 주소를 선택했을 경우(J)
             this.address = data.jibunAddress;
           }
-  
+
           // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
           if (data.userSelectedType === "R") {
             // 법정동명이 있을 경우 추가한다. (법정리는 제외)
@@ -433,76 +591,50 @@ export default {
       }).open();
     },
 
-    // tempAlert() {
-    //   alert("인증 확인");
-    // },
-
-    // 사업자 등록번호 인증
-    checkOwner() {
-      // const url = "https://api.odcloud.kr/api/nts-businessman/v1/status"
-      // console.log(url);
-        // .post(BASE_URL, {
-        //   b_no: this.identify
-        // })
-        // .then((response) => {
-        //   if (response.status == 200) {
-        //     alert("사업자 번호가 확인되었습니다.");
-        //   } else {
-        //     alert("다시 확인해주시길 바랍니다.");
-        //   }
-        // });
+    // 이미지 파일 업로드
+    fileSelect(event) {
+      var input = event.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+      this.imgFile = input.files[0];
     },
 
-    // 이메일 중복 확인 및 인증 번호 전송
-    isCheck() {
-      http
-        .post("/user/email", {
-          email: this.email
-        })
-        .then((response) => {
-        if (response.status == 200) {
-          alert("인증번호를 확인해주세요.");
-          this.sendMail = true;
-          this.checkmsg = "재전송하기";
-        } else {
-          alert("이메일을 입력해주세요.");
-        }
-      });
-    },
-    // 인증번호 확인
-    checkMail() {
-      http
-        .post("/user/emailAuthNumber", {
-          email: this.email,
-          authNum: this.authNum,
-        })
-        .then((response) => {
-        if ((response.status) == 200) {
-          console.log(response.data);
-          alert("인증번호 확인이 되었습니다.");
-          this.check1 = true;
-        } else {
-          alert("인증번호 확인에 실패했습니다.");
-        }
-      });
-    },
     signup() {
-      console.log(this.off);
-      console.log(this.off.join());
-      http.post("/user/signup/owner", {
+      this.signupfailDuple = false;
+      this.ownerDto = {
         email: this.email,
         password: this.password,
         userName: this.name,
         role: this.role,
         storeName: this.store,
-        location: this.address,
+        address: this.address,
+        extraAddress: this.extraAddress,
         tel: this.tel,
         storeNum: this.identify,
         closingTime: this.end,
-        offDay: this.off.join(),
+        offDay: this.off ? this.off.join() : "연중무휴",
         category: this.category,
+      };
+      const formData = new FormData();
+      formData.append("file", this.imgFile);
+      formData.append(
+        "ownerDto",
+        new Blob([JSON.stringify(this.ownerDto)], { type: "application/json" })
+      );
+      http.post("/user/signup/owner", formData).then((response) => {
+        if (response.status == 200) {
+          this.$router.push("/signup/complete");
+        } else {
+          this.signupfailDuple = true;
+        }
       });
-      this.$router.push("/signup/complete");
     },
   },
 };
@@ -546,18 +678,46 @@ export default {
   position: relative;
 }
 .confirm-btn {
+  right: 0px;
+  left: 183px;
+  top: 30px;
+  bottom: 3px;
   position: absolute;
+  margin: 0px;
+  padding: 1%;
+  width: 80px;
+  height: 30px;
   color: black;
-  right: 0;
-  top: 32px;
+  font-size: 13px;
+}
+.ownernum-btn {
+  right: 0px;
+  left: 200px;
+  top: 10px;
+  bottom: 3px;
+  position: absolute;
+  margin: 0px;
+  padding: 1%;
+  width: 60px;
+  height: 30px;
+  color: black;
   font-size: 13px;
 }
 .address-btn {
+  right: 0px;
+  left: 190px;
+  top: 10px;
+  bottom: 3px;
   position: absolute;
+  margin: 0px;
+  padding: 1%;
+  width: 70px;
+  height: 30px;
   color: black;
-  right: 0;
-  top: 12px;
   font-size: 13px;
+}
+.base-mailifirm {
+  height: 60px;
 }
 .mailconfim-case {
   margin: 3% 0;
@@ -565,16 +725,24 @@ export default {
   flex-direction: row;
   justify-content: space-evenly;
   color: black;
+  width: 266px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
 }
 .mailconfirm-btn {
   color: black;
-  width: 70px;
+  width: 60px;
+  margin: 0;
+  padding: 0;
 }
 .mail-confirm {
   color: black;
   border-bottom: 1px solid rgba(0, 0, 0, 30%);
+  width: 200px;
+  height: 30px;
 }
 .input-box {
-  min-width: 266px;
+  min-width: 263px;
 }
 </style>

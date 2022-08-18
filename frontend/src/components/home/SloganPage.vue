@@ -1,99 +1,83 @@
 <template>
   <div>
-    <!-- 현재 주소 -->
-    <div class="location mt-3 mb-3">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="#8cb883"
-        class="bi bi-pin-map"
-        viewBox="0 0 16 16"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"
-        />
-        <path
-          fill-rule="evenodd"
-          d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"
-        />
-      </svg>
-      <span> {{ currentAddress }}</span>
+    <!-- 환영 인사 -->
+    <div v-if="this.userCheck !== 0">
+      <div class="mt-4 greeting">안녕하세요 {{ userDto.nickname }}님</div>
+      <div class="mb-4 greeting">온식고를 찾아주셔서 감사합니다</div>
     </div>
-
     <!-- 슬로건 -->
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="3000"
-      controls
-      indicators
-      img-width="1024"
-      img-height="480"
-      style="text-shadow: 1px 1px 2px #333; margin-top: 1rem"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
+    <v-carousel
+      cycle
+      height="220px"
+      hide-delimiter-background
+      show-arrows-on-hover
+      class="mt-3"
     >
-      <b-carousel-slide>
-        <template #img>
+      <v-carousel-item>
+        <img
+          @click="goIntro()"
+          width="95%"
+          height="220px"
+          src="@/assets/images/main.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+      <v-carousel-item>
+        <img
+          @click="goHow()"
+          width="95%"
+          height="220px"
+          src="@/assets/images/howto.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+      <v-carousel-item>
+        <img
+          width="95%"
+          height="220px"
+          src="@/assets/images/ment.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+      <v-carousel-item>
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSd06jrEu_mbcrAuiuSOw5JhffJI1aboOUGJX81hHCYbPYHoNQ/viewform"
+        >
           <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/slogan_1.jpg"
+            width="95%"
+            height="220px"
+            src="@/assets/images/ask.png"
             alt="image slot"
             style="border-radius: 7px"
           />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/slogan_2.jpg"
-            alt="image slot"
-            style="border-radius: 7px"
-          />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/slogan_4.jpg"
-            alt="image slot"
-            style="border-radius: 7px"
-          />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/slogan_3.jpg"
-            alt="image slot"
-            style="border-radius: 7px"
-          />
-        </template>
-      </b-carousel-slide>
-    </b-carousel>
+        </a>
+      </v-carousel-item>
+    </v-carousel>
   </div>
 </template>
+
+<script
+  type="text/javascript"
+  src="//dapi.kakao.com/v2/maps/sdk.js?appkey=204f7abed9a6558eb3411fabf8202302&libraries=services,clusterer,drawing"
+></script>
 <script>
 import { mapGetters } from "vuex";
+import http from "@/util/http-common";
 
 export default {
   name: "SloganPage",
   data() {
     return {
       slide: 0,
+      userDto: {},
+      tab: "",
     };
   },
   computed: {
-    ...mapGetters("store", ["currentAddress"]),
+    ...mapGetters("accounts", ["userCheck"]),
   },
   methods: {
     onSlideStart() {
@@ -102,6 +86,28 @@ export default {
     onSlideEnd() {
       this.sliding = false;
     },
+    //  소개글로 가기
+    goIntro() {
+      this.$router.push({
+        name: "instruction",
+        params: { tab: 0 },
+      });
+    },
+    // 이용글로 가기
+    goHow() {
+      this.$router.push({
+        name: "instruction",
+        params: { tab: 1 },
+      });
+    },
+  },
+  created() {
+    http.defaults.headers["access-token"] =
+      localStorage.getItem("access-token");
+
+    http.get("/user").then((response) => {
+      this.userDto = response.data;
+    });
   },
 };
 </script>
@@ -118,5 +124,11 @@ export default {
   margin-left: 5px;
   /* 밑줄 */
   border-bottom: 2px solid #8cb883;
+}
+.greeting {
+  font-size: 18px;
+  width: 100%;
+  padding-left: 5%;
+  text-align: start;
 }
 </style>

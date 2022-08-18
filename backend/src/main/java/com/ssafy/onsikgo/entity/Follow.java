@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @RequiredArgsConstructor
 public class Follow {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = LAZY)

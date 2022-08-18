@@ -1,30 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>logo.ico" />
+    <!-- 웹사이트로 설정 -->
+    <meta property="og:type" content="website" />
+    <!-- 전체 사이트 이름 -->
+    <meta property="og:site_name" content="OnSikGo" />
+    <!-- 개별 사이트 이름 -->
+    <meta property="og:title" content="OnSikGo" />
+    <!-- 사이트 설명 -->
+    <meta
+      property="og:description"
+      content="지구를 구하는 마지막 주문, 당일 폐기 예정 음식 정보 공유 사이트입니다."
+    />
+    <!-- 이미지  -->
+    <meta
+      property="og:image"
+      content="http://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/real_logo.png"
+    />
+    <meta
+      property="og:image:secure_url"
+      content="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/real_logo.png"
+    />
+    <meta property="og:image:type" content="image/png" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <link rel="icon" href="<%= BASE_URL %>logo.ico" />
-  <title>
-    <%= htmlWebpackPlugin.options.title %>
-  </title>
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;800&family=IBM+Plex+Sans+KR:wght@200;300;400;500&family=Noto+Sans+KR:wght@400;700;900&display=swap");
-  </style>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" />
-  <script type="text/javascript"
-    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=204f7abed9a6558eb3411fabf8202302&libraries=services,clusterer,drawing"></script>
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script src="//developers.kakao.com/sdk/js/kakao.js"></script>
-  <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
-    charset="utf-8"></script>
-</head>
+    <!-- 사이트 url 제공하고 싶은 url을 제공 -->
+    <meta property="og:url" content="https://i7e201.p.ssafy.io/" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;800&family=IBM+Plex+Sans+KR:wght@200;300;400;500&family=Noto+Sans+KR:wght@400;700;900&display=swap");
+      .customoverlay {
+        position: relative;
+        bottom: 65px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        border-bottom: 2px solid #ddd;
+        float: left;
+      }
+      .customoverlay:nth-of-type(n) {
+        border: 0;
+        box-shadow: 0px 1px 2px #888;
+      }
+      .customoverlay a {
+        display: block;
+        text-decoration: none;
+        color: #000;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: bold;
+        overflow: hidden;
+        background: #d95050;
+        background: #d95050
+          url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+          no-repeat right 14px center;
+      }
+      .customoverlay .title {
+        display: block;
+        text-align: center;
+        background: #fff;
+        margin-right: 35px;
+        padding: 10px 15px;
+        font-size: 10px;
+        font-weight: bold;
+      }
+      .customoverlay:after {
+        content: "";
+        position: absolute;
+        margin-left: -12px;
+        left: 50%;
+        bottom: -12px;
+        width: 22px;
+        height: 12px;
+        background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png"
+    />
 
-<body>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
-</body>
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=204f7abed9a6558eb3411fabf8202302&libraries=services,clusterer,drawing"
+    ></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="//developers.kakao.com/sdk/js/kakao.js"></script>
+    <script
+      type="text/javascript"
+      src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
+      charset="utf-8"
+    ></script>
 
+    <script type="text/javascript">
+      var userAgent = navigator.userAgent.toLowerCase();
+      if (userAgent.match("iphone")) {
+        document.write(
+          '<link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />'
+        );
+      } else if (userAgent.match("ipad")) {
+        document.write(
+          '<link rel="apple-touch-icon" sizes="72*72" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />'
+        );
+      } else if (userAgent.match("ipod")) {
+        document.write(
+          '<link rel="apple-touch-icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-114x114.png" />'
+        );
+      } else if (userAgent.match("android")) {
+        document.write(
+          '<link rel="shortcut icon" href="https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/apple-touch-icon-72x72.png" />'
+        );
+      }
+    </script>
+    <script src="js/chatBot.js"></script>
+    <style>
+      .wrap {
+        text-align: left;
+        font-size: 10px;
+        height: 90px;
+      }
+      .wrap * {
+        padding: 0;
+        margin: 0;
+        background-color: #fff;
+      }
+      .wrap .info {
+        border-radius: 5px;
+        background-color: #fff;
+      }
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background-color: rgba(140, 184, 131, 0.4);
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: rgba(140, 184, 131);
+        border-radius: 15px;
+      }
+      /* ::-webkit-scrollbar-thumb {
+        box-shadow: inset 0 0 6px rgb(140, 184, 131, 0.4);
+      } */
+    </style>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+
+    <script>
+      var config = {
+        apiKey: "AIzaSyAH2b61bqynf-4o-HKOXnTi64WgWDpBPNU",
+        authDomain: "onsikgo.firebaseapp.com",
+        // databaseURL: "https://onsikgo.firebaseio.com",
+        projectId: "onsikgo",
+        storageBucket: "onsikgo.appspot.com",
+        messagingSenderId: "580899564705",
+
+        appId: "1:580899564705:web:ba803077a8a0fb894a54e0",
+        measurementId: "G-X12T9KQEVG",
+      };
+      firebase.initializeApp(config);
+
+      const messaging = firebase.messaging();
+
+      //token값 알아내기
+      messaging
+        .requestPermission()
+        .then(function () {
+          return messaging.getToken();
+        })
+        .then(function (token) {
+          localStorage.setItem("fcm-token", token);
+        })
+        .catch(function (arr) {
+          console.log("Error Occured");
+        });
+    </script>
+  </body>
 </html>

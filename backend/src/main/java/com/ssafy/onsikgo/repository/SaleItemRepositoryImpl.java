@@ -20,7 +20,7 @@ public class SaleItemRepositoryImpl implements SaleItemRepositoryCustom{
     public List<SaleItem> findSaleItemKeyword(String keyword,String date) {
         return queryFactory.select(saleItem)
                 .from(saleItem)
-                .where(saleItem.item.itemName.contains(keyword),saleItem.sale.date.eq(date))
+                .where(saleItem.item.itemName.contains(keyword),saleItem.sale.date.eq(date),saleItem.sale.closed.eq(false))
                 .fetch();
     }
 }

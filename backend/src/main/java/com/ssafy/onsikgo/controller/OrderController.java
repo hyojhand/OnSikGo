@@ -14,7 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -45,4 +45,13 @@ public class OrderController {
         return orderService.cancelOrder(order_id, request);
     }
 
+    @GetMapping("/price")
+    public ResponseEntity<String> totalOrderPrice(HttpServletRequest request) {
+        return orderService.totalOrderPrice(request);
+    }
+
+    @PatchMapping("/pickup/{order_id}")
+    public ResponseEntity<String> pickupOrder(@PathVariable Long order_id,HttpServletRequest request) {
+        return orderService.pickupOrder(order_id,request);
+    }
 }

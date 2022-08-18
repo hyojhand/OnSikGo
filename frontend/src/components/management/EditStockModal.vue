@@ -6,6 +6,7 @@
           v-bind="attrs"
           class="border-m radius-s text-m reason"
           v-on="on"
+          @click="setValue()"
         >
           수량변경
         </button>
@@ -16,38 +17,38 @@
         <v-card-title class="d-flex justify-content-center card-title">
           수량 변경하기
         </v-card-title>
-        <img :src="`${itemDto.itemImgUrl}`" alt="IMG-PRODUCT" />
+        <img :src="`${item.itemImgUrl}`" alt="IMG-PRODUCT" />
         <div class="item-name">
-          {{ this.itemDto.itemName }}
+          {{ item.itemName }}
         </div>
 
         <!--상품정보-->
 
         <form class="info-container">
           <div class="info-box row">
-            <div class="col-5">정상가</div>
-            <div class="col-7 price">{{ this.itemDto.price }}</div>
+            <div class="col-5 title">정상가</div>
+            <div class="col-7 price">{{ item.price }}</div>
           </div>
           <div class="info-box row">
-            <div class="col-5">할인율</div>
+            <div class="col-5 title">할인율</div>
             <div class="col-7 price">
-              🔻{{ ((1 - salePrice / itemDto.price) * 100).toFixed(2) }}%
+              🔻{{ ((1 - this.salePrice / item.price) * 100).toFixed(2) }}%
             </div>
           </div>
 
           <div class="info-box row">
-            <div class="col-5">할인가</div>
+            <div class="col-4 name title">할인가</div>
             <input
-              class="col-7 content"
+              class="col-8 content"
               v-model="salePrice"
               type="text"
               placeholder="판매 금액을 입력해주세요."
             />
           </div>
           <div class="info-box row">
-            <div class="col-5">수량</div>
+            <div class="col-4 name title">수량</div>
             <input
-              class="col-7 content"
+              class="col-8 content"
               v-model="stock"
               type="number"
               placeholder="변경 수량을 입력해주세요."
@@ -55,7 +56,7 @@
           </div>
         </form>
         <div class="btn-box">
-          <button @click="stockchange" class="border-m radius-m edit-btn">
+          <button @click="stockchange()" class="border-m radius-m edit-btn">
             수량변경
           </button>
         </div>
@@ -69,38 +70,25 @@ import http from "@/util/http-common";
 export default {
   name: "EditStockModal",
   props: {
-    no: Number,
-    store: Number,
+    item: Object,
   },
   data() {
     return {
-      itemDto: {},
-      salePrice: "",
-      stock: "",
-      storeDto: {},
+      salePrice: this.item.sale?.salePrice,
+      stock: this.item.sale?.stock,
     };
   },
-
-  async created() {
-    await http.get(`/item/${this.no}`).then((response) => {
-      this.itemDto = response.data;
-    });
-    await http.get(`/sale/${this.no}`).then((response) => {
-      this.saleItemDto = response.data;
-      this.salePrice = this.saleItemDto.salePrice;
-      this.stock = this.saleItemDto.stock;
-    });
-  },
-
   methods: {
     stockchange() {
-      http.put(`/sale/${this.saleItemDto.saleItemId}`, {
+      http.put(`/sale/${this.item.sale.saleItemId}`, {
         salePrice: this.salePrice,
         stock: this.stock,
       });
-
-      this.$router.push("/allprod/");
       this.$router.go();
+    },
+    setValue() {
+      this.salePrice = this.item.sale?.salePrice;
+      this.stock = this.item.sale?.stock;
     },
   },
 };
@@ -110,12 +98,15 @@ export default {
 .reason {
   display: flex;
   color: white;
-  background-color: rgba(0, 0, 0, 20%);
+  background-color: #d46f21;
+  opacity: 0.6;
   width: 100%;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   text-align: center;
+  margin: 0;
+  height: 30px;
 }
 .card-title {
   border-bottom: 1px solid rgba(0, 0, 0, 20%);
@@ -156,6 +147,7 @@ input {
   margin: 5% auto;
   border-bottom: 2px solid rgba(0, 0, 0, 10%);
 }
+
 .info-container {
   display: flex;
   flex-direction: column;
@@ -167,6 +159,24 @@ input {
   align-items: center;
   width: 100%;
   padding: 0;
+}
+.info-box > div {
+  margin: 0;
+  padding: 0;
+}
+.info-box .name {
+  padding-left: 31px;
+}
+.info-box > input {
+  width: 55%;
+  padding-left: 10px;
+  font-size: 20px;
+}
+.title {
+  font-weight: 800;
+}
+.info-box > input::placeholder {
+  font-size: 10px;
 }
 .price {
   text-align: start;

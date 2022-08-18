@@ -1,23 +1,30 @@
 <template>
   <div class="signup-box" width="100%">
     <div>
-      <v-list-item-title class="text-h5 mt-3 mb-5">
-        회원 가입하기
-      </v-list-item-title>
-      <v-list-item-subtitle class="mb-2"
-        >회원가입하시는 고객님의</v-list-item-subtitle
-      >
-      <v-list-item-subtitle class="mb-5"
-        >유형을 선택해주세요</v-list-item-subtitle
-      >
+      <div class="mb-2" style="font-size:28px;"><strong style="color: #368f3d; font-size:40px;">Onsikgo</strong> 회원 가입</div>
+      <v-list-item-subtitle style="font-size:13px;"
+        >본인이 해당하는 회원가입 유형을 선택해주세요.</v-list-item-subtitle>
     </div>
-    <v-card class="btn-box" black outlined min-width="320" min-height="170">
-      <v-btn class="select-btn" color="success" @click="goSignUser()"
-        >고객</v-btn
-      >
-      <v-btn class="select-btn" color="success" @click="goSignOwner()"
-        >업주</v-btn
-      >
+
+    <v-card class="btn-box" style="margin-top: 25px;" black outlined width="350" height="300">
+      <div class="type-box" style="margin-top:15px;">
+        <img src="@/assets/images/buyer.png" alt="유저티콘" width="80" height="80">
+        <div class="mt-5 fw-bold fs-5">일반고객</div>
+        <div class="mt-2">맛있는 음식을 픽업으로 즐기고 싶으시다면</div> 
+        <div class="mb-5">일반고객으로 회원가입해주세요!</div>
+        <div class="d-flex justify-content-center">
+          <v-btn class="select-btn fw-bold" color="success" @click="goSignUser()">일반고객 회원가입</v-btn></div>
+      </div>
+    </v-card>
+    <v-card class="btn-box" black outlined width="350" height="300">
+      <div class="type-box" style="margin-top:15px;">
+        <img src="@/assets/images/seller.png" alt="유저티콘" width="80" height="80">
+        <div class="mt-5 fw-bold fs-5">업주</div>
+        <div class="mt-2">맛있는 음식을 제공하고 싶으시다면</div> 
+        <div class="mb-5">업주로 회원가입해주세요!</div>
+        <div class="d-flex justify-content-center">
+          <v-btn class="select-btn fw-bold" color="success" @click="goSignOwner()">업주 회원가입</v-btn></div>
+      </div>
     </v-card>
   </div>
 </template>
@@ -40,8 +47,8 @@ export default {
 .signup-box {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  justify-content: start;
+  /* height: 250vh; */
+  justify-content: flex-start;
   align-items: center;
 }
 .btn-box {
@@ -49,11 +56,17 @@ export default {
   justify-content: space-evenly;
   align-items: center;
   height: 40vh;
+  margin-top: 10px;
 }
 .select-btn {
-  width: 100px;
-  min-height: 100px;
-  border-radius: 50%;
-  opacity: 90%;
+  width: 150px;
+  min-height: 50px;
+  align-content: center;
+  border-radius: 5px;
 }
+.type-box {
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  }
 </style>

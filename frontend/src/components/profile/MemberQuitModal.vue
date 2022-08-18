@@ -2,39 +2,31 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="success" dark v-bind="attrs" v-on="on"> 회원탈퇴 </v-btn>
+        <button id="quit-button" v-bind="attrs" v-on="on">회원탈퇴</button>
       </template>
 
       <v-card>
-        <v-card-title class="text-h5 lighten-2"> 회원 탈퇴하기 </v-card-title>
-
-        <v-card class="mx-auto my-auto card-box" max-width="344" outlined>
-          <div mt-5 class="row mt-3">
-            <img
-              class="img-box col-5"
-              src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4gqX/image/wIXZfUhOPGGGZxaZ0Nsmigd1paU.jpeg"
-              alt="사진이었던것.."
-            />
-            <div class="col-7 mt-2 order-box">
-              <v-list-item-content>
-                <v-list-item-title class="text msg-box">
-                  {{ userDto.userName }}님, 정말 탈퇴하시겠습니까?
-                </v-list-item-title>
-                <v-list-item-title class="text msg-box"
-                  >지구를 지키는 용사여,,
-                </v-list-item-title>
-              </v-list-item-content>
+        <div class="d-flex justify-content-center">
+          <v-card-title> <h1>회원 탈퇴</h1> </v-card-title>
+        </div>
+        <v-card class="mx-auto my-auto card-box" max-width="400" outlined>
+          <div class="container">
+            <div class="row">
+              <div class="col-3">
+                <img :src="this.userDto.imgUrl" width="80px" height="=80px" />
+              </div>
+              <div class="col-8 mt-6">
+                <span
+                  >{{ this.userDto.nickname }}님, <br />정말
+                  탈퇴하시겠습니까?😢</span
+                >
+              </div>
             </div>
           </div>
-          <br />
 
-          <div class="btn-box">
-            <v-card-actions>
-              <noQuitModal></noQuitModal>
-            </v-card-actions>
-            <b-button pill variant="outline-success" @click="backToMypage()">
-              아니요!
-            </b-button>
+          <div class="d-flex justify-content-center mt-6">
+            <noQuitModal style="width: 50%"></noQuitModal>
+            <button id="back-button" @click="backToMypage()">아니요!</button>
           </div>
         </v-card>
         <v-divider></v-divider>
@@ -94,8 +86,24 @@ export default {
   height: 120px;
   border-radius: 50%;
 }
-.btn-box {
-  display: flex;
-  justify-content: space-evenly;
+#quit-button {
+  font-weight: bolder;
+  width: 100%;
+  text-align: start;
+  margin: 0 0;
+  margin-left: 6%;
+}
+#back-button {
+  height: 40px;
+  border: none;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5 10;
+  padding: 10 10;
+  box-sizing: border-box;
+  background-color: #64a258;
+  color: #ffffff;
+  width: 100px;
 }
 </style>

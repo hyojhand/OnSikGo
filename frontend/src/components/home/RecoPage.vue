@@ -1,44 +1,48 @@
 <template>
   <div>
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="3000"
-      controls
-      indicators
-      img-width="1024"
-      img-height="480"
-      style="text-shadow: 1px 1px 2px #333"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
+    <v-carousel
+      cycle
+      height="220px"
+      hide-delimiter-background
+      show-arrows-on-hover
+      class="mt-3"
     >
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/recommend_1.jpg"
-            alt="image slot"
-            style="border-radius: 7px"
-          />
-        </template>
-      </b-carousel-slide>
-      <b-carousel-slide>
-        <template #img>
-          <img
-            width="90%"
-            height="180px"
-            src="@/assets/images/recommend_2.jpg"
-            alt="image slot"
-            style="border-radius: 7px"
-          />
-        </template>
-      </b-carousel-slide>
-    </b-carousel>
+      <v-carousel-item>
+        <img
+          @click="detailStore()"
+          width="95%"
+          height="220px"
+          src="@/assets/images/dduk.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+      <v-carousel-item>
+        <img
+          @click="detailStore()"
+          width="95%"
+          height="220px"
+          src="@/assets/images/fish.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+      <v-carousel-item>
+        <img
+          @click="detailStore()"
+          width="95%"
+          height="220px"
+          src="@/assets/images/sundae.png"
+          alt="image slot"
+          style="border-radius: 7px"
+        />
+      </v-carousel-item>
+    </v-carousel>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "RecoPage",
   data() {
@@ -47,11 +51,18 @@ export default {
     };
   },
   methods: {
+    ...mapActions("storeStore", ["getStoreId"]),
     onSlideStart() {
       this.sliding = true;
     },
     onSlideEnd() {
       this.sliding = false;
+    },
+    detailStore() {
+      this.getStoreId(16);
+      this.$router.push({
+        name: "storeView",
+      });
     },
   },
 };

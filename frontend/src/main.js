@@ -19,8 +19,11 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 
 // 폰트어썸
 import "@fortawesome/fontawesome-free/js/all.js";
+
+import VueSimpleAlert from "vue-simple-alert";
 Vue.use(Vuetify);
 Vue.use(BootstrapVue);
+Vue.use(VueSimpleAlert);
 Vue.config.productionTip = false;
 
 // vuetify 사용

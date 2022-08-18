@@ -15,7 +15,7 @@ import java.util.List;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/review")
+@RequestMapping("/api/review")
 @RequiredArgsConstructor
 public class ReviewController {
 
@@ -43,8 +43,14 @@ public class ReviewController {
     public ResponseEntity<String> delete(@PathVariable Long review_id){
         return reviewService.delete(review_id);
     }
+
     @PatchMapping("/{review_id}")
     public ResponseEntity<String> report(@PathVariable Long review_id){
         return reviewService.report(review_id);
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<List<ReviewDto>> getTotal() {
+        return reviewService.getTotal();
     }
 }

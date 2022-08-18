@@ -7,9 +7,9 @@
     <!--수정정보나타내기-->
     <div>
       <div class="img-box">
-        <img :src="`${itemDto.itemImgUrl}`" alt="IMG-PRODUCT" />
+        <b-img :src="previewImg" height="150px" width="150px" />
         <div class="img-input">
-          <input v-on:change="fileSelect()" type="file" ref="imgFile" />
+          <input @change="fileSelect" type="file" />
         </div>
       </div>
       <input
@@ -57,6 +57,7 @@
 <script>
 import ProductDeleteModal from "@/components/management/ProductDeleteModal.vue";
 import http from "@/util/http-common";
+import { mapGetters } from "vuex";
 export default {
   name: "ProdChangeView",
 
@@ -66,23 +67,40 @@ export default {
       imgFile: null,
       itemDto: {},
       storeDto: {},
-      storeId: Number,
+      previewImg: null,
     };
+  },
+  computed: {
+    ...mapGetters("itemStore", ["getItemId"]),
+    ...mapGetters("storeStore", ["getStoreId"]),
   },
 
   async created() {
-    await http.get(`/store/${this.$route.params.storeId}`).then((response) => {
+    await http.get(`/store/${this.getStoreId}`).then((response) => {
       this.storeDto = response.data;
     });
 
-    await http.get(`/item/${this.$route.params.itemId}`).then((response) => {
+    await http.get(`/item/${this.getItemId}`).then((response) => {
       this.itemDto = response.data;
+      this.previewImg = this.itemDto.itemImgUrl;
+      this.$forceUpdate();
     });
   },
 
   methods: {
-    fileSelect() {
-      this.imgFile = this.$refs.imgFile.files[0];
+    fileSelect(event) {
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImg = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        this.previewImg = null;
+      }
+      this.imgFile = input.files[0];
     },
     prodchange() {
       const formData = new FormData();
@@ -99,7 +117,7 @@ export default {
         })
         .then((response) => {
           if (response.status == 200) {
-            alert("상품정보 수정완료");
+            this.$alert("상품 정보 수정을 완료했습니다!");
             this.$router.push("/allprod/");
           }
         });
@@ -139,9 +157,10 @@ img {
   justify-content: center;
 }
 .store-name {
-  width: 40%;
+  width: 100%;
   font-size: 30px;
   text-align: center;
+  margin-bottom: 5px;
   padding: 2% 0;
   color: rgba(0, 0, 0, 60%);
 }
