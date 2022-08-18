@@ -256,7 +256,7 @@ export default {
               }
             });
           this.$alert("주문이 접수되었습니다.");
-          this.$router.push("/mypage/user/history");
+          this.$router.push("/shop");
         } else {
           this.$alert("주문을 다시 확인해주세요");
         }
