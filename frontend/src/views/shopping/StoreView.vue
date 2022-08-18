@@ -77,7 +77,7 @@
         </div>
         <div v-else class="non-msg">
           <div>오늘은 등록된</div>
-          <div>상품이 없어요 ㅠ</div>
+          <div>상품이 없어요!</div>
         </div>
       </div>
       <!-- 리뷰 -->
@@ -101,7 +101,7 @@
             placeholder="리뷰를 입력해주세요"
             @click="login()"
           />
-          <button @click="registerReview()" class="p-0">
+          <button class="basic-addon1 p-0" @click="registerReview()" >
             <img id="basic-addon1" src="@/assets/images/send.png" alt="" />
           </button>
         </div>
@@ -115,7 +115,7 @@
         </div>
         <div v-else class="non-msg">
           <div>아직 등록된</div>
-          <div>리뷰가 없어요 ㅠ</div>
+          <div>리뷰가 없어요!</div>
         </div>
       </div>
       <!-- 상세 정보 -->
@@ -439,6 +439,11 @@ div {
   width: 95%;
   margin: 0;
 }
+.basic-addon1 {
+  height: 38px;
+  width: 40px;
+}
+
 #basic-addon1 {
   height: 38px;
   width: 40px;
