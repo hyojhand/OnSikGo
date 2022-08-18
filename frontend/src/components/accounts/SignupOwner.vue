@@ -68,6 +68,7 @@
             class="input-box"
             color="black"
             type="password"
+            style="margin-top: 20px"
             @input="$v.password.$touch()"
             @blur="$v.password.$touch()"
           ></v-text-field>
@@ -725,7 +726,7 @@ export default {
   justify-content: space-evenly;
   color: black;
   width: 266px;
-  height: 60px;
+  height: 40px;
   margin: 0;
   padding: 0;
 }
