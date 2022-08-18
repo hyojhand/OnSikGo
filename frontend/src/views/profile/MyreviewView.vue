@@ -12,7 +12,7 @@
     </div>
     <div v-else class="non-msg">
       <div>아직 등록한</div>
-      <div>리뷰가 없어요 ㅠ</div>
+      <div>리뷰가 없어요!</div>
     </div>
   </div>
 </template>

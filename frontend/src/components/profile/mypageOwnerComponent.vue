@@ -73,7 +73,7 @@
       </div>
       <div v-else class="non-msg">
         <div>오늘은 등록한</div>
-        <div>상품이 없어요 ㅠ</div>
+        <div>상품이 없어요!</div>
       </div>
     </div>
   </div>

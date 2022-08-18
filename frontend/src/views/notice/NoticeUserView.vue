@@ -11,7 +11,7 @@
     </div>
     <div v-else class="non-msg">
       <div>아직 보내드릴</div>
-      <div>알림이 없어요 ㅠ</div>
+      <div>알림이 없어요!</div>
     </div>
   </div>
 </template>

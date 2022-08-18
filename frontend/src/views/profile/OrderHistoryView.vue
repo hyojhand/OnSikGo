@@ -13,7 +13,7 @@
     </div>
     <div v-else class="non-msg">
       <div>아직 OnSikGo를 이용한</div>
-      <div>내역이 없어요 ㅠㅠ</div>
+      <div>내역이 없어요!</div>
       <div>한번 사용해보세요!</div>
     </div>
   </div>

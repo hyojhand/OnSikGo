@@ -77,7 +77,7 @@
         </div>
         <div v-else class="non-msg">
           <div>오늘은 등록된</div>
-          <div>상품이 없어요 ㅠ</div>
+          <div>상품이 없어요!</div>
         </div>
       </div>
       <!-- 리뷰 -->
@@ -115,7 +115,7 @@
         </div>
         <div v-else class="non-msg">
           <div>아직 등록된</div>
-          <div>리뷰가 없어요 ㅠ</div>
+          <div>리뷰가 없어요!</div>
         </div>
       </div>
       <!-- 상세 정보 -->

@@ -175,7 +175,7 @@
     </div>
     <div v-else class="none-msg">
       <div>찾을 수 있는</div>
-      <div>가게가 없습니다 ㅠ</div>
+      <div>가게가 없습니다!</div>
     </div>
   </div>
 </template>
