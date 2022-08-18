@@ -53,6 +53,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import http from "@/util/http-common";
 export default {
   name: "StoreProductItem",
   props: {
@@ -67,6 +68,7 @@ export default {
   data() {
     return {
       distance: "",
+      userDto: {},
     };
   },
   computed: {
@@ -79,6 +81,7 @@ export default {
       this.saleDto.storeDto.lat,
       this.saleDto.storeDto.lng
     );
+    this.getUser();
   },
   methods: {
     // 현재 위치 주소 vuex에 넣기
@@ -112,6 +115,8 @@ export default {
         this.$router.push({
           name: "login",
         });
+      } else if (this.userDto.ban > 5){
+        this.$alert("해당 유저는 이 기능을 이용 하실수 없습니다.")
       } else {
         this.getItemId(itemId), this.getOrderStore(storeId);
         this.$router.push({
@@ -119,6 +124,13 @@ export default {
         });
       }
     },
+    getUser(){
+      http.defaults.headers["access-token"] = 
+        localStorage.getItem("access-token");
+      http.get("/user").then((response) => {
+        this.userDto = response.data
+      })
+    }
   },
 };
 </script>
