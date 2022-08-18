@@ -27,7 +27,7 @@
           :class="{ none: saleCount == 0 }"
           v-if="saleCount == 0"
         >
-          오늘 등록된 물품이 없어요ㅠ
+          오늘 등록된 물품이 없어요!
         </div>
       </div>
       <!-- 물품수량 & 버튼 -->

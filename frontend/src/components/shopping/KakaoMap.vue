@@ -126,7 +126,7 @@
     </div>
     <div v-else class="none-msg">
       <div>지금은 등록된</div>
-      <div>아이템이 없어요 ㅠ</div>
+      <div>아이템이 없어요!</div>
     </div>
   </div>
 </template>
