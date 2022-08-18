@@ -6,6 +6,13 @@
     class="card-box"
   >
     <img
+      v-if="notice.orderDto.state === 'ORDER' &&  notice.noticeState === 'ORDER'"
+      class="siren"
+      src="@/assets/images/siren.png"
+      @click="reportOrder(notice)"
+      alter="신고 버튼이었던것.."
+    />
+    <img
       class="img-box col-5"
       :src="`${notice.userDto.imgUrl}`"
       alt="유저 프로필"
@@ -56,7 +63,8 @@
 
 <script>
 import NoticeModal from "@/components/notice/NoticeModal.vue";
-
+import http from '@/util/http-common';
+import { mapActions } from "vuex";
 export default {
   name: "NoticeCard",
   components: { NoticeModal },
@@ -69,9 +77,24 @@ export default {
     notice: Object,
   },
   methods: {
+    ...mapActions("accounts", ["getOwnerOrderList"]),
     goDetail() {
       this.$router.push("/notice/detail");
     },
+    reportOrder(notice) {
+      http
+        .post(`/user/ban/${notice.noticeId}`).then((response) =>{
+          if (response.status === 200){
+            console.log("신고완료");
+          }
+      }).then(() => {
+        http.defaults.headers["access-token"] = localStorage.getItem("access-token");
+        http.get("/notice").then((response) => {
+        this.getOwnerOrderList(response.data.reverse());
+      });
+      
+    });
+    }
   },
 };
 </script>
@@ -79,6 +102,7 @@ export default {
 <style scoped>
 .card-box {
   display: flex;
+  position: relative;;
   margin: 0 auto 5px 0;
   /* width: 100%; */
   flex-direction: row;
@@ -127,5 +151,14 @@ export default {
 }
 .order {
   color: blue;
+}
+
+.siren{
+  position: absolute;
+  top: 8%;
+  left: 3%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 </style>

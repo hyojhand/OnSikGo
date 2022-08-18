@@ -30,7 +30,7 @@
     <div class="intro">Onsikgo 메인컬러</div>
     <div class="color-case mt-5">
       <div class="circle"></div>
-      <div class="color-ment mt-3">rgb(140, 184, 131)</div>
+      <div class="color-ment mt-3">RGB(140, 184, 131)</div>
     </div>
     <div class="intro">Onsikgo 원산지</div>
     <div class="intro-ment final">

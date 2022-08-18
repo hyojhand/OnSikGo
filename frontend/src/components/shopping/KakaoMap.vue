@@ -148,6 +148,7 @@ export default {
       items: [],
       keyword: "",
       storeKeyword: "",
+      userDto: {},
     };
   },
   computed: {
@@ -168,6 +169,8 @@ export default {
     } else {
       this.curruntLocation();
     }
+    this.getUser();
+    
   },
 
   methods: {
@@ -209,7 +212,6 @@ export default {
 
       this.nowMarker();
     },
-    //
     nowMarker() {
       this.aroundSaleStore.forEach((store) => {
         var imageSrc =
@@ -343,7 +345,7 @@ export default {
           this.getAroundSaleStore(response.data);
         });
     },
-    //
+    // 주문하기
     productOrder(item) {
       const isLogin = JSON.parse(localStorage.getItem("vuex")).accounts
         .userCheck;
@@ -355,6 +357,8 @@ export default {
       } else {
         if (isLogin == 1) {
           this.$alert("업주께서는 이용하실수 없는 서비스입니다.");
+        } else if (this.userDto.ban > 5){
+          this.$alert("해당 유저는 이 기능을 이용 하실수 없습니다.")
         } else {
           this.getItemId(item.itemId),
             this.getOrderStore(item.saleDto.storeDto.storeId);
@@ -500,6 +504,13 @@ export default {
       // 마커가 지도 위에 표시되도록 설정합니다
       marker.setMap(this.map);
     },
+    getUser(){
+      http.defaults.headers["access-token"] = 
+        localStorage.getItem("access-token");
+      http.get("/user").then((response) => {
+        this.userDto = response.data
+      })
+    }
   },
 };
 </script>

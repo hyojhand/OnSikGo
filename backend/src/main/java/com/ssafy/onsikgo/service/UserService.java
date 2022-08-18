@@ -296,6 +296,7 @@ public class UserService {
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<String> report(Long notice_id) {
         Optional<Notice> findNotice = noticeRepository.findById(notice_id);
         if(!findNotice.isPresent()) {
