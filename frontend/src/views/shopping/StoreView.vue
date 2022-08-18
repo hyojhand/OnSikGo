@@ -101,7 +101,7 @@
             placeholder="리뷰를 입력해주세요"
             @click="login()"
           />
-          <button @click="registerReview()" class="p-0">
+          <button class="basic-addon1 p-0" @click="registerReview()" >
             <img id="basic-addon1" src="@/assets/images/send.png" alt="" />
           </button>
         </div>
@@ -439,6 +439,11 @@ div {
   width: 95%;
   margin: 0;
 }
+.basic-addon1 {
+  height: 38px;
+  width: 40px;
+}
+
 #basic-addon1 {
   height: 38px;
   width: 40px;
